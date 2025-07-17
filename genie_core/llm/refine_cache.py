@@ -668,6 +668,289 @@ def _process_flexible_matches(template_text: str, matches):
     
     return result
 
+
+# ---------------------------------------------------------------------------
+# Additional Rule-Based Optimizations
+# ---------------------------------------------------------------------------
+
+def _optimize_direct_attribute_copy(elem: etree._Element) -> bool:
+    """
+    Convert direct attribute copying patterns to xsl:copy-of.
+    
+    Pattern: <xsl:attribute name="Type" namespace=""><xsl:value-of select="@Type"/></xsl:attribute>
+    Optimized: <xsl:copy-of select="@Type"/>
+    """
+    changed = False
+    
+    # Find all attribute elements with direct attribute copying
+    attr_elements = elem.xpath(
+        ".//xsl:attribute[xsl:value-of]", 
+        namespaces=NSMAP
+    )
+    
+    for attr_elem in attr_elements:
+        attr_name = attr_elem.get("name")
+        if not attr_name:
+            continue
+            
+        # Check if it has a single xsl:value-of child with matching @attribute
+        value_of_elems = attr_elem.xpath("./xsl:value-of", namespaces=NSMAP)
+        if len(value_of_elems) == 1:
+            select_expr = value_of_elems[0].get("select", "")
+            
+            # Check if it's a direct attribute reference: @AttrName
+            if select_expr == f"@{attr_name}":
+                # Replace with xsl:copy-of
+                copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
+                copy_of_elem.set("select", select_expr)
+                
+                # Replace the attribute element with copy-of
+                parent = attr_elem.getparent()
+                if parent is not None:
+                    parent.replace(attr_elem, copy_of_elem)
+                    changed = True
+    
+    return changed
+
+
+def _optimize_conditional_attribute_to_copy_of(elem: etree._Element) -> bool:
+    """
+    Convert conditional attribute patterns to xsl:copy-of.
+    
+    Pattern: <xsl:for-each select="@Language">
+                <xsl:attribute name="Language" namespace="">
+                    <xsl:value-of select="."/>
+                </xsl:attribute>
+             </xsl:for-each>
+    Optimized: <xsl:copy-of select="@Language"/>
+    """
+    changed = False
+    
+    # Find for-each elements that select attributes
+    for_each_elements = elem.xpath(
+        ".//xsl:for-each[starts-with(@select, '@')]", 
+        namespaces=NSMAP
+    )
+    
+    for for_each_elem in for_each_elements:
+        select_attr = for_each_elem.get("select", "")
+        
+        # Extract attribute name from select (e.g., "@Language" -> "Language")
+        if select_attr.startswith("@"):
+            attr_name = select_attr[1:]
+            
+            # Check if it has a single xsl:attribute child with matching name
+            attr_children = for_each_elem.xpath("./xsl:attribute", namespaces=NSMAP)
+            if len(attr_children) == 1:
+                attr_elem = attr_children[0]
+                attr_elem_name = attr_elem.get("name")
+                
+                if attr_elem_name == attr_name:
+                    # Check if attribute has single xsl:value-of with select="."
+                    value_of_elems = attr_elem.xpath("./xsl:value-of[@select='.']", namespaces=NSMAP)
+                    if len(value_of_elems) == 1:
+                        # Replace with xsl:copy-of
+                        copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
+                        copy_of_elem.set("select", select_attr)
+                        
+                        # Replace the for-each element with copy-of
+                        parent = for_each_elem.getparent()
+                        if parent is not None:
+                            parent.replace(for_each_elem, copy_of_elem)
+                            changed = True
+    
+    return changed
+
+
+def _optimize_multiple_copy_of_merge(elem: etree._Element) -> bool:
+    """
+    Merge multiple consecutive xsl:copy-of elements into a single union.
+    
+    Pattern: <xsl:copy-of select="@Type"/>
+             <xsl:copy-of select="@Language"/>
+             <xsl:copy-of select="@Status"/>
+    Optimized: <xsl:copy-of select="@Type | @Language | @Status"/>
+    """
+    changed = False
+    
+    # Find all elements that are parents of copy-of elements
+    candidate_parents = elem.xpath(".//*[xsl:copy-of]", namespaces=NSMAP)
+    if elem.xpath("./xsl:copy-of", namespaces=NSMAP):
+        candidate_parents.append(elem)
+    
+    for parent in set(candidate_parents):
+        # Get all children, filtering out whitespace-only text nodes
+        children = [c for c in parent if not (not hasattr(c, 'tag') and str(c).isspace())]
+        
+        i = 0
+        while i < len(children):
+            # Find consecutive copy-of elements
+            copy_of_group = []
+            j = i
+            
+            while j < len(children):
+                child = children[j]
+                if (isinstance(child.tag, str) and 
+                    etree.QName(child).localname == "copy-of" and
+                    etree.QName(child).namespace == "http://www.w3.org/1999/XSL/Transform"):
+                    
+                    select_expr = child.get("select", "")
+                    # Only merge attribute selectors for now
+                    if select_expr.startswith("@"):
+                        copy_of_group.append(child)
+                        j += 1
+                    else:
+                        break
+                else:
+                    break
+            
+            # If we found 2 or more consecutive copy-of elements, merge them
+            if len(copy_of_group) >= 2:
+                # Create merged copy-of element
+                select_exprs = [elem.get("select", "") for elem in copy_of_group]
+                merged_select = " | ".join(select_exprs)
+                
+                merged_copy_of = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
+                merged_copy_of.set("select", merged_select)
+                
+                # Replace the first copy-of element with merged one
+                parent.replace(copy_of_group[0], merged_copy_of)
+                
+                # Remove the rest
+                for copy_of_elem in copy_of_group[1:]:
+                    parent.remove(copy_of_elem)
+                
+                changed = True
+                
+                # Update children list after modification
+                children = [c for c in parent if not (not hasattr(c, 'tag') and str(c).isspace())]
+                i = 0  # Restart scanning from beginning
+            else:
+                i = j if j > i else i + 1
+    
+    return changed
+
+
+def _optimize_simple_element_copy(elem: etree._Element) -> bool:
+    """
+    Optimize simple element copying patterns.
+    
+    Pattern: <xsl:for-each select="ns0:Success">
+                <Success/>
+             </xsl:for-each>
+    Optimized: <xsl:copy-of select="ns0:Success"/>
+    """
+    changed = False
+    
+    # Find for-each elements
+    for_each_elements = elem.xpath(".//xsl:for-each", namespaces=NSMAP)
+    
+    for for_each_elem in for_each_elements:
+        select_expr = for_each_elem.get("select", "")
+        
+        # Check if for-each has a single child element
+        child_elements = [c for c in for_each_elem if isinstance(c.tag, str)]
+        if len(child_elements) == 1:
+            child_elem = child_elements[0]
+            
+            # Check if it's a simple empty element (self-closing)
+            if (len(child_elem) == 0 and 
+                (child_elem.text is None or child_elem.text.strip() == "")):
+                
+                # Extract element name from select expression
+                # Handle patterns like "ns0:Success" -> "Success"
+                if ":" in select_expr:
+                    expected_name = select_expr.split(":")[-1]
+                else:
+                    expected_name = select_expr
+                
+                # Check if child element name matches
+                child_name = etree.QName(child_elem).localname
+                if child_name == expected_name:
+                    # Replace with xsl:copy-of
+                    copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
+                    copy_of_elem.set("select", select_expr)
+                    
+                    parent = for_each_elem.getparent()
+                    if parent is not None:
+                        parent.replace(for_each_elem, copy_of_elem)
+                        changed = True
+    
+    return changed
+
+
+def _optimize_trivial_for_each_elimination(elem: etree._Element) -> bool:
+    """
+    Eliminate trivial for-each loops that can be simplified.
+    
+    Pattern: <xsl:for-each select="ns0:Element">
+                <Element><xsl:value-of select="."/></Element>
+             </xsl:for-each>
+    Optimized: <xsl:copy-of select="ns0:Element"/>
+    """
+    changed = False
+    
+    # Find for-each elements
+    for_each_elements = elem.xpath(".//xsl:for-each", namespaces=NSMAP)
+    
+    for for_each_elem in for_each_elements:
+        select_expr = for_each_elem.get("select", "")
+        
+        # Check if for-each has a single child element
+        child_elements = [c for c in for_each_elem if isinstance(c.tag, str)]
+        if len(child_elements) == 1:
+            child_elem = child_elements[0]
+            
+            # Check if child element has single xsl:value-of with select="."
+            value_of_elems = child_elem.xpath("./xsl:value-of[@select='.']", namespaces=NSMAP)
+            if (len(value_of_elems) == 1 and 
+                len([c for c in child_elem if isinstance(c.tag, str)]) == 1):
+                
+                # Extract element name from select expression
+                if ":" in select_expr:
+                    expected_name = select_expr.split(":")[-1]
+                else:
+                    expected_name = select_expr
+                
+                # Check if child element name matches
+                child_name = etree.QName(child_elem).localname
+                if child_name == expected_name:
+                    # Replace with xsl:copy-of
+                    copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
+                    copy_of_elem.set("select", select_expr)
+                    
+                    parent = for_each_elem.getparent()
+                    if parent is not None:
+                        parent.replace(for_each_elem, copy_of_elem)
+                        changed = True
+    
+    return changed
+
+
+def _optimize_boolean_type_conversion(elem: etree._Element) -> bool:
+    """
+    Standardize boolean type conversion patterns.
+    
+    Pattern: <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+    Optimized: <xsl:value-of select="boolean(.)"/>
+    """
+    changed = False
+    
+    # Find xsl:value-of elements with boolean conversion
+    value_of_elements = elem.xpath(".//xsl:value-of", namespaces=NSMAP)
+    
+    for value_of_elem in value_of_elements:
+        select_expr = value_of_elem.get("select", "")
+        
+        # Check for the specific boolean conversion pattern
+        if "boolean(translate(normalize-space(string(.))," in select_expr:
+            # Replace with simplified boolean conversion
+            value_of_elem.set("select", "boolean(.)")
+            changed = True
+    
+    return changed
+
+
 def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]]]:
     """Attempt deterministic refinement. Returns (refined_text, actions)."""
     wrapper_used = False
@@ -717,14 +1000,50 @@ def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]]]:
         changed = True
         actions.append({"op": "remove_var_cur"})
 
-    # 2. merge simple loops
+    # 2. optimize direct attribute copying  
+    if _optimize_direct_attribute_copy(elem):
+        print("direct_attribute_copy applied")
+        changed = True
+        actions.append({"op": "direct_attribute_copy"})
+
+    # 3. optimize conditional attributes to copy-of
+    if _optimize_conditional_attribute_to_copy_of(elem):
+        print("conditional_attribute_to_copy_of applied")
+        changed = True
+        actions.append({"op": "conditional_attribute_to_copy_of"})
+
+    # 4. optimize simple element copying
+    if _optimize_simple_element_copy(elem):
+        print("simple_element_copy applied")
+        changed = True
+        actions.append({"op": "simple_element_copy"})
+
+    # 5. optimize trivial for-each elimination
+    if _optimize_trivial_for_each_elimination(elem):
+        print("trivial_for_each_elimination applied")
+        changed = True
+        actions.append({"op": "trivial_for_each_elimination"})
+
+    # 6. optimize boolean type conversion
+    if _optimize_boolean_type_conversion(elem):
+        print("boolean_type_conversion applied")
+        changed = True
+        actions.append({"op": "boolean_type_conversion"})
+
+    # 7. merge simple loops
     merged, attr_list, pure_block = _merge_simple_attr_loops(elem)
     if merged:
         changed = True
         op_name = "merge_attr_loops" if pure_block else "merge_attr_loops_partial"
         actions.append({"op": op_name, "attrs": attr_list})
 
-    # 3. collapse nested loops (simple implementation)
+    # 8. merge multiple copy-of elements
+    if _optimize_multiple_copy_of_merge(elem):
+        print("multiple_copy_of_merge applied")
+        changed = True
+        actions.append({"op": "multiple_copy_of_merge"})
+
+    # 9. collapse nested loops (simple implementation)
     if _collapse_nested_loops(elem):
         changed = True
         actions.append({"op": "collapse_nested_loops"})

@@ -456,6 +456,7 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
         rule_based_refine,
         apply_actions,
     )
+    from .hierarchical_processor import HierarchicalProcessor
     # Extract templates and IDs
     templates = []
     for tmpl in tree.findall(".//xsl:template", namespaces=NSMAP):
@@ -468,6 +469,9 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
     from .refine_cache import _compute_edit_actions  # Import the diff function
 
     char_budget = 5000 # maximum characters for a single LLM prompt / chunk
+    
+    # Initialize hierarchical processor
+    hierarchical_processor = HierarchicalProcessor()
 
     def _process_chunk(chunk_text: str) -> str:
         """Refine a template (or segment) using cache, deterministic rules, then LLM."""
@@ -912,14 +916,21 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
         return f"{open_tag}{''.join(refined_bodies)}{close_tag}"
 
     # --- iterate templates in document order ---
+    hierarchical_reports = []
     for t in templates:
         original = t["text"]
         if len(original) <= char_budget:
             print("Inside ProcessChunk")
             refined = _process_chunk(original)
         else:
-            print("Inside ProcessLargeTemplate")
-            refined = _process_large_template(original)
+            print("Inside ProcessLargeTemplate - Using Hierarchical Processing")
+            # Use hierarchical processing for large templates
+            refined, hierarchical_report = hierarchical_processor.process_template_hierarchically(original)
+            hierarchical_reports.append({
+                'template_id': t["id"],
+                'report': hierarchical_report
+            })
+            print(f"Hierarchical processing complete: {hierarchical_report['rule_coverage_percent']:.1f}% rule-based")
 
         # Replace in XML tree
         try:
@@ -931,6 +942,24 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
 
     final_xslt = etree.tostring(tree, encoding="unicode", pretty_print=True)
     st.session_state.generated_xslt = final_xslt
+    
+    # Store hierarchical processing reports for analysis
+    if hierarchical_reports:
+        st.session_state.hierarchical_reports = hierarchical_reports
+        
+        # Print summary of hierarchical processing
+        total_templates = len(hierarchical_reports)
+        avg_rule_coverage = sum(r['report']['rule_coverage_percent'] for r in hierarchical_reports) / total_templates
+        total_blocks = sum(r['report']['total_blocks'] for r in hierarchical_reports)
+        total_rule_based = sum(r['report']['rule_based_blocks'] for r in hierarchical_reports)
+        
+        print(f"\n=== HIERARCHICAL PROCESSING SUMMARY ===")
+        print(f"Templates processed hierarchically: {total_templates}")
+        print(f"Average rule coverage: {avg_rule_coverage:.1f}%")
+        print(f"Total blocks identified: {total_blocks}")
+        print(f"Blocks handled by rules: {total_rule_based}")
+        print(f"LLM calls reduced by hierarchical processing")
+        
     print("Inside 9")
     return
 
