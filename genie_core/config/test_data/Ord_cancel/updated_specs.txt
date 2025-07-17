@@ -1,0 +1,39 @@
+**AMA_ConnectivityLayerRQ**| **OrderCancelRQ**| **Remarks**| **Type**  
+1. **Input:**  AMA_ConnectivityLayerRQ/Requests/Request/property  
+    **Output:** OrderCancelRQ/@Version  
+    **Remarks:** Hardcoded as 17.2  
+2. **Input:** AMA_ConnectivityLayerRQ/Requests/Request/Context/correlationID  
+    **Output:** OrderCancelRQ/@CorrelationID  
+    **Remarks:** NA  
+3. **Input:** NA  
+    **Output:** OrderCancelRQ/PointOfSale/Location/CountryCode  
+    **Remarks:** Hardcoded as IN  
+4. **Input:** NA  
+    **Output:** OrderRetrieveRQ/PointOfSale/Location/CityCode  
+    **Remarks:** Hardcoded as NCE  
+5. **Input:** NA  
+    **Output:** OrderCancelRQ/Document/@id  
+    **Remarks:** Hardcoded as document  
+6. **Input:** AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency  
+    **Output:** OrderCancelRQ/Party/Sender/TravelAgencySender  
+    **Remarks:** NA  
+7. **Input:** AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/Name  
+    **Output:** OrderCancelRQ/Party/Sender/TravelAgencySender/Name  
+    **Remarks:** NA  
+8. **Input:** NA  
+    **Output:** OrderCancelRQ/Party/Sender/TravelAgencySender/PseudoCity  
+    **Remarks:** Hardcoded as AH9D  
+9. **Input:** AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/IATA_Number  
+    **Output:** OrderCancelRQ/Party/Sender/TravelAgencySender/IATA_Number  
+10. **Input:** AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/IATA_Number  
+    **Output:** OrderCancelRQ/Party/Sender/TravelAgencySender/AgencyID  
+    **Remarks:** NA  
+11. **Input:** NA  
+    **Output:** OrderCancelRQ/Party/Sender/TravelAgencySender/AgentUser/AgentUserID  
+    **Remarks:** Hardcoded as xmluser001  
+12. **Input:** AMA_ConnectivityLayerRQ/Requests/Request/bookingSourceInfo/rloc  
+    **Output:** OrderCancelRQ/Query/Order/@OrderID  
+    **Remarks:** NA  
+13. **Input:** AMA_ConnectivityLayerRQ/Requests/Request/Context/Retailer/code  
+    **Output:** OrderCancelRQ/Query/Order/@Owner  
+    **Remarks:** NA

@@ -1,0 +1,799 @@
+[
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/Success",
+    "xml_output_node_tag": "Success",
+    "spec_type": "element",
+    "field_name": "Success",
+    "xslt_snippet": "<Success xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>\n\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "Success"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehRentalCore",
+    "xml_output_node_tag": "VehRentalCore",
+    "spec_type": "attribute",
+    "field_name": "PickUpDateTime",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"ns0:VehRentalCore/@PickUpDateTime\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var15_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"PickUpDateTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "ns0:VehRentalCore/@PickUpDateTime"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over ns0:VehRentalCore/@PickUpDateTime"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehRentalCore",
+    "xml_output_node_tag": "VehRentalCore",
+    "spec_type": "element",
+    "field_name": "VehRentalCore",
+    "xslt_snippet": "<VehRentalCore xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/@PickUpDateTime\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var15_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"PickUpDateTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/@ReturnDateTime\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var16_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"ReturnDateTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/@StartChargesDateTime\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var17_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"StartChargesDateTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/@StopChargesDateTime\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var18_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"StopChargesDateTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/@OneWayIndicator\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var19_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"OneWayIndicator\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/@MultiIslandRentalDays\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var20_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"MultiIslandRentalDays\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/@Quantity\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var21_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"Quantity\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/@DistUnitName\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var22_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<xsl:attribute name=\"DistUnitName\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/ns0:PickUpLocation\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var23_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<PickUpLocation>\n\t\t\t\t\t\t\t\t\t<xsl:if test=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CodeContext\" namespace=\"\">IATA</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var24_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"LocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@ExtendedLocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var25_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"ExtendedLocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CounterLocation\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var26_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CounterLocation\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</PickUpLocation>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:VehRentalCore/ns0:ReturnLocation\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var27_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<ReturnLocation>\n\t\t\t\t\t\t\t\t\t<xsl:if test=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CodeContext\" namespace=\"\">IATA</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var28_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"LocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@ExtendedLocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var29_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"ExtendedLocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CounterLocation\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var30_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CounterLocation\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</ReturnLocation>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t</VehRentalCore>\n\t\t\t\t\t\t\n",
+    "inputs": [
+      "@CounterLocation",
+      "@ExtendedLocationCode",
+      "@LocationCode",
+      "ns0:VehRentalCore/@DistUnitName",
+      "ns0:VehRentalCore/@MultiIslandRentalDays",
+      "ns0:VehRentalCore/@OneWayIndicator",
+      "ns0:VehRentalCore/@PickUpDateTime",
+      "ns0:VehRentalCore/@Quantity",
+      "ns0:VehRentalCore/@ReturnDateTime",
+      "ns0:VehRentalCore/@StartChargesDateTime",
+      "ns0:VehRentalCore/@StopChargesDateTime",
+      "ns0:VehRentalCore/ns0:PickUpLocation",
+      "ns0:VehRentalCore/ns0:ReturnLocation"
+    ],
+    "outputs": [
+      "PickUpLocation",
+      "ReturnLocation",
+      "VehRentalCore"
+    ],
+    "calls": [],
+    "remarks": "Organizes vehicle rental core details by processing pickup and return dates/times, charge period start/stop times, one-way rental indicators, multi-island rental days, quantities, and distance units, and then handles location details (with checks for location and extended location codes) for both pickup and return locations."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehRentalCore/PickUpLocation",
+    "xml_output_node_tag": "PickUpLocation",
+    "spec_type": "attribute",
+    "field_name": "CodeContext",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@CodeContext\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var36_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CodeContext\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@CodeContext"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @CodeContext"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehRentalCore/PickUpLocation",
+    "xml_output_node_tag": "PickUpLocation",
+    "spec_type": "element",
+    "field_name": "PickUpLocation",
+    "xslt_snippet": "<PickUpLocation xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t<xsl:if test=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CodeContext\" namespace=\"\">IATA</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var24_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"LocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@ExtendedLocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var25_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"ExtendedLocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CounterLocation\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var26_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CounterLocation\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</PickUpLocation>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@CounterLocation",
+      "@ExtendedLocationCode",
+      "@LocationCode"
+    ],
+    "outputs": [
+      "PickUpLocation"
+    ],
+    "calls": [],
+    "remarks": "Checks for a primary location code and then iterates through extended location codes and counter locations to handle various location details."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehRentalCore/ReturnLocation",
+    "xml_output_node_tag": "ReturnLocation",
+    "spec_type": "attribute",
+    "field_name": "CodeContext",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@CodeContext\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var36_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CodeContext\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@CodeContext"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @CodeContext"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehRentalCore/ReturnLocation",
+    "xml_output_node_tag": "ReturnLocation",
+    "spec_type": "element",
+    "field_name": "ReturnLocation",
+    "xslt_snippet": "<ReturnLocation xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t<xsl:if test=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CodeContext\" namespace=\"\">IATA</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var28_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"LocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@ExtendedLocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var29_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"ExtendedLocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CounterLocation\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var30_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CounterLocation\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</ReturnLocation>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@CounterLocation",
+      "@ExtendedLocationCode",
+      "@LocationCode"
+    ],
+    "outputs": [
+      "ReturnLocation"
+    ],
+    "calls": [],
+    "remarks": "Checks for a primary location code and then iterates through extended location codes and counter locations to handle various location details."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Vendor",
+    "xml_output_node_tag": "Vendor",
+    "spec_type": "attribute",
+    "field_name": "CompanyShortName",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@CompanyShortName\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var33_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CompanyShortName\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:when test=\"contains(., ' ')\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"substring-before(., ' ')\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:when>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@CompanyShortName"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Processes the company\u2019s short name while checking if it contains a space, and uses that condition to decide the processing branch."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Vendor",
+    "xml_output_node_tag": "Vendor",
+    "spec_type": "element",
+    "field_name": "Vendor",
+    "xslt_snippet": "<Vendor xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CompanyShortName\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var33_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CompanyShortName\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:when test=\"contains(., ' ')\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"substring-before(., ' ')\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:when>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@TravelSector\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var34_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"TravelSector\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Code\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var35_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Code\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CodeContext\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var36_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CodeContext\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CountryCode\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var37_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CountryCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Division\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var38_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Division\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Department\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var39_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Department\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</Vendor>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Code",
+      "@CodeContext",
+      "@CompanyShortName",
+      "@CountryCode",
+      "@Department",
+      "@Division",
+      "@TravelSector"
+    ],
+    "outputs": [
+      "Vendor"
+    ],
+    "calls": [],
+    "remarks": "Processes not only the company\u2019s short name (with a check for spaces) but also iterates through additional company and organizational details like travel sector, codes, country, division, and department."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore",
+    "xml_output_node_tag": "VehAvailCore",
+    "spec_type": "attribute",
+    "field_name": "Status",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@Status\">\n\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var10_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Status\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Status"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @Status"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/Vehicle",
+    "xml_output_node_tag": "Vehicle",
+    "spec_type": "attribute",
+    "field_name": "CodeContext",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@CodeContext\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var36_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CodeContext\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@CodeContext"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @CodeContext"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/Vehicle/VehType",
+    "xml_output_node_tag": "VehType",
+    "spec_type": "attribute",
+    "field_name": "VehicleCategory",
+    "xslt_snippet": "<xsl:attribute xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" name=\"VehicleCategory\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@VehicleCategory\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@VehicleCategory"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Outputs text of @VehicleCategory"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/Vehicle/VehType",
+    "xml_output_node_tag": "VehType",
+    "spec_type": "element",
+    "field_name": "VehType",
+    "xslt_snippet": "<VehType xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"VehicleCategory\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@VehicleCategory\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@DoorCount\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var61_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"DoorCount\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</VehType>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@DoorCount",
+      "@VehicleCategory"
+    ],
+    "outputs": [
+      "VehType"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of @VehicleCategory, Iterate over @DoorCount"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/Vehicle/VehClass",
+    "xml_output_node_tag": "VehClass",
+    "spec_type": "attribute",
+    "field_name": "Size",
+    "xslt_snippet": "<xsl:attribute xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" name=\"Size\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@Size\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Size"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Outputs text of @Size"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/Vehicle/VehClass",
+    "xml_output_node_tag": "VehClass",
+    "spec_type": "element",
+    "field_name": "VehClass",
+    "xslt_snippet": "<VehClass xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Size\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@Size\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</VehClass>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Size"
+    ],
+    "outputs": [
+      "VehClass"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of @Size"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/Vehicle/VehMakeModel",
+    "xml_output_node_tag": "VehMakeModel",
+    "spec_type": "attribute",
+    "field_name": "Name",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@Name\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var130_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Name\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Name"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @Name"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/Vehicle/VehMakeModel",
+    "xml_output_node_tag": "VehMakeModel",
+    "spec_type": "element",
+    "field_name": "VehMakeModel",
+    "xslt_snippet": "<VehMakeModel xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Name\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@Name\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Code\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var64_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Code\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@ModelYear\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var65_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"ModelYear\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</VehMakeModel>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Code",
+      "@ModelYear",
+      "@Name"
+    ],
+    "outputs": [
+      "VehMakeModel"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of @Name, Iterate over @Code, Iterate over @ModelYear"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/Vehicle/PictureURL",
+    "xml_output_node_tag": "PictureURL",
+    "spec_type": "element",
+    "field_name": "PictureURL",
+    "xslt_snippet": "<PictureURL xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</PictureURL>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "PictureURL"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/RentalRate/RateDistance",
+    "xml_output_node_tag": "RateDistance",
+    "spec_type": "attribute",
+    "field_name": "Unlimited",
+    "xslt_snippet": "<xsl:attribute xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" name=\"Unlimited\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(@Unlimited)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Unlimited"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Cleans up the 'Unlimited' attribute value by converting it to a string, trimming spaces, removing any stray characters like spaces, zeros, or the word \"false,\" and then converting that result into a true/false decision."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/RentalRate/RateDistance",
+    "xml_output_node_tag": "RateDistance",
+    "spec_type": "element",
+    "field_name": "RateDistance",
+    "xslt_snippet": "<RateDistance xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Unlimited\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(@Unlimited)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Quantity\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var77_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Quantity\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@DistUnitName\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var78_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"DistUnitName\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@VehiclePeriodUnitName\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var79_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"VehiclePeriodUnitName\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</RateDistance>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@DistUnitName",
+      "@Quantity",
+      "@Unlimited",
+      "@VehiclePeriodUnitName"
+    ],
+    "outputs": [
+      "RateDistance"
+    ],
+    "calls": [],
+    "remarks": "Does the same cleanup and boolean conversion for the 'Unlimited' attribute, then processes related attributes for quantity, distribution unit, and vehicle period unit."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/RentalRate/VehicleCharges/VehicleCharge",
+    "xml_output_node_tag": "VehicleCharge",
+    "spec_type": "attribute",
+    "field_name": "Purpose",
+    "xslt_snippet": "<xsl:attribute xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" name=\"Purpose\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@Purpose\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Purpose"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Outputs text of @Purpose"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/RentalRate/VehicleCharges/VehicleCharge/Calculation",
+    "xml_output_node_tag": "Calculation",
+    "spec_type": "attribute",
+    "field_name": "UnitCharge",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"$input/@UnitCharge\">\n\t\t\t<xsl:variable name=\"var1_current\" select=\".\"/>\n\t\t\t<xsl:attribute name=\"UnitCharge\">\n\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t</xsl:attribute>\n\t\t</xsl:for-each>\n\t\t\n",
+    "inputs": [
+      "$input/@UnitCharge"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over $input/@UnitCharge"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/RentalRate/VehicleCharges/VehicleCharge/Calculation",
+    "xml_output_node_tag": "Calculation",
+    "spec_type": "element",
+    "field_name": "Calculation",
+    "xslt_snippet": "<Calculation xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@UnitCharge\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var102_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"UnitCharge\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@UnitName\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var103_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"UnitName\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Quantity\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var104_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Quantity\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Percentage\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var105_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Percentage\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Applicability\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var106_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Applicability\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@MaxQuantity\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var107_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"MaxQuantity\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Total\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var108_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Total\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</Calculation>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Applicability",
+      "@MaxQuantity",
+      "@Percentage",
+      "@Quantity",
+      "@Total",
+      "@UnitCharge",
+      "@UnitName"
+    ],
+    "outputs": [
+      "Calculation"
+    ],
+    "calls": [],
+    "remarks": "Iterates over several pricing and quantity-related attributes (such as unit charge, unit name, quantity, percentage, applicability, maximum quantity, and total) to process charge details."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/RentalRate/RateQualifier",
+    "xml_output_node_tag": "RateQualifier",
+    "spec_type": "attribute",
+    "field_name": "RateCategory",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"ns0:VehAvails/@RateCategory\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var40_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"RateCategory\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "ns0:VehAvails/@RateCategory"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over ns0:VehAvails/@RateCategory"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/TotalCharge",
+    "xml_output_node_tag": "TotalCharge",
+    "spec_type": "attribute",
+    "field_name": "RateTotalAmount",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@RateTotalAmount\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var156_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"RateTotalAmount\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@RateTotalAmount"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @RateTotalAmount"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailCore/TotalCharge",
+    "xml_output_node_tag": "TotalCharge",
+    "spec_type": "element",
+    "field_name": "TotalCharge",
+    "xslt_snippet": "<TotalCharge xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@RateTotalAmount\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var156_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"RateTotalAmount\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@EstimatedTotalAmount\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var157_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"EstimatedTotalAmount\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CurrencyCode\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var158_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CurrencyCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@DecimalPlaces\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var159_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"DecimalPlaces\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@RateConvertInd\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var160_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"RateConvertInd\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</TotalCharge>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@CurrencyCode",
+      "@DecimalPlaces",
+      "@EstimatedTotalAmount",
+      "@RateConvertInd",
+      "@RateTotalAmount"
+    ],
+    "outputs": [
+      "TotalCharge"
+    ],
+    "calls": [],
+    "remarks": "Processes monetary details by iterating over rate amounts, estimated totals, currency code, and decimal places, while also cleaning and converting related values to a standard format."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailInfo/PaymentRules",
+    "xml_output_node_tag": "PaymentRules",
+    "spec_type": "element",
+    "field_name": "PaymentRules",
+    "xslt_snippet": "<PaymentRules xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:PaymentRule\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var279_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<PaymentRule>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"RuleType\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@RuleType\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CurrencyCode\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var280_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CurrencyCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@DecimalPlaces\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var281_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"DecimalPlaces\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Amount\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var282_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Amount\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Percent\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var283_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Percent\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@DateTime\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var284_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"DateTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@PaymentType\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var285_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"PaymentType\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@RateConvertedInd\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var286_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"RateConvertedInd\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@AbsoluteDeadline\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var287_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"AbsoluteDeadline\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@OffsetTimeUnit\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var288_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"OffsetTimeUnit\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@OffsetUnitMultiplier\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var289_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"OffsetUnitMultiplier\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@OffsetDropTime\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var290_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"OffsetDropTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</PaymentRule>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</PaymentRules>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@AbsoluteDeadline",
+      "@Amount",
+      "@CurrencyCode",
+      "@DateTime",
+      "@DecimalPlaces",
+      "@OffsetDropTime",
+      "@OffsetTimeUnit",
+      "@OffsetUnitMultiplier",
+      "@PaymentType",
+      "@Percent",
+      "@RateConvertedInd",
+      "@RuleType",
+      "ns0:PaymentRule"
+    ],
+    "outputs": [
+      "PaymentRule",
+      "PaymentRules"
+    ],
+    "calls": [],
+    "remarks": "Manages payment rule information by processing various attributes including rule type, currency, amounts, percentages, dates, and deadlines, with additional cleaning to ensure proper boolean and string formats."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailInfo/PaymentRules/PaymentRule",
+    "xml_output_node_tag": "PaymentRule",
+    "spec_type": "attribute",
+    "field_name": "RuleType",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"$input/@RuleType\">\n\t\t\t<xsl:variable name=\"var4_current\" select=\".\"/>\n\t\t\t<xsl:attribute name=\"RuleType\">\n\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t</xsl:attribute>\n\t\t</xsl:for-each>\n\t\t\n",
+    "inputs": [
+      "$input/@RuleType"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over $input/@RuleType"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/VehAvails/VehAvail/VehAvailInfo/PaymentRules/PaymentRule",
+    "xml_output_node_tag": "PaymentRule",
+    "spec_type": "element",
+    "field_name": "PaymentRule",
+    "xslt_snippet": "<PaymentRule xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"RuleType\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@RuleType\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@CurrencyCode\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var280_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"CurrencyCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@DecimalPlaces\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var281_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"DecimalPlaces\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Amount\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var282_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Amount\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Percent\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var283_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Percent\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@DateTime\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var284_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"DateTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@PaymentType\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var285_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"PaymentType\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@RateConvertedInd\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var286_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"RateConvertedInd\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@AbsoluteDeadline\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var287_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"AbsoluteDeadline\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@OffsetTimeUnit\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var288_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"OffsetTimeUnit\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@OffsetUnitMultiplier\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var289_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"OffsetUnitMultiplier\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@OffsetDropTime\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var290_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"OffsetDropTime\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</PaymentRule>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@AbsoluteDeadline",
+      "@Amount",
+      "@CurrencyCode",
+      "@DateTime",
+      "@DecimalPlaces",
+      "@OffsetDropTime",
+      "@OffsetTimeUnit",
+      "@OffsetUnitMultiplier",
+      "@PaymentType",
+      "@Percent",
+      "@RateConvertedInd",
+      "@RuleType"
+    ],
+    "outputs": [
+      "PaymentRule"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of @RuleType, Iterate over @CurrencyCode, Iterate over @DecimalPlaces, Iterate over @Amount, Iterate over @Percent, Iterate over @DateTime, Iterate over @PaymentType, Iterate over @RateConvertedInd, Call boolean on translate(normalize-space(string(.)), ' 0false', ''), Call translate on normalize-space(string(.)), ' 0false', '', Call normalize-space on string(.), Call string on ., Iterate over @AbsoluteDeadline, Iterate over @OffsetTimeUnit, Iterate over @OffsetUnitMultiplier, Iterate over @OffsetDropTime"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails",
+    "xml_output_node_tag": "LocationDetails",
+    "spec_type": "attribute",
+    "field_name": "AtAirport",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@AtAirport\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var326_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"AtAirport\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@AtAirport"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Processes the 'AtAirport' attribute by cleaning its value and converting it to a true/false decision for determining if an item is located at an airport."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Address",
+    "xml_output_node_tag": "Address",
+    "spec_type": "attribute",
+    "field_name": "FormattedInd",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@FormattedInd\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var333_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"FormattedInd\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@FormattedInd"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Cleans and converts the 'FormattedInd' attribute into a clear true/false value to indicate a formatting condition."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Address",
+    "xml_output_node_tag": "Address",
+    "spec_type": "element",
+    "field_name": "Address",
+    "xslt_snippet": "<Address xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"@node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</Address>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "Address"
+    ],
+    "calls": [],
+    "remarks": "Simply copies selected XML nodes from the source document to the output without additional processing."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Address/StreetNmbr",
+    "xml_output_node_tag": "StreetNmbr",
+    "spec_type": "element",
+    "field_name": "StreetNmbr",
+    "xslt_snippet": "<StreetNmbr xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"@node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</StreetNmbr>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "StreetNmbr"
+    ],
+    "calls": [],
+    "remarks": "Simply copies selected XML nodes from the source document to the output without additional processing."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Address/AddressLine",
+    "xml_output_node_tag": "AddressLine",
+    "spec_type": "element",
+    "field_name": "AddressLine",
+    "xslt_snippet": "<AddressLine xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</AddressLine>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "AddressLine"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Address/CityName",
+    "xml_output_node_tag": "CityName",
+    "spec_type": "element",
+    "field_name": "CityName",
+    "xslt_snippet": "<CityName xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</CityName>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "CityName"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Address/PostalCode",
+    "xml_output_node_tag": "PostalCode",
+    "spec_type": "element",
+    "field_name": "PostalCode",
+    "xslt_snippet": "<PostalCode xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</PostalCode>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "PostalCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Address/CountryName",
+    "xml_output_node_tag": "CountryName",
+    "spec_type": "attribute",
+    "field_name": "Code",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@Code\">\n\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var8_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Code\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Code"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @Code"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Address/CountryName",
+    "xml_output_node_tag": "CountryName",
+    "spec_type": "element",
+    "field_name": "CountryName",
+    "xslt_snippet": "<CountryName xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Code\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var352_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Code\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</CountryName>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Code"
+    ],
+    "outputs": [
+      "CountryName"
+    ],
+    "calls": [],
+    "remarks": "Iterate over @Code"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Telephone",
+    "xml_output_node_tag": "Telephone",
+    "spec_type": "attribute",
+    "field_name": "PhoneNumber",
+    "xslt_snippet": "<xsl:attribute xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" name=\"PhoneNumber\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"@PhoneNumber\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@PhoneNumber"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Outputs text of @PhoneNumber"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/Telephone",
+    "xml_output_node_tag": "Telephone",
+    "spec_type": "element",
+    "field_name": "Telephone",
+    "xslt_snippet": "<Telephone xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"@node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</Telephone>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "Telephone"
+    ],
+    "calls": [],
+    "remarks": "Simply copies selected XML nodes from the source document to the output without additional processing."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/VehRentLocInfos",
+    "xml_output_node_tag": "VehRentLocInfos",
+    "spec_type": "element",
+    "field_name": "VehRentLocInfos",
+    "xslt_snippet": "<VehRentLocInfos xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"@node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</VehRentLocInfos>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "VehRentLocInfos"
+    ],
+    "calls": [],
+    "remarks": "Simply copies selected XML nodes from the source document to the output without additional processing."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/VehRentLocInfos/VehRentLocInfo",
+    "xml_output_node_tag": "VehRentLocInfo",
+    "spec_type": "attribute",
+    "field_name": "Type",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@Type\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var336_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Type\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Type"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @Type"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/VehRentLocInfos/VehRentLocInfo",
+    "xml_output_node_tag": "VehRentLocInfo",
+    "spec_type": "element",
+    "field_name": "VehRentLocInfo",
+    "xslt_snippet": "",
+    "inputs": [],
+    "outputs": [],
+    "calls": [],
+    "remarks": "Fallback copy for <VehRentLocInfo>"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/VehRentLocInfos/VehRentLocInfo/SubSection",
+    "xml_output_node_tag": "SubSection",
+    "spec_type": "element",
+    "field_name": "SubSection",
+    "xslt_snippet": "",
+    "inputs": [],
+    "outputs": [],
+    "calls": [],
+    "remarks": "Fallback copy for <SubSection>"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/VehRentLocInfos/VehRentLocInfo/SubSection/Paragraph",
+    "xml_output_node_tag": "Paragraph",
+    "spec_type": "element",
+    "field_name": "Paragraph",
+    "xslt_snippet": "",
+    "inputs": [],
+    "outputs": [],
+    "calls": [],
+    "remarks": "Fallback copy for <Paragraph>"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/VehRentLocInfos/VehRentLocInfo/SubSection/Paragraph/Text",
+    "xml_output_node_tag": "Text",
+    "spec_type": "element",
+    "field_name": "Text",
+    "xslt_snippet": "",
+    "inputs": [],
+    "outputs": [],
+    "calls": [],
+    "remarks": "Fallback copy for <Text>"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/CounterLocation",
+    "xml_output_node_tag": "CounterLocation",
+    "spec_type": "attribute",
+    "field_name": "Location",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@LocationCode\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var24_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"LocationCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@LocationCode"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Iterate over @LocationCode"
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/CounterLocation",
+    "xml_output_node_tag": "CounterLocation",
+    "spec_type": "element",
+    "field_name": "CounterLocation",
+    "xslt_snippet": "<CounterLocation xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"@node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:copy-of select=\"node()\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</CounterLocation>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "CounterLocation"
+    ],
+    "calls": [],
+    "remarks": "Simply copies selected XML nodes from the source document to the output without additional processing."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/OperationSchedules/OperationSchedule/OperationTimes",
+    "xml_output_node_tag": "OperationTimes",
+    "spec_type": "element",
+    "field_name": "OperationTimes",
+    "xslt_snippet": "<OperationTimes xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"ns0:OperationTime\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var380_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<OperationTime>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Mon\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var381_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Mon\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Tue\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var382_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Tue\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Weds\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var383_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Weds\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Thur\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var384_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Thur\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Fri\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var385_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Fri\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Sat\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var386_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Sat\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Sun\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var387_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Sun\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Start\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var388_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Start\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Duration\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var389_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Duration\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@End\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var390_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"End\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@AdditionalOperationInfoCode\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var391_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"AdditionalOperationInfoCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Frequency\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var392_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Frequency\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Text\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var393_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Text\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</OperationTime>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</OperationTimes>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@AdditionalOperationInfoCode",
+      "@Duration",
+      "@End",
+      "@Frequency",
+      "@Fri",
+      "@Mon",
+      "@Sat",
+      "@Start",
+      "@Sun",
+      "@Text",
+      "@Thur",
+      "@Tue",
+      "@Weds",
+      "ns0:OperationTime"
+    ],
+    "outputs": [
+      "OperationTime",
+      "OperationTimes"
+    ],
+    "calls": [],
+    "remarks": "Processes an operation\u2019s timing details by iterating over the OperationTime element\u2019s day-specific values, start times, durations, end times, and additional operation info like frequency and descriptive text."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/OperationSchedules/OperationSchedule/OperationTimes/OperationTime",
+    "xml_output_node_tag": "OperationTime",
+    "spec_type": "attribute",
+    "field_name": "Sun",
+    "xslt_snippet": "<xsl:for-each xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" select=\"@Sun\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var387_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Sun\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@Sun"
+    ],
+    "outputs": [],
+    "summa": [],
+    "calls": [],
+    "remarks": "Specifically handles the 'Sun' attribute by cleaning its text and converting it into a boolean value for use in scheduling logic."
+  },
+  {
+    "xml_output_node_path": "/OTA_VehAvailRateRS/VehAvailRSCore/VehVendorAvails/VehVendorAvail/Info/LocationDetails/AdditionalInfo/OperationSchedules/OperationSchedule/OperationTimes/OperationTime",
+    "xml_output_node_tag": "OperationTime",
+    "spec_type": "element",
+    "field_name": "OperationTime",
+    "xslt_snippet": "<OperationTime xmlns=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:tbf=\"http://www.altova.com/MapForce/UDF/tbf\" xmlns:ns0=\"http://www.opentravel.org/OTA/2003/05\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Mon\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var381_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Mon\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Tue\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var382_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Tue\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Weds\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var383_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Weds\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Thur\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var384_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Thur\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Fri\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var385_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Fri\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Sat\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var386_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Sat\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Sun\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var387_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Sun\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"boolean(translate(normalize-space(string(.)), ' 0false', ''))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Start\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var388_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Start\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Duration\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var389_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Duration\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@End\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var390_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"End\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@AdditionalOperationInfoCode\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var391_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"AdditionalOperationInfoCode\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Frequency\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var392_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Frequency\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"@Text\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var393_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:attribute name=\"Text\" namespace=\"\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:attribute>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</OperationTime>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "@AdditionalOperationInfoCode",
+      "@Duration",
+      "@End",
+      "@Frequency",
+      "@Fri",
+      "@Mon",
+      "@Sat",
+      "@Start",
+      "@Sun",
+      "@Text",
+      "@Thur",
+      "@Tue",
+      "@Weds"
+    ],
+    "outputs": [
+      "OperationTime"
+    ],
+    "calls": [],
+    "remarks": "Handles scheduling details by iterating over each day of the week and related time attributes (start, duration, end) plus extra operation info, frequency, and descriptive text."
+  }
+]

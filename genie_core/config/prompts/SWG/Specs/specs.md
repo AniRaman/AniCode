@@ -1,0 +1,1 @@
+1. parameterize the product_id and external_id.

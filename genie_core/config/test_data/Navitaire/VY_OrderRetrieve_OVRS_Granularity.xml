@@ -1,0 +1,1121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<IATA_OrderViewRS xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage file:///Z:/ALTEA/grammar213/NDCX/VY/xsd/IATA_OrderViewRS.xsd">
+	<Response>
+		<cns:DataLists>
+			<cns:BaggageAllowanceList>
+				<BaggageAllowance xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<ApplicablePartyText>Traveler</ApplicablePartyText>
+					<BaggageAllowanceID>1BAG-Allowance</BaggageAllowanceID>
+					<PieceAllowance>
+						<TotalQty>1</TotalQty>
+					</PieceAllowance>
+					<TypeCode>CarryOn</TypeCode>
+					<WeightAllowance>
+						<MaximumWeightMeasure>17</MaximumWeightMeasure>
+						<WeightUnitOfMeasurement>LBR</WeightUnitOfMeasurement>
+					</WeightAllowance>
+				</BaggageAllowance>
+			</cns:BaggageAllowanceList>
+			<cns:ContactInfoList>
+				<cns:ContactInfo>
+					<cns:ContactInfoID>con-1</cns:ContactInfoID>
+					<cns:EmailAddress>
+						<cns:EmailAddressText>username@domain.com</cns:EmailAddressText>
+					</cns:EmailAddress>
+					<cns:Phone>
+						<cns:ContactTypeText>Home</cns:ContactTypeText>
+						<cns:PhoneNumber>1111113300</cns:PhoneNumber>
+					</cns:Phone>
+					<cns:PostalAddress>
+						<cns:CityName>SLC</cns:CityName>
+						<cns:CountryCode>US</cns:CountryCode>
+						<cns:CountrySubDivisionName>NYC</cns:CountrySubDivisionName>
+						<cns:PostalCode>50455</cns:PostalCode>
+						<cns:StreetText>143 Street</cns:StreetText>
+					</cns:PostalAddress>
+				</cns:ContactInfo>
+			</cns:ContactInfoList>
+			<cns:DatedMarketingSegmentList>
+				<DatedMarketingSegment xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<Arrival>
+						<AircraftScheduledDateTime>2022-05-25T01:00:00</AircraftScheduledDateTime>
+						<IATA_LocationCode>JFK</IATA_LocationCode>
+					</Arrival>
+					<CarrierDesigCode>VY</CarrierDesigCode>
+					<DatedMarketingSegmentId>Mkt-seg0354431297</DatedMarketingSegmentId>
+					<DatedOperatingSegmentRefId>Opr-seg0354431297</DatedOperatingSegmentRefId>
+					<Dep>
+						<AircraftScheduledDateTime>2022-05-25T00:15:00</AircraftScheduledDateTime>
+						<IATA_LocationCode>SLC</IATA_LocationCode>
+					</Dep>
+					<MarketingCarrierFlightNumberText>1029</MarketingCarrierFlightNumberText>
+				</DatedMarketingSegment>
+				<DatedMarketingSegment xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<Arrival>
+						<AircraftScheduledDateTime>2022-05-27T20:00:00</AircraftScheduledDateTime>
+						<IATA_LocationCode>SLC</IATA_LocationCode>
+					</Arrival>
+					<CarrierDesigCode>MK</CarrierDesigCode>
+					<DatedMarketingSegmentId>Mkt-seg1577555427</DatedMarketingSegmentId>
+					<DatedOperatingSegmentRefId>Opr-seg1577555427</DatedOperatingSegmentRefId>
+					<Dep>
+						<AircraftScheduledDateTime>2022-05-27T14:00:00</AircraftScheduledDateTime>
+						<IATA_LocationCode>JFK</IATA_LocationCode>
+					</Dep>
+					<MarketingCarrierFlightNumberText>729</MarketingCarrierFlightNumberText>
+				</DatedMarketingSegment>
+			</cns:DatedMarketingSegmentList>
+			<cns:DatedOperatingLegList>
+				<DatedOperatingLeg xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<Arrival>
+						<AircraftScheduledDateTime>2022-05-25T01:00:00</AircraftScheduledDateTime>
+						<IATA_LocationCode>JFK</IATA_LocationCode>
+					</Arrival>
+					<CarrierAircraftType>
+						<CarrierAircraftTypeCode>NDC-E02</CarrierAircraftTypeCode>
+					</CarrierAircraftType>
+					<DatedOperatingLegID>seg0354431297-leg0</DatedOperatingLegID>
+					<Dep>
+						<AircraftScheduledDateTime>2022-05-25T00:15:00</AircraftScheduledDateTime>
+						<IATA_LocationCode>SLC</IATA_LocationCode>
+					</Dep>
+				</DatedOperatingLeg>
+				<DatedOperatingLeg xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<Arrival>
+						<AircraftScheduledDateTime>2022-05-27T20:00:00</AircraftScheduledDateTime>
+						<IATA_LocationCode>SLC</IATA_LocationCode>
+					</Arrival>
+					<CarrierAircraftType>
+						<CarrierAircraftTypeCode>320-Y</CarrierAircraftTypeCode>
+					</CarrierAircraftType>
+					<DatedOperatingLegID>seg1577555427-leg0</DatedOperatingLegID>
+					<Dep>
+						<AircraftScheduledDateTime>2022-05-27T14:00:00</AircraftScheduledDateTime>
+						<IATA_LocationCode>JFK</IATA_LocationCode>
+					</Dep>
+				</DatedOperatingLeg>
+			</cns:DatedOperatingLegList>
+			<cns:DatedOperatingSegmentList>
+				<DatedOperatingSegment xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<CarrierDesigCode>VY</CarrierDesigCode>
+					<DatedOperatingLegRefID>seg0354431297-leg0</DatedOperatingLegRefID>
+					<DatedOperatingSegmentId>Opr-seg0354431297</DatedOperatingSegmentId>
+					<Duration>PT1H45M</Duration>
+					<OperatingCarrierFlightNumberText>1029</OperatingCarrierFlightNumberText>
+				</DatedOperatingSegment>
+				<DatedOperatingSegment xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<CarrierDesigCode>MK</CarrierDesigCode>
+					<DatedOperatingLegRefID>seg1577555427-leg0</DatedOperatingLegRefID>
+					<DatedOperatingSegmentId>Opr-seg1577555427</DatedOperatingSegmentId>
+					<Duration>PT8H</Duration>
+					<OperatingCarrierFlightNumberText>729</OperatingCarrierFlightNumberText>
+				</DatedOperatingSegment>
+			</cns:DatedOperatingSegmentList>
+			<cns:PaxJourneyList>
+				<PaxJourney xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<PaxJourneyID>fl0354431297</PaxJourneyID>
+					<PaxSegmentRefID>seg0354431297</PaxSegmentRefID>
+				</PaxJourney>
+				<PaxJourney xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<PaxJourneyID>fl1577555427</PaxJourneyID>
+					<PaxSegmentRefID>seg1577555427</PaxSegmentRefID>
+				</PaxJourney>
+			</cns:PaxJourneyList>
+			<cns:PaxList>
+				<cns:Pax>
+					<cns:CitizenshipCountryCode>US</cns:CitizenshipCountryCode>
+					<cns:ContactInfoRefID>con-1</cns:ContactInfoRefID>
+					<cns:IdentityDoc>
+						<cns:Birthdate>1992-08-12</cns:Birthdate>
+						<cns:CitizenshipCountryCode>US</cns:CitizenshipCountryCode>
+						<cns:ExpiryDate>2027-08-04</cns:ExpiryDate>
+						<cns:GenderCode>M</cns:GenderCode>
+						<cns:GivenName>JUAN</cns:GivenName>
+						<cns:IdentityDocID>DOC1</cns:IdentityDocID>
+						<cns:IdentityDocTypeCode>PT</cns:IdentityDocTypeCode>
+						<cns:IssueDate>2017-08-06</cns:IssueDate>
+						<cns:IssuingCountryCode>US</cns:IssuingCountryCode>
+						<cns:MiddleName>SANTOS</cns:MiddleName>
+						<cns:Surname>DELA CRUZ</cns:Surname>
+						<cns:TitleName>MR</cns:TitleName>
+					</cns:IdentityDoc>
+					<cns:Individual>
+						<cns:Birthdate>1992-08-12</cns:Birthdate>
+						<cns:GenderCode>M</cns:GenderCode>
+						<cns:GivenName>JUAN</cns:GivenName>
+						<cns:IndividualID>A632627</cns:IndividualID>
+						<cns:Surname>DELA CRUZ</cns:Surname>
+						<cns:TitleName>MR</cns:TitleName>
+					</cns:Individual>
+					<cns:PaxID>A632627</cns:PaxID>
+					<cns:PTC>ADT</cns:PTC>
+					<cns:Remark>
+						<cns:RemarkText>Pax1</cns:RemarkText>
+					</cns:Remark>
+					<cns:ResidenceCountryCode>US</cns:ResidenceCountryCode>
+				</cns:Pax>
+				<cns:Pax>
+					<cns:CitizenshipCountryCode>US</cns:CitizenshipCountryCode>
+					<cns:Individual>
+						<cns:Birthdate>1992-05-27</cns:Birthdate>
+						<cns:GenderCode>F</cns:GenderCode>
+						<cns:GivenName>JUANA</cns:GivenName>
+						<cns:IndividualID>A632628</cns:IndividualID>
+						<cns:Surname>DELA CRUZ</cns:Surname>
+						<cns:TitleName>MS</cns:TitleName>
+					</cns:Individual>
+					<cns:PaxID>A632628</cns:PaxID>
+					<cns:PTC>ADT</cns:PTC>
+					<cns:Remark>
+						<cns:RemarkText>Pax2</cns:RemarkText>
+					</cns:Remark>
+					<cns:ResidenceCountryCode>US</cns:ResidenceCountryCode>
+				</cns:Pax>
+				<cns:Pax>
+					<cns:CitizenshipCountryCode>US</cns:CitizenshipCountryCode>
+					<cns:Individual>
+						<cns:Birthdate>2015-08-07</cns:Birthdate>
+						<cns:GenderCode>M</cns:GenderCode>
+						<cns:GivenName>JUANCHO</cns:GivenName>
+						<cns:IndividualID>C632629</cns:IndividualID>
+						<cns:Surname>DELA CRUZ</cns:Surname>
+						<cns:TitleName>MR</cns:TitleName>
+					</cns:Individual>
+					<cns:PaxID>C632629</cns:PaxID>
+					<cns:PTC>CHD</cns:PTC>
+					<cns:Remark>
+						<cns:RemarkText>Pax3</cns:RemarkText>
+					</cns:Remark>
+					<cns:ResidenceCountryCode>US</cns:ResidenceCountryCode>
+				</cns:Pax>
+				<cns:Pax>
+					<cns:CitizenshipCountryCode>US</cns:CitizenshipCountryCode>
+					<cns:Individual>
+						<cns:Birthdate>2021-08-05</cns:Birthdate>
+						<cns:GenderCode>F</cns:GenderCode>
+						<cns:GivenName>JUANITA</cns:GivenName>
+						<cns:IndividualID>I632627</cns:IndividualID>
+						<cns:Surname>DELA CRUZ</cns:Surname>
+					</cns:Individual>
+					<cns:PaxID>I632627</cns:PaxID>
+					<cns:PaxRefID>A632627</cns:PaxRefID>
+					<cns:PTC>INF</cns:PTC>
+					<cns:Remark>
+						<cns:RemarkText>Pax4</cns:RemarkText>
+					</cns:Remark>
+					<cns:ResidenceCountryCode>US</cns:ResidenceCountryCode>
+				</cns:Pax>
+			</cns:PaxList>
+			<cns:PaxSegmentList>
+				<PaxSegment xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<DatedMarketingSegmentRefId>Mkt-seg0354431297</DatedMarketingSegmentRefId>
+					<PaxSegmentID>seg0354431297</PaxSegmentID>
+				</PaxSegment>
+				<PaxSegment xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<DatedMarketingSegmentRefId>Mkt-seg1577555427</DatedMarketingSegmentRefId>
+					<PaxSegmentID>seg1577555427</PaxSegmentID>
+				</PaxSegment>
+			</cns:PaxSegmentList>
+			<cns:PriceClassList>
+				<PriceClass xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<Code>EC</Code>
+					<Name>Economy Fare</Name>
+					<PriceClassID>pc01350301695</PriceClassID>
+				</PriceClass>
+			</cns:PriceClassList>
+			<cns:ServiceDefinitionList>
+				<ServiceDefinition xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					<Desc>
+						<DescText>One Bag SSR</DescText>
+					</Desc>
+					<Desc>
+						<DescText>CSR</DescText>
+						<MarkupStyleText>FreeOrChargeable</MarkupStyleText>
+						<URL>NDC-SampleImage</URL>
+					</Desc>
+					<Name>1BAG SSR</Name>
+					<OwnerCode>VY</OwnerCode>
+					<RFIC>C</RFIC>
+					<RFISC>0C3</RFISC>
+					<ServiceCode>1BAG</ServiceCode>
+					<ServiceDefinitionAssociation>
+						<BaggageAllowanceRef>
+							<BaggageAllowanceRefID>1BAG-Allowance</BaggageAllowanceRefID>
+						</BaggageAllowanceRef>
+					</ServiceDefinitionAssociation>
+					<ServiceDefinitionID>def0269435194</ServiceDefinitionID>
+				</ServiceDefinition>
+			</cns:ServiceDefinitionList>
+		</cns:DataLists>
+		<cns:Order>
+			<cns:OrderID>RCQKUX</cns:OrderID>
+			<cns:OrderItem>
+				<cns:FareDetail>
+					<cns:FareComponent>
+						<cns:CabinType>
+							<cns:CabinTypeCode>M</cns:CabinTypeCode>
+							<cns:CabinTypeName>Economy</cns:CabinTypeName>
+						</cns:CabinType>
+						<cns:FareBasisCode>BNDCFARE</cns:FareBasisCode>
+						<cns:FareRule>
+							<Remark xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<RemarkText>Fare Rules and Restrictions For example All Fares are Non-Refundable and subject to Change and Cancel fees.  This area is handeled by the customer in Utilities &gt; General Reference</RemarkText>
+							</Remark>
+						</cns:FareRule>
+						<cns:PaxSegmentRefID>seg0354431297</cns:PaxSegmentRefID>
+						<cns:PriceClassRefID>pc01350301695</cns:PriceClassRefID>
+						<cns:RBD>
+							<cns:RBD_Code>B</cns:RBD_Code>
+						</cns:RBD>
+					</cns:FareComponent>
+					<cns:PaxRefID>A632627</cns:PaxRefID>
+					<cns:Price>
+						<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.10</BaseAmount>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">4.50</Amount>
+							<DescText>Passenger facility charge</DescText>
+							<DesigText>PFC</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.00</Amount>
+							<DescText>Airport Fee</DescText>
+							<DesigText>AIR</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.60</Amount>
+							<DescText>Passenger Civil Security Fee</DescText>
+							<DesigText>AY</DesigText>
+						</Fee>
+						<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Tax>
+								<Amount CurCode="USD">0.69</Amount>
+								<DescText>General Sales Tax</DescText>
+								<TaxCode>GST</TaxCode>
+							</Tax>
+							<TotalTaxAmount CurCode="USD">0.69</TotalTaxAmount>
+						</TaxSummary>
+						<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">45.79</TotalAmount>
+					</cns:Price>
+				</cns:FareDetail>
+				<cns:OrderItemID>RCQKUX-SLCJFK-VY1029-ADT_1APAX_A632627</cns:OrderItemID>
+				<cns:OwnerCode>VY</cns:OwnerCode>
+				<cns:PaymentTimeLimitDateTime>2022-05-21T01:23:45.6789012Z</cns:PaymentTimeLimitDateTime>
+				<cns:Price>
+					<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.10</BaseAmount>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">4.50</Amount>
+						<DescText>Passenger facility charge</DescText>
+						<DesigText>PFC</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.00</Amount>
+						<DescText>Airport Fee</DescText>
+						<DesigText>AIR</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.60</Amount>
+						<DescText>Passenger Civil Security Fee</DescText>
+						<DesigText>AY</DesigText>
+					</Fee>
+					<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Tax>
+							<Amount CurCode="USD">0.69</Amount>
+							<DescText>General Sales Tax</DescText>
+							<TaxCode>GST</TaxCode>
+						</Tax>
+						<TotalTaxAmount CurCode="USD">0.69</TotalTaxAmount>
+					</TaxSummary>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">45.79</TotalAmount>
+				</cns:Price>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:PaxSegmentRef>
+							<cns:PaxSegmentRefID>seg0354431297</cns:PaxSegmentRefID>
+						</cns:PaxSegmentRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>A632627</cns:PaxRefID>
+					<cns:ServiceID>s-SLCJFK-VY1029-A632627-FLT</cns:ServiceID>
+					<cns:StatusCode>HK</cns:StatusCode>
+				</cns:Service>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:ServiceDefinitionRef>
+							<OrderFlightAssociations xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<PaxSegmentRef>
+									<PaxSegmentRefID>seg0354431297</PaxSegmentRefID>
+								</PaxSegmentRef>
+							</OrderFlightAssociations>
+							<ServiceDefinitionRefID xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">def0269435194</ServiceDefinitionRefID>
+						</cns:ServiceDefinitionRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>A632627</cns:PaxRefID>
+					<cns:ServiceID>s-SLCJFK-VY1029-A632627-1BAG</cns:ServiceID>
+					<cns:StatusCode>HK</cns:StatusCode>
+				</cns:Service>
+				<cns:StatusCode>Active</cns:StatusCode>
+			</cns:OrderItem>
+			<cns:OrderItem>
+				<cns:FareDetail>
+					<cns:FareComponent>
+						<cns:CabinType>
+							<cns:CabinTypeCode>M</cns:CabinTypeCode>
+							<cns:CabinTypeName>Economy</cns:CabinTypeName>
+						</cns:CabinType>
+						<cns:FareBasisCode>BNDCFARE</cns:FareBasisCode>
+						<cns:FareRule>
+							<Remark xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<RemarkText>Fare Rules and Restrictions For example All Fares are Non-Refundable and subject to Change and Cancel fees.  This area is handeled by the customer in Utilities &gt; General Reference</RemarkText>
+							</Remark>
+						</cns:FareRule>
+						<cns:PaxSegmentRefID>seg0354431297</cns:PaxSegmentRefID>
+						<cns:PriceClassRefID>pc01350301695</cns:PriceClassRefID>
+						<cns:RBD>
+							<cns:RBD_Code>B</cns:RBD_Code>
+						</cns:RBD>
+					</cns:FareComponent>
+					<cns:PaxRefID>A632628</cns:PaxRefID>
+					<cns:Price>
+						<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.10</BaseAmount>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">4.50</Amount>
+							<DescText>Passenger facility charge</DescText>
+							<DesigText>PFC</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.00</Amount>
+							<DescText>Airport Fee</DescText>
+							<DesigText>AIR</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.60</Amount>
+							<DescText>Passenger Civil Security Fee</DescText>
+							<DesigText>AY</DesigText>
+						</Fee>
+						<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Tax>
+								<Amount CurCode="USD">0.69</Amount>
+								<DescText>General Sales Tax</DescText>
+								<TaxCode>GST</TaxCode>
+							</Tax>
+							<TotalTaxAmount CurCode="USD">0.69</TotalTaxAmount>
+						</TaxSummary>
+						<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">45.79</TotalAmount>
+					</cns:Price>
+				</cns:FareDetail>
+				<cns:OrderItemID>RCQKUX-SLCJFK-VY1029-ADT_1APAX_A632628</cns:OrderItemID>
+				<cns:OwnerCode>VY</cns:OwnerCode>
+				<cns:PaymentTimeLimitDateTime>2022-05-21T01:23:45.6789012Z</cns:PaymentTimeLimitDateTime>
+				<cns:Price>
+					<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.10</BaseAmount>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">4.50</Amount>
+						<DescText>Passenger facility charge</DescText>
+						<DesigText>PFC</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.00</Amount>
+						<DescText>Airport Fee</DescText>
+						<DesigText>AIR</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.60</Amount>
+						<DescText>Passenger Civil Security Fee</DescText>
+						<DesigText>AY</DesigText>
+					</Fee>
+					<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Tax>
+							<Amount CurCode="USD">0.69</Amount>
+							<DescText>General Sales Tax</DescText>
+							<TaxCode>GST</TaxCode>
+						</Tax>
+						<TotalTaxAmount CurCode="USD">0.69</TotalTaxAmount>
+					</TaxSummary>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">45.79</TotalAmount>
+				</cns:Price>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:PaxSegmentRef>
+							<cns:PaxSegmentRefID>seg0354431297</cns:PaxSegmentRefID>
+						</cns:PaxSegmentRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>A632628</cns:PaxRefID>
+					<cns:ServiceID>s-SLCJFK-VY1029-A632628-FLT</cns:ServiceID>
+					<cns:StatusCode>HK</cns:StatusCode>
+				</cns:Service>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:ServiceDefinitionRef>
+							<OrderFlightAssociations xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<PaxSegmentRef>
+									<PaxSegmentRefID>seg0354431297</PaxSegmentRefID>
+								</PaxSegmentRef>
+							</OrderFlightAssociations>
+							<ServiceDefinitionRefID xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">def0269435194</ServiceDefinitionRefID>
+						</cns:ServiceDefinitionRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>A632628</cns:PaxRefID>
+					<cns:ServiceID>s-SLCJFK-VY1029-A632628-1BAG</cns:ServiceID>
+					<cns:StatusCode>HK</cns:StatusCode>
+				</cns:Service>
+				<cns:StatusCode>Active</cns:StatusCode>
+			</cns:OrderItem>
+			<cns:OrderItem>
+				<cns:FareDetail>
+					<cns:FareComponent>
+						<cns:CabinType>
+							<cns:CabinTypeCode>M</cns:CabinTypeCode>
+							<cns:CabinTypeName>Economy</cns:CabinTypeName>
+						</cns:CabinType>
+						<cns:FareBasisCode>BNDCFARE</cns:FareBasisCode>
+						<cns:FareRule>
+							<Remark xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<RemarkText>Fare Rules and Restrictions For example All Fares are Non-Refundable and subject to Change and Cancel fees.  This area is handeled by the customer in Utilities &gt; General Reference</RemarkText>
+							</Remark>
+						</cns:FareRule>
+						<cns:PaxSegmentRefID>seg0354431297</cns:PaxSegmentRefID>
+						<cns:PriceClassRefID>pc01350301695</cns:PriceClassRefID>
+						<cns:RBD>
+							<cns:RBD_Code>B</cns:RBD_Code>
+						</cns:RBD>
+					</cns:FareComponent>
+					<cns:PaxRefID>C632629</cns:PaxRefID>
+					<cns:Price>
+						<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.00</BaseAmount>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">4.50</Amount>
+							<DescText>Passenger facility charge</DescText>
+							<DesigText>PFC</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.00</Amount>
+							<DescText>Airport Fee</DescText>
+							<DesigText>AIR</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.60</Amount>
+							<DescText>Passenger Civil Security Fee</DescText>
+							<DesigText>AY</DesigText>
+						</Fee>
+						<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Tax>
+								<Amount CurCode="USD">0.69</Amount>
+								<DescText>General Sales Tax</DescText>
+								<TaxCode>GST</TaxCode>
+							</Tax>
+							<TotalTaxAmount CurCode="USD">0.69</TotalTaxAmount>
+						</TaxSummary>
+						<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">45.79</TotalAmount>
+					</cns:Price>
+				</cns:FareDetail>
+				<cns:OrderItemID>RCQKUX-SLCJFK-VY1029-CHD_1APAX_C632629</cns:OrderItemID>
+				<cns:OwnerCode>VY</cns:OwnerCode>
+				<cns:PaymentTimeLimitDateTime>2022-05-21T01:23:45.6789012Z</cns:PaymentTimeLimitDateTime>
+				<cns:Price>
+					<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.00</BaseAmount>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">4.50</Amount>
+						<DescText>Passenger facility charge</DescText>
+						<DesigText>PFC</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.00</Amount>
+						<DescText>Airport Fee</DescText>
+						<DesigText>AIR</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.60</Amount>
+						<DescText>Passenger Civil Security Fee</DescText>
+						<DesigText>AY</DesigText>
+					</Fee>
+					<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Tax>
+							<Amount CurCode="USD">0.69</Amount>
+							<DescText>General Sales Tax</DescText>
+							<TaxCode>GST</TaxCode>
+						</Tax>
+						<TotalTaxAmount CurCode="USD">0.69</TotalTaxAmount>
+					</TaxSummary>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">45.79</TotalAmount>
+				</cns:Price>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:PaxSegmentRef>
+							<cns:PaxSegmentRefID>seg0354431297</cns:PaxSegmentRefID>
+						</cns:PaxSegmentRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>C632629</cns:PaxRefID>
+					<cns:ServiceID>s-SLCJFK-VY1029-C632629-FLT</cns:ServiceID>
+					<cns:StatusCode>HK</cns:StatusCode>
+				</cns:Service>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:ServiceDefinitionRef>
+							<OrderFlightAssociations xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<PaxSegmentRef>
+									<PaxSegmentRefID>seg0354431297</PaxSegmentRefID>
+								</PaxSegmentRef>
+							</OrderFlightAssociations>
+							<ServiceDefinitionRefID xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">def0269435194</ServiceDefinitionRefID>
+						</cns:ServiceDefinitionRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>C632629</cns:PaxRefID>
+					<cns:ServiceID>s-SLCJFK-VY1029-C632629-1BAG</cns:ServiceID>
+					<cns:StatusCode>HK</cns:StatusCode>
+				</cns:Service>
+				<cns:StatusCode>Active</cns:StatusCode>
+			</cns:OrderItem>
+			<cns:OrderItem>
+				<cns:FareDetail>
+					<cns:FareComponent>
+						<cns:CabinType>
+							<cns:CabinTypeCode>M</cns:CabinTypeCode>
+							<cns:CabinTypeName>Economy</cns:CabinTypeName>
+						</cns:CabinType>
+						<cns:FareBasisCode>BNDCFARE</cns:FareBasisCode>
+						<cns:FareRule>
+							<Remark xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<RemarkText>Fare Rules and Restrictions For example All Fares are Non-Refundable and subject to Change and Cancel fees.  This area is handeled by the customer in Utilities &gt; General Reference</RemarkText>
+							</Remark>
+						</cns:FareRule>
+						<cns:PaxSegmentRefID>seg0354431297</cns:PaxSegmentRefID>
+						<cns:PriceClassRefID>pc01350301695</cns:PriceClassRefID>
+						<cns:RBD>
+							<cns:RBD_Code>B</cns:RBD_Code>
+						</cns:RBD>
+					</cns:FareComponent>
+					<cns:PaxRefID>I632627</cns:PaxRefID>
+					<cns:Price>
+						<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">0.00</BaseAmount>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">3.00</Amount>
+							<DescText>SSR Fee For Infant (INF)</DescText>
+							<DesigText>INF</DesigText>
+						</Fee>
+						<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Tax>
+								<Amount CurCode="USD">0.06</Amount>
+								<DescText>General Sales Tax</DescText>
+								<TaxCode>GST</TaxCode>
+							</Tax>
+							<TotalTaxAmount CurCode="USD">0.06</TotalTaxAmount>
+						</TaxSummary>
+						<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">3.06</TotalAmount>
+					</cns:Price>
+				</cns:FareDetail>
+				<cns:OrderItemID>RCQKUX-SLCJFK-VY1029-INF_1APAX_I632627</cns:OrderItemID>
+				<cns:OwnerCode>VY</cns:OwnerCode>
+				<cns:PaymentTimeLimitDateTime>2022-05-21T01:23:45.6789012Z</cns:PaymentTimeLimitDateTime>
+				<cns:Price>
+					<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">0.00</BaseAmount>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">3.00</Amount>
+						<DescText>SSR Fee For Infant (INF)</DescText>
+						<DesigText>INF</DesigText>
+					</Fee>
+					<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Tax>
+							<Amount CurCode="USD">0.06</Amount>
+							<DescText>General Sales Tax</DescText>
+							<TaxCode>GST</TaxCode>
+						</Tax>
+						<TotalTaxAmount CurCode="USD">0.06</TotalTaxAmount>
+					</TaxSummary>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">3.06</TotalAmount>
+				</cns:Price>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:PaxSegmentRef>
+							<cns:PaxSegmentRefID>seg0354431297</cns:PaxSegmentRefID>
+						</cns:PaxSegmentRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>I632627</cns:PaxRefID>
+					<cns:ServiceID>s-SLCJFK-VY1029-I632627-FLT</cns:ServiceID>
+					<cns:StatusCode>HK</cns:StatusCode>
+				</cns:Service>
+				<cns:StatusCode>Active</cns:StatusCode>
+			</cns:OrderItem>
+			<cns:OrderItem>
+				<cns:FareDetail>
+					<cns:FareComponent>
+						<cns:CabinType>
+							<cns:CabinTypeCode>M</cns:CabinTypeCode>
+							<cns:CabinTypeName>Economy</cns:CabinTypeName>
+						</cns:CabinType>
+						<cns:FareBasisCode>BNDCFARE</cns:FareBasisCode>
+						<cns:FareRule>
+							<Remark xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<RemarkText>Fare Rules and Restrictions For example All Fares are Non-Refundable and subject to Change and Cancel fees.  This area is handeled by the customer in Utilities &gt; General Reference</RemarkText>
+							</Remark>
+						</cns:FareRule>
+						<cns:PaxSegmentRefID>seg1577555427</cns:PaxSegmentRefID>
+						<cns:PriceClassRefID>pc01350301695</cns:PriceClassRefID>
+						<cns:RBD>
+							<cns:RBD_Code>B</cns:RBD_Code>
+						</cns:RBD>
+					</cns:FareComponent>
+					<cns:PaxRefID>A632627</cns:PaxRefID>
+					<cns:Price>
+						<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.00</BaseAmount>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">4.50</Amount>
+							<DescText>Passenger facility charge</DescText>
+							<DesigText>PFC</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.60</Amount>
+							<DescText>Passenger Civil Security Fee</DescText>
+							<DesigText>AY</DesigText>
+						</Fee>
+						<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">40.10</TotalAmount>
+					</cns:Price>
+				</cns:FareDetail>
+				<cns:OrderItemID>RCQKUX-JFKSLC-MK729-ADT_1APAX_A632627</cns:OrderItemID>
+				<cns:OwnerCode>MK</cns:OwnerCode>
+				<cns:PaymentTimeLimitDateTime>2022-05-21T01:23:45.6789012Z</cns:PaymentTimeLimitDateTime>
+				<cns:Price>
+					<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.00</BaseAmount>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">4.50</Amount>
+						<DescText>Passenger facility charge</DescText>
+						<DesigText>PFC</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.60</Amount>
+						<DescText>Passenger Civil Security Fee</DescText>
+						<DesigText>AY</DesigText>
+					</Fee>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">40.10</TotalAmount>
+				</cns:Price>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:PaxSegmentRef>
+							<cns:PaxSegmentRefID>seg1577555427</cns:PaxSegmentRefID>
+						</cns:PaxSegmentRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>A632627</cns:PaxRefID>
+					<cns:ServiceID>s-JFKSLC-MK729-A632627-FLT</cns:ServiceID>
+					<cns:StatusCode>HN</cns:StatusCode>
+				</cns:Service>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:ServiceDefinitionRef>
+							<OrderFlightAssociations xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<PaxSegmentRef>
+									<PaxSegmentRefID>seg1577555427</PaxSegmentRefID>
+								</PaxSegmentRef>
+							</OrderFlightAssociations>
+							<ServiceDefinitionRefID xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">def0269435194</ServiceDefinitionRefID>
+						</cns:ServiceDefinitionRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>A632627</cns:PaxRefID>
+					<cns:ServiceID>s-JFKSLC-MK729-A632627-1BAG</cns:ServiceID>
+					<cns:StatusCode>HN</cns:StatusCode>
+				</cns:Service>
+				<cns:StatusCode>Active</cns:StatusCode>
+			</cns:OrderItem>
+			<cns:OrderItem>
+				<cns:FareDetail>
+					<cns:FareComponent>
+						<cns:CabinType>
+							<cns:CabinTypeCode>M</cns:CabinTypeCode>
+							<cns:CabinTypeName>Economy</cns:CabinTypeName>
+						</cns:CabinType>
+						<cns:FareBasisCode>BNDCFARE</cns:FareBasisCode>
+						<cns:FareRule>
+							<Remark xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<RemarkText>Fare Rules and Restrictions For example All Fares are Non-Refundable and subject to Change and Cancel fees.  This area is handeled by the customer in Utilities &gt; General Reference</RemarkText>
+							</Remark>
+						</cns:FareRule>
+						<cns:PaxSegmentRefID>seg1577555427</cns:PaxSegmentRefID>
+						<cns:PriceClassRefID>pc01350301695</cns:PriceClassRefID>
+						<cns:RBD>
+							<cns:RBD_Code>B</cns:RBD_Code>
+						</cns:RBD>
+					</cns:FareComponent>
+					<cns:PaxRefID>A632628</cns:PaxRefID>
+					<cns:Price>
+						<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.00</BaseAmount>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">4.50</Amount>
+							<DescText>Passenger facility charge</DescText>
+							<DesigText>PFC</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.60</Amount>
+							<DescText>Passenger Civil Security Fee</DescText>
+							<DesigText>AY</DesigText>
+						</Fee>
+						<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">40.10</TotalAmount>
+					</cns:Price>
+				</cns:FareDetail>
+				<cns:OrderItemID>RCQKUX-JFKSLC-MK729-ADT_1APAX_A632628</cns:OrderItemID>
+				<cns:OwnerCode>MK</cns:OwnerCode>
+				<cns:PaymentTimeLimitDateTime>2022-05-21T01:23:45.6789012Z</cns:PaymentTimeLimitDateTime>
+				<cns:Price>
+					<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.00</BaseAmount>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">4.50</Amount>
+						<DescText>Passenger facility charge</DescText>
+						<DesigText>PFC</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.60</Amount>
+						<DescText>Passenger Civil Security Fee</DescText>
+						<DesigText>AY</DesigText>
+					</Fee>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">40.10</TotalAmount>
+				</cns:Price>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:PaxSegmentRef>
+							<cns:PaxSegmentRefID>seg1577555427</cns:PaxSegmentRefID>
+						</cns:PaxSegmentRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>A632628</cns:PaxRefID>
+					<cns:ServiceID>s-JFKSLC-MK729-A632628-FLT</cns:ServiceID>
+					<cns:StatusCode>HN</cns:StatusCode>
+				</cns:Service>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:ServiceDefinitionRef>
+							<OrderFlightAssociations xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<PaxSegmentRef>
+									<PaxSegmentRefID>seg1577555427</PaxSegmentRefID>
+								</PaxSegmentRef>
+							</OrderFlightAssociations>
+							<ServiceDefinitionRefID xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">def0269435194</ServiceDefinitionRefID>
+						</cns:ServiceDefinitionRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>A632628</cns:PaxRefID>
+					<cns:ServiceID>s-JFKSLC-MK729-A632628-1BAG</cns:ServiceID>
+					<cns:StatusCode>HN</cns:StatusCode>
+				</cns:Service>
+				<cns:StatusCode>Active</cns:StatusCode>
+			</cns:OrderItem>
+			<cns:OrderItem>
+				<cns:FareDetail>
+					<cns:FareComponent>
+						<cns:CabinType>
+							<cns:CabinTypeCode>M</cns:CabinTypeCode>
+							<cns:CabinTypeName>Economy</cns:CabinTypeName>
+						</cns:CabinType>
+						<cns:FareBasisCode>BNDCFARE</cns:FareBasisCode>
+						<cns:FareRule>
+							<Remark xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<RemarkText>Fare Rules and Restrictions For example All Fares are Non-Refundable and subject to Change and Cancel fees.  This area is handeled by the customer in Utilities &gt; General Reference</RemarkText>
+							</Remark>
+						</cns:FareRule>
+						<cns:PaxSegmentRefID>seg1577555427</cns:PaxSegmentRefID>
+						<cns:PriceClassRefID>pc01350301695</cns:PriceClassRefID>
+						<cns:RBD>
+							<cns:RBD_Code>B</cns:RBD_Code>
+						</cns:RBD>
+					</cns:FareComponent>
+					<cns:PaxRefID>C632629</cns:PaxRefID>
+					<cns:Price>
+						<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.00</BaseAmount>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">4.50</Amount>
+							<DescText>Passenger facility charge</DescText>
+							<DesigText>PFC</DesigText>
+						</Fee>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">5.60</Amount>
+							<DescText>Passenger Civil Security Fee</DescText>
+							<DesigText>AY</DesigText>
+						</Fee>
+						<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">40.10</TotalAmount>
+					</cns:Price>
+				</cns:FareDetail>
+				<cns:OrderItemID>RCQKUX-JFKSLC-MK729-CHD_1APAX_C632629</cns:OrderItemID>
+				<cns:OwnerCode>MK</cns:OwnerCode>
+				<cns:PaymentTimeLimitDateTime>2022-05-21T01:23:45.6789012Z</cns:PaymentTimeLimitDateTime>
+				<cns:Price>
+					<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">30.00</BaseAmount>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">4.50</Amount>
+						<DescText>Passenger facility charge</DescText>
+						<DesigText>PFC</DesigText>
+					</Fee>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">5.60</Amount>
+						<DescText>Passenger Civil Security Fee</DescText>
+						<DesigText>AY</DesigText>
+					</Fee>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">40.10</TotalAmount>
+				</cns:Price>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:PaxSegmentRef>
+							<cns:PaxSegmentRefID>seg1577555427</cns:PaxSegmentRefID>
+						</cns:PaxSegmentRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>C632629</cns:PaxRefID>
+					<cns:ServiceID>s-JFKSLC-MK729-C632629-FLT</cns:ServiceID>
+					<cns:StatusCode>HN</cns:StatusCode>
+				</cns:Service>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:ServiceDefinitionRef>
+							<OrderFlightAssociations xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<PaxSegmentRef>
+									<PaxSegmentRefID>seg1577555427</PaxSegmentRefID>
+								</PaxSegmentRef>
+							</OrderFlightAssociations>
+							<ServiceDefinitionRefID xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">def0269435194</ServiceDefinitionRefID>
+						</cns:ServiceDefinitionRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>C632629</cns:PaxRefID>
+					<cns:ServiceID>s-JFKSLC-MK729-C632629-1BAG</cns:ServiceID>
+					<cns:StatusCode>HN</cns:StatusCode>
+				</cns:Service>
+				<cns:StatusCode>Active</cns:StatusCode>
+			</cns:OrderItem>
+			<cns:OrderItem>
+				<cns:FareDetail>
+					<cns:FareComponent>
+						<cns:CabinType>
+							<cns:CabinTypeCode>M</cns:CabinTypeCode>
+							<cns:CabinTypeName>Economy</cns:CabinTypeName>
+						</cns:CabinType>
+						<cns:FareBasisCode>BNDCFARE</cns:FareBasisCode>
+						<cns:FareRule>
+							<Remark xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+								<RemarkText>Fare Rules and Restrictions For example All Fares are Non-Refundable and subject to Change and Cancel fees.  This area is handeled by the customer in Utilities &gt; General Reference</RemarkText>
+							</Remark>
+						</cns:FareRule>
+						<cns:PaxSegmentRefID>seg1577555427</cns:PaxSegmentRefID>
+						<cns:PriceClassRefID>pc01350301695</cns:PriceClassRefID>
+						<cns:RBD>
+							<cns:RBD_Code>B</cns:RBD_Code>
+						</cns:RBD>
+					</cns:FareComponent>
+					<cns:PaxRefID>I632627</cns:PaxRefID>
+					<cns:Price>
+						<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">0.00</BaseAmount>
+						<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Amount CurCode="USD">3.00</Amount>
+							<DescText>SSR Fee For Infant (INF)</DescText>
+							<DesigText>INF</DesigText>
+						</Fee>
+						<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+							<Tax>
+								<Amount CurCode="USD">0.06</Amount>
+								<DescText>General Sales Tax</DescText>
+								<TaxCode>GST</TaxCode>
+							</Tax>
+							<TotalTaxAmount CurCode="USD">0.06</TotalTaxAmount>
+						</TaxSummary>
+						<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">3.06</TotalAmount>
+					</cns:Price>
+				</cns:FareDetail>
+				<cns:OrderItemID>RCQKUX-JFKSLC-MK729-INF_1APAX_I632627</cns:OrderItemID>
+				<cns:OwnerCode>MK</cns:OwnerCode>
+				<cns:PaymentTimeLimitDateTime>2022-05-21T01:23:45.6789012Z</cns:PaymentTimeLimitDateTime>
+				<cns:Price>
+					<BaseAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">0.00</BaseAmount>
+					<Fee xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Amount CurCode="USD">3.00</Amount>
+						<DescText>SSR Fee For Infant (INF)</DescText>
+						<DesigText>INF</DesigText>
+					</Fee>
+					<TaxSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+						<Tax>
+							<Amount CurCode="USD">0.06</Amount>
+							<DescText>General Sales Tax</DescText>
+							<TaxCode>GST</TaxCode>
+						</Tax>
+						<TotalTaxAmount CurCode="USD">0.06</TotalTaxAmount>
+					</TaxSummary>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">3.06</TotalAmount>
+				</cns:Price>
+				<cns:Service>
+					<cns:BookingRef>
+						<cns:BookingEntity>
+							<cns:Carrier>
+								<cns:AirlineDesigCode>VY</cns:AirlineDesigCode>
+							</cns:Carrier>
+						</cns:BookingEntity>
+						<cns:BookingID>RCQKUX</cns:BookingID>
+						<cns:BookingRefTypeCode>6</cns:BookingRefTypeCode>
+					</cns:BookingRef>
+					<cns:OrderServiceAssociation>
+						<cns:PaxSegmentRef>
+							<cns:PaxSegmentRefID>seg1577555427</cns:PaxSegmentRefID>
+						</cns:PaxSegmentRef>
+					</cns:OrderServiceAssociation>
+					<cns:PaxRefID>I632627</cns:PaxRefID>
+					<cns:ServiceID>s-JFKSLC-MK729-I632627-FLT</cns:ServiceID>
+					<cns:StatusCode>HN</cns:StatusCode>
+				</cns:Service>
+				<cns:StatusCode>Active</cns:StatusCode>
+			</cns:OrderItem>
+			<cns:OwnerCode>VY</cns:OwnerCode>
+			<cns:StatusCode>Opened</cns:StatusCode>
+			<cns:TotalPrice>
+				<cns:BaseAmount CurCode="USD">180.00</cns:BaseAmount>
+				<cns:Discount>
+					<DescText xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">TOTAL_DISCOUNT</DescText>
+					<DiscountAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">0.00</DiscountAmount>
+				</cns:Discount>
+				<cns:Fee>
+					<Amount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">81.60</Amount>
+					<DescText xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">TOTAL_FEES</DescText>
+				</cns:Fee>
+				<cns:Fee>
+					<Amount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">0.00</Amount>
+					<DescText xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">COVYENIENCE_FEE</DescText>
+				</cns:Fee>
+				<cns:Fee>
+					<Amount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">0.00</Amount>
+					<DescText xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">PAYMENT_FEE</DescText>
+				</cns:Fee>
+				<cns:Surcharge>
+					<TotalAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">0.00</TotalAmount>
+				</cns:Surcharge>
+				<cns:TaxSummary>
+					<TotalTaxAmount xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CurCode="USD">2.19</TotalTaxAmount>
+				</cns:TaxSummary>
+				<cns:TotalAmount CurCode="USD">263.79</cns:TotalAmount>
+			</cns:TotalPrice>
+		</cns:Order>
+	</Response>
+	<PayloadAttributes>
+		<cns:CorrelationID>c53ece48-7b48-4a2a-aec0-695cd3ed331f</cns:CorrelationID>
+		<cns:Timestamp>2022-05-20T01:25:47.6161469Z</cns:Timestamp>
+		<cns:VersionNumber>21.3</cns:VersionNumber>
+	</PayloadAttributes>
+	<PaymentFunctions>
+		<PaymentProcessingSummary xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<Amount CurCode="USD">0.00</Amount>
+			<PaymentID>256051</PaymentID>
+			<PaymentProcessingSummaryPaymentMethod>
+				<PaymentCard>
+					<CardBrandCode>VI</CardBrandCode>
+					<MaskedCardID>XXXXXXXXXXXX0605</MaskedCardID>
+				</PaymentCard>
+			</PaymentProcessingSummaryPaymentMethod>
+			<PaymentStatusCode>Successful</PaymentStatusCode>
+		</PaymentProcessingSummary>
+		<PaymentSupportedMethod xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<PaymentTypeCode>CC</PaymentTypeCode>
+		</PaymentSupportedMethod>
+	</PaymentFunctions>
+</IATA_OrderViewRS>

@@ -1,0 +1,14 @@
+[
+    {
+        "question": "End the session",
+        "answer": "If you feel the XSLT is completely generated and no more questions, respond with 'No more questions detected. Exiting the process.' and end the session. Do not ask any further questions."
+    },
+    {
+        "question": "What is the exact mapping for the 'rloc' element in the output XML",
+        "answer": "For rloc - generate a random alphanumeric string for example: L12345"
+    },
+    {
+        "question": "What is the value for the <IATA_Number> and <Name> elements under <TravelAgency> in the output XML?",
+        "answer": "Copy the values for IATA_Number, Name under IATA_Number from the output XML."
+    }
+]

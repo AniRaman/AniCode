@@ -1,0 +1,27 @@
+<OrderRetrieveRQ Version="17.2" TransactionIdentifier="82f7b13a144643d7a1d995930ea00ed4" CorrelationID="97d056e5-a956-4803-9a2c-1a94fb50b8d9">
+	<PointOfSale>
+		<Location>
+			<CountryCode>DE</CountryCode>
+			<CityCode>FRA</CityCode>
+		</Location>
+	</PointOfSale>
+	<Document id="document"/>
+	<Party>
+		<Sender>
+			<TravelAgencySender>
+				<Name>AMADEUS QA OFFICE</Name>
+				<PseudoCity>FRA1A27QC</PseudoCity>
+				<IATA_Number>23246672</IATA_Number>
+				<AgencyID>23246672</AgencyID>
+				<AgentUser>
+					<AgentUserID>xmluser001</AgentUserID>
+				</AgentUser>
+			</TravelAgencySender>
+		</Sender>
+	</Party>
+	<Query>
+		<Filters>
+			<OrderID Owner="EK">EK176H8PQXYA3</OrderID>
+		</Filters>
+	</Query>
+</OrderRetrieveRQ>

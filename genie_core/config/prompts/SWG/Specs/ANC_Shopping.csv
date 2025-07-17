@@ -1,0 +1,65 @@
+﻿Field,M/O in 1A Shopping request,IPPRequest / ISHORQ (Source),Ancileo Request (Target),Description,Mandatory(M)/Optional(O)/Conditional(C)
+,,,,,
+Language Code,M,/languageCode/userPreferences/codedLanguage,languageCode,Website language - Used to trigger all contents ,M
+,,"if present, else",,Please note: the value must be built in lower case as below,
+,,/originatorSection/originatorIDDetails/@language,,"""language"": ""en""",
+Market,M,/insuranceOptionSection/insuranceOptionDetails/pricingInformations/@providerIdentification,@market,Country code (ISO) where the insurance demands is requested,M
+,,"(providerIdentification is 5 character value, the last 2 characters is the market code)",,,
+channel,,NA,@channel,"To be hardcoded as ""integrated""",M
+touchPoint,to be hardcoded,,@touchPoint,"To be hardcoded as ""payment""",M
+,,,,(this value can be different for different airlines),
+Context,,,,,
+Departure Country ,C,/insurancePlanSection/countryListInfo/countryCode[0],context/@departureCountry,,M
+,,"(the first countyCode under ""countryListInfo"" element)",,,
+Departure Airport,C,/insurancePlanSection/itineraryInfo[0]/segmentDetails/boardPointDetails/trueLocationId,context/@departureAirport,,O
+Arrival Country,C,"1) If ""/insurancePlanSection/countryListInfo/countryCode"" has single instance,",context/@arrivalCountry,"if it's multi-segment trip, We'll go  through each segment and build arrival country of each segment in an array but consecutive arrival country code should not be same and also the last arrival country should be ignore if its same as first Departure country.",M
+,,"then,",,"ex:- for flight route, KUL-BOM-DEL-CCU-CDG-KUL. The arrival country list to be sent is ""[IN, FR]"" as per the above mentioned logic.",
+,,/insurancePlanSection/countryListInfo/countryCode,,,
+,,"2) else,",,,
+,,"""/insurancePlanSection/countryListInfo/countryCode[1,2,3...]""  (assuming its all different country code)",,,
+,,,,,
+,,"Also if  ""/insurancePlanSection/countryListInfo/countryCode[0]"" == ""/insurancePlanSection/countryListInfo/countryCode[n]""",,,
+,,"then dont build the last country code (""/insurancePlanSection/countryListInfo/countryCode[n]"")",,,
+Arrival Airport,C,"1) If ""/insurancePlanSection/countryListInfo/countryCode"" has single element build that else pick from all the InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo[1….n]/segmentDetails/offpointDetails/trueLocationId based on conditions given.",context/@arrivalAirport," For each segment, it should build an generate a list of unique arrival airport codes.Make sure no duplicate values are present. Additionally, if the last segment's arrival country is the same as the first segment's departure country, it should be excluded from the array.""",O
+,,,,,
+,,,,,
+Departure Date,C,/insurancePlanSection/itineraryInfo[0]/segmentDetails/flightDate/departureDate,context/@departureDate,in YYYY-MM-DD format,M
+,,(Pickup the departureDate),,,
+Return Date,,/insurancePlanSection/itineraryInfo[n]/segmentDetails/flightDate/arrivalDate,context/@returnDate,"Send the Return Date only if its a ""Round Trip""",C
+,,(Build this element only if the flight is RoundTrip),,,
+Trip Type,,NA,context/@tripType,Send “RT” when the customer goes back to origin airport code OR else send “ST”.,M
+Total Ticket Price,,/insurancePlanSection/travelValue/monetaryDetails[0]/@amount,context/@ticketPriceAllOptions,"The amount received from ICS will be multiplied by 1000, hence needs to be divided by 1000 before sending it to Ancileo.",M
+,,,,(56500 should be sent as 56.50),
+Currency,,/insurancePlanSection/travelValue/monetaryDetails[0]/@currency,context/@currency,,M
+Discount Code,,NA,context/@discountCode,,O
+context/tripDetails,,,,,
+,C,concatenate date and time from (/insuranceOptionSection/insuranceOptionDetails/subscriptionInformations/subscriptionDate) and ,context/tripdetails/booking/@date,Request date and time,O
+,,(/insurancePlanSection/itineraryInfo[0]/bookingDate/dateTime),,,
+,,/originatorSection/originatorIdDetails/agencyOfficeId,context/tripdetails/booking/@officeID,,M
+tripDetails/legs (array value),,,,,
+departure country,C,"/insurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/boardPointDetails/trueLocationId",@departureCountry,,M
+,,(send the country code mapped to the above airport code),,,
+,C,/insurancePlanSection/itineraryInfo[0]/segmentDetails/boardPointDetails/trueLocationId,@departureAirport,,M
+,C,"/insurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/offPointDetail/trueLocationId",@arrivalCountry,,M
+,,(send the country code mapped to the above airport code),,,
+,C,"/insurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/offPointDetail/trueLocationId",@arrivalAirport,,M
+,C,concatenate date and time from ,@departureDateTime,,M
+,,"(/InsurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/flightdate/departureDate) and ",,,
+,,"(/InsurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/flightdate/departureTime)",,,
+,O,concatenate date and time from ,@arrivalDateTime,,M
+,,"(/InsurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/flightdate/arrivalDate) and ",,,
+,,"(/InsurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/flightdate/arrivalTime)",,,
+,O,"/insurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/flightIdentification/bookingClass",@travelClassCode,,M
+,,,@travelClassType,Can be ignored as of now,O
+,,"/insurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/companyDetails/marketingCompany",@flightCode,This should be the Airline Code of the flight,M
+,C,"/insurancePlanSection/itineraryInfo[0,1,2..]/segmentDetails/flightIdentification/flightNumber",@flightNumber,,M
+"Insured Details (array of objects, when date of birth provided)",,,,,
+ID,,NA,insureds/@id,Unique ID for each PAX.,C
+,,,(build unique id for each passengers),"(in Amadeus, we will have same identifier for both the Adult and the corresponding Infant passenger but for Ancileo the identifier should be Unique even between Adult and the Infant)",
+Date of Birth,O,"passengerDetails[0,1....n] /travelerInformation/otherPaxDetails/@birthDate",insureds/@dateOfBirth,,C
+Insured Details (If DOB is not available for each insured),,,,,
+Adult Count,,/passengerDetails/travelerInformation/otherPaxDetails/@type,context/@adultsCount,"check for type, if it's ADT, increase count by 1",C
+Children Count,,/passengerDetails/travelerInformation/otherPaxDetails/@type,context/@childrenCount,"check for type, if it's CHD, increase count by 1",C
+Infant Count,,/passengerDetails/travelerInformation/otherPaxDetails/@type,context/@infantsCount,"check for type, if it's INF, increase count by 1",C
+Insured Details (only If DOB and Passenger Type both are not available),,,,,
+insuredsCount,,/passengerDetails,context/@insuredsCount,"count the number of instances of the element ""passengerDetails"" in 1A shopping request and send the value",C

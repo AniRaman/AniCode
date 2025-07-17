@@ -1,0 +1,25 @@
+<PaxList>
+    <Pax>
+        <ContactInfoRefID>CTC1</ContactInfoRefID>
+        <Individual>
+            <Birthdate>1980-01-01</Birthdate>
+            <GivenName>JEAN</GivenName>
+            <IndividualID>ID1</IndividualID>
+            <Surname>DUPONT</Surname>
+            <TitleName>MR</TitleName>
+        </Individual>
+        <PaxID>PAX1</PaxID>
+        <PaxRefID>PAX4</PaxRefID>        <!--Reference of INF Pax-->
+        <PTC>ADT</PTC>
+    </Pax>
+    <Pax>
+        <Individual>
+            <Birthdate>2024-02-25</Birthdate>
+            <GivenName>BABY</GivenName>
+            <IndividualID>ID4</IndividualID>
+            <Surname>DUPONT</Surname>
+        </Individual>
+        <PaxID>PAX4</PaxID>
+        <PTC>INF</PTC>
+    </Pax>
+    <PaxList>

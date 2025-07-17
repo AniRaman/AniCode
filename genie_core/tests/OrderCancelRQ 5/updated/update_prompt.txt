@@ -1,0 +1,4 @@
+Input: N/A
+Output: Version: 17.2 or 18.1
+Type: Element
+Remarks: If the property element exists and it has key Usecase and value void the version should be 18.1. Otherwise it should be 17.2

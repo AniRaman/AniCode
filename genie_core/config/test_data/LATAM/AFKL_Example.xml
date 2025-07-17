@@ -1,0 +1,51 @@
+<xml>
+<PaxList>
+    <ns3:Pax>
+        <ns3:ContactInfoRefID>CTC1</ns3:ContactInfoRefID>
+        <ns3:Individual>
+            <ns3:Birthdate>1980-01-01</ns3:Birthdate>
+            <ns3:GivenName>JEAN</ns3:GivenName>
+            <ns3:IndividualID>ID1</ns3:IndividualID>
+            <ns3:Surname>DUPONT</ns3:Surname>
+            <ns3:TitleName>MR</ns3:TitleName>
+        </ns3:Individual>
+        <ns3:PaxID>PAX1</ns3:PaxID>
+        <ns3:PaxRefID>PAX4</ns3:PaxRefID>
+        <ns3:PTC>ADT</ns3:PTC>
+    </ns3:Pax>
+    <ns3:Pax>
+        <ns3:Individual>
+            <ns3:Birthdate>2024-02-25</ns3:Birthdate>
+            <ns3:GivenName>BABY</ns3:GivenName>
+            <ns3:IndividualID>ID4</ns3:IndividualID>
+            <ns3:Surname>DUPONT</ns3:Surname>
+        </ns3:Individual>
+        <ns3:PaxID>PAX4</ns3:PaxID>
+        <ns3:PTC>INF</ns3:PTC>
+    </ns3:Pax>
+</PaxList>
+<PaxList>
+<Pax>
+<ContactInfoRefID>CTC1</ContactInfoRefID>
+<IdentityDoc>
+<Birthdate>1950-01-13</Birthdate>
+<CitizenshipCountryCode>FR</CitizenshipCountryCode>
+<GenderCode>F</GenderCode>
+<GivenName>NAME</GivenName>
+<IdentityDocID>1234567</IdentityDocID>
+<IdentityDocTypeCode>P</IdentityDocTypeCode>
+<IssuingCountryCode>FR</IssuingCountryCode>
+<Surname>TES</Surname>
+</IdentityDoc>
+<Individual>
+<Birthdate>1990-10-11</Birthdate>
+<GivenName>MARTIN</GivenName>
+<IndividualID>ID1</IndividualID>
+<Surname>TEST</Surname>
+<TitleName>MR</TitleName>
+</Individual>
+<PaxID>PAX1</PaxID>
+<PTC>ADT</PTC>
+</Pax>
+</PaxList>
+</xml>

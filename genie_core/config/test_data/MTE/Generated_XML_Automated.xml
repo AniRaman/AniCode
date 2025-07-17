@@ -1,0 +1,231 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+                xmlns:ns0="http://www.amadeus.net" exclude-result-prefixes="ns0">
+    <xsl:output method="xml" indent="yes"/>
+
+    <!-- Identity template, copies everything as is -->
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <!-- Template to transform the InsuranceSmartShoppingRequest -->
+    <xsl:template match="/ns0:InsuranceSmartShoppingRequest">
+        <root>
+            <!-- Map Product ID -->
+            <xsl:for-each select="ns0:subscriberAddressSection/ns0:nameDetails/ns0:nameInformation[ns0:qualifier='ADE']">
+                <product_id>
+                    <xsl:value-of select="ns0:identifier"/>
+                </product_id>
+            </xsl:for-each>
+            
+            <!-- Apply templates for other elements -->
+            <xsl:apply-templates select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate"/>
+            
+            <!-- Map the coverage end date -->
+            <xsl:variable name="coverageEndDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate"/>
+            <coverage_end_date>
+                <xsl:value-of select="substring($coverageEndDate, 1, 4)"/>
+                <xsl:text>-</xsl:text>
+                <xsl:value-of select="substring($coverageEndDate, 5, 2)"/>
+                <xsl:text>-</xsl:text>
+                <xsl:value-of select="substring($coverageEndDate, 7, 2)"/>
+            </coverage_end_date>
+
+            <!-- Map the coverage start hour number -->
+            <coverage_start_hour_number>
+                <xsl:call-template name="extract-hour">
+                    <xsl:with-param name="dateTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureTime"/>
+                </xsl:call-template>
+            </coverage_start_hour_number>
+
+            <!-- Extract the hour from the arrival time and map it to coverage_end_hour_number -->
+            <coverage_end_hour_number>
+                <xsl:value-of select="substring(ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalTime, 1, 2)"/>
+            </coverage_end_hour_number>
+
+            <!-- Map the currency -->
+            <currency>
+                <xsl:variable name="overwriteCurrency" select="ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:agentOverwritecurrency"/>
+                <xsl:choose>
+                    <!-- If agentOverwritecurrency is present, use it -->
+                    <xsl:when test="$overwriteCurrency != ''">
+                        <xsl:value-of select="$overwriteCurrency"/>
+                    </xsl:when>
+                    <!-- Otherwise, use preferredCurrencyCode -->
+                    <xsl:otherwise>
+                        <xsl:value-of select="ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:preferredCurrencyCode"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </currency>
+
+            <!-- Map the Exposure name -->
+            <exposure_name>
+                <xsl:value-of select="ns0:subscriberAddressSection/ns0:nameDetails/ns0:nameInformation[ns0:qualifier='ADE']/ns0:name"/>
+            </exposure_name>
+
+            <!-- Map the Exposure latitude -->
+            <exposure_latitude>
+                <xsl:value-of select="ns0:subscriberAddressSection/ns0:addressInfo/ns0:latitude"/>
+            </exposure_latitude>
+
+            <!-- Map the Exposure longitude -->
+            <exposure_longitude>
+                <xsl:value-of select="ns0:subscriberAddressSection/ns0:addressInfo/ns0:longitude"/>
+            </exposure_longitude>
+
+            <!-- Map total coverage amount -->
+            <exposure_total_coverage_amount>
+                <xsl:variable name="amount" select="ns0:insurancePlanSection/ns0:travelValue/ns0:monetaryDetails[1]/ns0:amount"/>
+                <xsl:value-of select="format-number($amount div 1000, '0.0#')"/>
+            </exposure_total_coverage_amount>
+
+            <!-- Language (Local) mapping -->
+            <lang_locale>
+                <xsl:variable name="userPrefLang" select="ns0:languageCode/ns0:userPreferences/ns0:codedLanguage"/>
+                <xsl:variable name="originatorLang" select="ns0:originatorSection/ns0:originatorDetails/ns0:language"/>
+                <xsl:choose>
+                    <!-- Check if user preferred language is present and supported -->
+                    <xsl:when test="$userPrefLang = 'EN' or $userPrefLang = 'FR'">
+                        <xsl:value-of select="concat($userPrefLang, '-', $userPrefLang)"/>
+                    </xsl:when>
+                    <!-- Fallback to originator language if user preferred language is not present -->
+                    <xsl:when test="$originatorLang = 'EN' or $originatorLang = 'FR'">
+                        <xsl:value-of select="concat($originatorLang, '-', $originatorLang)"/>
+                    </xsl:when>
+                    <!-- Default to 'en-US' if none of the above conditions are met -->
+                    <xsl:otherwise>
+                        <xsl:text>en-US</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </lang_locale>
+
+            <!-- Mapping the external ID -->
+            <external_id>R12A34RG</external_id>
+
+            <!-- Copy other elements as needed -->
+            <xsl:apply-templates select="ns0:subscriberAddressSection"/>
+
+            <!-- Billing address mapping from XSLT 2 -->
+            <billing_address>
+                <!-- Check if the qualifier is 'ARE' and then map the address line 1 -->
+                <xsl:for-each select="ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']">
+                    <address_line_1>
+                        <xsl:value-of select="ns0:addressInfo/ns0:addressDetails/ns0:line1"/>
+                    </address_line_1>
+                    <address_line_2>
+                        <xsl:value-of select="ns0:addressInfo/ns0:addressDetails/ns0:line2"/>
+                    </address_line_2>
+                    <city>
+                        <xsl:value-of select="ns0:addressInfo/ns0:city"/>
+                    </city>
+                    <region>
+                        <xsl:variable name="subscriberWithARE" select="."/>
+                        <xsl:choose>
+                            <!-- Check for regionDetails with qualifier 84 -->
+                            <xsl:when test="$subscriberWithARE/ns0:addressInfo/ns0:regionDetails/ns0:qualifier='84'">
+                                <xsl:value-of select="$subscriberWithARE/ns0:addressInfo/ns0:regionDetails/ns0:name"/>
+                            </xsl:when>
+                            <!-- If not found, check for locationDetails with qualifier 84 -->
+                            <xsl:when test="$subscriberWithARE/ns0:addressInfo/ns0:locationDetails/ns0:qualifier='84'">
+                                <xsl:value-of select="$subscriberWithARE/ns0:addressInfo/ns0:locationDetails/ns0:name"/>
+                            </xsl:when>
+                            <!-- If neither is found, leave the region empty or handle as needed -->
+                            <xsl:otherwise>
+                                <!-- Handle the case where no region is found, e.g., leave empty or insert a default value -->
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </region>
+                    <country>
+                        <xsl:call-template name="getCountry"/>
+                    </country>
+                    <postal_code>
+                        <xsl:value-of select="ns0:addressInfo/ns0:postalCode"/>
+                    </postal_code>
+                </xsl:for-each>
+            </billing_address>
+        </root>
+    </xsl:template>
+
+    <!-- Template to format the departure date and map it to coverage_start_date -->
+    <xsl:template match="ns0:departureDate">
+        <coverage_start_date>
+            <xsl:value-of select="substring(., 1, 4)"/>
+            <xsl:text>-</xsl:text>
+            <xsl:value-of select="substring(., 5, 2)"/>
+            <xsl:text>-</xsl:text>
+            <xsl:value-of select="substring(., 7, 2)"/>
+        </coverage_start_date>
+    </xsl:template>
+
+    <!-- Template to extract the hour from the time -->
+    <xsl:template name="extract-hour">
+        <xsl:param name="dateTime"/>
+        <xsl:value-of select="substring($dateTime, 1, 2)"/>
+    </xsl:template>
+
+    <!-- Template to handle subscriberAddressSection for billing address line 2 -->
+    <xsl:template match="ns0:subscriberAddressSection">
+        <xsl:variable name="line2" select="ns0:addressInfo/ns0:addressDetails/ns0:line2"/>
+        <address_line_2>
+            <xsl:value-of select="$line2"/>
+        </address_line_2>
+    </xsl:template>
+
+    <!-- Template to set the city in the billing_address -->
+    <xsl:template match="ns0:addressInfo">
+        <billing_address>
+            <!-- Copy existing billing address elements -->
+            <xsl:apply-templates select="ancestor::root/billing_address/*[not(self::city)]"/>
+            <!-- Set the city from the source XML -->
+            <city>
+                <xsl:value-of select="ns0:city"/>
+            </city>
+        </billing_address>
+    </xsl:template>
+
+    <!-- Template to handle region in the billing_address -->
+    <xsl:template match="ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']">
+        <region>
+            <xsl:variable name="subscriberWithARE" select="."/>
+            <xsl:choose>
+                <!-- Check for regionDetails with qualifier 84 -->
+                <xsl:when test="$subscriberWithARE/ns0:addressInfo/ns0:regionDetails/ns0:qualifier='84'">
+                    <xsl:value-of select="$subscriberWithARE/ns0:addressInfo/ns0:regionDetails/ns0:name"/>
+                </xsl:when>
+                <!-- If not found, check for locationDetails with qualifier 84 -->
+                <xsl:when test="$subscriberWithARE/ns0:addressInfo/ns0:locationDetails/ns0:qualifier='84'">
+                    <xsl:value-of select="$subscriberWithARE/ns0:addressInfo/ns0:locationDetails/ns0:name"/>
+                </xsl:when>
+                <!-- If neither is found, leave the region empty or handle as needed -->
+                <xsl:otherwise>
+                    <!-- Handle the case where no region is found, e.g., leave empty or insert a default value -->
+                </xsl:otherwise>
+            </xsl:choose>
+        </region>
+    </xsl:template>
+
+    <!-- Template to get the country -->
+    <xsl:template name="getCountry">
+        <xsl:variable name="qualifier" select="'162'"/>
+        <xsl:variable name="subscriberAddress" select="ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier = 'ARE']"/>
+        <xsl:variable name="locationCountry" select="$subscriberAddress/ns0:addressInfo/ns0:locationDetails[ns0:qualifier = $qualifier]/ns0:name"/>
+        <xsl:variable name="regionCountry" select="$subscriberAddress/ns0:addressInfo/ns0:regionDetails[ns0:qualifier = $qualifier]/ns0:name"/>
+
+        <xsl:choose>
+            <!-- Check if locationDetails with qualifier 162 exists and use its country name -->
+            <xsl:when test="$locationCountry">
+                <xsl:value-of select="$locationCountry"/>
+            </xsl:when>
+            <!-- If not, check if regionDetails with qualifier 162 exists and use its country name -->
+            <xsl:when test="$regionCountry">
+                <xsl:value-of select="$regionCountry"/>
+            </xsl:when>
+            <!-- If neither is found, leave the country element empty -->
+            <xsl:otherwise>
+                <xsl:text></xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+</xsl:stylesheet>

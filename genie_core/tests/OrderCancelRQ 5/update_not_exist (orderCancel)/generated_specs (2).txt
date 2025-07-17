@@ -1,0 +1,47 @@
+1. Input: AMA_ConnectivityLayerRQ/Requests/Request/property (conditional)
+   Output: OrderCancelRQ/@Version
+   Type: Attribute
+   Logic: If property element does not exist, Version is 17.2; otherwise, it is 18.1
+
+2. Input: AMA_ConnectivityLayerRQ/Requests/Request/Context/correlationID
+   Output: OrderCancelRQ/@CorrelationID
+
+3. Input: Hardcoded
+   Hardcoded Output: OrderCancelRQ/@TransactionIdentifier = a3cf6058c27d4e15aab6ffbff17611a6
+
+4. Input: "IN"
+   Hardcoded Output: OrderCancelRQ/PointOfSale/Location/CountryCode = IN
+
+5. Input: "NCE"
+   Hardcoded Output: OrderCancelRQ/PointOfSale/Location/CityCode = NCE
+
+6. Input: Hardcoded as document
+   Output: OrderCancelRQ/Document/@id
+   Type: Attribute
+
+7. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency
+   Output: OrderCancelRQ/Party/Sender/TravelAgencySender
+   Type: Optional
+
+8. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/Name
+   Output: OrderCancelRQ/Party/Sender/TravelAgencySender/Name
+
+9. Input: Hardcoded as AH9D
+   Output: OrderCancelRQ/Party/Sender/TravelAgencySender/PseudoCity
+
+10. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/IATA_Number
+    Output: OrderCancelRQ/Party/Sender/TravelAgencySender/IATA_Number
+
+11. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/IATA_Number
+    Output: OrderCancelRQ/Party/Sender/TravelAgencySender/AgencyID
+
+12. Input: Hardcoded as xmluser001
+    Output: OrderCancelRQ/Party/Sender/TravelAgencySender/AgentUser/AgentUserID
+
+13. Input: AMA_ConnectivityLayerRQ/Requests/Request/bookingSourceInfo/rloc
+    Output: OrderCancelRQ/Query/Order/@OrderID
+    Type: Attribute
+
+14. Input: AMA_ConnectivityLayerRQ/Requests/Request/Context/Retailer/code
+    Output: OrderCancelRQ/Query/Order/@Owner
+    Type: Attribute

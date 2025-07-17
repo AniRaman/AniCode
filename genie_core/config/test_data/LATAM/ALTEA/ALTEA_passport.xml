@@ -1,0 +1,25 @@
+<PaxList>
+    <Pax>
+        <IdentityDoc>
+            <Birthdate>1986-12-08</Birthdate>
+            <CitizenshipCountryCode>US</CitizenshipCountryCode>
+            <ExpiryDate>2029-08-13</ExpiryDate>
+            <GenderCode>M</GenderCode>
+            <GivenName>TAYLOR</GivenName>
+            <IdentityDocID>0123456789</IdentityDocID>
+            <IdentityDocTypeCode>PT</IdentityDocTypeCode>
+            <IssuingCountryCode>US</IssuingCountryCode>
+            <Surname>WAYNE</Surname>
+        </IdentityDoc>
+        <Individual>
+            <Birthdate>1986-12-08</Birthdate>
+            <GenderCode>M</GenderCode>
+            <GivenName>TAYLOR</GivenName>
+            <IndividualID>PAX1</IndividualID>
+            <Surname>WAYNE</Surname>
+            <TitleName>MR</TitleName>
+        </Individual>
+        <PaxID>PAX1</PaxID>
+        <PTC>ADT</PTC>
+    </Pax>
+</PaxList>

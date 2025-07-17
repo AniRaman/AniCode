@@ -1,0 +1,27 @@
+<OrderRetrieveRQ Version="17.2" TransactionIdentifier="5d53a41a81c846599f86fd4249124bf1" CorrelationID="9c9d1310-e18f-4edd-9d27-34f48f4821d6">
+	<PointOfSale>
+		<Location>
+			<CountryCode>FR</CountryCode>
+			<CityCode>NCE</CityCode>
+		</Location>
+	</PointOfSale>
+	<Document id="document"/>
+	<Party>
+		<Sender>
+			<TravelAgencySender>
+				<Name>AMADEUS QA OFFICE</Name>
+				<PseudoCity>NCE1A27QC</PseudoCity>
+				<IATA_Number>00022665</IATA_Number>
+				<AgencyID>00022665</AgencyID>
+				<AgentUser>
+					<AgentUserID>xmluser001</AgentUserID>
+				</AgentUser>
+			</TravelAgencySender>
+		</Sender>
+	</Party>
+	<Query>
+		<Filters>
+			<OrderID Owner="EK">EK176HZEDKXA6</OrderID>
+		</Filters>
+	</Query>
+</OrderRetrieveRQ>

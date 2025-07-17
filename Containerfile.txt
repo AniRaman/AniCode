@@ -1,0 +1,26 @@
+# Step 1: Use an official Python image as the base image
+FROM python:3.12.8
+
+# Step 2: Set the working directory inside the container
+WORKDIR /app
+
+# Step 3: Copy the poetry.lock and pyproject.toml to install dependencies
+COPY pyproject.toml poetry.lock /app/
+
+# Step 4: Install Poetry and Streamlit globally, and then install project dependencies
+RUN pip install poetry && poetry install --only main --no-root --no-interaction --no-ansi
+
+# Step 5: Copy the rest of the application code
+COPY . /app/
+
+# Step 6: Set the environment variables
+ENV PYTHONPATH="/app"
+
+# Step 7: .env check message
+RUN echo "🔔 Make sure your .env file is updated with the correct keys"
+
+# Step 8: Expose the port your app will run on
+EXPOSE 8501
+
+# Step 9: Run the Streamlit app through Poetry
+CMD ["poetry", "run", "streamlit", "run", "app/xslt_manager/xslt_manager.py"]

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OrderCreateRQ Version="17.2"
+               CorrelationID="716c70ce-9a42-47be-b9b3-0b833a3c0bf1"
+               TransactionIdentifier="716c70ce-9a42-47be-b9b3-0b833a3c0bf1">
+   <PointOfSale>
+      <Location>
+         <CountryCode>FR</CountryCode>
+         <CityCode>NCE</CityCode>
+      </Location>
+   </PointOfSale>
+   <Document id="document"/>
+   <Party>
+      <Sender>
+         <TravelAgencySender>
+            <Name>AMADEUS QA OFFICE</Name>
+            <Contacts>
+               <Contact>
+                  <AddressContact>
+                     <Street>485 ROUTE DU PIN MONTARD</Street>
+                     <Street>WO23328930</Street>
+                     <CityName>FRANKFURT</CityName>
+                     <CountryCode>DE</CountryCode>
+                  </AddressContact>
+                  <EmailContact>
+                     <Address>ALTEANDC_TEST@AMADEUS.COM</Address>
+                  </EmailContact>
+                  <PhoneContact>
+                     <Number>496959673330</Number>
+                  </PhoneContact>
+               </Contact>
+            </Contacts>
+            <PseudoCity>AH9D</PseudoCity>
+            <IATA_Number>23246672</IATA_Number>
+            <AgencyID>23246672</AgencyID>
+            <AgentUser>
+               <AgentUserID>xmluser001</AgentUserID>
+            </AgentUser>
+         </TravelAgencySender>
+      </Sender>
+   </Party>
+   <Query>
+      <Order>
+         <Offer OfferID="P7F0B137C-5488-4574-9377e6w5iblwqti45-1"
+                Owner="EK"
+                ResponseID="P7F0B137C-5488-4574-9377">
+            <OfferItem OfferItemID="P7F0B137C-5488-4574-9377e6w5iblwqti45-1-1">
+               <PassengerRefs>1</PassengerRefs>
+            </OfferItem>
+         </Offer>
+      </Order>
+      <Payments>
+         <Payment>
+            <Method>
+               <Cash CashInd="true"/>
+            </Method>
+            <Amount>0.00</Amount>
+         </Payment>
+      </Payments>
+      <DataLists>
+         <PassengerList>
+            <Passenger PassengerID="1">
+               <PTC>ADT</PTC>
+               <ResidenceCountryCode/>
+               <CitizenshipCountryCode/>
+               <Individual>
+                  <Birthdate>1986-03-10</Birthdate>
+                  <Gender>Male</Gender>
+                  <NameTitle>MR</NameTitle>
+                  <GivenName>JOHN</GivenName>
+                  <Surname>DOE</Surname>
+               </Individual>
+               <LoyaltyProgramAccount>
+                  <Airline>
+                     <AirlineDesignator/>
+                  </Airline>
+                  <AccountNumber/>
+               </LoyaltyProgramAccount>
+               <IdentityDocument>
+                  <IdentityDocumentNumber>
+eqdfd1231231P
+eqdfd1231231AUT
+eqdfd1231231AUT
+eqdfd12312311986-03-10
+eqdfd12312312028-11-23
+eqdfd1231231Doe
+eqdfd1231231John
+eqdfd1231231AT
+eqdfd1231231AT
+                </IdentityDocumentNumber>
+                  <IdentityDocumentType>PT</IdentityDocumentType>
+                  <IssuingCountryCode>AUT</IssuingCountryCode>
+                  <CitizenshipCountryCode>AUT</CitizenshipCountryCode>
+                  <IssueDate/>
+                  <ExpiryDate>2028-11-23</ExpiryDate>
+                  <Gender>Male</Gender>
+                  <Birthdate>1986-03-10</Birthdate>
+               </IdentityDocument>
+               <IdentityDocument>
+                  <IdentityDocumentNumber>P</IdentityDocumentNumber>
+               </IdentityDocument>
+            </Passenger>
+         </PassengerList>
+         <ContactList>
+            <ContactInformation ContactID="CI11">
+               <PostalAddress>
+                  <Label>mobile</Label>
+                  <Street>
+0422497845mobile
+                        </Street>
+                  <PostalCode>
+0422497845mobile
+                        </PostalCode>
+                  <CityName>
+0422497845mobile
+                        </CityName>
+               </PostalAddress>
+               <ContactType>CTC</ContactType>
+               <ContactProvided>
+                  <Phone>
+                     <Label>mobile</Label>
+                     <PhoneNumber>
+0422497845
+                        </PhoneNumber>
+                  </Phone>
+                  <EmailAddress>
+                     <Label/>
+                     <EmailAddressValue>ABC@GMAIL.COM</EmailAddressValue>
+                  </EmailAddress>
+               </ContactProvided>
+            </ContactInformation>
+         </ContactList>
+      </DataLists>
+   </Query>
+</OrderCreateRQ>

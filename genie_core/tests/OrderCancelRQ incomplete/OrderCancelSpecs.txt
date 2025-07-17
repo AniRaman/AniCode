@@ -1,0 +1,30 @@
+2. Input: AMA_ConnectivityLayerRQ/Requests/Request/Context/correlationID
+Output:OrderCancelRQ/@CorrelationID
+
+5. Input: Hardcoded as document
+Output: OrderCancelRQ/Document/@id
+Type: Attribute
+
+6. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender
+Type: Optional
+
+7. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/Name
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/Name
+
+9. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/IATA_Number
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/IATA_Number
+
+10. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/IATA_Number
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/AgencyID
+
+11. Input:
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/AgentUser/AgentUserID
+
+12. Input: AMA_ConnectivityLayerRQ/Requests/Request/bookingSourceInfo/rloc
+Output: OrderCancelRQ/Query/Order/@OrderID
+Type: Attribute
+
+13. Input: AMA_ConnectivityLayerRQ/Requests/Request/Context/Retailer/code
+Output: OrderCancelRQ/Query/Order/@Owner
+Type: Attribute

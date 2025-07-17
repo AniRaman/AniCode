@@ -1,0 +1,1 @@
+If the property element does not exist then version should be 17.2 otherwise it should be 18.1

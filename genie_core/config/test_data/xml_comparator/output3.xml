@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<RESAGG_ExtractProfilesDataRQ>
+    <Requests>
+        <Request>
+            <action>Create</action>
+            <target>AGG</target>
+            <id>1</id>
+            <bookingSourceInfo>
+                <rloc>IJEKME</rloc>
+            </bookingSourceInfo>
+            <actor>
+                <ID>A173993521</ID>
+                <PTC>ADT</PTC>
+                <TID>A173993521</TID>
+                <FOID>
+                    <value>30000529L</value>
+                </FOID>
+                <type>Unknown</type>
+                <Name>
+                    <FirstName/>
+                    <LastName/>
+                </Name>
+            </actor>
+            <set>
+                <ID>IJEKME</ID>
+                <ExternalContext>
+                    <ID>EXT1</ID>
+                    <reference>IJEKME-BCNMAD-VY1002-ADT-FLIGHT</reference>
+                    <type>OrderItem</type>
+                    <links/>
+                </ExternalContext>
+                <timelimit>
+                    <paymentTimeLimit>2024-10-17T09:44:42Z</paymentTimeLimit>
+                    <RefIDs/>
+                </timelimit>
+                <TotalPrice>
+                    <TotalAmount CurCode="EUR">17782</TotalAmount>
+                </TotalPrice>
+            </set>
+        </Request>
+    </Requests>
+</RESAGG_ExtractProfilesDataRQ>

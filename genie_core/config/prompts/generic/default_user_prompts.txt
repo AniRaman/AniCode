@@ -1,0 +1,40 @@
+**Instructions**:
+0. **Analysis & Mapping:**
+   - For each input and output pair in the specification: generate the required XSLT for the mappings.
+   - Use hardcoded values from the specification.
+   - The specification is more important than the XML files.
+
+1. **Only after the specifications have been used:**
+   - Examine input and output XML structures.
+   - Document element, attribute, and namespace mappings.
+
+2. **Transform Structure:**
+   - Ensure accurate transformation, maintaining hierarchy and order.
+   - Adhere to the output XML structure while placing the elements
+
+3. **Element & Attribute Handling:**
+   - 
+   - 
+
+4. **Value Management:**
+   - Hard-code static values; use <xsl:param> for dynamic ones.
+
+5. **Namespace Handling:**
+   - Properly declare and apply all namespaces.
+
+6. **XSLT Quality:**
+   - Always generate the complete XSLT structure.
+   - Maintain XML node context throughout.
+   - Adhere to the target XML structure while positioning the elements.
+   - Verify complete input-to-output transformation.
+
+7. **Handling Uncertainties:**
+   - If any uncertainties in mappings, ask questions for clarification.
+   - Proceed with XSLT generation even with unanswered questions.
+   - Add comments for areas needing clarification.
+   - If no questions, review for completeness and accuracy.
+
+8. **Code Output:**
+   - Provide complete XSLT within <generated_xslt> tags.
+
+------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,1 @@
+If distribution method is NDCX and city is Frankfurt add an element in Party called CityTax which is hardcoded as 'Frankfurt Tax'

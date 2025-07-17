@@ -1,0 +1,1 @@
+streamlit run xslt_manager.py

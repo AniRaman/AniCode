@@ -1,0 +1,11 @@
+.ipynb_checkpoints/
+Untitled*.ipynb
+chromaDB
+.env 
+__pycache__
+test.ipynb
+generated content/
+test_generation
+.streamlit
+venv
+.DS_Store

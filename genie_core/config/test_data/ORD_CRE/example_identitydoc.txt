@@ -1,0 +1,126 @@
+<xsl:for-each select="(./docRef)[(not(taxIdentifier) and boolean(type))]">
+<xsl:for-each select="docRef">
+<xsl:for-each select="redressCase">
+<xsl:for-each select="docRef/visa">
+<xsl:for-each select="docRef/visa">
+										<xsl:variable name="var88_filter" select="."/>
+										<xsl:variable name="var89_nested">
+											<xsl:for-each select="visaType">
+												<xsl:variable name="var90_cur" select="."/>
+												<xsl:variable name="var91_nested">
+													<xsl:value-of select="number(('UA' = $var4_cur/target))"/>
+													<xsl:value-of select="number(('UAD' = $var4_cur/target))"/>
+												</xsl:variable>
+												<xsl:value-of select="number((boolean(translate(normalize-space($var91_nested), ' 0', '')) and (. = 'R')))"/>
+											</xsl:for-each>
+										</xsl:variable>
+										<xsl:if test="boolean(translate(normalize-space($var89_nested), ' 0', ''))">
+											<IdentityDocument>
+												<xsl:for-each select="visaNumber">
+													<xsl:variable name="var92_cur" select="."/>
+													<IdentityDocumentNumber>
+														<xsl:value-of select="."/>
+													</IdentityDocumentNumber>
+												</xsl:for-each>
+												<IdentityDocumentType>
+													<xsl:value-of select="'AEA'"/>
+												</IdentityDocumentType>
+												<xsl:for-each select="visaIssueCountryCode">
+													<xsl:variable name="var93_cur" select="."/>
+													<IssuingCountryCode>
+														<xsl:value-of select="."/>
+													</IssuingCountryCode>
+												</xsl:for-each>
+												<Visa>
+													<xsl:for-each select="visaNumber">
+														<xsl:variable name="var94_cur" select="."/>
+														<VisaNumber>
+															<xsl:value-of select="."/>
+														</VisaNumber>
+													</xsl:for-each>
+													<VisaType>
+														<xsl:value-of select="'AEA'"/>
+													</VisaType>
+													<xsl:for-each select="visaHostCountryCode">
+														<xsl:variable name="var95_cur" select="."/>
+														<VisaHostCountryCode>
+															<xsl:value-of select="."/>
+														</VisaHostCountryCode>
+													</xsl:for-each>
+													<xsl:for-each select="enterBeforeDate">
+														<xsl:variable name="var96_cur" select="."/>
+														<EnterBeforeDate>
+															<xsl:value-of select="."/>
+														</EnterBeforeDate>
+													</xsl:for-each>
+													<xsl:for-each select="durationOfStay">
+														<xsl:variable name="var97_cur" select="."/>
+														<DurationOfStay>
+															<xsl:value-of select="number(.)"/>
+														</DurationOfStay>
+													</xsl:for-each>
+													<xsl:for-each select="numberOfEntries">
+														<xsl:variable name="var98_cur" select="."/>
+														<NumberOfEntries>
+															<xsl:value-of select="number(.)"/>
+														</NumberOfEntries>
+													</xsl:for-each>
+												</Visa>
+											</IdentityDocument>
+										</xsl:if>
+									</xsl:for-each>
+									<xsl:for-each select="docRef/visa">
+										<xsl:variable name="var99_filter" select="."/>
+										<xsl:variable name="var100_nested">
+											<xsl:for-each select="visaType">
+												<xsl:variable name="var101_cur" select="."/>
+												<xsl:variable name="var102_nested">
+													<xsl:value-of select="number(('UA' = $var4_cur/target))"/>
+													<xsl:value-of select="number(('UAD' = $var4_cur/target))"/>
+												</xsl:variable>
+												<xsl:value-of select="number(((. = 'K') and boolean(translate(normalize-space($var102_nested), ' 0', ''))))"/>
+											</xsl:for-each>
+										</xsl:variable>
+										<xsl:if test="boolean(translate(normalize-space($var100_nested), ' 0', ''))">
+											<IdentityDocument>
+												<xsl:for-each select="visaNumber">
+													<xsl:variable name="var103_cur" select="."/>
+													<IdentityDocumentNumber>
+														<xsl:value-of select="."/>
+													</IdentityDocumentNumber>
+												</xsl:for-each>
+												<IdentityDocumentType>
+													<xsl:value-of select="'CR'"/>
+												</IdentityDocumentType>
+												<xsl:for-each select="visaIssueCountryCode">
+													<xsl:variable name="var104_cur" select="."/>
+													<IssuingCountryCode>
+														<xsl:value-of select="."/>
+													</IssuingCountryCode>
+												</xsl:for-each>
+												<xsl:for-each select="visaIssuanceDate">
+													<xsl:variable name="var105_cur" select="."/>
+													<IssueDate>
+														<xsl:value-of select="."/>
+													</IssueDate>
+												</xsl:for-each>
+												<Visa>
+													<xsl:for-each select="visaNumber">
+														<xsl:variable name="var106_cur" select="."/>
+														<VisaNumber>
+															<xsl:value-of select="."/>
+														</VisaNumber>
+													</xsl:for-each>
+													<VisaType>
+														<xsl:value-of select="'CR'"/>
+													</VisaType>
+													<xsl:for-each select="visaHostCountryCode">
+														<xsl:variable name="var107_cur" select="."/>
+														<VisaHostCountryCode>
+															<xsl:value-of select="."/>
+														</VisaHostCountryCode>
+													</xsl:for-each>
+												</Visa>
+											</IdentityDocument>
+										</xsl:if>
+									</xsl:for-each>

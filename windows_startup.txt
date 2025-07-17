@@ -1,0 +1,5 @@
+python -m venv venv
+venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+cd .\xslt_generator\main\XSLT_Manager
+streamlit run xslt_manager.py

@@ -1,0 +1,244 @@
+[
+  {
+    "xml_output_node_path": "/root/product_id",
+    "xml_output_node_tag": "product_id",
+    "spec_type": "element",
+    "field_name": "product_id",
+    "xslt_snippet": "<product_id xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">7910e870-01d6-49e3-988c-698c8c388824</product_id>\n\n            \n            \n",
+    "inputs": [],
+    "outputs": [
+      "product_id"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/root/coverage_start_date",
+    "xml_output_node_tag": "coverage_start_date",
+    "spec_type": "element",
+    "field_name": "coverage_start_date",
+    "xslt_snippet": "<coverage_start_date xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:value-of select=\"concat(                     substring(/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate, 1, 4),                     '-',                     substring(/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate, 5, 2),                     '-',                     substring(/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate, 7, 2)                 )\"/>\n            </coverage_start_date>\n\n            \n            \n",
+    "inputs": [
+      "/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate"
+    ],
+    "outputs": [
+      "coverage_start_date"
+    ],
+    "calls": [],
+    "remarks": "Similar to the first, this one processes the departure date by extracting and concatenating the year, month, and day parts from the departureDate field, resulting in a consistent YYYYMMDD date string."
+  },
+  {
+    "xml_output_node_path": "/root/coverage_end_date",
+    "xml_output_node_tag": "coverage_end_date",
+    "spec_type": "element",
+    "field_name": "coverage_end_date",
+    "xslt_snippet": "<coverage_end_date xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:value-of select=\"concat(                     substring(/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate, 1, 4),                     '-',                     substring(/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate, 5, 2),                     '-',                     substring(/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate, 7, 2)                 )\"/>\n            </coverage_end_date>\n\n            \n            \n",
+    "inputs": [
+      "/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate"
+    ],
+    "outputs": [
+      "coverage_end_date"
+    ],
+    "calls": [],
+    "remarks": "This transformation takes an arrival date value, extracts the year (first 4 characters), the month (next 2 characters), and the day (following 2 characters), then joins them together to form a complete date in YYYYMMDD format."
+  },
+  {
+    "xml_output_node_path": "/root/coverage_start_hour_number",
+    "xml_output_node_tag": "coverage_start_hour_number",
+    "spec_type": "element",
+    "field_name": "coverage_start_hour_number",
+    "xslt_snippet": "<coverage_start_hour_number xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:value-of select=\"substring(/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureTime, 1, 2)\"/>\n            </coverage_start_hour_number>\n\n            \n            \n",
+    "inputs": [
+      "/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureTime"
+    ],
+    "outputs": [
+      "coverage_start_hour_number"
+    ],
+    "calls": [],
+    "remarks": "Substring of /ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureTime from pos 1 length 2"
+  },
+  {
+    "xml_output_node_path": "/root/coverage_end_hour_number",
+    "xml_output_node_tag": "coverage_end_hour_number",
+    "spec_type": "element",
+    "field_name": "coverage_end_hour_number",
+    "xslt_snippet": "<coverage_end_hour_number xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:value-of select=\"substring(/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalTime, 1, 2)\"/>\n            </coverage_end_hour_number>\n\n            \n            \n",
+    "inputs": [
+      "/ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalTime"
+    ],
+    "outputs": [
+      "coverage_end_hour_number"
+    ],
+    "calls": [],
+    "remarks": "Substring of /ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalTime from pos 1 length 2"
+  },
+  {
+    "xml_output_node_path": "/root/currency",
+    "xml_output_node_tag": "currency",
+    "spec_type": "element",
+    "field_name": "currency",
+    "xslt_snippet": "<currency xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:choose>\n                    <xsl:when test=\"ns0:InsuranceSmartShoppingRequest/ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:agentOverwritecurrencyelse\">\n                        <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:agentOverwritecurrencyelse\"/>\n                    </xsl:when>\n                    <xsl:otherwise>\n                        <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:preferredCurrencyCode\"/>\n                    </xsl:otherwise>\n                </xsl:choose>\n            </currency>\n\n            \n            \n",
+    "inputs": [
+      "ns0:InsuranceSmartShoppingRequest/ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:agentOverwritecurrencyelse",
+      "ns0:InsuranceSmartShoppingRequest/ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:preferredCurrencyCode"
+    ],
+    "outputs": [
+      "currency"
+    ],
+    "calls": [],
+    "remarks": "Here, the transformation looks for an agent-specified currency; if one is provided, it uses that value. If not, it defaults to the preferred currency code from the pricing information."
+  },
+  {
+    "xml_output_node_path": "/root/exposure_name",
+    "xml_output_node_tag": "exposure_name",
+    "spec_type": "element",
+    "field_name": "exposure_name",
+    "xslt_snippet": "<exposure_name xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier = 'ADE']/ns0:nameDetails/ns0:nameInformation/ns0:name\"/>\n            </exposure_name>\n\n            \n            \n",
+    "inputs": [
+      "ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier = 'ADE']/ns0:nameDetails/ns0:nameInformation/ns0:name"
+    ],
+    "outputs": [
+      "exposure_name"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier = 'ADE']/ns0:nameDetails/ns0:nameInformation/ns0:name"
+  },
+  {
+    "xml_output_node_path": "/root/exposure_total_coverage_amount",
+    "xml_output_node_tag": "exposure_total_coverage_amount",
+    "spec_type": "element",
+    "field_name": "exposure_total_coverage_amount",
+    "xslt_snippet": "<exposure_total_coverage_amount xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:variable name=\"amount\" select=\"ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:travelValue/ns0:monetaryDetails[1]/ns0:amount\"/>\n                <xsl:value-of select=\"number($amount) div 1000\"/>\n            </exposure_total_coverage_amount>\n\n            \n            \n",
+    "inputs": [
+      "ns0:InsuranceSmartShoppingRequest/ns0:insurancePlanSection/ns0:travelValue/ns0:monetaryDetails[1]/ns0:amount"
+    ],
+    "outputs": [
+      "exposure_total_coverage_amount"
+    ],
+    "calls": [],
+    "remarks": "Divide number($amount) by 1000"
+  },
+  {
+    "xml_output_node_path": "/root/lang_locale",
+    "xml_output_node_tag": "lang_locale",
+    "spec_type": "element",
+    "field_name": "lang_locale",
+    "xslt_snippet": "<lang_locale xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:variable name=\"lang\">\n                    <xsl:choose>\n                        <xsl:when test=\"ns0:InsuranceSmartShoppingRequest/ns0:languageCode/ns0:userPreferences/ns0:codedLanguage\">\n                            <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:languageCode/ns0:userPreferences/ns0:codedLanguage\"/>\n                        </xsl:when>\n                        <xsl:otherwise>\n                            <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:originatorSection/ns0:originatorDetails/@language\"/>\n                        </xsl:otherwise>\n                    </xsl:choose>\n                </xsl:variable>\n                <xsl:choose>\n                    <xsl:when test=\"$lang = 'EN'\">\n                        <xsl:text>EN-US</xsl:text>\n                    </xsl:when>\n                    <xsl:when test=\"$lang = 'FR'\">\n                        <xsl:text>FR-FR</xsl:text>\n                    </xsl:when>\n                    <xsl:otherwise>\n                        <xsl:value-of select=\"$lang\"/>\n                    </xsl:otherwise>\n                </xsl:choose>\n            </lang_locale>\n\n            \n            \n",
+    "inputs": [
+      "$lang",
+      "ns0:InsuranceSmartShoppingRequest/ns0:languageCode/ns0:userPreferences/ns0:codedLanguage",
+      "ns0:InsuranceSmartShoppingRequest/ns0:originatorSection/ns0:originatorDetails/@language"
+    ],
+    "outputs": [
+      "lang_locale"
+    ],
+    "calls": [],
+    "remarks": "This logic determines the language to use by first checking for a coded language in the user preferences. If found, it takes that; otherwise, it uses the language from the original request. Finally, it ensures the language is set either to 'EN' or 'FR'."
+  },
+  {
+    "xml_output_node_path": "/root/external_id",
+    "xml_output_node_tag": "external_id",
+    "spec_type": "element",
+    "field_name": "external_id",
+    "xslt_snippet": "<external_id xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                <xsl:text>R12A34RG</xsl:text>\n            </external_id>\n\n            \n            \n",
+    "inputs": [],
+    "outputs": [
+      "external_id"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/root/billing_address/address_line_1",
+    "xml_output_node_tag": "address_line_1",
+    "spec_type": "element",
+    "field_name": "address_line_1",
+    "xslt_snippet": "<address_line_1 xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                    <xsl:value-of select=\"//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:addressDetails/ns0:line1[1]\"/>\n                </address_line_1>\n                \n",
+    "inputs": [
+      "//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:addressDetails/ns0:line1[1]"
+    ],
+    "outputs": [
+      "address_line_1"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of //ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:addressDetails/ns0:line1[1]"
+  },
+  {
+    "xml_output_node_path": "/root/billing_address/address_line_2",
+    "xml_output_node_tag": "address_line_2",
+    "spec_type": "element",
+    "field_name": "address_line_2",
+    "xslt_snippet": "<address_line_2 xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                    <xsl:value-of select=\"//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:addressDetails/ns0:line1[2]\"/>\n                </address_line_2>\n                \n",
+    "inputs": [
+      "//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:addressDetails/ns0:line1[2]"
+    ],
+    "outputs": [
+      "address_line_2"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of //ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:addressDetails/ns0:line1[2]"
+  },
+  {
+    "xml_output_node_path": "/root/billing_address/city",
+    "xml_output_node_tag": "city",
+    "spec_type": "element",
+    "field_name": "city",
+    "xslt_snippet": "<city xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                    <xsl:value-of select=\"//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:city\"/>\n                </city>\n                \n",
+    "inputs": [
+      "//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:city"
+    ],
+    "outputs": [
+      "city"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of //ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:city"
+  },
+  {
+    "xml_output_node_path": "/root/billing_address/region",
+    "xml_output_node_tag": "region",
+    "spec_type": "element",
+    "field_name": "region",
+    "xslt_snippet": "<region xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                    <xsl:choose>\n                        <xsl:when test=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:regionDetails[ns0:qualifier='84']\">\n                            <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:regionDetails[ns0:qualifier='84']/ns0:name\"/>\n                        </xsl:when>\n                        <xsl:when test=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:locationDetails[ns0:qualifier='84']\">\n                            <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:locationDetails[ns0:qualifier='84']/ns0:name\"/>\n                        </xsl:when>\n                    </xsl:choose>\n                </region>\n                \n",
+    "inputs": [
+      "ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:locationDetails[ns0:qualifier='84']/ns0:name",
+      "ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:regionDetails[ns0:qualifier='84']/ns0:name"
+    ],
+    "outputs": [
+      "region"
+    ],
+    "calls": [],
+    "remarks": "Similar to the previous item, this transformation deals with addresses labeled 'ARE' but now looks for location and region details with the qualifier '84', outputting the respective names accordingly."
+  },
+  {
+    "xml_output_node_path": "/root/billing_address/country",
+    "xml_output_node_tag": "country",
+    "spec_type": "element",
+    "field_name": "country",
+    "xslt_snippet": "<country xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                    <xsl:choose>\n                        <xsl:when test=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:locationDetails[ns0:qualifier='162']\">\n                            <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:locationDetails[ns0:qualifier='162']/ns0:name\"/>\n                        </xsl:when>\n                        <xsl:when test=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:regionDetails[ns0:qualifier='162']\">\n                            <xsl:value-of select=\"ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:regionDetails[ns0:qualifier='162']/ns0:name\"/>\n                        </xsl:when>\n                    </xsl:choose>\n                </country>\n                \n",
+    "inputs": [
+      "ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:locationDetails[ns0:qualifier='162']/ns0:name",
+      "ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:regionDetails[ns0:qualifier='162']/ns0:name"
+    ],
+    "outputs": [
+      "country"
+    ],
+    "calls": [],
+    "remarks": "In this case, the transformation targets addresses with a specific qualifier (\u2018ARE\u2019) and a location detail qualifier of '162'. It outputs the associated location name and then, similarly, retrieves the region name for that same address type."
+  },
+  {
+    "xml_output_node_path": "/root/billing_address/postal_code",
+    "xml_output_node_tag": "postal_code",
+    "spec_type": "element",
+    "field_name": "postal_code",
+    "xslt_snippet": "<postal_code xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:ns0=\"http://www.amadeus.net\">\n                    <xsl:variable name=\"zipFromARE\" select=\"/ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:zipCode\"/>\n                    <xsl:choose>\n                        <xsl:when test=\"$zipFromARE and string($zipFromARE) != ''\">\n                            <xsl:value-of select=\"$zipFromARE\"/>\n                        </xsl:when>\n                        <xsl:otherwise>\n                            <xsl:value-of select=\"/ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:addressInfo/ns0:zipCode][1]/ns0:addressInfo/ns0:zipCode\"/>\n                        </xsl:otherwise>\n                    </xsl:choose>\n                </postal_code>\n            \n",
+    "inputs": [
+      "/ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:addressInfo/ns0:zipCode][1]/ns0:addressInfo/ns0:zipCode",
+      "/ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:zipCode"
+    ],
+    "outputs": [
+      "postal_code"
+    ],
+    "calls": [],
+    "remarks": "This transformation checks if an external postal code variable is provided and not empty; if it is, that value is used. Otherwise, it falls back to using the subscriber\u2019s zip code found in the request."
+  }
+]

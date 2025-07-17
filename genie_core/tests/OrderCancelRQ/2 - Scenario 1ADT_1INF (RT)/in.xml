@@ -1,0 +1,39 @@
+<AMA_ConnectivityLayerRQ>
+<Requests>
+	<Request>
+		<action>cancel</action>
+		<target>EK</target>
+		<Context>
+			<Retailer>
+				<code>EK</code>
+				<name>NDC</name>
+			</Retailer>
+			<correlationID>46eaab5a-fb32-4cb6-a9ed-3cab8582603e</correlationID>
+		</Context>
+		<distributionMethod>NDCX</distributionMethod>
+		<bookingSourceInfo>
+			<rloc>EK176H33KZYA3</rloc>
+		</bookingSourceInfo>
+		<TravelAgency>
+			<IATA_Number>23246672</IATA_Number>
+			<AgencyID>FRA1A27QC</AgencyID>
+			<Name>AMADEUS QA OFFICE</Name>
+			<Contact>
+				<Address>
+					<CityName>FRANKFURT</CityName>
+					<line>485 ROUTE DU PIN MONTARD</line>
+					<line>WO23328930</line>
+					<CountryCode>DE</CountryCode>
+				</Address>
+				<Email>
+					<EmailAddress>ALTEANDC_TEST@AMADEUS.COM</EmailAddress>
+				</Email>
+				<Phone>
+					<PhoneNumber>496959673330</PhoneNumber>
+				</Phone>
+			</Contact>
+		</TravelAgency>
+		<id>1</id>
+	</Request>
+</Requests>
+</AMA_ConnectivityLayerRQ>

@@ -1,0 +1,26 @@
+[
+    {
+        "question": "End the session",
+        "answer": "If you feel the XSLT is completely generated and no more questions, respond with 'No more questions detected. Exiting the process.' and end the session. Do not ask any further questions."
+    },
+    {
+        "question": "Can you confirm the default values for the following parameters: `AggregatorID`, `Name`, `AirlineDesigCode`, `AgencyID`, `ContactInfoRefID`, `IATANumber`, `Name`, `PseudoCityID`, and `VersionNumber`?",
+        "answer": "All the elements under Party node should be parameterized. Use the following default values:`AggregatorID`: `'1A'`, `Name`: `'Amadeus'`, `AirlineDesigCode`: `'KL'`, `AgencyID`: `[some random number]`, `ContactInfoRefID`: `'CIPAX'`, `IATANumber`: `[some random number]`, `Name`: `'AMADEUS PRODUCT PLANNING'`, `PseudoCityID`: `'AMS'`,`VersionNumber`: `18.2`"
+    },
+    {
+        "question": "Is the sorting logic for PaxRefIDs and ContactInfoRefIDs correctly understood and implemented?",
+        "answer": "Yes, the sorting logic is fully understood and implemented."
+    },
+    {
+        "question": "Can you confirm the static values for the first ContactInfo within DataLists/ContactInfoList?",
+        "answer": "For the first ContactInfo within DataLists/ContactInfoList, use CIPAX for ContactInfoID, NONE for EmailAddressText and 33492943273 for PhoneNumber."
+    },
+    {
+        "question": "Should the sorting logic for PaxRefIDs be applied to all products within the set",
+        "answer": "Yes, the sorting logic for PaxRefIDs should be applied to all products within the set."
+    },
+    {
+        "question": "Should the ContactInfoRefID be omitted for infants in the PaxList?",
+        "answer": "Yes, the ContactInfoRefID should be omitted for infants in the PaxList."
+    }
+]

@@ -1,0 +1,39 @@
+<AMA_ConnectivityLayerRQ>
+	<Requests>
+		<Request>
+			<action>retrieve</action>
+			<target>EK</target>
+			<Context>
+				<Retailer>
+					<code>EK</code>
+					<name>NDC</name>
+				</Retailer>
+				<correlationID>9c9d1310-e18f-4edd-9d27-34f48f4821d6</correlationID>
+			</Context>
+			<distributionMethod>NDCX</distributionMethod>
+			<bookingSourceInfo>
+				<rloc>EK176HZEDKXA6</rloc>
+			</bookingSourceInfo>
+			<TravelAgency>
+				<IATA_Number>00022665</IATA_Number>
+				<AgencyID>NCE1A27QC</AgencyID>
+				<Name>AMADEUS QA OFFICE</Name>
+				<Contact>
+					<Address>
+						<CityName>FR-06100-NICE</CityName>
+						<line>CSS-Q&T-QPL/CSS-Q&T-QPT</line>
+						<line>WO13989353</line>
+						<CountryCode>FR</CountryCode>
+					</Address>
+					<Email>
+						<EmailAddress>ALTEANDC_TEST@AMADEUS.COM</EmailAddress>
+					</Email>
+					<Phone>
+						<PhoneNumber>33 09723 0220</PhoneNumber>
+					</Phone>
+				</Contact>
+			</TravelAgency>
+			<id>1</id>
+		</Request>
+	</Requests>
+</AMA_ConnectivityLayerRQ>

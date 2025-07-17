@@ -1,0 +1,41 @@
+1. Input: NA, Output: OrderCreateRQ/@Version, Remarks: Hardcoded as 17.2
+2. Input: Request/Context/correlationID, Output: OrderCreateRQ/@CorrelationID, Remarks: Optional
+2. Input: Request/Context/correlationID, Output: OrderCreateRQ/@TransactionIdentifier, Remarks: Optional
+3. Input: NA, Output: OrderCreateRQ/PointOfSale/Location/CountryCode, Remarks: Hardcoded as FR
+4. Input: NA, Output: OrderCreateRQ/PointOfSale/Location/CityCode, Remarks: Hardcoded as NCE
+5. Input: NA, Output: OrderCreateRQ/Document/@id, Remarks: Hardcoded as document
+6. Input: NA, Output: OrderCreateRQ/Party/Sender/TravelAgencySender/PseudoCity, Remarks: Hardcoded as AH9D
+7. Input: Request/TravelAgency, Output: OrderCreateRQ/Party/Sender/TravelAgencySender
+8. Input: Request/TravelAgency/IATA_Number, Output: OrderCreateRQ/Party/Sender/TravelAgencySender/IATA_Number
+9. Input: Request/TravelAgency/IATA_Number, Output: OrderCreateRQ/Party/Sender/TravelAgencySender/AgencyID
+10. Input: Request/TravelAgency/Name, Output: OrderCreateRQ/Party/Sender/TravelAgencySender/Name
+11. Input: Request/TravelAgency/Contact/Email/EmailAddress, Output: Party/Sender/TravelAgencySender/Contacts/Contact/EmailContact/Address
+12. Input: Request/TravelAgency/Contact/Phone/PhoneNumber, Output: OrderCreateRQ/Party/Sender/TravelAgencySender/Contacts/Contact/PhoneContact/Number
+13. Input: Request/TravelAgency/Contact/Address/line, Output: Party/Sender/TravelAgencySender/Contacts/Contact/AddressContact/Street
+14. Input: Request/TravelAgency/Contact/Address/line, Output: Party/Sender/TravelAgencySender/Contacts/Contact/AddressContact/Street
+15. Input: Request/TravelAgency/Contact/Address/CityName, Output: Party/Sender/TravelAgencySender/Contacts/Contact/AddressContact/CityName
+16. Input: Request/TravelAgency/Contact/Address/Zip, Output: Party/Sender/TravelAgencySender/Contacts/Contact/AddressContact/PostalCode
+17. Input: Request/TravelAgency/Contact/Address/CountryCode, Output: Party/Sender/TravelAgencySender/Contacts/Contact/AddressContact/CountryCode
+18. Input: NA, Output: OrderCancelRQ/Party/Sender/TravelAgencySender/AgentUser/AgentUserID, Remarks: Hardcoded as xmluser001
+19. Input: Request/set, Output: OrderCreateRQ/Query/Order/Offer
+20. Input: Request/set/ID, Output: OrderCreateRQ/Query/Order/Offer/@OfferID
+21. Input: Request/set/property/Value, Output: OrderCreateRQ/Query/Order/Offer/@Owner, Remarks: Key = OwnerCode, Value is mapped to OwnerCode
+22. Input: Request/set/TID, Output: OrderCreateRQ/Query/Order/Offer/@ResponseID
+23. Input: Request/set/Product/ID, Output: OrderCreateRQ/Query/Order/Offer/OfferItem/@OfferItemID
+24. Input: Request/set/Product/RefIDs, Output: OrderCreateRQ/Query/Order/Offer/OfferItem/PassengerRefs
+25. Input: Request/set/product/EST/Data/seatNbr, Output: OrderCreateRQ/Query/Order/Offer/OfferItem/SeatSelection/Row, Remarks: Last element is column and before that is row
+26. Input: Request/set/product/EST/Data/seatNbr, Output: OrderCreateRQ/Query/Order/Offer/OfferItem/SeatSelection/Column
+27. Input: N/A, Output: Query/Payments/Payment/Method/Cash/@CashInd, Remarks: Hardcoded as "true"
+28. Input: N/A, Output: Query/Payments/Payment/Amount, Remarks: Hardcoded as "0.00"
+29. Input: Request/actor/ID, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/@PassengerID
+30. Input: Request/actor/PTC, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/PTC, Remarks: PTC supported by different NDC provider is to be supported. Please refer PTC Conversion
+31. Input: Request/address/CountryCode, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/ResidenceCountryCode, Remarks: As per Farelogix response, Residence country code is neither validated nor returned in the response. Hence the encoding is removed on our side
+32. Input: Request/actor/nationality/code, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/CitizenshipCountryCode
+33. Input: N/A, Output: OrderCreateRQ/Query/DataLists/PassengerList/Individual
+34. Input: Request/actor/DateOfBirth, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/Individual/Birthdate
+35. Input: Requests/Request/actor/Name/Type, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/Individual/Gender, Remarks: (Type is other than Gender is Unspecified and both rest it is direct mapping)
+36. Input: Request/actor/Name/Title, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/Individual/NameTitle
+37. Input: Request/actor/Name/FirstName, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/Individual/GivenName
+38. Input: Request/actor/Name/LastName, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/Individual/Surname
+39. Input: Request/actor/loyalty/companyCode, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/LoyaltyProgramAccount/Airline/AirlineDesignator
+40. Input: Request/actor/loyalty/identifier, Output: OrderCreateRQ/Query/DataLists/PassengerList/Passenger/LoyaltyProgramAccount/AccountNumber

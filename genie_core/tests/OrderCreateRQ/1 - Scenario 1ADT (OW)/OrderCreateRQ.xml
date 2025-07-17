@@ -1,0 +1,87 @@
+<OrderCreateRQ Version="17.2" CorrelationID="716c70ce-9a42-47be-b9b3-0b833a3c0bf1" TransactionIdentifier="1accabbcffce45fea16c56e3a1920f07">
+	<PointOfSale>
+		<Location>
+			<CountryCode>DE</CountryCode>
+			<CityCode>FRA</CityCode>
+		</Location>
+	</PointOfSale>
+	<Document id="document"/>
+	<Party>
+		<Sender>
+			<TravelAgencySender>
+				<Name>AMADEUS QA OFFICE</Name>
+				<Contacts>
+					<Contact>
+						<AddressContact>
+							<Street>485 ROUTE DU PIN MONTARD</Street>
+							<Street>WO23328930</Street>
+							<CityName>FRANKFURT</CityName>
+							<CountryCode>DE</CountryCode>
+						</AddressContact>
+						<EmailContact>
+							<Address>ALTEANDC_TEST@AMADEUS.COM</Address>
+						</EmailContact>
+						<PhoneContact>
+							<Number>496959673330</Number>
+						</PhoneContact>
+					</Contact>
+				</Contacts>
+				<PseudoCity>FRA1A27QC</PseudoCity>
+				<IATA_Number>23246672</IATA_Number>
+				<AgencyID>23246672</AgencyID>
+				<AgentUser>
+					<AgentUserID>xmluser001</AgentUserID>
+				</AgentUser>
+			</TravelAgencySender>
+		</Sender>
+	</Party>
+	<Query>
+		<Order>
+			<Offer Owner="EK" OfferID="P7F0B137C-5488-4574-9377e6w5iblwqti45-1" ResponseID="P7F0B137C-5488-4574-9377">
+				<OfferItem OfferItemID="P7F0B137C-5488-4574-9377e6w5iblwqti45-1-1">
+					<PassengerRefs>T1</PassengerRefs>
+				</OfferItem>
+			</Offer>
+		</Order>
+		<DataLists>
+			<PassengerList>
+				<Passenger PassengerID="T1">
+					<PTC>ADT</PTC>
+					<Individual>
+						<Birthdate>1986-03-10</Birthdate>
+						<Gender>Male</Gender>
+						<NameTitle>MR</NameTitle>
+						<GivenName>JOHN</GivenName>
+						<Surname>DOE</Surname>
+					</Individual>
+					<IdentityDocument>
+						<IdentityDocumentNumber>eqdfd1231231</IdentityDocumentNumber>
+						<IdentityDocumentType>PT</IdentityDocumentType>
+						<IssuingCountryCode>AUT</IssuingCountryCode>
+						<CitizenshipCountryCode>AUT</CitizenshipCountryCode>
+						<ExpiryDate>2028-11-23</ExpiryDate>
+						<Birthdate>1986-03-10</Birthdate>
+						<Gender>Male</Gender>
+					</IdentityDocument>
+					<ContactInfoRef>CI11</ContactInfoRef>
+				</Passenger>
+			</PassengerList>
+			<ContactList>
+				<ContactInformation ContactID="CI11">
+					<ContactType>CTC</ContactType>
+					<ContactProvided>
+						<EmailAddress>
+							<EmailAddressValue>ABC@GMAIL.COM</EmailAddressValue>
+						</EmailAddress>
+					</ContactProvided>
+					<ContactProvided>
+						<Phone>
+							<Label>operational</Label>
+							<PhoneNumber>0422497845</PhoneNumber>
+						</Phone>
+					</ContactProvided>
+				</ContactInformation>
+			</ContactList>
+		</DataLists>
+	</Query>
+</OrderCreateRQ>

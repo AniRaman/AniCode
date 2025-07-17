@@ -1,0 +1,69 @@
+<Request>
+	<action>Create</action>
+	<target>EK</target>
+	<distributionMethod>NDCX</distributionMethod>
+	<set>
+		<ID>P7F0B137C-5488-4574-9377e6w5iblwqti45-1</ID>
+		<property>
+			<key>OwnerCode</key>
+			<value>EK</value>
+		</property>
+		<TID>P7F0B137C-5488-4574-9377</TID>
+		<product>
+			<ID>P7F0B137C-5488-4574-9377e6w5iblwqti45-1-1</ID>
+			<RefIDs>1</RefIDs>
+		</product>
+	</set>
+	<actor>
+		<ID>1</ID>
+		<PTC>ADT</PTC>
+		<Name>
+			<FirstName>JOHN</FirstName>
+			<LastName>DOE</LastName>
+			<Title>MR</Title>
+			<Type>Male</Type>
+		</Name>
+		<DateOfBirth>1986-03-10</DateOfBirth>
+		<docRef>
+eqdfd1231231<type>P</type>
+eqdfd1231231<issuer>AUT</issuer>
+eqdfd1231231<nationality>AUT</nationality>
+eqdfd1231231<dateOfBirth>1986-03-10</dateOfBirth>
+eqdfd1231231<expirationDate>2028-11-23</expirationDate>
+eqdfd1231231<Surname>Doe</Surname>
+eqdfd1231231<GivenName>John</GivenName>
+eqdfd1231231<issuerIATACountryCode>AT</issuerIATACountryCode>
+eqdfd1231231<nationalityIATACode>AT</nationalityIATACode>
+		</docRef>
+		<contact>
+			<contactType>CTC</contactType>
+			<phone>
+0422497845<label>mobile</label>
+			</phone>
+			<email>ABC@GMAIL.COM</email>
+		</contact>
+	</actor>
+	<TravelAgency>
+		<IATA_Number>23246672</IATA_Number>
+		<AgencyID>FRA1A27QC</AgencyID>
+		<Name>AMADEUS QA OFFICE</Name>
+		<Contact>
+			<Address>
+				<CityName>FRANKFURT</CityName>
+				<line>485 ROUTE DU PIN MONTARD</line>
+				<line>WO23328930</line>
+				<CountryCode>DE</CountryCode>
+			</Address>
+			<Email>
+				<EmailAddress>ALTEANDC_TEST@AMADEUS.COM</EmailAddress>
+			</Email>
+			<Phone>
+				<PhoneNumber>4'9"6++9 asfasf59++-673330</PhoneNumber>
+			</Phone>
+		</Contact>
+	</TravelAgency>
+	<Context>
+		<correlationID>716c70ce-9a42-47be-b9b3-0b833a3c0bf1</correlationID>
+	</Context>
+	<id>1</id>
+</Request>

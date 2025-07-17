@@ -1,0 +1,47 @@
+1. Input: AMA_ConnectivityLayerRQ/Requests/Request/Context/correlationID
+Output: OrderCancelRQ/@CorrelationID
+
+2. Input: Hardcoded 
+Hardcoded Output: OrderCancelRQ/@TransactionIdentifier = a3cf6058c27d4e15aab6ffbff17611a6
+
+3. Input: "IN"
+Hardcoded Output: OrderCancelRQ/PointOfSale/Location/CountryCode = IN
+
+4. Input: "NCE"
+Hardcoded Output: OrderCancelRQ/PointOfSale/Location/CityCode = NCE
+
+5. Input: Hardcoded as document
+Output: OrderCancelRQ/Document/@id
+Type: Attribute
+
+6. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender
+Type: Optional
+
+7. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/Name
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/Name
+
+8. Input: Hardcoded as AH9D
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/PseudoCity
+
+9. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/IATA_Number
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/IATA_Number
+
+10. Input: AMA_ConnectivityLayerRQ/Requests/Request/TravelAgency/IATA_Number
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/AgencyID
+
+11. Input: Hardcoded as xmluser001 
+Output: OrderCancelRQ/Party/Sender/TravelAgencySender/AgentUser/AgentUserID
+
+12. Input: AMA_ConnectivityLayerRQ/Requests/Request/bookingSourceInfo/rloc
+Output: OrderCancelRQ/Query/Order/@OrderID
+Type: Attribute
+
+13. Input: AMA_ConnectivityLayerRQ/Requests/Request/Context/Retailer/code
+Output: OrderCancelRQ/Query/Order/@Owner
+Type: Attribute
+
+14. Input: N/A
+Output: Version: 17.2 or 18.1
+Type: Element
+Remarks: If the property element exists and it has key Usecase and value void the version should be 18.1. Otherwise it should be 17.2

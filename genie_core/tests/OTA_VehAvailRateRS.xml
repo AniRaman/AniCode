@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OTA_VehAvailRateRS xmlns="http://www.opentravel.org/OTA/2003/05">
+    <Success/>
+    <VehAvailRSCore>
+        <VehRentalCore PickUpDateTime="2025-05-23T13:30:00" ReturnDateTime="2025-05-24T13:30:00">
+            <PickUpLocation CodeContext="IATA" LocationCode="SFO" ExtendedLocationCode="SF02"/>
+            <ReturnLocation CodeContext="IATA" LocationCode="SFO" ExtendedLocationCode="SF02"/>
+        </VehRentalCore>
+        <VehVendorAvails>
+            <VehVendorAvail>
+                <Vendor CompanyShortName="Kyte" Code="KT"/>
+                <VehAvails>
+                    <VehAvail>
+                        <VehAvailCore Status="Available">
+                            <Vehicle CodeContext="ACRISS" AirConditionInd="true" TransmissionType="Automatic" PassengerQuantity="7" BaggageQuantity="3" VendorCarType="FFAV" Code="FFAV">
+                                <VehType VehicleCategory="3" DoorCount="4"/>
+                                <VehClass Size="8"/>
+                                <VehMakeModel Name="Volkswagen Atlas or similar"/>
+                                <PictureURL>seven_seater_suv.jpg</PictureURL>
+                            </Vehicle>
+                            <RentalRate>
+                                <RateDistance Unlimited="false" Quantity="300" DistUnitName="Mile" VehiclePeriodUnitName="RentalPeriod"/>
+                                <VehicleCharges>
+                                    <VehicleCharge Purpose="1" CurrencyCode="USD" DecimalPlaces="2" Amount="251.69" Description="Vehicle Rental" GuaranteedInd="true" IncludedInRate="true" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="251.69" UnitName="Day" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="8" CurrencyCode="USD" DecimalPlaces="2" Amount="0.45" Description="Additional distance" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="false">
+                                        <Calculation UnitCharge="0.45" UnitName="Mile" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="7" CurrencyCode="USD" DecimalPlaces="2" Amount="21.7" Description="Sales Taxes" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="21.7" UnitName="RentalPeriod" Quantity="1"/>
+                                    </VehicleCharge>
+                                </VehicleCharges>
+                                <RateQualifier RateCategory="16" CorpDiscountNmbr="expediakyteprod" RateQualifier="UNSPTD" RatePeriod="Daily" VendorRateID="fc15c362b8"/>
+                            </RentalRate>
+                            <TotalCharge RateTotalAmount="251.69" EstimatedTotalAmount="273.39" CurrencyCode="USD" DecimalPlaces="2"/>
+                        </VehAvailCore>
+                        <VehAvailInfo>
+                            <PaymentRules>
+                                <PaymentRule RuleType="4" PaymentType="5"/>
+                            </PaymentRules>
+                        </VehAvailInfo>
+                    </VehAvail>
+                    <VehAvail>
+                        <VehAvailCore Status="Available">
+                            <Vehicle CodeContext="ACRISS" AirConditionInd="true" TransmissionType="Automatic" PassengerQuantity="5" BaggageQuantity="2" VendorCarType="EDAV" Code="EDAV">
+                                <VehType VehicleCategory="1" DoorCount="4"/>
+                                <VehClass Size="3"/>
+                                <VehMakeModel Name="Toyota Corolla or similar"/>
+                                <PictureURL>compact.jpg</PictureURL>
+                            </Vehicle>
+                            <RentalRate>
+                                <RateDistance Unlimited="false" Quantity="300" DistUnitName="Mile" VehiclePeriodUnitName="RentalPeriod"/>
+                                <VehicleCharges>
+                                    <VehicleCharge Purpose="1" CurrencyCode="USD" DecimalPlaces="2" Amount="144.99" Description="Vehicle Rental" GuaranteedInd="true" IncludedInRate="true" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="144.99" UnitName="Day" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="8" CurrencyCode="USD" DecimalPlaces="2" Amount="0.45" Description="Additional distance" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="false">
+                                        <Calculation UnitCharge="0.45" UnitName="Mile" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="7" CurrencyCode="USD" DecimalPlaces="2" Amount="12.51" Description="Sales Taxes" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="12.51" UnitName="RentalPeriod" Quantity="1"/>
+                                    </VehicleCharge>
+                                </VehicleCharges>
+                                <RateQualifier RateCategory="16" CorpDiscountNmbr="expediakyteprod" RateQualifier="UNSPTD" RatePeriod="Daily" VendorRateID="60fd6907c2"/>
+                            </RentalRate>
+                            <TotalCharge RateTotalAmount="144.99" EstimatedTotalAmount="157.5" CurrencyCode="USD" DecimalPlaces="2"/>
+                        </VehAvailCore>
+                        <VehAvailInfo>
+                            <PaymentRules>
+                                <PaymentRule RuleType="4" PaymentType="5"/>
+                            </PaymentRules>
+                        </VehAvailInfo>
+                    </VehAvail>
+                    <VehAvail>
+                        <VehAvailCore Status="Available">
+                            <Vehicle CodeContext="ACRISS" AirConditionInd="true" TransmissionType="Automatic" PassengerQuantity="5" BaggageQuantity="3" VendorCarType="FDAV" Code="FDAV">
+                                <VehType VehicleCategory="1" DoorCount="4"/>
+                                <VehClass Size="8"/>
+                                <VehMakeModel Name="Volkswagen Jetta or similar"/>
+                                <PictureURL>midsize.jpg</PictureURL>
+                            </Vehicle>
+                            <RentalRate>
+                                <RateDistance Unlimited="false" Quantity="300" DistUnitName="Mile" VehiclePeriodUnitName="RentalPeriod"/>
+                                <VehicleCharges>
+                                    <VehicleCharge Purpose="1" CurrencyCode="USD" DecimalPlaces="2" Amount="142.79" Description="Vehicle Rental" GuaranteedInd="true" IncludedInRate="true" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="142.79" UnitName="Day" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="8" CurrencyCode="USD" DecimalPlaces="2" Amount="0.45" Description="Additional distance" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="false">
+                                        <Calculation UnitCharge="0.45" UnitName="Mile" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="7" CurrencyCode="USD" DecimalPlaces="2" Amount="12.31" Description="Sales Taxes" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="12.31" UnitName="RentalPeriod" Quantity="1"/>
+                                    </VehicleCharge>
+                                </VehicleCharges>
+                                <RateQualifier RateCategory="16" CorpDiscountNmbr="expediakyteprod" RateQualifier="UNSPTD" RatePeriod="Daily" VendorRateID="4763d613d9"/>
+                            </RentalRate>
+                            <TotalCharge RateTotalAmount="142.79" EstimatedTotalAmount="155.1" CurrencyCode="USD" DecimalPlaces="2"/>
+                        </VehAvailCore>
+                        <VehAvailInfo>
+                            <PaymentRules>
+                                <PaymentRule RuleType="4" PaymentType="5"/>
+                            </PaymentRules>
+                        </VehAvailInfo>
+                    </VehAvail>
+                    <VehAvail>
+                        <VehAvailCore Status="Available">
+                            <Vehicle CodeContext="ACRISS" AirConditionInd="true" TransmissionType="Automatic" PassengerQuantity="5" BaggageQuantity="3" VendorCarType="SFAV" Code="SFAV">
+                                <VehType VehicleCategory="3" DoorCount="4"/>
+                                <VehClass Size="7"/>
+                                <VehMakeModel Name="Volkswagen Tiguan or similar"/>
+                                <PictureURL>suv.jpg</PictureURL>
+                            </Vehicle>
+                            <RentalRate>
+                                <RateDistance Unlimited="false" Quantity="300" DistUnitName="Mile" VehiclePeriodUnitName="RentalPeriod"/>
+                                <VehicleCharges>
+                                    <VehicleCharge Purpose="1" CurrencyCode="USD" DecimalPlaces="2" Amount="153.79" Description="Vehicle Rental" GuaranteedInd="true" IncludedInRate="true" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="153.79" UnitName="Day" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="8" CurrencyCode="USD" DecimalPlaces="2" Amount="0.45" Description="Additional distance" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="false">
+                                        <Calculation UnitCharge="0.45" UnitName="Mile" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="7" CurrencyCode="USD" DecimalPlaces="2" Amount="13.27" Description="Sales Taxes" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="13.27" UnitName="RentalPeriod" Quantity="1"/>
+                                    </VehicleCharge>
+                                </VehicleCharges>
+                                <RateQualifier RateCategory="16" CorpDiscountNmbr="expediakyteprod" RateQualifier="UNSPTD" RatePeriod="Daily" VendorRateID="8ffbe8c4cd"/>
+                            </RentalRate>
+                            <TotalCharge RateTotalAmount="153.79" EstimatedTotalAmount="167.06" CurrencyCode="USD" DecimalPlaces="2"/>
+                        </VehAvailCore>
+                        <VehAvailInfo>
+                            <PaymentRules>
+                                <PaymentRule RuleType="4" PaymentType="5"/>
+                            </PaymentRules>
+                        </VehAvailInfo>
+                    </VehAvail>
+                    <VehAvail>
+                        <VehAvailCore Status="Available">
+                            <Vehicle CodeContext="ACRISS" AirConditionInd="true" TransmissionType="Automatic" PassengerQuantity="5" BaggageQuantity="3" VendorCarType="IFDV" Code="IFDV">
+                                <VehType VehicleCategory="3" DoorCount="4"/>
+                                <VehClass Size="6"/>
+                                <VehMakeModel Name="Hyundai Tucson or similar"/>
+                                <PictureURL>awd.jpg</PictureURL>
+                            </Vehicle>
+                            <RentalRate>
+                                <RateDistance Unlimited="false" Quantity="300" DistUnitName="Mile" VehiclePeriodUnitName="RentalPeriod"/>
+                                <VehicleCharges>
+                                    <VehicleCharge Purpose="1" CurrencyCode="USD" DecimalPlaces="2" Amount="162.59" Description="Vehicle Rental" GuaranteedInd="true" IncludedInRate="true" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="162.59" UnitName="Day" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="8" CurrencyCode="USD" DecimalPlaces="2" Amount="0.45" Description="Additional distance" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="false">
+                                        <Calculation UnitCharge="0.45" UnitName="Mile" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="7" CurrencyCode="USD" DecimalPlaces="2" Amount="14.02" Description="Sales Taxes" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="14.02" UnitName="RentalPeriod" Quantity="1"/>
+                                    </VehicleCharge>
+                                </VehicleCharges>
+                                <RateQualifier RateCategory="16" CorpDiscountNmbr="expediakyteprod" RateQualifier="UNSPTD" RatePeriod="Daily" VendorRateID="f7783936c9"/>
+                            </RentalRate>
+                            <TotalCharge RateTotalAmount="162.59" EstimatedTotalAmount="176.61" CurrencyCode="USD" DecimalPlaces="2"/>
+                        </VehAvailCore>
+                        <VehAvailInfo>
+                            <PaymentRules>
+                                <PaymentRule RuleType="4" PaymentType="5"/>
+                            </PaymentRules>
+                        </VehAvailInfo>
+                    </VehAvail>
+                    <VehAvail>
+                        <VehAvailCore Status="Available">
+                            <Vehicle CodeContext="ACRISS" AirConditionInd="true" TransmissionType="Automatic" PassengerQuantity="5" BaggageQuantity="3" VendorCarType="LFAV" Code="LFAV">
+                                <VehType VehicleCategory="3" DoorCount="4"/>
+                                <VehClass Size="9"/>
+                                <VehMakeModel Name="Audi Q3 or similar"/>
+                                <PictureURL>premium.jpg</PictureURL>
+                            </Vehicle>
+                            <RentalRate>
+                                <RateDistance Unlimited="false" Quantity="300" DistUnitName="Mile" VehiclePeriodUnitName="RentalPeriod"/>
+                                <VehicleCharges>
+                                    <VehicleCharge Purpose="1" CurrencyCode="USD" DecimalPlaces="2" Amount="224.19" Description="Vehicle Rental" GuaranteedInd="true" IncludedInRate="true" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="224.19" UnitName="Day" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="8" CurrencyCode="USD" DecimalPlaces="2" Amount="0.45" Description="Additional distance" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="false">
+                                        <Calculation UnitCharge="0.45" UnitName="Mile" Quantity="1"/>
+                                    </VehicleCharge>
+                                    <VehicleCharge Purpose="7" CurrencyCode="USD" DecimalPlaces="2" Amount="19.34" Description="Sales Taxes" GuaranteedInd="true" IncludedInRate="false" IncludedInEstTotalInd="true">
+                                        <Calculation UnitCharge="19.34" UnitName="RentalPeriod" Quantity="1"/>
+                                    </VehicleCharge>
+                                </VehicleCharges>
+                                <RateQualifier RateCategory="16" CorpDiscountNmbr="expediakyteprod" RateQualifier="UNSPTD" RatePeriod="Daily" VendorRateID="a30c228a3c"/>
+                            </RentalRate>
+                            <TotalCharge RateTotalAmount="224.19" EstimatedTotalAmount="243.53" CurrencyCode="USD" DecimalPlaces="2"/>
+                        </VehAvailCore>
+                        <VehAvailInfo>
+                            <PaymentRules>
+                                <PaymentRule RuleType="4" PaymentType="5"/>
+                            </PaymentRules>
+                        </VehAvailInfo>
+                    </VehAvail>
+                </VehAvails>
+                <Info>
+                    <LocationDetails AtAirport="true" Code="SFO" Name="San Francisco International Airport" CodeContext="IATA" ExtendedLocationCode="SF02">
+                        <Address FormattedInd="false">
+                            <StreetNmbr>500</StreetNmbr>
+                            <AddressLine>John Daly Blvd</AddressLine>
+                            <CityName>Daly City</CityName>
+                            <PostalCode>94014</PostalCode>
+                            <CountryName Code="US">United States of America</CountryName>
+                        </Address>
+                        <Telephone PhoneNumber="+1-415-340-4850" PhoneTechType="1"/>
+                        <AdditionalInfo>
+                            <VehRentLocInfos>
+<VehRentLocInfo Type="10">
+<SubSection>
+<Paragraph>
+<Text>1. Meet us at Daly City Station:
+ 
+Our driver will meet you in at the curb of the Daly City station, 500 John Daly Boulevard, Daly City. Track their location using the Kyte app. You will need to take a 15-20 minute train ride (public transit fees apply). This saves time and avoids the airport rental counters.
+ 
+2. Schedule your pickup for at least 60 minutes after landing:
+ 
+If you land at 3:30, schedule your pickup for 4:30. For international flights and/or checked baggage, allow a total buffer of 90-120 minutes.
+ 
+3. Full meeting instructions and booking edits:
+ 
+Check your email or the Kyte app for detailed handover instructions after booking. If your flight is delayed, please update your scheduled delivery time in the Kyte app or contact customer support.</Text>
+</Paragraph>
+</SubSection>
+</VehRentLocInfo>
+</VehRentLocInfos>
+                            <CounterLocation Location="3"/>
+                            <OperationSchedules>
+                                <OperationSchedule>
+                                    <OperationTimes>
+                                        <OperationTime Sun="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Mon="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Tue="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Weds="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Thur="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Fri="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Sat="true" Start="07:00:00" End="22:00:00"/>
+                                    </OperationTimes>
+                                </OperationSchedule>
+                            </OperationSchedules>
+                        </AdditionalInfo>
+                    </LocationDetails>
+                    <LocationDetails AtAirport="true" Code="SFO" Name="San Francisco International Airport" CodeContext="IATA" ExtendedLocationCode="SF02">
+                        <Address FormattedInd="false">
+                            <StreetNmbr>500</StreetNmbr>
+                            <AddressLine>John Daly Blvd</AddressLine>
+                            <CityName>Daly City</CityName>
+                            <PostalCode>94014</PostalCode>
+                            <CountryName Code="US">United States of America</CountryName>
+                        </Address>
+                        <Telephone PhoneNumber="+1-415-340-4850" PhoneTechType="1"/>
+                        <AdditionalInfo>
+                            <VehRentLocInfos>
+<VehRentLocInfo Type="10">
+<SubSection>
+<Paragraph>
+<Text>1. Meet us at Daly City Station:
+ 
+Our driver will meet you in at the curb of the Daly City station, 500 John Daly Boulevard, Daly City. Track their location using the Kyte app. You will need to take a 15-20 minute train ride (public transit fees apply). This saves time and avoids the airport rental counters.
+ 
+2. Schedule your pickup for at least 60 minutes after landing:
+ 
+If you land at 3:30, schedule your pickup for 4:30. For international flights and/or checked baggage, allow a total buffer of 90-120 minutes.
+ 
+3. Full meeting instructions and booking edits:
+ 
+Check your email or the Kyte app for detailed handover instructions after booking. If your flight is delayed, please update your scheduled delivery time in the Kyte app or contact customer support.</Text>
+</Paragraph>
+</SubSection>
+</VehRentLocInfo>
+</VehRentLocInfos>
+                            <CounterLocation Location="3"/>
+                            <OperationSchedules>
+                                <OperationSchedule>
+                                    <OperationTimes>
+                                        <OperationTime Sun="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Mon="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Tue="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Weds="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Thur="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Fri="true" Start="07:00:00" End="22:00:00"/>
+                                        <OperationTime Sat="true" Start="07:00:00" End="22:00:00"/>
+                                    </OperationTimes>
+                                </OperationSchedule>
+                            </OperationSchedules>
+                        </AdditionalInfo>
+                    </LocationDetails>
+                </Info>
+            </VehVendorAvail>
+        </VehVendorAvails>
+    </VehAvailRSCore>
+</OTA_VehAvailRateRS>

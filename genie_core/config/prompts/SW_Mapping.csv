@@ -1,0 +1,48 @@
+﻿Field,IPPRequest / ISHORQ (Source),Ancileo Request (Target),M/C/O,Description
+Product ID ,,product_id,M,Identifier for the Product used to define behavior for Quotes and Guarantees - provided by SensibleWeather
+,,,,eg: 7910e870-01d6-49e3-988c-698c8c388824
+,,,,Every hotel chain has a unique product ID 
+,,,,IPP to use the Hotel name coming in the request to identify a Hotel chain and accordingly build the request.
+Coverage start date ,/InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/departureDate,coverage_start_date,M,The day on which coverage begins
+,,,,10/1/2021
+Coverage end date ,/InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/arrivalDate,coverage_end_date,M,The day on which coverage ends
+,,,,eg: 2021-10-04
+Coverage start hour (24 hr format),/InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/departureTime,coverage_start_hour_number,O,The hour when coverage should begin on each of the covered days - overrides the Product default if provided. Required if the Product has no default. Should be provided in the local time of the location of the guarantee.
+,,,,Build only the hour number 
+Coverage end hour (24 hr format),/InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/arrivalTime,coverage_end_hour_number,M,The hour when coverage should end on each of the covered days - overrides the Product default if provided. Required if the Product has no default. Should be provided in the local time of the location of the guarantee.
+,,,,Build only the hour number
+Currency ,/InsuranceSmartShoppingRequest/insuranceOptionSection/insuranceOptionDetails/pricingInformations/agentOverwritecurrency,currency,M,3 character ISO code representing the currency of the quote - overrides the Product default if provided.
+,,,,
+,else ,,,eg: USD 
+,,,,
+,/InsuranceSmartShoppingRequest/insuranceOptionSection/insuranceOptionDetails/pricingInformations/preferredCurrencyCode,,,
+Exposure name ,"/subscriberAddressSection[1]/nameDetails/qualifier=""ADE""/name",exposure_name,M,"The human-readable/user-facing name of the location or experience being covered. This field has a character limit of 50, any longer content will be truncated."
+,,,,Exposure name is nothing but the hotel name. We do have this information coming to IPP
+,,,,Eg: Diablo Canyon Campsite 14A
+Exposure latitude ,,exposure_latitude,O,The latitude in decimal degrees of the exposure location
+,,,,eg: 35.8048664
+Exposure longitude ,,exposure_longitude,O,The longitude in decimal degrees of the exposure location
+,,,,eg: -106.1389522
+Total coverage amount ,/InsuranceSmartShoppingRequest/insurancePlanSection/travelValue/monetaryDetails[1]/amount,exposure_total_coverage_amount,M,The total value of the exposure to be covered
+,,,,Amount to be divided by 1000
+,,,,eg: 300.51
+,,,,Send the trip value including taxes 
+Language (Local),Pick the language from InsuranceSmartShoppingRequest/languageCode/userPreferences/codedLanguage,lang_locale,C,eg : en-US
+,"if present, else",,,Currently only 2 languages are supported EN and FR. 
+,/originatorSection/originatorDetails/@language,,,More languages would be added in 2024 
+,,,,User preferred language can be sent 
+External ID ,,external_id,O,"An identifier used to associate a Quote to an order/reservation/booking in another system if available. Alternatively, a shopping cart ID or another type of unique session ID can be used to aggregate Quotes for a browsing experience by a customer"
+,,,,eg : R1294868
+Billing Address,,,,
+Address Line 1,subscriberAddressSection[1]/addressInfo/addressDetails/line1,billing_address.address_line_1,,
+Address Line 2,subscriberAddressSection[1]/addressInfo/addressDetails/line2,billing_address.address_line_2,,
+City,subscriberAddressSection[1]/addressInfo/city,billing_address.city,,
+Region,Check for /addressInfo/regionDetails/qualifier = 84,billing_address.region,,
+,"If found, pick up the state from /addressInfo/regionDetails/name ",,,
+,"If not found, check if /addressInfo/locationDetails/qualifier = 84",,,
+,"If yes, pick up the state from /addressInfo/locationDetails/name",,,
+country,Check for /addressInfo/locationDetails/qualifier = 162,billing_address.country,,
+,"If found, pick up the country from /addressInfo/locationDetails/name",,,
+,"If not found, chec if /addressInfo/regionDetails/qualifier = 162",,,
+,If yes /addressInfo/regionDetails/name ,,,
+postal code,subscriberAddressSection[1]/addressInfo/zipCode,billing_address.postal_code,,

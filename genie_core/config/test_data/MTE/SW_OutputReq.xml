@@ -1,0 +1,20 @@
+<root>
+	<product_id>7910e870-01d6-49e3-988c-698c8c388824</product_id>
+	<coverage_start_date>2024-09-16</coverage_start_date>
+	<coverage_end_date>2024-09-17</coverage_end_date>
+	<coverage_start_hour_number>12</coverage_start_hour_number>
+	<coverage_end_hour_number>12</coverage_end_hour_number>
+	<currency>EUR</currency>
+	<exposure_name>Inn At Aspen</exposure_name>
+	<exposure_total_coverage_amount>303.6</exposure_total_coverage_amount>
+	<lang_locale>EN-US</lang_locale>
+	<external_id>R12A34RG</external_id>
+	<billing_address>
+		<address_line_1>House 123</address_line_1>
+		<address_line_2>House 456</address_line_2>
+		<city>Seatle</city>
+		<region>LA</region>
+		<country>US</country>
+		<postal_code>81611-2506</postal_code>
+	</billing_address>
+</root>

@@ -1,0 +1,205 @@
+<IATA_OrderViewRS>
+    <Response>
+        <DataLists>
+            <ContactInfoList>
+                <ContactInfo>
+                    <ContactInfoID>con-1</ContactInfoID>
+                    <EmailAddress>
+                        <EmailAddressText>JEAN.DUPONT@EMAIL.COM</EmailAddressText>
+                    </EmailAddress>
+                    <Phone>
+                        <ContactTypeText>Home</ContactTypeText>
+                        <PhoneNumber>33650254588</PhoneNumber>
+                    </Phone>
+                    <Address>
+                        <home>bengaluru</home>
+                    </Address>
+                </ContactInfo>
+            </ContactInfoList>
+            <DatedMarketingSegmentList>
+                <DatedMarketingSegment>
+                    <Arrival>
+                        <AircraftScheduledDateTime>2025-04-04T08:45:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>ORY</IATA_LocationCode>
+                    </Arrival>
+                    <CarrierDesigCode>VY</CarrierDesigCode>
+                    <DatedMarketingSegmentId>Mkt-seg829673412</DatedMarketingSegmentId>
+                    <DatedOperatingSegmentRefId>Opr-seg829673412</DatedOperatingSegmentRefId>
+                    <Dep>
+                        <AircraftScheduledDateTime>2025-04-04T06:50:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>BCN</IATA_LocationCode>
+                    </Dep>
+                    <MarketingCarrierFlightNumberText>8000</MarketingCarrierFlightNumberText>
+                </DatedMarketingSegment>
+            </DatedMarketingSegmentList>
+            <DatedOperatingLegList>
+                <DatedOperatingLeg>
+                    <Arrival>
+                        <AircraftScheduledDateTime>2025-04-04T08:45:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>ORY</IATA_LocationCode>
+                    </Arrival>
+                    <CarrierAircraftType>
+                        <CarrierAircraftTypeCode>32A</CarrierAircraftTypeCode>
+                    </CarrierAircraftType>
+                    <DatedOperatingLegID>seg829673412-leg0</DatedOperatingLegID>
+                    <Dep>
+                        <AircraftScheduledDateTime>2025-04-04T06:50:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>BCN</IATA_LocationCode>
+                    </Dep>
+                </DatedOperatingLeg>
+            </DatedOperatingLegList>
+            <DatedOperatingSegmentList>
+                <DatedOperatingSegment>
+                    <CarrierDesigCode>VY</CarrierDesigCode>
+                    <DatedOperatingLegRefID>seg829673412-leg0</DatedOperatingLegRefID>
+                    <DatedOperatingSegmentId>Opr-seg829673412</DatedOperatingSegmentId>
+                    <Duration>PT1H55M</Duration>
+                    <OperatingCarrierFlightNumberText>8000</OperatingCarrierFlightNumberText>
+                </DatedOperatingSegment>
+            </DatedOperatingSegmentList>
+            <PaxJourneyList>
+                <PaxJourney>
+                    <PaxJourneyID>fl829673412</PaxJourneyID>
+                    <PaxSegmentRefID>seg829673412</PaxSegmentRefID>
+                </PaxJourney>
+            </PaxJourneyList>
+            <PaxList>
+                <Pax>
+                    <ContactInfoRefID>con-1</ContactInfoRefID>
+                    <Individual>
+                        <Birthdate>1980-01-01</Birthdate>
+                        <GenderCode>M</GenderCode>
+                        <GivenName>JEAN</GivenName>
+                        <IndividualID>A174297208</IndividualID>
+                        <Surname>DUPONT</Surname>
+                        <TitleName>MR</TitleName>
+                    </Individual>
+                    <PaxID>A174297208</PaxID>
+                    <PTC>ADT</PTC>
+                    <Remark>
+                        <RemarkText>PAX1</RemarkText>
+                    </Remark>
+                </Pax>
+            </PaxList>
+            <PaxSegmentList>
+                <PaxSegment>
+                    <CabinTypeAssociationChoice>
+                        <SegmentCabinType>
+                            <CabinTypeCode>5</CabinTypeCode>
+                            <CabinTypeName>Economy</CabinTypeName>
+                        </SegmentCabinType>
+                    </CabinTypeAssociationChoice>
+                    <DatedMarketingSegmentRefId>Mkt-seg829673412</DatedMarketingSegmentRefId>
+                    <PaxSegmentID>seg829673412</PaxSegmentID>
+                </PaxSegment>
+            </PaxSegmentList>
+            <PriceClassList>
+                <PriceClass>
+                    <Code>BA</Code>
+                    <Desc>
+                        <DescText>Basic Economy</DescText>
+                    </Desc>
+                    <FareBasisCode>DQI3NDC1</FareBasisCode>
+                    <Name>Basic</Name>
+                    <PriceClassID>pc01802377349</PriceClassID>
+                </PriceClass>
+            </PriceClassList>
+        </DataLists>
+        <Order>
+            <OrderID>IH6JHK</OrderID>
+            <OrderItem>
+                <FareDetail>
+                    <FareComponent>
+                        <CabinType>
+                            <CabinTypeCode>5</CabinTypeCode>
+                            <CabinTypeName>Economy</CabinTypeName>
+                        </CabinType>
+                        <FareBasisCode>DQI3NDC1</FareBasisCode>
+                        <FareRule>
+                            <Remark>
+                                <RemarkText>Non-Refundable / Changes Restricted</RemarkText>
+                            </Remark>
+                        </FareRule>
+                        <PaxSegmentRefID>seg829673412</PaxSegmentRefID>
+                        <PriceClassRefID>pc01802377349</PriceClassRefID>
+                        <RBD>
+                            <RBD_Code>DK</RBD_Code>
+                        </RBD>
+                    </FareComponent>
+                    <PaxRefID>A174297208</PaxRefID>
+                    <Price>
+                        <BaseAmount CurCode="EUR">26.99</BaseAmount>
+                        <Fee>
+                            <Amount CurCode="EUR">17.84</Amount>
+                            <DescText>JD added</DescText>
+                            <DesigText>JD</DesigText>
+                        </Fee>
+                        <Surcharge>
+                            <Breakdown>
+                                <Amount CurCode="EUR">1.87</Amount>
+                                <DesigText>Q</DesigText>
+                            </Breakdown>
+                            <TotalAmount CurCode="EUR">1.87</TotalAmount>
+                        </Surcharge>
+                        <TotalAmount CurCode="EUR">46.70</TotalAmount>
+                    </Price>
+                </FareDetail>
+                <OrderItemID>IH6JHK-BCNORY-VY8000-ADT-FLIGHT</OrderItemID>
+                <OwnerCode>VY</OwnerCode>
+                <PaymentTimeLimitDateTime>2025-01-02T05:11:05Z</PaymentTimeLimitDateTime>
+                <Price>
+                    <BaseAmount CurCode="EUR">26.99</BaseAmount>
+                    <Fee>
+                        <Amount CurCode="EUR">17.84</Amount>
+                        <DescText>JD added</DescText>
+                        <DesigText>JD</DesigText>
+                    </Fee>
+                    <Surcharge>
+                        <Breakdown>
+                            <Amount CurCode="EUR">1.87</Amount>
+                            <DesigText>Q</DesigText>
+                        </Breakdown>
+                        <TotalAmount CurCode="EUR">1.87</TotalAmount>
+                    </Surcharge>
+                    <TotalAmount CurCode="EUR">46.70</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>VY</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>IH6JHK</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>CONFIRMED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <PaxSegmentRef>
+                            <PaxSegmentRefID>seg829673412</PaxSegmentRefID>
+                        </PaxSegmentRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A174297208</PaxRefID>
+                    <ServiceID>s-BCNORY-VY8000-A174297208-FLT</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OwnerCode>VY</OwnerCode>
+            <StatusCode>OPENED</StatusCode>
+            <TotalPrice>
+                <TotalAmount CurCode="EUR">46.70</TotalAmount>
+            </TotalPrice>
+        </Order>
+        <Warning>
+            <DescText>Order is underpaid</DescText>
+            <LangCode>en</LangCode>
+            <TypeCode>OF2003</TypeCode>
+        </Warning>
+    </Response>
+    <PayloadAttributes>
+        <CorrelationID xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes">aad96569-af49-4c65-9e05-c823cd918cae</CorrelationID>
+        <Timestamp xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes">2025-01-02T04:11:06.3216419Z</Timestamp>
+        <VersionNumber xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes">21.3</VersionNumber>
+    </PayloadAttributes>
+</IATA_OrderViewRS>

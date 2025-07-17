@@ -1,0 +1,1392 @@
+<IATA_OrderViewRS>
+    <Response>
+        <DataLists>
+            <BaggageAllowanceList>
+                <BaggageAllowance>
+                    <ApplicablePartyText>Traveler</ApplicablePartyText>
+                    <BaggageAllowanceID>bag0477654084</BaggageAllowanceID>
+                    <PieceAllowance>
+                        <TotalQty>1</TotalQty>
+                    </PieceAllowance>
+                    <TypeCode>CarryOn</TypeCode>
+                    <WeightAllowance>
+                        <MaximumWeightMeasure>5</MaximumWeightMeasure>
+                        <WeightUnitOfMeasurement>KGM</WeightUnitOfMeasurement>
+                    </WeightAllowance>
+                </BaggageAllowance>
+                <BaggageAllowance>
+                    <ApplicablePartyText>Traveler</ApplicablePartyText>
+                    <BaggageAllowanceID>bag057295524</BaggageAllowanceID>
+                    <PieceAllowance>
+                        <TotalQty>1</TotalQty>
+                    </PieceAllowance>
+                    <TypeCode>Checked</TypeCode>
+                    <WeightAllowance>
+                        <MaximumWeightMeasure>40</MaximumWeightMeasure>
+                        <WeightUnitOfMeasurement>KGM</WeightUnitOfMeasurement>
+                    </WeightAllowance>
+                </BaggageAllowance>
+                <BaggageAllowance>
+                    <ApplicablePartyText>Traveler</ApplicablePartyText>
+                    <BaggageAllowanceID>bag0636035772</BaggageAllowanceID>
+                    <PieceAllowance>
+                        <TotalQty>1</TotalQty>
+                    </PieceAllowance>
+                    <TypeCode>Checked</TypeCode>
+                    <WeightAllowance>
+                        <MaximumWeightMeasure>32</MaximumWeightMeasure>
+                        <WeightUnitOfMeasurement>KGM</WeightUnitOfMeasurement>
+                    </WeightAllowance>
+                </BaggageAllowance>
+            </BaggageAllowanceList>
+            <DatedMarketingSegmentList>
+                <DatedMarketingSegment>
+                    <Arrival>
+                        <AircraftScheduledDateTime>2024-11-14T20:00:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>DEN</IATA_LocationCode>
+                    </Arrival>
+                    <CarrierDesigCode>NV</CarrierDesigCode>
+                    <DatedMarketingSegmentId>Mkt-seg01493101466</DatedMarketingSegmentId>
+                    <DatedOperatingSegmentRefId>Opr-seg01493101466</DatedOperatingSegmentRefId>
+                    <Dep>
+                        <AircraftScheduledDateTime>2024-11-14T19:00:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>SLC</IATA_LocationCode>
+                    </Dep>
+                    <MarketingCarrierFlightNumberText>5653</MarketingCarrierFlightNumberText>
+                </DatedMarketingSegment>
+                <DatedMarketingSegment>
+                    <Arrival>
+                        <AircraftScheduledDateTime>2024-11-18T22:00:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>SLC</IATA_LocationCode>
+                    </Arrival>
+                    <CarrierDesigCode>NV</CarrierDesigCode>
+                    <DatedMarketingSegmentId>Mkt-seg01062534542</DatedMarketingSegmentId>
+                    <DatedOperatingSegmentRefId>Opr-seg01062534542</DatedOperatingSegmentRefId>
+                    <Dep>
+                        <AircraftScheduledDateTime>2024-11-18T20:00:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>DEN</IATA_LocationCode>
+                    </Dep>
+                    <MarketingCarrierFlightNumberText>5627</MarketingCarrierFlightNumberText>
+                </DatedMarketingSegment>
+            </DatedMarketingSegmentList>
+            <DatedOperatingLegList>
+                <DatedOperatingLeg>
+                    <Arrival>
+                        <AircraftScheduledDateTime>2024-11-14T20:00:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>DEN</IATA_LocationCode>
+                    </Arrival>
+                    <CarrierAircraftType>
+                        <CarrierAircraftTypeCode>ATA-200</CarrierAircraftTypeCode>
+                    </CarrierAircraftType>
+                    <DatedOperatingLegID>seg01493101466-leg0</DatedOperatingLegID>
+                    <Dep>
+                        <AircraftScheduledDateTime>2024-11-14T19:00:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>SLC</IATA_LocationCode>
+                    </Dep>
+                </DatedOperatingLeg>
+                <DatedOperatingLeg>
+                    <Arrival>
+                        <AircraftScheduledDateTime>2024-11-18T22:00:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>SLC</IATA_LocationCode>
+                    </Arrival>
+                    <CarrierAircraftType>
+                        <CarrierAircraftTypeCode>380-800</CarrierAircraftTypeCode>
+                    </CarrierAircraftType>
+                    <DatedOperatingLegID>seg01062534542-leg0</DatedOperatingLegID>
+                    <Dep>
+                        <AircraftScheduledDateTime>2024-11-18T20:00:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>DEN</IATA_LocationCode>
+                    </Dep>
+                </DatedOperatingLeg>
+            </DatedOperatingLegList>
+            <DatedOperatingSegmentList>
+                <DatedOperatingSegment>
+                    <CarrierDesigCode>NV</CarrierDesigCode>
+                    <DatedOperatingLegRefID>seg01493101466-leg0</DatedOperatingLegRefID>
+                    <DatedOperatingSegmentId>Opr-seg01493101466</DatedOperatingSegmentId>
+                    <Duration>PT1H</Duration>
+                    <OperatingCarrierFlightNumberText>5653</OperatingCarrierFlightNumberText>
+                </DatedOperatingSegment>
+                <DatedOperatingSegment>
+                    <CarrierDesigCode>NV</CarrierDesigCode>
+                    <DatedOperatingLegRefID>seg01062534542-leg0</DatedOperatingLegRefID>
+                    <DatedOperatingSegmentId>Opr-seg01062534542</DatedOperatingSegmentId>
+                    <Duration>PT2H</Duration>
+                    <OperatingCarrierFlightNumberText>5627</OperatingCarrierFlightNumberText>
+                </DatedOperatingSegment>
+            </DatedOperatingSegmentList>
+            <PaxJourneyList>
+                <PaxJourney>
+                    <PaxJourneyID>fl01493101466</PaxJourneyID>
+                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                </PaxJourney>
+                <PaxJourney>
+                    <PaxJourneyID>fl01062534542</PaxJourneyID>
+                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                </PaxJourney>
+            </PaxJourneyList>
+            <PaxList>
+                <Pax>
+                    <Individual>
+                        <Birthdate>1989-06-15</Birthdate>
+                        <GenderCode>F</GenderCode>
+                        <GivenName>Tabitha</GivenName>
+                        <IndividualID>A459980</IndividualID>
+                        <Surname>Matthews</Surname>
+                    </Individual>
+                    <PaxID>A459980</PaxID>
+                    <PTC>ADT</PTC>
+                </Pax>
+                <Pax>
+                    <Individual>
+                        <Birthdate>1994-08-04</Birthdate>
+                        <GenderCode>M</GenderCode>
+                        <GivenName>Jim</GivenName>
+                        <IndividualID>A459981</IndividualID>
+                        <Surname>Matthews</Surname>
+                    </Individual>
+                    <PaxID>A459981</PaxID>
+                    <PTC>ADT</PTC>
+                </Pax>
+                <Pax>
+                    <Individual>
+                        <Birthdate>2020-07-22</Birthdate>
+                        <GenderCode>M</GenderCode>
+                        <GivenName>Thomas</GivenName>
+                        <IndividualID>C459982</IndividualID>
+                        <Surname>Matthews</Surname>
+                    </Individual>
+                    <PaxID>C459982</PaxID>
+                    <PTC>CHD</PTC>
+                </Pax>
+            </PaxList>
+            <PaxSegmentList>
+                <PaxSegment>
+                    <CabinTypeAssociationChoice>
+                        <SegmentCabinType>
+                            <CabinTypeCode>5</CabinTypeCode>
+                            <CabinTypeName>Economy</CabinTypeName>
+                        </SegmentCabinType>
+                    </CabinTypeAssociationChoice>
+                    <DatedMarketingSegmentRefId>Mkt-seg01493101466</DatedMarketingSegmentRefId>
+                    <PaxSegmentID>seg01493101466</PaxSegmentID>
+                </PaxSegment>
+                <PaxSegment>
+                    <CabinTypeAssociationChoice>
+                        <SegmentCabinType>
+                            <CabinTypeCode>2</CabinTypeCode>
+                            <CabinTypeName>Business</CabinTypeName>
+                        </SegmentCabinType>
+                    </CabinTypeAssociationChoice>
+                    <DatedMarketingSegmentRefId>Mkt-seg01062534542</DatedMarketingSegmentRefId>
+                    <PaxSegmentID>seg01062534542</PaxSegmentID>
+                </PaxSegment>
+            </PaxSegmentList>
+            <PriceClassList>
+                <PriceClass>
+                    <FareBasisCode>BFARE</FareBasisCode>
+                    <Name>BFARE</Name>
+                    <PriceClassID>pc1717317266</PriceClassID>
+                </PriceClass>
+            </PriceClassList>
+            <SeatProfileList>
+                <SeatProfile>
+                    <SeatProfileID>s-SLCDEN-NV5653-A459980-19A-19A</SeatProfileID>
+                </SeatProfile>
+                <SeatProfile>
+                    <SeatProfileID>s-SLCDEN-NV5653-A459981-19B-19B</SeatProfileID>
+                </SeatProfile>
+                <SeatProfile>
+                    <SeatProfileID>s-SLCDEN-NV5653-C459982-19H-19H</SeatProfileID>
+                </SeatProfile>
+                <SeatProfile>
+                    <SeatProfileID>s-DENSLC-NV5627-A459980-65B-65B</SeatProfileID>
+                </SeatProfile>
+                <SeatProfile>
+                    <SeatProfileID>s-DENSLC-NV5627-A459981-65C-65C</SeatProfileID>
+                </SeatProfile>
+                <SeatProfile>
+                    <SeatProfileID>s-DENSLC-NV5627-C459982-65D-65D</SeatProfileID>
+                </SeatProfile>
+            </SeatProfileList>
+            <ServiceDefinitionList>
+                <ServiceDefinition>
+                    <Desc>
+                        <DescText>Free</DescText>
+                        <MarkupStyleText>FreeOrChargeable</MarkupStyleText>
+                    </Desc>
+                    <Name>FareBagRule7 ADT CarryOn 5kg</Name>
+                    <OwnerCode>NV</OwnerCode>
+                    <RFIC>C</RFIC>
+                    <RFISC>04B</RFISC>
+                    <ServiceCode>bag0477654084</ServiceCode>
+                    <ServiceDefinitionAssociation>
+                        <BaggageAllowanceRef>
+                            <BaggageAllowanceRefID>bag0477654084</BaggageAllowanceRefID>
+                        </BaggageAllowanceRef>
+                    </ServiceDefinitionAssociation>
+                    <ServiceDefinitionID>def001334601488</ServiceDefinitionID>
+                </ServiceDefinition>
+                <ServiceDefinition>
+                    <Desc>
+                        <DescText>Free</DescText>
+                        <MarkupStyleText>FreeOrChargeable</MarkupStyleText>
+                    </Desc>
+                    <Name>FareBagRule9 CHD Checked 40kg</Name>
+                    <OwnerCode>NV</OwnerCode>
+                    <RFIC>C</RFIC>
+                    <RFISC>04B</RFISC>
+                    <ServiceCode>bag057295524</ServiceCode>
+                    <ServiceDefinitionAssociation>
+                        <BaggageAllowanceRef>
+                            <BaggageAllowanceRefID>bag057295524</BaggageAllowanceRefID>
+                        </BaggageAllowanceRef>
+                    </ServiceDefinitionAssociation>
+                    <ServiceDefinitionID>def00637827836</ServiceDefinitionID>
+                </ServiceDefinition>
+                <ServiceDefinition>
+                    <Desc>
+                        <DescText>Free</DescText>
+                        <MarkupStyleText>FreeOrChargeable</MarkupStyleText>
+                    </Desc>
+                    <Name>FareBagRule10 CHD Checked 32kg</Name>
+                    <OwnerCode>NV</OwnerCode>
+                    <RFIC>C</RFIC>
+                    <RFISC>04B</RFISC>
+                    <ServiceCode>bag0636035772</ServiceCode>
+                    <ServiceDefinitionAssociation>
+                        <BaggageAllowanceRef>
+                            <BaggageAllowanceRefID>bag0636035772</BaggageAllowanceRefID>
+                        </BaggageAllowanceRef>
+                    </ServiceDefinitionAssociation>
+                    <ServiceDefinitionID>def001686772707</ServiceDefinitionID>
+                </ServiceDefinition>
+                <ServiceDefinition>
+                    <Desc>
+                        <DescText>Chargeable</DescText>
+                        <MarkupStyleText>FreeOrChargeable</MarkupStyleText>
+                    </Desc>
+                    <Name>2BAG</Name>
+                    <OwnerCode>NV</OwnerCode>
+                    <ServiceCode>2BAG</ServiceCode>
+                    <ServiceDefinitionID>def032246408</ServiceDefinitionID>
+                </ServiceDefinition>
+                <ServiceDefinition>
+                    <Desc>
+                        <DescText>Free</DescText>
+                        <MarkupStyleText>FreeOrChargeable</MarkupStyleText>
+                    </Desc>
+                    <Name>MTBS</Name>
+                    <OwnerCode>NV</OwnerCode>
+                    <ServiceCode>MTBS</ServiceCode>
+                    <ServiceDefinitionID>def002074860656</ServiceDefinitionID>
+                </ServiceDefinition>
+            </ServiceDefinitionList>
+        </DataLists>
+        <Order xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes">
+            <OrderID>O3L98S</OrderID>
+            <OrderItem>
+                <FareDetail>
+                    <FareComponent>
+                        <CabinType>
+                            <CabinTypeCode>5</CabinTypeCode>
+                            <CabinTypeName>Economy</CabinTypeName>
+                        </CabinType>
+                        <FareBasisCode>BFARE</FareBasisCode>
+                        <FareRule>
+                            <Remark>
+                                <RemarkText>Universal Fare Rule Test</RemarkText>
+                            </Remark>
+                        </FareRule>
+                        <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                        <PriceClassRefID>pc1717317266</PriceClassRefID>
+                        <RBD>
+                            <RBD_Code>B</RBD_Code>
+                        </RBD>
+                    </FareComponent>
+                    <PaxRefID>A459980</PaxRefID>
+                    <PaxRefID>A459981</PaxRefID>
+                    <Price>
+                        <BaseAmount CurCode="USD">1.00</BaseAmount>
+                        <TaxSummary>
+                            <Tax>
+                                <Amount CurCode="USD">0.05</Amount>
+                                <DescText>CY Tax</DescText>
+                                <FiledTaxCode>CY</FiledTaxCode>
+                                <TaxCode>CY</TaxCode>
+                                <TaxName>CY Tax</TaxName>
+                            </Tax>
+                            <Tax>
+                                <Amount CurCode="USD">0.06</Amount>
+                                <DescText>US Taxes</DescText>
+                                <FiledTaxCode>US</FiledTaxCode>
+                                <TaxCode>US</TaxCode>
+                                <TaxName>US Taxes</TaxName>
+                            </Tax>
+                            <TotalTaxAmount CurCode="USD">0.11</TotalTaxAmount>
+                        </TaxSummary>
+                        <TotalAmount CurCode="USD">1.11</TotalAmount>
+                    </Price>
+                </FareDetail>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-ADT-FLIGHT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">2.00</BaseAmount>
+                    <TaxSummary>
+                        <Tax>
+                            <Amount CurCode="USD">0.10</Amount>
+                            <DescText>CY Tax</DescText>
+                            <FiledTaxCode>CY</FiledTaxCode>
+                            <TaxCode>CY</TaxCode>
+                            <TaxName>CY Tax</TaxName>
+                        </Tax>
+                        <Tax>
+                            <Amount CurCode="USD">0.12</Amount>
+                            <DescText>US Taxes</DescText>
+                            <FiledTaxCode>US</FiledTaxCode>
+                            <TaxCode>US</TaxCode>
+                            <TaxName>US Taxes</TaxName>
+                        </Tax>
+                        <TotalTaxAmount CurCode="USD">0.22</TotalTaxAmount>
+                    </TaxSummary>
+                    <TotalAmount CurCode="USD">2.22</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <PaxSegmentRef>
+                            <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                        </PaxSegmentRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459980-FLT</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def001334601488</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459980-bag0477654084</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <PaxSegmentRef>
+                            <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                        </PaxSegmentRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459981</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459981-FLT</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def001334601488</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459981</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459981-bag0477654084</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-A459980-2BAG</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">0.00</BaseAmount>
+                    <TotalAmount CurCode="USD">0.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def032246408</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459980-2BAG</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-A459980-MTBS</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">0.00</BaseAmount>
+                    <TotalAmount CurCode="USD">0.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def002074860656</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459980-MTBS</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-A459981-MTBS</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">0.00</BaseAmount>
+                    <TotalAmount CurCode="USD">0.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def002074860656</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459981</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459981-MTBS</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-A459980-SEAT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">20.00</BaseAmount>
+                    <TotalAmount CurCode="USD">20.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <SeatOnLeg>
+                            <Seat>
+                                <ColumnID>A</ColumnID>
+                                <RowNumber>19</RowNumber>
+                                <SeatProfileRefID>s-SLCDEN-NV5653-A459980-19A-19A</SeatProfileRefID>
+                            </Seat>
+                            <SeatAssignmentAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </SeatAssignmentAssociations>
+                        </SeatOnLeg>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459980-19A</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-A459981-SEAT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">20.00</BaseAmount>
+                    <TotalAmount CurCode="USD">20.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <SeatOnLeg>
+                            <Seat>
+                                <ColumnID>B</ColumnID>
+                                <RowNumber>19</RowNumber>
+                                <SeatProfileRefID>s-SLCDEN-NV5653-A459981-19B-19B</SeatProfileRefID>
+                            </Seat>
+                            <SeatAssignmentAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </SeatAssignmentAssociations>
+                        </SeatOnLeg>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459981</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-A459981-19B</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <FareDetail>
+                    <FareComponent>
+                        <CabinType>
+                            <CabinTypeCode>5</CabinTypeCode>
+                            <CabinTypeName>Economy</CabinTypeName>
+                        </CabinType>
+                        <FareBasisCode>BFARE</FareBasisCode>
+                        <FareRule>
+                            <Remark>
+                                <RemarkText>Universal Fare Rule Test</RemarkText>
+                            </Remark>
+                        </FareRule>
+                        <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                        <PriceClassRefID>pc1717317266</PriceClassRefID>
+                        <RBD>
+                            <RBD_Code>B</RBD_Code>
+                        </RBD>
+                    </FareComponent>
+                    <PaxRefID>C459982</PaxRefID>
+                    <Price>
+                        <BaseAmount CurCode="USD">1.00</BaseAmount>
+                        <TaxSummary>
+                            <Tax>
+                                <Amount CurCode="USD">0.05</Amount>
+                                <DescText>CY Tax</DescText>
+                                <FiledTaxCode>CY</FiledTaxCode>
+                                <TaxCode>CY</TaxCode>
+                                <TaxName>CY Tax</TaxName>
+                            </Tax>
+                            <Tax>
+                                <Amount CurCode="USD">0.06</Amount>
+                                <DescText>US Taxes</DescText>
+                                <FiledTaxCode>US</FiledTaxCode>
+                                <TaxCode>US</TaxCode>
+                                <TaxName>US Taxes</TaxName>
+                            </Tax>
+                            <TotalTaxAmount CurCode="USD">0.11</TotalTaxAmount>
+                        </TaxSummary>
+                        <TotalAmount CurCode="USD">1.11</TotalAmount>
+                    </Price>
+                </FareDetail>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-CHD-FLIGHT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">1.00</BaseAmount>
+                    <TaxSummary>
+                        <Tax>
+                            <Amount CurCode="USD">0.05</Amount>
+                            <DescText>CY Tax</DescText>
+                            <FiledTaxCode>CY</FiledTaxCode>
+                            <TaxCode>CY</TaxCode>
+                            <TaxName>CY Tax</TaxName>
+                        </Tax>
+                        <Tax>
+                            <Amount CurCode="USD">0.06</Amount>
+                            <DescText>US Taxes</DescText>
+                            <FiledTaxCode>US</FiledTaxCode>
+                            <TaxCode>US</TaxCode>
+                            <TaxName>US Taxes</TaxName>
+                        </Tax>
+                        <TotalTaxAmount CurCode="USD">0.11</TotalTaxAmount>
+                    </TaxSummary>
+                    <TotalAmount CurCode="USD">1.11</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <PaxSegmentRef>
+                            <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                        </PaxSegmentRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-C459982-FLT</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def00637827836</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-C459982-bag057295524</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def001686772707</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-C459982-bag0636035772</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-C459982-MTBS</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">0.00</BaseAmount>
+                    <TotalAmount CurCode="USD">0.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def002074860656</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-C459982-MTBS</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-SLCDEN-NV5653-C459982-SEAT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">20.00</BaseAmount>
+                    <TotalAmount CurCode="USD">20.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <SeatOnLeg>
+                            <Seat>
+                                <ColumnID>H</ColumnID>
+                                <RowNumber>19</RowNumber>
+                                <SeatProfileRefID>s-SLCDEN-NV5653-C459982-19H-19H</SeatProfileRefID>
+                            </Seat>
+                            <SeatAssignmentAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01493101466</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </SeatAssignmentAssociations>
+                        </SeatOnLeg>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-SLCDEN-NV5653-C459982-19H</ServiceID>
+                    <StatusCode>CANCELLED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <FareDetail>
+                    <FareComponent>
+                        <CabinType>
+                            <CabinTypeCode>2</CabinTypeCode>
+                            <CabinTypeName>Business</CabinTypeName>
+                        </CabinType>
+                        <FareBasisCode>BFARE</FareBasisCode>
+                        <FareRule>
+                            <Remark>
+                                <RemarkText>Universal Fare Rule Test</RemarkText>
+                            </Remark>
+                        </FareRule>
+                        <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                        <PriceClassRefID>pc1717317266</PriceClassRefID>
+                        <RBD>
+                            <RBD_Code>B</RBD_Code>
+                        </RBD>
+                    </FareComponent>
+                    <PaxRefID>A459980</PaxRefID>
+                    <PaxRefID>A459981</PaxRefID>
+                    <Price>
+                        <BaseAmount CurCode="USD">1.00</BaseAmount>
+                        <TaxSummary>
+                            <Tax>
+                                <Amount CurCode="USD">0.05</Amount>
+                                <DescText>CY Tax</DescText>
+                                <FiledTaxCode>CY</FiledTaxCode>
+                                <TaxCode>CY</TaxCode>
+                                <TaxName>CY Tax</TaxName>
+                            </Tax>
+                            <Tax>
+                                <Amount CurCode="USD">0.03</Amount>
+                                <DescText>US Taxes</DescText>
+                                <FiledTaxCode>US</FiledTaxCode>
+                                <TaxCode>US</TaxCode>
+                                <TaxName>US Taxes</TaxName>
+                            </Tax>
+                            <TotalTaxAmount CurCode="USD">0.08</TotalTaxAmount>
+                        </TaxSummary>
+                        <TotalAmount CurCode="USD">1.08</TotalAmount>
+                    </Price>
+                </FareDetail>
+                <OrderItemID>O3L98S-DENSLC-NV5627-ADT-FLIGHT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">2.00</BaseAmount>
+                    <TaxSummary>
+                        <Tax>
+                            <Amount CurCode="USD">0.10</Amount>
+                            <DescText>CY Tax</DescText>
+                            <FiledTaxCode>CY</FiledTaxCode>
+                            <TaxCode>CY</TaxCode>
+                            <TaxName>CY Tax</TaxName>
+                        </Tax>
+                        <Tax>
+                            <Amount CurCode="USD">0.06</Amount>
+                            <DescText>US Taxes</DescText>
+                            <FiledTaxCode>US</FiledTaxCode>
+                            <TaxCode>US</TaxCode>
+                            <TaxName>US Taxes</TaxName>
+                        </Tax>
+                        <TotalTaxAmount CurCode="USD">0.16</TotalTaxAmount>
+                    </TaxSummary>
+                    <TotalAmount CurCode="USD">2.16</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <PaxSegmentRef>
+                            <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                        </PaxSegmentRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459980-FLT</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def001334601488</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459980-bag0477654084</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <PaxSegmentRef>
+                            <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                        </PaxSegmentRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459981</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459981-FLT</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def001334601488</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459981</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459981-bag0477654084</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-DENSLC-NV5627-A459980-2BAG</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">0.00</BaseAmount>
+                    <TotalAmount CurCode="USD">0.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def032246408</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459980-2BAG</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-DENSLC-NV5627-A459980-MTBS</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">0.00</BaseAmount>
+                    <TotalAmount CurCode="USD">0.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def002074860656</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459980-MTBS</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-DENSLC-NV5627-A459981-MTBS</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">0.00</BaseAmount>
+                    <TotalAmount CurCode="USD">0.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def002074860656</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459981</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459981-MTBS</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-DENSLC-NV5627-A459980-SEAT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">50.00</BaseAmount>
+                    <TotalAmount CurCode="USD">50.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <SeatOnLeg>
+                            <Seat>
+                                <ColumnID>B</ColumnID>
+                                <RowNumber>65</RowNumber>
+                                <SeatProfileRefID>s-DENSLC-NV5627-A459980-65B-65B</SeatProfileRefID>
+                            </Seat>
+                            <SeatAssignmentAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </SeatAssignmentAssociations>
+                        </SeatOnLeg>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459980</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459980-65B</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-DENSLC-NV5627-A459981-SEAT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">50.00</BaseAmount>
+                    <TotalAmount CurCode="USD">50.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <SeatOnLeg>
+                            <Seat>
+                                <ColumnID>C</ColumnID>
+                                <RowNumber>65</RowNumber>
+                                <SeatProfileRefID>s-DENSLC-NV5627-A459981-65C-65C</SeatProfileRefID>
+                            </Seat>
+                            <SeatAssignmentAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </SeatAssignmentAssociations>
+                        </SeatOnLeg>
+                    </OrderServiceAssociation>
+                    <PaxRefID>A459981</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-A459981-65C</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <FareDetail>
+                    <FareComponent>
+                        <CabinType>
+                            <CabinTypeCode>2</CabinTypeCode>
+                            <CabinTypeName>Business</CabinTypeName>
+                        </CabinType>
+                        <FareBasisCode>BFARE</FareBasisCode>
+                        <FareRule>
+                            <Remark>
+                                <RemarkText>Universal Fare Rule Test</RemarkText>
+                            </Remark>
+                        </FareRule>
+                        <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                        <PriceClassRefID>pc1717317266</PriceClassRefID>
+                        <RBD>
+                            <RBD_Code>B</RBD_Code>
+                        </RBD>
+                    </FareComponent>
+                    <PaxRefID>C459982</PaxRefID>
+                    <Price>
+                        <BaseAmount CurCode="USD">1.00</BaseAmount>
+                        <TaxSummary>
+                            <Tax>
+                                <Amount CurCode="USD">0.05</Amount>
+                                <DescText>CY Tax</DescText>
+                                <FiledTaxCode>CY</FiledTaxCode>
+                                <TaxCode>CY</TaxCode>
+                                <TaxName>CY Tax</TaxName>
+                            </Tax>
+                            <Tax>
+                                <Amount CurCode="USD">0.03</Amount>
+                                <DescText>US Taxes</DescText>
+                                <FiledTaxCode>US</FiledTaxCode>
+                                <TaxCode>US</TaxCode>
+                                <TaxName>US Taxes</TaxName>
+                            </Tax>
+                            <TotalTaxAmount CurCode="USD">0.08</TotalTaxAmount>
+                        </TaxSummary>
+                        <TotalAmount CurCode="USD">1.08</TotalAmount>
+                    </Price>
+                </FareDetail>
+                <OrderItemID>O3L98S-DENSLC-NV5627-CHD-FLIGHT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">1.00</BaseAmount>
+                    <TaxSummary>
+                        <Tax>
+                            <Amount CurCode="USD">0.05</Amount>
+                            <DescText>CY Tax</DescText>
+                            <FiledTaxCode>CY</FiledTaxCode>
+                            <TaxCode>CY</TaxCode>
+                            <TaxName>CY Tax</TaxName>
+                        </Tax>
+                        <Tax>
+                            <Amount CurCode="USD">0.03</Amount>
+                            <DescText>US Taxes</DescText>
+                            <FiledTaxCode>US</FiledTaxCode>
+                            <TaxCode>US</TaxCode>
+                            <TaxName>US Taxes</TaxName>
+                        </Tax>
+                        <TotalTaxAmount CurCode="USD">0.08</TotalTaxAmount>
+                    </TaxSummary>
+                    <TotalAmount CurCode="USD">1.08</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <PaxSegmentRef>
+                            <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                        </PaxSegmentRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-C459982-FLT</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def00637827836</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-C459982-bag057295524</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def001686772707</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-C459982-bag0636035772</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-DENSLC-NV5627-C459982-MTBS</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">0.00</BaseAmount>
+                    <TotalAmount CurCode="USD">0.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <ServiceDefinitionRef>
+                            <OrderFlightAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </OrderFlightAssociations>
+                            <ServiceDefinitionRefID>def002074860656</ServiceDefinitionRefID>
+                        </ServiceDefinitionRef>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-C459982-MTBS</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OrderItem>
+                <OrderItemID>O3L98S-DENSLC-NV5627-C459982-SEAT</OrderItemID>
+                <OwnerCode>NV</OwnerCode>
+                <Price>
+                    <BaseAmount CurCode="USD">50.00</BaseAmount>
+                    <TotalAmount CurCode="USD">50.00</TotalAmount>
+                </Price>
+                <Service>
+                    <BookingRef>
+                        <BookingEntity>
+                            <Carrier>
+                                <AirlineDesigCode>NV</AirlineDesigCode>
+                            </Carrier>
+                        </BookingEntity>
+                        <BookingID>O3L98S</BookingID>
+                        <BookingRefTypeCode>6</BookingRefTypeCode>
+                    </BookingRef>
+                    <DeliveryStatusCode>READY TO PROCEED</DeliveryStatusCode>
+                    <OrderServiceAssociation>
+                        <SeatOnLeg>
+                            <Seat>
+                                <ColumnID>D</ColumnID>
+                                <RowNumber>65</RowNumber>
+                                <SeatProfileRefID>s-DENSLC-NV5627-C459982-65D-65D</SeatProfileRefID>
+                            </Seat>
+                            <SeatAssignmentAssociations>
+                                <PaxSegmentRef>
+                                    <PaxSegmentRefID>seg01062534542</PaxSegmentRefID>
+                                </PaxSegmentRef>
+                            </SeatAssignmentAssociations>
+                        </SeatOnLeg>
+                    </OrderServiceAssociation>
+                    <PaxRefID>C459982</PaxRefID>
+                    <ServiceID>s-DENSLC-NV5627-C459982-65D</ServiceID>
+                    <StatusCode>CONFIRMED</StatusCode>
+                </Service>
+                <StatusCode>ACTIVE</StatusCode>
+            </OrderItem>
+            <OwnerCode>NV</OwnerCode>
+            <StatusCode>OPENED</StatusCode>
+            <TotalPrice>
+                <TotalAmount CurCode="USD">216.57</TotalAmount>
+            </TotalPrice>
+        </Order>
+    </Response>
+    <PayloadAttributes>
+        <CorrelationID xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes">
+                7286cae9-2ef7-44a4-a724-7507903e256c</CorrelationID>
+        <Timestamp xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes">
+                2024-11-14T07:42:24.9079969Z</Timestamp>
+        <VersionNumber xmlns="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes">21.3</VersionNumber>
+    </PayloadAttributes>
+</IATA_OrderViewRS>

@@ -1,0 +1,18 @@
+<IATA_OrderViewRS>
+    <Response>
+        <DataLists>
+            <ContactInfoList>
+                <ContactInfo>
+                    <ContactInfoID>con-1</ContactInfoID>
+                    <EmailAddress>
+                        <EmailAddressText>JEAN.DUPONT@EMAIL.COM</EmailAddressText>
+                    </EmailAddress>
+                    <Phone>
+                        <ContactTypeText>Home</ContactTypeText>
+                        <PhoneNumber>33650254588</PhoneNumber>
+                    </Phone>
+                </ContactInfo>
+            </ContactInfoList>
+        </DataLists>
+    </Response>
+</IATA_OrderViewRS>

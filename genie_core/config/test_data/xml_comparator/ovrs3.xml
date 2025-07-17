@@ -1,0 +1,38 @@
+<IATA_OrderViewRS>
+	<Response>
+		<DataLists>
+			<PaxJourneyList>
+				<PaxJourney>
+					<PaxJourneyID>fl1231622091</PaxJourneyID>
+					<PaxSegmentRefID>seg1231622091</PaxSegmentRefID>
+				</PaxJourney>
+			</PaxJourneyList>
+			<PaxList>
+				<Pax>
+					<CitizenshipCountryCode>FR</CitizenshipCountryCode>
+					<ContactInfoRefID>con-1</ContactInfoRefID>
+					<FOID>
+						<FOID_ID>30000529L</FOID_ID>
+						<FOID_TypeCode>NI</FOID_TypeCode>
+					</FOID>
+					<PaxID>A173993521</PaxID>
+					<PTC>ADT</PTC>
+					<ResidenceCountryCode>FR</ResidenceCountryCode>
+				</Pax>
+			</PaxList>
+		</DataLists>
+		<Order>
+			<OrderID>IJEKME</OrderID>
+			<OrderItem>
+				<OrderItemID>IJEKME-BCNMAD-VY1002-ADT-FLIGHT</OrderItemID>
+				<OwnerCode>VY</OwnerCode>
+				<PaymentTimeLimitDateTime>2024-10-17T09:44:42Z</PaymentTimeLimitDateTime>
+				<StatusCode>ACTIVE</StatusCode>
+			</OrderItem>
+			<OwnerCode>VY</OwnerCode>
+			<TotalPrice>
+				<TotalAmount CurCode="EUR">177.82</TotalAmount>
+			</TotalPrice>
+		</Order>
+	</Response>
+</IATA_OrderViewRS>

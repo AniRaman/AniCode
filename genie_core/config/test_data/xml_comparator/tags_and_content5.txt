@@ -1,0 +1,329 @@
+Tag: IATA_OrderViewRS/Response/DataLists/ContactInfoList/ContactInfo/ContactInfoID
+XML Content:
+<ContactInfoID>con-1</ContactInfoID>
+
+Tag: IATA_OrderViewRS/Response/DataLists/ContactInfoList/ContactInfo/EmailAddress
+XML Content:
+<EmailAddress>
+                        <EmailAddressText>JEAN.DUPONT@EMAIL.COM</EmailAddressText>
+                    </EmailAddress>
+
+Tag: IATA_OrderViewRS/Response/DataLists/ContactInfoList/ContactInfo/Phone
+XML Content:
+<Phone>
+                        <ContactTypeText>Home</ContactTypeText>
+                        <PhoneNumber>33650254588</PhoneNumber>
+                    </Phone>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedMarketingSegmentList/DatedMarketingSegment/Arrival
+XML Content:
+<Arrival>
+                        <AircraftScheduledDateTime>2025-04-04T08:45:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>ORY</IATA_LocationCode>
+                    </Arrival>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedMarketingSegmentList/DatedMarketingSegment/CarrierDesigCode
+XML Content:
+<CarrierDesigCode>VY</CarrierDesigCode>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedMarketingSegmentList/DatedMarketingSegment/DatedMarketingSegmentId
+XML Content:
+<DatedMarketingSegmentId>Mkt-seg829673412</DatedMarketingSegmentId>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedMarketingSegmentList/DatedMarketingSegment/DatedOperatingSegmentRefId
+XML Content:
+<DatedOperatingSegmentRefId>Opr-seg829673412</DatedOperatingSegmentRefId>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedMarketingSegmentList/DatedMarketingSegment/Dep
+XML Content:
+<Dep>
+                        <AircraftScheduledDateTime>2025-04-04T06:50:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>BCN</IATA_LocationCode>
+                    </Dep>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedMarketingSegmentList/DatedMarketingSegment/MarketingCarrierFlightNumberText
+XML Content:
+<MarketingCarrierFlightNumberText>8000</MarketingCarrierFlightNumberText>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedOperatingLegList/DatedOperatingLeg/Arrival
+XML Content:
+<Arrival>
+                        <AircraftScheduledDateTime>2025-04-04T08:45:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>ORY</IATA_LocationCode>
+                    </Arrival>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedOperatingLegList/DatedOperatingLeg/CarrierAircraftType
+XML Content:
+<CarrierAircraftType>
+                        <CarrierAircraftTypeCode>32A</CarrierAircraftTypeCode>
+                    </CarrierAircraftType>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedOperatingLegList/DatedOperatingLeg/DatedOperatingLegID
+XML Content:
+<DatedOperatingLegID>seg829673412-leg0</DatedOperatingLegID>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedOperatingLegList/DatedOperatingLeg/Dep
+XML Content:
+<Dep>
+                        <AircraftScheduledDateTime>2025-04-04T06:50:00</AircraftScheduledDateTime>
+                        <IATA_LocationCode>BCN</IATA_LocationCode>
+                    </Dep>
+
+Tag: IATA_OrderViewRS/Response/DataLists/DatedOperatingSegmentList/DatedOperatingSegment
+XML Content:
+<DatedOperatingSegment>
+                    <CarrierDesigCode>VY</CarrierDesigCode>
+                    <DatedOperatingLegRefID>seg829673412-leg0</DatedOperatingLegRefID>
+                    <DatedOperatingSegmentId>Opr-seg829673412</DatedOperatingSegmentId>
+                    <Duration>PT1H55M</Duration>
+                    <OperatingCarrierFlightNumberText>8000</OperatingCarrierFlightNumberText>
+                </DatedOperatingSegment>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxJourneyList/PaxJourney
+XML Content:
+<PaxJourney>
+                    <PaxJourneyID>fl829673412</PaxJourneyID>
+                    <PaxSegmentRefID>seg829673412</PaxSegmentRefID>
+                </PaxJourney>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxList/Pax/ContactInfoRefID
+XML Content:
+<ContactInfoRefID>con-1</ContactInfoRefID>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxList/Pax/Individual
+XML Content:
+<Individual>
+                        <Birthdate>1980-01-01</Birthdate>
+                        <GenderCode>M</GenderCode>
+                        <GivenName>JEAN</GivenName>
+                        <IndividualID>A174297208</IndividualID>
+                        <Surname>DUPONT</Surname>
+                        <TitleName>MR</TitleName>
+                    </Individual>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxList/Pax/PaxID
+XML Content:
+<PaxID>A174297208</PaxID>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxList/Pax/PTC
+XML Content:
+<PTC>ADT</PTC>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxList/Pax/Remark
+XML Content:
+<Remark>
+                        <RemarkText>PAX1</RemarkText>
+                    </Remark>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxSegmentList/PaxSegment/CabinTypeAssociationChoice/SegmentCabinType
+XML Content:
+<SegmentCabinType>
+                            <CabinTypeCode>5</CabinTypeCode>
+                            <CabinTypeName>Economy</CabinTypeName>
+                        </SegmentCabinType>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxSegmentList/PaxSegment/DatedMarketingSegmentRefId
+XML Content:
+<DatedMarketingSegmentRefId>Mkt-seg829673412</DatedMarketingSegmentRefId>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PaxSegmentList/PaxSegment/PaxSegmentID
+XML Content:
+<PaxSegmentID>seg829673412</PaxSegmentID>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PriceClassList/PriceClass/Code
+XML Content:
+<Code>BA</Code>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PriceClassList/PriceClass/Desc
+XML Content:
+<Desc>
+                        <DescText>Basic Economy</DescText>
+                    </Desc>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PriceClassList/PriceClass/FareBasisCode
+XML Content:
+<FareBasisCode>DQI3NDC1</FareBasisCode>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PriceClassList/PriceClass/Name
+XML Content:
+<Name>Basic</Name>
+
+Tag: IATA_OrderViewRS/Response/DataLists/PriceClassList/PriceClass/PriceClassID
+XML Content:
+<PriceClassID>pc01802377349</PriceClassID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderID
+XML Content:
+<OrderID>IH6JHK</OrderID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/FareComponent/CabinType
+XML Content:
+<CabinType>
+                            <CabinTypeCode>5</CabinTypeCode>
+                            <CabinTypeName>Economy</CabinTypeName>
+                        </CabinType>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/FareComponent/FareBasisCode
+XML Content:
+<FareBasisCode>DQI3NDC1</FareBasisCode>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/FareComponent/FareRule/Remark
+XML Content:
+<Remark>
+                                <RemarkText>Non-Refundable / Changes Restricted</RemarkText>
+                            </Remark>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/FareComponent/PaxSegmentRefID
+XML Content:
+<PaxSegmentRefID>seg829673412</PaxSegmentRefID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/FareComponent/PriceClassRefID
+XML Content:
+<PriceClassRefID>pc01802377349</PriceClassRefID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/FareComponent/RBD
+XML Content:
+<RBD>
+                            <RBD_Code>DK</RBD_Code>
+                        </RBD>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/PaxRefID
+XML Content:
+<PaxRefID>A174297208</PaxRefID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/Price/BaseAmount
+XML Content:
+<BaseAmount CurCode="EUR">26.99</BaseAmount>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/Price/Fee
+XML Content:
+<Fee>
+                            <Amount CurCode="EUR">17.84</Amount>
+                            <DescText>JD added</DescText>
+                            <DesigText>JD</DesigText>
+                        </Fee>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/Price/Surcharge/Breakdown
+XML Content:
+<Breakdown>
+                                <Amount CurCode="EUR">1.87</Amount>
+                                <DesigText>Q</DesigText>
+                            </Breakdown>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/Price/Surcharge/TotalAmount
+XML Content:
+<TotalAmount CurCode="EUR">1.87</TotalAmount>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/FareDetail/Price/TotalAmount
+XML Content:
+<TotalAmount CurCode="EUR">46.70</TotalAmount>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/OrderItemID
+XML Content:
+<OrderItemID>IH6JHK-BCNORY-VY8000-ADT-FLIGHT</OrderItemID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/OwnerCode
+XML Content:
+<OwnerCode>VY</OwnerCode>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/PaymentTimeLimitDateTime
+XML Content:
+<PaymentTimeLimitDateTime>2025-01-02T05:11:05Z</PaymentTimeLimitDateTime>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Price/BaseAmount
+XML Content:
+<BaseAmount CurCode="EUR">26.99</BaseAmount>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Price/Fee
+XML Content:
+<Fee>
+                        <Amount CurCode="EUR">17.84</Amount>
+                        <DescText>JD added</DescText>
+                        <DesigText>JD</DesigText>
+                    </Fee>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Price/Surcharge/Breakdown
+XML Content:
+<Breakdown>
+                            <Amount CurCode="EUR">1.87</Amount>
+                            <DesigText>Q</DesigText>
+                        </Breakdown>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Price/Surcharge/TotalAmount
+XML Content:
+<TotalAmount CurCode="EUR">1.87</TotalAmount>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Price/TotalAmount
+XML Content:
+<TotalAmount CurCode="EUR">46.70</TotalAmount>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Service/BookingRef/BookingEntity/Carrier
+XML Content:
+<Carrier>
+                                <AirlineDesigCode>VY</AirlineDesigCode>
+                            </Carrier>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Service/BookingRef/BookingID
+XML Content:
+<BookingID>IH6JHK</BookingID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Service/BookingRef/BookingRefTypeCode
+XML Content:
+<BookingRefTypeCode>6</BookingRefTypeCode>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Service/DeliveryStatusCode
+XML Content:
+<DeliveryStatusCode>CONFIRMED</DeliveryStatusCode>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Service/OrderServiceAssociation/PaxSegmentRef
+XML Content:
+<PaxSegmentRef>
+                            <PaxSegmentRefID>seg829673412</PaxSegmentRefID>
+                        </PaxSegmentRef>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Service/PaxRefID
+XML Content:
+<PaxRefID>A174297208</PaxRefID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Service/ServiceID
+XML Content:
+<ServiceID>s-BCNORY-VY8000-A174297208-FLT</ServiceID>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/Service/StatusCode
+XML Content:
+<StatusCode>CONFIRMED</StatusCode>
+
+Tag: IATA_OrderViewRS/Response/Order/OrderItem/StatusCode
+XML Content:
+<StatusCode>ACTIVE</StatusCode>
+
+Tag: IATA_OrderViewRS/Response/Order/OwnerCode
+XML Content:
+<OwnerCode>VY</OwnerCode>
+
+Tag: IATA_OrderViewRS/Response/Order/StatusCode
+XML Content:
+<StatusCode>OPENED</StatusCode>
+
+Tag: IATA_OrderViewRS/Response/Order/TotalPrice
+XML Content:
+<TotalPrice>
+                <TotalAmount CurCode="EUR">46.70</TotalAmount>
+            </TotalPrice>
+
+Tag: IATA_OrderViewRS/Response/Warning
+XML Content:
+<Warning>
+            <DescText>Order is underpaid</DescText>
+            <LangCode>en</LangCode>
+            <TypeCode>OF2003</TypeCode>
+        </Warning>
+
+Tag: IATA_OrderViewRS/PayloadAttributes
+XML Content:
+<PayloadAttributes xmlns:ns0="http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes">
+        <ns0:CorrelationID>aad96569-af49-4c65-9e05-c823cd918cae</ns0:CorrelationID>
+        <ns0:Timestamp>2025-01-02T04:11:06.3216419Z</ns0:Timestamp>
+        <ns0:VersionNumber>21.3</ns0:VersionNumber>
+    </PayloadAttributes>
+

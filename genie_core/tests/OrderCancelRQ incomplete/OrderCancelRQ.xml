@@ -1,0 +1,25 @@
+<OrderCancelRQ Version="17.2" CorrelationID="716c70ce-9a42-47be-b9b3-0b833a3c0bf1" TransactionIdentifier="a3cf6058c27d4e15aab6ffbff17611a6">
+	<PointOfSale>
+		<Location>
+			<CountryCode>DE</CountryCode>
+			<CityCode>FRA</CityCode>
+		</Location>
+	</PointOfSale>
+	<Document id="document"/>
+	<Party>
+		<Sender>
+			<TravelAgencySender>
+				<Name>AMADEUS QA OFFICE</Name>
+				<PseudoCity>FRA1A27QC</PseudoCity>
+				<IATA_Number>23246672</IATA_Number>
+				<AgencyID>23246672</AgencyID>
+				<AgentUser>
+					<AgentUserID>xmluser001</AgentUserID>
+				</AgentUser>
+			</TravelAgencySender>
+		</Sender>
+	</Party>
+	<Query>
+		<Order OrderID="EK176HG4OKXA6" Owner="EK"/>
+	</Query>
+</OrderCancelRQ>

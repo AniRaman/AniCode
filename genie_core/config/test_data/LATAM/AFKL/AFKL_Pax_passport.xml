@@ -1,0 +1,24 @@
+<PaxList>
+    <Pax>
+        <ContactInfoRefID>CTC1</ContactInfoRefID>
+        <IdentityDoc>
+            <Birthdate>1950-01-13</Birthdate>
+            <CitizenshipCountryCode>FR</CitizenshipCountryCode>
+            <GenderCode>F</GenderCode>
+            <GivenName>NAME</GivenName>
+            <IdentityDocID>1234567</IdentityDocID>
+            <IdentityDocTypeCode>P</IdentityDocTypeCode>
+            <IssuingCountryCode>FR</IssuingCountryCode>
+            <Surname>TES</Surname>
+        </IdentityDoc>
+        <Individual>
+            <Birthdate>1990-10-11</Birthdate>
+            <GivenName>MARTIN</GivenName>
+            <IndividualID>ID1</IndividualID>
+            <Surname>TEST</Surname>
+            <TitleName>MR</TitleName>
+        </Individual>
+        <PaxID>PAX1</PaxID>
+        <PTC>ADT</PTC>
+    </Pax>
+</PaxList>
