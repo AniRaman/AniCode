@@ -60,6 +60,20 @@ def _get_conn() -> sqlite3.Connection:
                 actions_json  TEXT
             )"""
     )
+    # Create table for learned transformations from LLM
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS learned_transformations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                original_pattern_hash TEXT NOT NULL,
+                original_pattern TEXT NOT NULL,
+                optimized_pattern TEXT NOT NULL,
+                transformation_type TEXT NOT NULL,
+                pattern_regex TEXT,
+                replacement_template TEXT,
+                is_rule_candidate BOOLEAN DEFAULT 1,
+                created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )"""
+    )
     # Ensure the new column exists when upgrading from old schema
     cols = [row[1] for row in conn.execute("PRAGMA table_info(refinements)")]
     if "actions_json" not in cols:
@@ -86,6 +100,142 @@ def cache_actions(fingerprint: str, actions: List[Dict[str, Any]]) -> None:
         )
         conn.commit()
     print(f"Recorded actions for pattern {fingerprint[:8]} in SQLite cache")
+
+
+def store_learned_transformation(original_pattern: str, optimized_pattern: str, transformation_type: str) -> None:
+    """Store a learned transformation from LLM output for potential rule creation."""
+    import hashlib
+    
+    original_hash = hashlib.md5(original_pattern.encode()).hexdigest()
+    
+    # Don't store if we already have this exact transformation
+    with _get_conn() as conn:
+        existing = conn.execute(
+            "SELECT id FROM learned_transformations WHERE original_pattern_hash = ?",
+            (original_hash,)
+        ).fetchone()
+        
+        if existing:
+            return  # Already stored
+        
+        # Extract potential rule pattern
+        pattern_regex, replacement_template = _extract_rule_pattern(original_pattern, optimized_pattern, transformation_type)
+        
+        conn.execute(
+            """INSERT INTO learned_transformations 
+               (original_pattern_hash, original_pattern, optimized_pattern, transformation_type, 
+                pattern_regex, replacement_template) 
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (original_hash, original_pattern[:500], optimized_pattern[:500], 
+             transformation_type, pattern_regex, replacement_template)
+        )
+        conn.commit()
+        print(f"Stored learned transformation: {transformation_type}")
+
+
+def get_learned_transformations() -> List[Dict[str, Any]]:
+    """Get all learned transformations that could become rules."""
+    with _get_conn() as conn:
+        rows = conn.execute(
+            """SELECT original_pattern, optimized_pattern, transformation_type, 
+                      pattern_regex, replacement_template, created_date
+               FROM learned_transformations 
+               WHERE is_rule_candidate = 1 
+               ORDER BY created_date DESC"""
+        ).fetchall()
+        
+        return [
+            {
+                'original_pattern': row[0],
+                'optimized_pattern': row[1], 
+                'transformation_type': row[2],
+                'pattern_regex': row[3],
+                'replacement_template': row[4],
+                'created_date': row[5]
+            }
+            for row in rows
+        ]
+
+
+def check_for_learned_pattern(pattern: str) -> Optional[str]:
+    """Check if we have a learned optimization for this pattern."""
+    pattern_hash = hashlib.md5(pattern.encode()).hexdigest()
+    
+    with _get_conn() as conn:
+        row = conn.execute(
+            "SELECT optimized_pattern FROM learned_transformations WHERE original_pattern_hash = ?",
+            (pattern_hash,)
+        ).fetchone()
+        
+        return row[0] if row else None
+
+
+def _extract_rule_pattern(original: str, optimized: str, transformation_type: str) -> Tuple[Optional[str], Optional[str]]:
+    """Extract regex pattern and replacement template from LLM transformation for potential rule creation."""
+    
+    if transformation_type == "variable_removal":
+        # Look for variable removal pattern
+        if 'xsl:variable' in original and 'xsl:variable' not in optimized:
+            return (r'<xsl:variable\s+name="var\d+_cur"\s+select="\."\s*/>', "")
+    
+    elif transformation_type == "for_each_to_copy_of":
+        # Look for for-each to copy-of conversion
+        if 'xsl:for-each' in original and 'xsl:copy-of' in optimized:
+            # Try to extract the select attribute pattern
+            import re
+            select_match = re.search(r'select="([^"]*@\w+)"', original)
+            if select_match:
+                select_attr = select_match.group(1)
+                pattern = f'<xsl:for-each\\s+select="{re.escape(select_attr)}"[^>]*>.*?</xsl:for-each>'
+                replacement = f'<xsl:copy-of select="{select_attr}"/>'
+                return (pattern, replacement)
+    
+    elif transformation_type == "attribute_simplification":
+        # Look for attribute simplification patterns
+        if original.count('<xsl:attribute') > optimized.count('<xsl:attribute'):
+            # Multiple attributes simplified - could be a pattern
+            import re
+            attr_pattern = r'<xsl:for-each\s+select="@(\w+)"[^>]*>\s*<xsl:attribute\s+name="\1"[^>]*>\s*<xsl:value-of\s+select="\."/>\s*</xsl:attribute>\s*</xsl:for-each>'
+            if re.search(attr_pattern, original):
+                return (attr_pattern, r'<xsl:copy-of select="@\1"/>')
+    
+    # Generic patterns - return None if we can't extract a clear rule
+    return (None, None)
+
+
+def print_learned_transformations_report():
+    """Print a report of learned transformations for rule development."""
+    transformations = get_learned_transformations()
+    
+    if not transformations:
+        print("No learned transformations found.")
+        return
+    
+    print(f"\n=== LEARNED TRANSFORMATIONS REPORT ===")
+    print(f"Total transformations: {len(transformations)}")
+    
+    # Group by transformation type
+    by_type = {}
+    for t in transformations:
+        t_type = t['transformation_type']
+        if t_type not in by_type:
+            by_type[t_type] = []
+        by_type[t_type].append(t)
+    
+    for t_type, items in by_type.items():
+        print(f"\n{t_type.upper()} ({len(items)} instances):")
+        for i, item in enumerate(items[:3], 1):  # Show max 3 examples
+            print(f"  Example {i}:")
+            if item['pattern_regex']:
+                print(f"    Regex: {item['pattern_regex']}")
+                print(f"    Replace: {item['replacement_template']}")
+            else:
+                print(f"    Original (first 100 chars): {item['original_pattern'][:100]}...")
+                print(f"    Optimized (first 100 chars): {item['optimized_pattern'][:100]}...")
+        if len(items) > 3:
+            print(f"    ... and {len(items) - 3} more")
+    
+    print("\n" + "=" * 50)
 
 
 def apply_cached_actions(template_text: str, fingerprint: str) -> str:
