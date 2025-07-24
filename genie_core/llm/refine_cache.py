@@ -384,16 +384,27 @@ def _merge_simple_attr_loops(template: etree._Element) -> Tuple[bool, List[str],
 
                 sel = child.get("select", "")
                 prefix = ""
+                attr_name = ""
+                
                 if sel.startswith("$input/@"):
                     prefix = "$input/@"
+                    attr_name = sel[len(prefix):]
                 elif sel.startswith("./@"):
                     prefix = "./@"
+                    attr_name = sel[len(prefix):]
                 elif sel.startswith("@"):
                     prefix = "@"
+                    attr_name = sel[len(prefix):]
                 else:
-                    break # select pattern not recognized
+                    # Check for namespace patterns like "ns0:Element/@Attribute"
+                    import re
+                    ns_match = re.match(r'^([^@]+)/@(\w+)$', sel)
+                    if ns_match:
+                        prefix = ns_match.group(1) + "/@"
+                        attr_name = ns_match.group(2)
+                    else:
+                        break # select pattern not recognized
 
-                attr_name = sel[len(prefix):]
                 if not attr_name or "/" in attr_name or "[" in attr_name:
                     break # too complex
 
@@ -415,7 +426,18 @@ def _merge_simple_attr_loops(template: etree._Element) -> Tuple[bool, List[str],
                 # Use the prefix from the first loop for the new select
                 base_prefix = block_prefixes[0]
                 first_fe = block_loops[0]
-                first_fe.set("select", " | ".join(f"{base_prefix}{n}" for n in block_attr_names))
+                
+                # For namespace patterns, we need to reconstruct properly
+                if "/" in base_prefix and not base_prefix.startswith(("$input/@", "./@", "@")):
+                    # This is a namespace pattern like "ns0:VehRentalCore/@"
+                    # Remove trailing /@ to get base element
+                    base_element = base_prefix.rstrip("/@")
+                    select_parts = [f"{base_element}/@{attr}" for attr in block_attr_names]
+                else:
+                    # Traditional pattern
+                    select_parts = [f"{base_prefix}{attr}" for attr in block_attr_names]
+                
+                first_fe.set("select", " | ".join(select_parts))
 
                 for var in first_fe.xpath("./xsl:variable", namespaces=NSMAP):
                     var.getparent().remove(var)

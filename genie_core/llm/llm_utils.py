@@ -559,7 +559,7 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
         agent = setup_agent("o3_mini")
         print("Inside LLM")
         prompts = [
-            {"role": "system", "content": '''You are an expert XSLT refiner. Return only the refined <xsl:template> element without commentary or markdown. 
+            {"role": "system", "content": '''You are an expert XSLT refiner. Return only the chunk without commentary or markdown. Return only the refined chunk as output, should be a proper XSLT chunk.
                                                 Follow the example given for refining Efficiently : "Example before sending to LLM :\n{seed_before}\nExample after receiving from LLM:\n{seed_after}" '''},
             {"role": "user", "content": ruled_text},
         ]

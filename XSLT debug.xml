@@ -1,0 +1,80 @@
+=== MERGED XSLT FOR LLM DEBUG ===
+<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:tbf="http://www.altova.com/MapForce/UDF/tbf"
+        xmlns:ns0="http://www.opentravel.org/OTA/2003/05"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" match="/">
+        <OTA_VehAvailRateRS xmlns="http://www.opentravel.org/OTA/2003/05">
+                <xsl:for-each select="ns0:OTA_VehAvailRateRS">
+                        <xsl:for-each select="ns0:Success">
+                                <Success/>
+                        </xsl:for-each>
+                        <xsl:for-each select="ns0:Warnings">
+                                <Warnings>
+                                        <xsl:for-each select="ns0:Warning">
+                                                <Warning>
+                                                        <xsl:attribute name="Type">
+                                                                <xsl:value-of select="@Type"/>
+                                                        </xsl:attribute>
+                                                        <xsl:for-each select="@Language">
+                                                                <xsl:attribute name="Language">
+                                                                        <xsl:value-of select="."/>
+                                                                </xsl:attribute>
+                                                        </xsl:for-each>
+                                                        <xsl:for-each select="@ShortText">
+                                                                <xsl:attribute name="ShortText">
+                                                                        <xsl:value-of select="substring(., '0', '62')"/>
+                                                                </xsl:attribute>
+                                                        </xsl:for-each>
+                                                        <xsl:for-each select="@Code | @DocURL | @Status | @Tag | @RecordID | @RPH">
+                                                                <xsl:attribute name="{name()}" namespace="">
+                                                                        <xsl:value-of select="."/>
+                                                                </xsl:attribute>
+                                                        </xsl:for-each>
+                                                        <xsl:value-of select="."/>
+                                                </Warning>
+                                        </xsl:for-each>
+                                </Warnings>
+                        </xsl:for-each>
+                        <xsl:for-each select="ns0:VehAvailRSCore">
+                                <VehAvailRSCore>
+                                        <VehRentalCore>
+                                                <xsl:for-each select="ns0:VehRentalCore/@PickUpDateTime | ns0:VehRentalCore/@ReturnDateTime | ns0:VehRentalCore/@StartChargesDateTime | ns0:VehRentalCore/@StopChargesDateTime">
+                                                        <xsl:attribute name="{name()}" namespace="">
+                                                                <xsl:value-of select="."/>
+                                                        </xsl:attribute>
+                                                </xsl:for-each>
+                                                <xsl:for-each select="ns0:VehRentalCore/@OneWayIndicator">
+                                                        <xsl:attribute name="OneWayIndicator">
+                                                                <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+                                                        </xsl:attribute>
+                                                </xsl:for-each>
+                                                <xsl:for-each select="ns0:VehRentalCore/@MultiIslandRentalDays | ns0:VehRentalCore/@Quantity">
+                                                        <xsl:attribute name="{name()}" namespace="">
+                                                                <xsl:value-of select="number(.)"/>
+                                                        </xsl:attribute>
+                                                </xsl:for-each>
+                                                <xsl:for-each select="ns0:VehRentalCore/@DistUnitName">
+                                                        <xsl:attribute name="DistUnitName">
+                                                                <xsl:value-of select="."/>
+                                                        </xsl:attribute>
+                                                </xsl:for-each>
+                                                <xsl:for-each select="ns0:VehRentalCore/ns0:PickUpLocation">
+                                                        <PickUpLocation>
+                                                                <xsl:if test="@LocationCode">
+                                                                        <xsl:attribute name="CodeContext">IATA</xsl:attribute>
+                                                                </xsl:if>
+                                                                <xsl:for-each select="@LocationCode | @ExtendedLocationCode | @CounterLocation">
+                                                                        <xsl:attribute name="{name()}" namespace="">
+                                                                                <xsl:value-of select="."/>
+                                                                        </xsl:attribute>
+                                                                </xsl:for-each>
+                                                                <xsl:value-of select="."/>
+                                                        </PickUpLocation>
+                                                </xsl:for-each>
+                                        </VehRentalCore>
+                                </VehAvailRSCore>
+                        </xsl:for-each>
+                </xsl:for-each>
+        </OTA_VehAvailRateRS>
+</xsl:template>
+=== END MERGED XSLT DEBUG ===
