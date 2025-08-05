@@ -209,13 +209,10 @@ class IntelligentChunkProcessor:
         
         if not should_call_llm:
             print("SKIPPING LLM: Chunk already optimally processed by rules")
-            # Use rules result directly, but apply placeholder replacements
+            # Use rules result directly - no placeholder replacement needed because rules already optimized everything
             final_result = rules_result
-            for placeholder, optimized_content in placeholder_map.items():
-                if optimized_content == "":
-                    final_result = final_result.replace(placeholder, "")
-                else:
-                    final_result = final_result.replace(placeholder, optimized_content)
+            print(f"DEBUG: Rules-only path - using rules result directly (no placeholder replacement needed)")
+            print(f"DEBUG: Rules result contains optimized union selectors and merged patterns")
             
             print("=== MERGED XSLT FOR RULES-ONLY DEBUG ===")
             print(final_result)
@@ -223,7 +220,7 @@ class IntelligentChunkProcessor:
             
             return final_result
         
-        # Debug: Show placeholder details
+        #Debug: Show placeholder details
         if placeholder_map:
             print("DEBUG - Placeholder map:")
             for placeholder, content in placeholder_map.items():
@@ -234,7 +231,7 @@ class IntelligentChunkProcessor:
         # Debug: Show first 500 chars of rules result if different from original
         if rules_result != chunk_text:
             print(f"DEBUG - Rules result preview:\n{rules_result[:500]}...")
-            print(f"DEBUG - Original preview:\n{chunk_text[:500]}...")
+            #print(f"DEBUG - Original preview:\n{chunk_text[:500]}...")
         
         # Step 3: Send the whole chunk (with placeholders) to LLM
         try:
@@ -248,12 +245,22 @@ class IntelligentChunkProcessor:
         
         # Step 4: Replace placeholders with actual rule-optimized content
         final_result = llm_result
-        for placeholder, optimized_content in placeholder_map.items():
-            if optimized_content == "":
-                # Remove placeholders for deleted content (like removed variables)
-                final_result = final_result.replace(placeholder, "")
+        print(f"DEBUG: Starting placeholder replacement with {len(placeholder_map)} placeholders")
+        
+        # Sort placeholders by length (longest first) to avoid partial replacements
+        sorted_placeholders = sorted(placeholder_map.items(), key=lambda x: len(x[0]), reverse=True)
+        
+        for placeholder, optimized_content in sorted_placeholders:
+            if placeholder in final_result:
+                if optimized_content == "":
+                    # Remove placeholders for deleted content (like removed variables)
+                    final_result = final_result.replace(placeholder, "")
+                    print(f"DEBUG: Removed placeholder {placeholder}")
+                else:
+                    final_result = final_result.replace(placeholder, optimized_content)
+                    print(f"DEBUG: Replaced {placeholder} with {len(optimized_content)} chars of content")
             else:
-                final_result = final_result.replace(placeholder, optimized_content)
+                print(f"DEBUG: Placeholder {placeholder} not found in LLM result")
         
         print("=== MERGED XSLT FOR LLM DEBUG ===")
         print(final_result)
@@ -265,8 +272,16 @@ class IntelligentChunkProcessor:
         """Multi-factor analysis to determine if LLM processing is worthwhile."""
         
         # Factor 1: Rules effectiveness (your line-reduction idea enhanced)
-        original_size = len(original_chunk)
-        rules_size = len(rules_result) 
+        print("Original chunk of Org chunk: " + str(len(original_chunk)))  # Original length
+        cleaned_chunk_org = "\n".join(line.strip() for line in original_chunk.splitlines() if line.strip())
+        print("Cleaned chunk of Org chunk: " + str(len(cleaned_chunk_org)))
+        original_size = len(cleaned_chunk_org)
+
+        print("Original chunk of rules result: " + str(len(rules_result)))  # Original length
+        cleaned_chunk_rules = "\n".join(line.strip() for line in rules_result.splitlines() if line.strip())
+        print("Cleaned chunk of rules result: " + str(len(cleaned_chunk_rules)))
+        rules_size = len(cleaned_chunk_rules)
+        
         size_reduction = (original_size - rules_size) / original_size if original_size > 0 else 0
         
         # Factor 2: Rules action count vs potential patterns
@@ -275,32 +290,27 @@ class IntelligentChunkProcessor:
         
         # Factor 3: Complexity analysis of remaining chunk
         remaining_complexity = self._calculate_complexity_score(rules_result)
-        
-        # Factor 4: Pattern simplicity analysis
-        pattern_simplicity = self._analyze_pattern_simplicity(rules_result)
-        
-        # Factor 5: Size threshold - very small chunks unlikely to benefit
-        is_too_small = len(rules_result) < 200
+          
+        # Factor 4: Size threshold - very small chunks unlikely to benefit
+        is_too_small = len(cleaned_chunk_rules) < 200
         
         print(f"LLM Decision Factors:")
         print(f"  Size reduction from rules: {size_reduction:.2f}")
         print(f"  Rules effectiveness: {rules_effectiveness:.2f}")
         print(f"  Remaining complexity: {remaining_complexity:.2f}")
-        print(f"  Pattern simplicity: {pattern_simplicity:.2f}")
         print(f"  Too small: {is_too_small}")
         
         # Decision logic: Skip LLM if multiple factors indicate low value
         skip_conditions = [
-            size_reduction > 0.2,  # Rules reduced by 20%+ = some optimization happened
+            size_reduction > 0.25,  # Rules reduced by 20%+ = some optimization happened
             rules_effectiveness > 0.3,  # Rules handled 30%+ of patterns (more lenient)
-            remaining_complexity < 0.4,  # Low to medium complexity remaining
-            pattern_simplicity > 0.8,  # Mostly simple patterns left (stricter)
+            remaining_complexity > 0.3,  # Low to medium complexity remaining
             is_too_small  # Tiny chunks rarely benefit
         ]
         
         # Enhanced skip logic: More aggressive for obviously simple cases
-        if pattern_simplicity >= 1.0 and remaining_complexity <= 0.1:
-            print("  STRONG SKIP: Pure simple patterns detected")
+        if size_reduction >= 0.3:
+            print("  STRONG SKIP: Size reduction detected")
             should_skip = True
             skip_score = 1.0
         elif remaining_complexity >= 0.5:
@@ -415,8 +425,11 @@ class IntelligentChunkProcessor:
         # Create placeholders for each optimized section
         chunk_with_placeholders = original_chunk
         
-        # Sort optimized sections by length (longest first) to avoid substring replacement issues
-        optimized_sections.sort(key=lambda x: len(x[0]), reverse=True)
+        # Sort optimized sections by position (earliest first) to maintain order
+        optimized_sections.sort(key=lambda x: original_chunk.find(x[0]) if x[0] in original_chunk else len(original_chunk))
+        
+        # Track replacements to avoid double replacements
+        replacement_tracking = {}
         
         for i, (original_section, optimized_section) in enumerate(optimized_sections):
             placeholder = f"<simpletag{i+1}/>"
@@ -428,9 +441,16 @@ class IntelligentChunkProcessor:
             else:
                 placeholder_map[placeholder] = optimized_section
             
-            # Only replace if original section exists in the chunk
-            if original_section in chunk_with_placeholders:
-                chunk_with_placeholders = chunk_with_placeholders.replace(original_section, placeholder, 1)
+            # Only replace if original section exists in the chunk and hasn't been replaced yet
+            if original_section in chunk_with_placeholders and original_section not in replacement_tracking:
+                # Find the exact position to ensure we replace the right occurrence
+                pos = chunk_with_placeholders.find(original_section)
+                if pos != -1:
+                    chunk_with_placeholders = (chunk_with_placeholders[:pos] + 
+                                             placeholder + 
+                                             chunk_with_placeholders[pos + len(original_section):])
+                    replacement_tracking[original_section] = placeholder
+                    print(f"DEBUG: Replaced section at position {pos} with {placeholder}")
         
         return chunk_with_placeholders, placeholder_map
     
@@ -443,9 +463,14 @@ class IntelligentChunkProcessor:
         # Strategy: Find major XSLT constructs in both versions and compare them
         # If a construct is different between original and rules_result, it was optimized
         
+        print(f"DEBUG: Identifying optimized sections...")
+        print(f"DEBUG: Original chunk length: {len(original_chunk)}")
+        print(f"DEBUG: Rules result length: {len(rules_result)}")
+        
         # Special handling for attribute merging (the most common rule optimization)
         # Look for union selects in rules_result (indicates attribute merging)
         union_selects = re.findall(r'<xsl:for-each[^>]*select="([^"]*\|[^"]*)"[^>]*>.*?</xsl:for-each>', rules_result, re.DOTALL)
+        print(f"DEBUG: Found {len(union_selects)} union selects in rules result")
         
         for union_select in union_selects:
             # Extract individual attributes from the union (e.g., "@PickUpDateTime | @ReturnDateTime")
@@ -510,6 +535,10 @@ class IntelligentChunkProcessor:
             for var in orig_vars:
                 if var not in rules_result:
                     optimized_sections.append((var, ""))  # Empty string means removed
+        
+        print(f"DEBUG: Identified {len(optimized_sections)} optimized sections")
+        for i, (orig, opt) in enumerate(optimized_sections):
+            print(f"DEBUG: Section {i+1}: {len(orig)} chars -> {len(opt)} chars ({'REMOVED' if opt == '' else 'OPTIMIZED'})")
         
         return optimized_sections
     

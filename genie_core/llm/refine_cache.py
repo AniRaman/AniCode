@@ -522,7 +522,7 @@ def _compute_edit_actions(before_elem: etree._Element, after_elem: etree._Elemen
 
 def _text_based_for_each_merge(template_text: str) -> str:
     """Apply text-based for-each merging for unparseable fragments."""
-    print("before template_text: ", template_text)
+    #print("before template_text: ", template_text)
     import re
     
     # Look for patterns like consecutive for-each loops for attributes
