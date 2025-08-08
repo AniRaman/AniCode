@@ -1,95 +1,99 @@
-ruled_text = '''<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tbf="http://www.altova.com/MapForce/UDF/tbf" xmlns:ns0="http://www.opentravel.org/OTA/2003/05" xmlns:xs="http://www.w3.org/2001/XMLSchema" match="/">
-	<xsl:for-each select="@Description">
-		<xsl:attribute name="Description" namespace="">
-			<xsl:value-of select="substring(., 0, 62)"/>
-		</xsl:attribute>
-	</xsl:for-each>
-	<xsl:for-each select="@GuaranteedInd">
-		<xsl:attribute name="GuaranteedInd" namespace="">
-			<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-		</xsl:attribute>
-	</xsl:for-each>
-	<xsl:for-each select="@IncludedInRate">
-		<xsl:attribute name="IncludedInRate" namespace="">
-			<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-		</xsl:attribute>
-	</xsl:for-each>
-	<xsl:for-each select="@IncludedInEstTotalInd">
-		<xsl:attribute name="IncludedInEstTotalInd" namespace="">
-			<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-		</xsl:attribute>
-	</xsl:for-each>
-	<xsl:for-each select="@RateConvertInd">
-		<xsl:attribute name="RateConvertInd" namespace="">
-			<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-		</xsl:attribute>
-	</xsl:for-each>
-	<xsl:for-each select="@RequiredInd">
-		<xsl:attribute name="RequiredInd" namespace="">
-			<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-		</xsl:attribute>
-	</xsl:for-each>
-	<xsl:for-each select="ns0:TaxAmounts">
-		<TaxAmounts>
-			<xsl:for-each select="ns0:TaxAmount">
-				<TaxAmount>
-					<xsl:attribute name="Total" namespace="">
-						<xsl:value-of select="number(@Total)"/>
-					</xsl:attribute>
-					<xsl:attribute name="CurrencyCode" namespace="">
-						<xsl:value-of select="@CurrencyCode"/>
-					</xsl:attribute>
-					<xsl:for-each select="@TaxCode">
-						<xsl:attribute name="TaxCode" namespace="">
-							<xsl:value-of select="."/>
-						</xsl:attribute>
-					</xsl:for-each>
-					<xsl:for-each select="@Percentage">
-						<xsl:attribute name="Percentage" namespace="">
-							<xsl:value-of select="number(.)"/>
-						</xsl:attribute>
-					</xsl:for-each>
-					<xsl:for-each select="@Description">
-						<xsl:attribute name="Description" namespace="">
-							<xsl:value-of select="."/>
-						</xsl:attribute>
-					</xsl:for-each>
-				</TaxAmount>
-			</xsl:for-each>
-		</TaxAmounts>
-	</xsl:for-each>
-	<xsl:for-each select="ns0:MinMax">
-		<MinMax>
-			<xsl:for-each select="@MaxCharge">
-				<xsl:attribute name="MaxCharge" namespace="">
-					<xsl:value-of select="number(.)"/>
-				</xsl:attribute>
-			</xsl:for-each>
-			<xsl:for-each select="@MinCharge">
-				<xsl:attribute name="MinCharge" namespace="">
-					<xsl:value-of select="number(.)"/>
-				</xsl:attribute>
-			</xsl:for-each>
-			<xsl:for-each select="@MaxChargeDays">
-				<xsl:attribute name="MaxChargeDays" namespace="">
-					<xsl:value-of select="number(.)"/>
-				</xsl:attribute>
-			</xsl:for-each>
-		</MinMax>
-	</xsl:for-each>
-	<xsl:for-each select="ns0:Calculation">
-		<Calculation>
-			<xsl:for-each select="@UnitCharge">
-				<xsl:attribute name="UnitCharge" namespace="">
-					<xsl:value-of select="number(.)"/>
-				</xsl:attribute>
-			</xsl:for-each>
-			<xsl:for-each select="@UnitName">
-				<xsl:attribute name="UnitName" namespace="">
-					<xsl:value-of select="."/>
-				</xsl:attribute>
-			</xsl:for-each>
-		</xsl:template> ''' 
+ruled_text = '''
+<xsl:for-each select="@MinCharge">
+																				
+																				<xsl:attribute name="MinCharge" namespace="">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each select="@MaxChargeDays">
+																				
+																				<xsl:attribute name="MaxChargeDays" namespace="">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each>
+																		</MinMax>
+																	</xsl:for-each>
+																	<xsl:for-each select="ns0:Calculation">
+																		
+																		<Calculation>
+																			<xsl:for-each select="@UnitCharge">
+																				
+																				<xsl:attribute name="UnitCharge" namespace="">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each select="@UnitName">
+																				
+																				<xsl:attribute name="UnitName" namespace="">
+																					<xsl:value-of select="."/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each select="@Quantity">
+																				
+																				<xsl:attribute name="Quantity" namespace="">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each select="@Percentage">
+																				
+																				<xsl:attribute name="Percentage" namespace="">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each select="@Applicability">
+																				
+																				<xsl:attribute name="Applicability" namespace="">
+																					<xsl:value-of select="."/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each select="@MaxQuantity">
+																				
+																				<xsl:attribute name="MaxQuantity" namespace="">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each select="@Total">
+																				
+																				<xsl:attribute name="Total" namespace="">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each>
+																		</Calculation>
+																	</xsl:for-each>
+																</Fee>
+															</xsl:for-each>
+														</Fees>
+													</xsl:for-each>
+													<xsl:for-each select="ns0:VehAvailCore/ns0:Reference">
+														
+														<Reference>
+															<xsl:attribute name="Type" namespace="">
+																<xsl:value-of select="@Type"/>
+															</xsl:attribute>
+															<xsl:attribute name="ID" namespace="">
+																<xsl:value-of select="@ID"/>
+															</xsl:attribute>
+															<simpletag1/><simpletag2/><simpletag3/><simpletag4/><xsl:for-each select="ns0:CompanyName">
+																
+																<CompanyName>
+																	<xsl:copy-of select="@node()"/>
+																	<xsl:copy-of select="node()"/>
+																</CompanyName>
+															</xsl:for-each><xsl:for-each select="ns0:TPA_Extensions">
+																
+																<TPA_Extensions>
+																	<xsl:copy-of select="@node()"/>
+																	<xsl:copy-of select="node()"/>
+																</TPA_Extensions>
+															</xsl:for-each>
+														</Reference>
+													</xsl:for-each>
+													<xsl:for-each select="ns0:VehAvailCore/ns0:Vendor">
+														
+														<Vendor>
+															<xsl:copy-of select="@node()"/>
+															<xsl:copy-of select="node()"/>
+														</Vendor>
+													</xsl:for-each><xsl:for-each select="ns0:VehAvailCore/ns0:VendorLocation">
+														
+														<VendorLocation>
+															<xsl:copy-of select="@node()"/>
+															<xsl:copy-of select="node()"/>
+														</VendorLocation>
+													</xsl:for-each>''' 
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -122,23 +126,31 @@ def get_chat_completion(input_messages, model_name=o3_mini_model_name):
 
 print("Inside LLM")
 
-ruled_text_with_marker = ruled_text + "<!-- END OF FRAGMENT -->"
+ruled_text_with_marker = ruled_text + "\n" + "<!-- END OF FRAGMENT -->"
 
 prompts = [
-    {"role": "system", "content": (
-            "You are an expert in XSLT 1.0. Simplify incomplete XSLT fragments using @* with name() filters. "
-            "Always avoid repetition, avoid completing missing parts, and return only raw XML without markdown or commentary. "
-            "Stop exactly at the end marker."
-        ) },
-    {"role": "user", "content": '''
-                        CRITICAL INSTRUCTIONS:
-                        1. Do not complete or close any tags—stop exactly at the marker below.
-                        2. Simplify this XSLT fragment as much as possible using efficient XPath and XSLT 1.0 syntax.
-                        3. If a value needs transformation (substring, boolean, number), apply it inline.
-                        4. Use attribute wildcards (@*) and name() filters when applicable.
-                        5. Keep the fragment exactly as given—do not add template wrappers or closing tags.
-                        6. Return only the refined chunk without commentary or markdown./n'''},
-    {"role": "user", "content": ruled_text_with_marker},
+  {
+    "role": "system",
+    "content": (
+      "You are an expert in XSLT 1.0. Simplify incomplete XSLT fragments using @* with name() filters. "
+      "Do not add, remove, or close any tags. Leave any partially shown elements exactly as-is—assume they belong to surrounding context. "
+      "Always avoid repetition, avoid completing missing parts, and return only raw XML without markdown or commentary. "
+      "Stop exactly at the end marker <!-- END OF FRAGMENT -->."
+    )
+  },
+  {
+    "role": "user",
+    "content": f"""
+CRITICAL INSTRUCTIONS:
+1. Simplify this XSLT fragment as much as possible with efficient XPath and XSLT 1.0 syntax.
+2. Apply any needed transformations (substring, boolean, number) inline.
+3. Use attribute wildcards (@*) and name() filters when applicable.
+4. Do not add template wrappers or closing tags—keep it incomplete exactly as given.
+5. Return only the refined chunk without commentary or markdown.
+
+{ruled_text_with_marker}
+"""
+  }
 ]
 
 gpt_response = get_chat_completion(prompts,o3_mini_model_name)

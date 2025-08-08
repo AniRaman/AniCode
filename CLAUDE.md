@@ -8,36 +8,45 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Key Development Commands
 
-### Running the Application
+### Running Applications
 ```bash
 # Main XSLT Manager application
 streamlit run app/xslt_manager/xslt_manager.py
-
-# Other applications
-streamlit run app/gap_analyser/Gap_Analyser.py
-streamlit run app/code_generator/Code_Generator.py
-```
-
 ### Testing
 ```bash
-# Run intelligent chunk processor tests
+# Core system tests
 python test_intelligent_chunk_processor.py
-
-# Run main integration tests
 python test_main_integration.py
+python test_real_xslt_processing.py
 
-# Run individual test modules
+# Rule-based processing tests
+python test_rule_learning.py
+python test_rules_first_approach.py
+
+# XML processing tests
+python test_xml_repair.py
+python test_duplicate_closing_tags.py
+
+# Unit tests for core modules
 python genie_core/tests/test_llm_generates.py
 python genie_core/tests/test_xml_utils.py
 python genie_core/tests/test_xslt_utils.py
+
+# Run specific LLM integration tests
+python test_llm_calls.py
+python test_llm_skip_logic.py
 ```
 
 ### Environment Setup
 ```bash
-# Install dependencies
+# Install dependencies (Python 3.12+ required)
 pip install -r requirements.txt
-# OR using Poetry (if available)
+
+# Alternative: Poetry installation
 poetry install
+
+# Setup Microsoft Visual C++ Build Tools (Windows)
+# Required for some dependencies - install from Microsoft Visual Studio
 ```
 
 ## Architecture Overview
@@ -102,17 +111,6 @@ The **IntelligentChunkProcessor** implements sophisticated XSLT pattern analysis
 5. **Copy-of Merging**: Consolidate multiple copy-of statements
 6. **Element Copying**: Simplify element duplication patterns
 
-### Environment Variables Required
-```
-GPT4O_AZURE_OPENAI_ENDPOINT
-GPT4O_AZURE_OPENAI_KEY
-GPT4O_AZURE_API_VERSION
-GPT4O_MODEL_DEPLOYMENT_NAME
-o1_AZURE_OPENAI_ENDPOINT
-o1_AZURE_OPENAI_KEY
-o3_mini_AZURE_OPENAI_ENDPOINT
-o3_mini_AZURE_OPENAI_KEY
-```
 
 ### Testing Approach
 - **Unit Tests**: Individual modules tested with direct Python execution (no pytest framework)
