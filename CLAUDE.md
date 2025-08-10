@@ -1,6 +1,7 @@
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Always think deeply and act as a critic for any ideas. Don't assume anything and ask questions if you are not clear.
 
 ## Project Overview
 
@@ -107,9 +108,13 @@ The **IntelligentChunkProcessor** implements sophisticated XSLT pattern analysis
 1. **Variable Removal**: Eliminate `<xsl:variable name="var*_cur" select="." />` boilerplate
 2. **Attribute Merging**: Convert simple for-each attribute loops to `xsl:copy-of`
 3. **For-each Simplification**: Collapse trivial nested loops
-4. **Boolean Conversions**: Optimize type conversion patterns
-5. **Copy-of Merging**: Consolidate multiple copy-of statements
-6. **Element Copying**: Simplify element duplication patterns
+4. **Direct Attribute Copy**: Convert direct attribute copying to `xsl:copy-of`
+5. **Conditional Attribute Copy**: Optimize conditional attribute patterns
+6. **Copy-of Merging**: Consolidate multiple copy-of statements
+7. **Element Copying**: Simplify element duplication patterns
+8. **Boolean Conversions**: Optimize type conversion patterns
+9. **Template Call Optimization**: Inline simple utility template calls
+10. **Complex Boolean Patterns**: Simplify nested boolean test patterns
 
 
 ### Testing Approach

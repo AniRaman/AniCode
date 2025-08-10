@@ -196,19 +196,19 @@ Before LLM XSLT :  <xsl:param name="input" select="/.."/>
 Inside LLM
 Model Used: o3-mini
 Refined LLM <xsl:param name="input" select="/.."/>
-<xsl:for-each select="$input/node()[self::ns0:TaxAmount or (not(self::*) and not(self::text()))]">
-	<xsl:choose>
-		<xsl:when test="name() = 'ns0:TaxAmount'">
-			<xsl:element name="{name()}" namespace="{namespace-uri()}">
-				<xsl:call-template name="tbf:tbf8_">
-					<xsl:with-param name="input" select="."/>
-				</xsl:call-template>
-			</xsl:element>
-		</xsl:when>
-		<xsl:otherwise>
-			<xsl:copy-of select="."/>
-		</xsl:otherwise>
-	</xsl:choose>
+<xsl:for-each select="$input/node()">
+  <xsl:choose>
+    <xsl:when test="self::ns0:TaxAmount">
+      <xsl:element name="{name(.)}" namespace="{namespace-uri(.)}">
+        <xsl:call-template name="tbf:tbf8_">
+          <xsl:with-param name="input" select="."/>
+        </xsl:call-template>
+      </xsl:element>
+    </xsl:when>
+    <xsl:when test="not(self::text())">
+      <xsl:copy-of select="."/>
+    </xsl:when>
+  </xsl:choose>
 </xsl:for-each>
 Error computing diff actions: Namespace prefix xsl on param is not defined, line 1, column 37 (<string>, line 1)
 Recorded actions for pattern a4d5da2c in SQLite cache
@@ -317,19 +317,19 @@ Inside ProcessChunk
 Using standard chunk processing
 Inside DB, found the pattern, Applying actions....
 After applying actions <xsl:param name="input" select="/.."/>
-<xsl:for-each select="$input/node()[self::ns0:TaxAmount or (not(self::*) and not(self::text()))]">
-	<xsl:choose>
-		<xsl:when test="name() = 'ns0:TaxAmount'">
-			<xsl:element name="{name()}" namespace="{namespace-uri()}">
-				<xsl:call-template name="tbf:tbf8_">
-					<xsl:with-param name="input" select="."/>
-				</xsl:call-template>
-			</xsl:element>
-		</xsl:when>
-		<xsl:otherwise>
-			<xsl:copy-of select="."/>
-		</xsl:otherwise>
-	</xsl:choose>
+<xsl:for-each select="$input/node()">
+  <xsl:choose>
+    <xsl:when test="self::ns0:TaxAmount">
+      <xsl:element name="{name(.)}" namespace="{namespace-uri(.)}">
+        <xsl:call-template name="tbf:tbf8_">
+          <xsl:with-param name="input" select="."/>
+        </xsl:call-template>
+      </xsl:element>
+    </xsl:when>
+    <xsl:when test="not(self::text())">
+      <xsl:copy-of select="."/>
+    </xsl:when>
+  </xsl:choose>
 </xsl:for-each>
 DEBUG: Refined content is body-only, reconstructing template
 DEBUG: Reconstructed template with 2 children
@@ -507,13 +507,15 @@ Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied complex pattern merging with value-of grouping
 Applied flexible pattern merging
+Optimizing direct attribute copy: @Type -> copy-of
+Applied direct attribute copy optimization
 Applied text-based for-each merging
 Rules applied: 1 optimizations performed
-DEBUG - Rules result length: 3985 chars
+DEBUG - Rules result length: 3909 chars
 DEBUG - Original length: 5083 chars
 DEBUG: Identifying optimized sections...
 DEBUG: Original chunk length: 5083
-DEBUG: Rules result length: 3985
+DEBUG: Rules result length: 3909
 DEBUG: Found 4 union selects in rules result
 DEBUG: Found attribute merger - 6 patterns -> 1 pattern
 DEBUG: Found attribute merger - 4 patterns -> 1 pattern
@@ -569,12 +571,12 @@ DEBUG: Replaced section at position 2187 with <simpletag15/>
 Created 15 rule placeholders
 Original chunk of Org chunk: 5083
 Cleaned chunk of Org chunk: 3994
-Original chunk of rules result: 3985
-Cleaned chunk of rules result: 2547
+Original chunk of rules result: 3909
+Cleaned chunk of rules result: 2488
 LLM Decision Factors:
-  Size reduction from rules: 0.36
+  Size reduction from rules: 0.38
   Rules effectiveness: 0.02
-  Remaining complexity: 0.14
+  Remaining complexity: 0.13
   Too small: False
   STRONG SKIP: Size reduction detected
   Decision: SKIP LLM (score: 1.00)
@@ -596,9 +598,7 @@ DEBUG: Rules result contains optimized union selectors and merged patterns
 						<xsl:for-each select="ns0:Warning">
 							
 							<Warning>
-								<xsl:attribute name="Type" namespace="">
-									<xsl:value-of select="@Type"/>
-								</xsl:attribute>
+								<xsl:copy-of select="@Type"/>
 								<xsl:for-each select="@Language">
 									
 									<xsl:attribute name="Language" namespace="">
@@ -657,8 +657,8 @@ DEBUG: Rules result contains optimized union selectors and merged patterns
 							</xsl:for-each>
 							</xsl:template>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 1 refined length: 3985
-DEBUG: Chunk 1 - Extracted inner content (3752 chars)
+DEBUG: Chunk 1 refined length: 3909
+DEBUG: Chunk 1 - Extracted inner content (3676 chars)
 DEBUG: Chunk 1 - Validating structural tags
 Validating chunk structure
 Input tags: ['OTA_VehAvailRateRS', 'Success', 'Warnings', 'Warning', '/Warning', '/Warnings', 'VehAvailRSCore', 'VehRentalCore', 'PickUpLocation', '/PickUpLocation']
@@ -934,13 +934,17 @@ Cannot parse template text even after wrapping: Opening and ending tag mismatch:
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing element pattern: ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL -> copy-of
+Applied element creation pattern optimization
+Optimizing direct attribute copy: @Purpose -> copy-of
+Applied direct attribute copy optimization
 Applied text-based for-each merging
 Rules applied: 1 optimizations performed
-DEBUG - Rules result length: 3985 chars
+DEBUG - Rules result length: 3738 chars
 DEBUG - Original length: 4984 chars
 DEBUG: Identifying optimized sections...
 DEBUG: Original chunk length: 4984
-DEBUG: Rules result length: 3985
+DEBUG: Rules result length: 3738
 DEBUG: Found 2 union selects in rules result
 DEBUG: Found attribute merger - 6 patterns -> 1 pattern
 DEBUG: Found attribute merger - 2 patterns -> 1 pattern
@@ -973,12 +977,12 @@ DEBUG: Replaced section at position 1634 with <simpletag8/>
 Created 8 rule placeholders
 Original chunk of Org chunk: 4984
 Cleaned chunk of Org chunk: 3176
-Original chunk of rules result: 3985
-Cleaned chunk of rules result: 2363
+Original chunk of rules result: 3738
+Cleaned chunk of rules result: 2231
 LLM Decision Factors:
-  Size reduction from rules: 0.26
+  Size reduction from rules: 0.30
   Rules effectiveness: 0.03
-  Remaining complexity: 0.18
+  Remaining complexity: 0.15
   Too small: False
   Decision: PROCESS WITH LLM (score: 0.25)
 DEBUG - Placeholder map:
@@ -1000,24 +1004,22 @@ DEBUG - Chunk with placeholders preview:
 														</xsl:for-each><xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:VehIdentity">
 ...
 DEBUG - Rules result preview:
-<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tbf="http://www.altova.com/MapForce/UDF/tbf" xmlns:ns0="http://www.opentravel.org/OTA/2003/05" xmlns:xs="http://www.w3.org/2001/XMLSchema" match="/"><xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL">
+<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tbf="http://www.altova.com/MapForce/UDF/tbf" xmlns:ns0="http://www.opentravel.org/OTA/2003/05" xmlns:xs="http://www.w3.org/2001/XMLSchema" match="/"><xsl:copy-of select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL"/><xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:VehIdentity">
 															
-															<PictureURL>
-																<xsl:value-of select="."/>
-															</PictureURL>
-														</xsl:for-each><xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:VehIdentity">
-...
+															<VehIdentity>
+																<xsl:for-each select="@VehicleAssetNumber | @LicensePlateNumber | @StateProvCode | @C...
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: template line 1 and Vehicle, line 12, column 24 (<string>, line 12)
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing element pattern: ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL -> copy-of
+Applied element creation pattern optimization
+Optimizing direct attribute copy: @Purpose -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
 Inside Rules finder
-Before LLM XSLT :  <xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL">
-															
-															<PictureURL>
-																<xsl:value-of select="."/>
-															</PictureURL>
-														</xsl:for-each><xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:VehIdentity">
+Recorded actions for pattern 040338e1 in SQLite cache
+Before LLM XSLT :  <xsl:copy-of select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL"/><xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:VehIdentity">
 															
 															<VehIdentity>
 																<simpletag1/><simpletag2/><simpletag3/><simpletag4/><simpletag5/><simpletag6/>
@@ -1052,9 +1054,7 @@ Before LLM XSLT :  <xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:Pictur
 																	<xsl:for-each select="ns0:VehicleCharge">
 																		
 																		<VehicleCharge>
-																			<xsl:attribute name="Purpose" namespace="">
-																				<xsl:value-of select="@Purpose"/>
-																			</xsl:attribute>
+																			<xsl:copy-of select="@Purpose"/>
 																			<xsl:for-each select="@CurrencyCode">
 																				
 																				<xsl:attribute name="CurrencyCode" namespace="">
@@ -1079,11 +1079,7 @@ Before LLM XSLT :  <xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:Pictur
 <!-- END OF FRAGMENT -->
 Inside LLM
 Model Used: o3-mini
-Refined LLM <xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL">
-	<PictureURL>
-		<xsl:value-of select="."/>
-	</PictureURL>
-</xsl:for-each>
+Refined LLM <xsl:copy-of select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL"/>
 <xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:VehIdentity">
 	<VehIdentity>
 		<simpletag1/><simpletag2/><simpletag3/><simpletag4/><simpletag5/><simpletag6/>
@@ -1091,59 +1087,22 @@ Refined LLM <xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL">
 </xsl:for-each>
 </Vehicle>
 <xsl:for-each select="ns0:VehAvailCore/ns0:RentalRate">
-	<RentalRate>
-		<xsl:for-each select="@*[name() = 'QuoteID']">
-			<xsl:attribute name="QuoteID">
-				<xsl:value-of select="."/>
-			</xsl:attribute>
-		</xsl:for-each>
+	<RentalRate QuoteID="{@QuoteID}">
 		<xsl:for-each select="ns0:RateDistance">
-			<RateDistance>
-				<xsl:for-each select="@*[name() = 'Unlimited']">
-					<xsl:attribute name="Unlimited">
-						<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-					</xsl:attribute>
-				</xsl:for-each>
-				<xsl:for-each select="@*[name() = 'Quantity']">
-					<xsl:attribute name="Quantity">
-						<xsl:value-of select="number(.)"/>
-					</xsl:attribute>
-				</xsl:for-each>
+			<RateDistance Unlimited="{boolean(translate(normalize-space(string(@Unlimited)), ' 0false', ''))}" Quantity="{number(@Quantity)}">
 				<simpletag7/><simpletag8/>
 			</RateDistance>
 		</xsl:for-each>
 		<xsl:for-each select="ns0:VehicleCharges">
 			<VehicleCharges>
 				<xsl:for-each select="ns0:VehicleCharge">
-					<VehicleCharge>
-						<xsl:for-each select="@*[name() = 'Purpose']">
-							<xsl:attribute name="Purpose">
-								<xsl:value-of select="."/>
-							</xsl:attribute>
-						</xsl:for-each>
-						<xsl:for-each select="@*[name() = 'CurrencyCode']">
-							<xsl:attribute name="CurrencyCode">
-								<xsl:value-of select="."/>
-							</xsl:attribute>
-						</xsl:for-each>
-						<xsl:for-each select="@*[name() = 'DecimalPlaces']">
-							<xsl:attribute name="DecimalPlaces">
-								<xsl:value-of select="number(.)"/>
-							</xsl:attribute>
-						</xsl:for-each>
-						<xsl:for-each select="@*[name() = 'Amount']">
-							<xsl:attribute name="Amount">
-								<xsl:value-of select="number(.)"/>
-							</xsl:attribute>
-						</xsl:for-each>
-						<xsl:for-each select="@*[name() = 'TaxInclusive']">
-							<xsl:attribute name="TaxInclusive">
-								<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-							</xsl:attribute>
-						</xsl:for-each>
-Error computing diff actions: Opening and ending tag mismatch: template line 1 and Vehicle, line 12, column 24 (<string>, line 12)
+					<VehicleCharge Purpose="{@Purpose}" CurrencyCode="{@CurrencyCode}" DecimalPlaces="{number(@DecimalPlaces)}" Amount="{number(@Amount)}" TaxInclusive="{boolean(translate(normalize-space(string(@TaxInclusive)), ' 0false', ''))}"/>
+				</xsl:for-each>
+			</VehicleCharges>
+		</xsl:for-each>
+Error computing diff actions: Opening and ending tag mismatch: template line 1 and Vehicle, line 7, column 24 (<string>, line 7)
 Recorded actions for pattern 040338e1 in SQLite cache
-Stored learned transformation: generic_optimization
+Stored learned transformation: for_each_to_copy_of
 Processed whole chunk with LLM (3172 chars)
 DEBUG: Starting placeholder replacement with 8 placeholders
 DEBUG: Replaced <simpletag1/> with 494 chars of content
@@ -1155,11 +1114,7 @@ DEBUG: Removed placeholder <simpletag6/>
 DEBUG: Replaced <simpletag7/> with 423 chars of content
 DEBUG: Removed placeholder <simpletag8/>
 === MERGED XSLT FOR LLM DEBUG ===
-<xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL">
-	<PictureURL>
-		<xsl:value-of select="."/>
-	</PictureURL>
-</xsl:for-each>
+<xsl:copy-of select="ns0:VehAvailCore/ns0:Vehicle/ns0:PictureURL"/>
 <xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:VehIdentity">
 	<VehIdentity>
 		<xsl:for-each select="@VehicleAssetNumber | @LicensePlateNumber | @StateProvCode | @CountryCode | @VehicleID_Number | @VehicleColor">
@@ -1171,24 +1126,9 @@ DEBUG: Removed placeholder <simpletag8/>
 </xsl:for-each>
 </Vehicle>
 <xsl:for-each select="ns0:VehAvailCore/ns0:RentalRate">
-	<RentalRate>
-		<xsl:for-each select="@*[name() = 'QuoteID']">
-			<xsl:attribute name="QuoteID">
-				<xsl:value-of select="."/>
-			</xsl:attribute>
-		</xsl:for-each>
+	<RentalRate QuoteID="{@QuoteID}">
 		<xsl:for-each select="ns0:RateDistance">
-			<RateDistance>
-				<xsl:for-each select="@*[name() = 'Unlimited']">
-					<xsl:attribute name="Unlimited">
-						<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-					</xsl:attribute>
-				</xsl:for-each>
-				<xsl:for-each select="@*[name() = 'Quantity']">
-					<xsl:attribute name="Quantity">
-						<xsl:value-of select="number(.)"/>
-					</xsl:attribute>
-				</xsl:for-each>
+			<RateDistance Unlimited="{boolean(translate(normalize-space(string(@Unlimited)), ' 0false', ''))}" Quantity="{number(@Quantity)}">
 				<xsl:for-each select="@DistUnitName | @VehiclePeriodUnitName">
                                                                 <xsl:attribute name="{name()}" namespace="">
                                                                         <xsl:value-of select="."/>
@@ -1199,65 +1139,65 @@ DEBUG: Removed placeholder <simpletag8/>
 		<xsl:for-each select="ns0:VehicleCharges">
 			<VehicleCharges>
 				<xsl:for-each select="ns0:VehicleCharge">
-					<VehicleCharge>
-						<xsl:for-each select="@*[name() = 'Purpose']">
-							<xsl:attribute name="Purpose">
-								<xsl:value-of select="."/>
-							</xsl:attribute>
-						</xsl:for-each>
-						<xsl:for-each select="@*[name() = 'CurrencyCode']">
-							<xsl:attribute name="CurrencyCode">
-								<xsl:value-of select="."/>
-							</xsl:attribute>
-						</xsl:for-each>
-						<xsl:for-each select="@*[name() = 'DecimalPlaces']">
-							<xsl:attribute name="DecimalPlaces">
-								<xsl:value-of select="number(.)"/>
-							</xsl:attribute>
-						</xsl:for-each>
-						<xsl:for-each select="@*[name() = 'Amount']">
-							<xsl:attribute name="Amount">
-								<xsl:value-of select="number(.)"/>
-							</xsl:attribute>
-						</xsl:for-each>
-						<xsl:for-each select="@*[name() = 'TaxInclusive']">
-							<xsl:attribute name="TaxInclusive">
-								<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-							</xsl:attribute>
-						</xsl:for-each>
+					<VehicleCharge Purpose="{@Purpose}" CurrencyCode="{@CurrencyCode}" DecimalPlaces="{number(@DecimalPlaces)}" Amount="{number(@Amount)}" TaxInclusive="{boolean(translate(normalize-space(string(@TaxInclusive)), ' 0false', ''))}"/>
+				</xsl:for-each>
+			</VehicleCharges>
+		</xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 4 refined length: 3009
+DEBUG: Chunk 4 refined length: 1827
 DEBUG: Chunk 4 - Could not extract inner content, using original chunk
 DEBUG: Chunk 4 - Validating structural tags
 Validating chunk structure
 Input tags: ['PictureURL', '/PictureURL', 'VehIdentity', '/VehIdentity', '/Vehicle', 'RentalRate', 'RateDistance', '/RateDistance', 'VehicleCharges', 'VehicleCharge']
-Output tags: ['PictureURL', '/PictureURL', 'VehIdentity', '/VehIdentity', '/Vehicle', 'RentalRate', 'RateDistance', '/RateDistance', 'VehicleCharges', 'VehicleCharge']
-Tag lists match perfectly
+Output tags: ['VehIdentity', '/VehIdentity', '/Vehicle', 'RentalRate', 'RateDistance', '/RateDistance', 'VehicleCharges', 'VehicleCharge', '/VehicleCharges']
+Output has fewer tags than input - falling back to original chunk
 DEBUG: Chunk 4 - Successfully replaced <Chunk4/> with refined content
-DEBUG: Chunk 4 - Contains 6 union operators - optimization preserved!
 DEBUG: Processing chunk 5/16 - input length: 4956
 Using intelligent chunk processing
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: Calculation line 86 and xsl:template, line 97, column 52 (<string>, line 97)
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
-No rules applied, using original chunk
+Optimizing direct attribute copy: @CurrencyCode -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
+Rules applied: 1 optimizations performed
+DEBUG - Rules result length: 5075 chars
+DEBUG - Original length: 5189 chars
+DEBUG: Identifying optimized sections...
+DEBUG: Original chunk length: 5189
+DEBUG: Rules result length: 5075
+DEBUG: Found 0 union selects in rules result
+DEBUG: Identified 0 optimized sections
+DEBUG: Found 0 optimized sections
+DEBUG: No optimized sections identified, sending original chunk to LLM
 Created 0 rule placeholders
 Original chunk of Org chunk: 5189
 Cleaned chunk of Org chunk: 3112
-Original chunk of rules result: 5189
-Cleaned chunk of rules result: 3112
+Original chunk of rules result: 5075
+Cleaned chunk of rules result: 3045
 LLM Decision Factors:
-  Size reduction from rules: 0.00
-  Rules effectiveness: 0.00
+  Size reduction from rules: 0.02
+  Rules effectiveness: 0.03
   Remaining complexity: 0.24
   Too small: False
   Decision: PROCESS WITH LLM (score: 0.00)
+DEBUG - Rules result preview:
+<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tbf="http://www.altova.com/MapForce/UDF/tbf" xmlns:ns0="http://www.opentravel.org/OTA/2003/05" xmlns:xs="http://www.w3.org/2001/XMLSchema" match="/"><xsl:for-each select="@Description">
+																				
+																				<xsl:attribute name="Description" namespace="">
+																					<xsl:value-of select="substring(., 0, 62)"/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each selec...
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: Calculation line 86 and xsl:template, line 97, column 52 (<string>, line 97)
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing direct attribute copy: @CurrencyCode -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
 Inside Rules finder
+Recorded actions for pattern 68759f93 in SQLite cache
 Before LLM XSLT :  <xsl:for-each select="@Description">
 																				
 																				<xsl:attribute name="Description" namespace="">
@@ -1297,9 +1237,7 @@ Before LLM XSLT :  <xsl:for-each select="@Description">
 																							<xsl:attribute name="Total" namespace="">
 																								<xsl:value-of select="number(@Total)"/>
 																							</xsl:attribute>
-																							<xsl:attribute name="CurrencyCode" namespace="">
-																								<xsl:value-of select="@CurrencyCode"/>
-																							</xsl:attribute>
+																							<xsl:copy-of select="@CurrencyCode"/>
 																							<xsl:for-each select="@TaxCode">
 																								
 																								<xsl:attribute name="TaxCode" namespace="">
@@ -1372,22 +1310,15 @@ Refined LLM <xsl:for-each select="@*[name()='Description']">
   <TaxAmounts>
     <xsl:for-each select="ns0:TaxAmount">
       <TaxAmount>
-        <xsl:attribute name="Total" namespace="">
-          <xsl:value-of select="number(@Total)"/>
-        </xsl:attribute>
-        <xsl:attribute name="CurrencyCode" namespace="">
-          <xsl:value-of select="@CurrencyCode"/>
-        </xsl:attribute>
-        <xsl:for-each select="@*[name()='TaxCode' or name()='Percentage' or name()='Description']">
+        <xsl:for-each select="@*[name()='Total' or name()='Percentage']">
           <xsl:attribute name="{name()}" namespace="">
-            <xsl:choose>
-              <xsl:when test="name()='Percentage'">
-                <xsl:value-of select="number(.)"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="."/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="number(.)"/>
+          </xsl:attribute>
+        </xsl:for-each>
+        <xsl:copy-of select="@CurrencyCode"/>
+        <xsl:for-each select="@*[name()='TaxCode' or name()='Description']">
+          <xsl:attribute name="{name()}" namespace="">
+            <xsl:value-of select="."/>
           </xsl:attribute>
         </xsl:for-each>
       </TaxAmount>
@@ -1405,21 +1336,19 @@ Refined LLM <xsl:for-each select="@*[name()='Description']">
 </xsl:for-each>
 <xsl:for-each select="ns0:Calculation">
   <Calculation>
-    <xsl:for-each select="@*[name()='UnitCharge' or name()='UnitName']">
+    <xsl:for-each select="@*[name()='UnitCharge']">
       <xsl:attribute name="{name()}" namespace="">
-        <xsl:choose>
-          <xsl:when test="name()='UnitCharge'">
-            <xsl:value-of select="number(.)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="."/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of select="number(.)"/>
       </xsl:attribute>
     </xsl:for-each>
-Error computing diff actions: Opening and ending tag mismatch: Calculation line 86 and xsl:template, line 97, column 52 (<string>, line 97)
+    <xsl:for-each select="@*[name()='UnitName']">
+      <xsl:attribute name="{name()}" namespace="">
+        <xsl:value-of select="."/>
+      </xsl:attribute>
+    </xsl:for-each>
+Error computing diff actions: Opening and ending tag mismatch: Calculation line 84 and xsl:template, line 95, column 52 (<string>, line 95)
 Recorded actions for pattern 68759f93 in SQLite cache
-Stored learned transformation: generic_optimization
+Stored learned transformation: for_each_to_copy_of
 Processed whole chunk with LLM (5189 chars)
 DEBUG: Starting placeholder replacement with 0 placeholders
 === MERGED XSLT FOR LLM DEBUG ===
@@ -1437,22 +1366,15 @@ DEBUG: Starting placeholder replacement with 0 placeholders
   <TaxAmounts>
     <xsl:for-each select="ns0:TaxAmount">
       <TaxAmount>
-        <xsl:attribute name="Total" namespace="">
-          <xsl:value-of select="number(@Total)"/>
-        </xsl:attribute>
-        <xsl:attribute name="CurrencyCode" namespace="">
-          <xsl:value-of select="@CurrencyCode"/>
-        </xsl:attribute>
-        <xsl:for-each select="@*[name()='TaxCode' or name()='Percentage' or name()='Description']">
+        <xsl:for-each select="@*[name()='Total' or name()='Percentage']">
           <xsl:attribute name="{name()}" namespace="">
-            <xsl:choose>
-              <xsl:when test="name()='Percentage'">
-                <xsl:value-of select="number(.)"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="."/>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="number(.)"/>
+          </xsl:attribute>
+        </xsl:for-each>
+        <xsl:copy-of select="@CurrencyCode"/>
+        <xsl:for-each select="@*[name()='TaxCode' or name()='Description']">
+          <xsl:attribute name="{name()}" namespace="">
+            <xsl:value-of select="."/>
           </xsl:attribute>
         </xsl:for-each>
       </TaxAmount>
@@ -1470,20 +1392,18 @@ DEBUG: Starting placeholder replacement with 0 placeholders
 </xsl:for-each>
 <xsl:for-each select="ns0:Calculation">
   <Calculation>
-    <xsl:for-each select="@*[name()='UnitCharge' or name()='UnitName']">
+    <xsl:for-each select="@*[name()='UnitCharge']">
       <xsl:attribute name="{name()}" namespace="">
-        <xsl:choose>
-          <xsl:when test="name()='UnitCharge'">
-            <xsl:value-of select="number(.)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="."/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of select="number(.)"/>
+      </xsl:attribute>
+    </xsl:for-each>
+    <xsl:for-each select="@*[name()='UnitName']">
+      <xsl:attribute name="{name()}" namespace="">
+        <xsl:value-of select="."/>
       </xsl:attribute>
     </xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 5 refined length: 2234
+DEBUG: Chunk 5 refined length: 1932
 DEBUG: Chunk 5 - Could not extract inner content, using original chunk
 DEBUG: Chunk 5 - Validating structural tags
 Validating chunk structure
@@ -1626,13 +1546,15 @@ Using intelligent chunk processing
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: template line 1 and RateQualifier, line 43, column 33 (<string>, line 43)
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
+Optimizing element pattern: ns0:PromoDesc -> copy-of
+Applied element creation pattern optimization
 Applied text-based for-each merging
 Rules applied: 1 optimizations performed
-DEBUG - Rules result length: 4681 chars
+DEBUG - Rules result length: 4522 chars
 DEBUG - Original length: 5008 chars
 DEBUG: Identifying optimized sections...
 DEBUG: Original chunk length: 5008
-DEBUG: Rules result length: 4681
+DEBUG: Rules result length: 4522
 DEBUG: Found 1 union selects in rules result
 DEBUG: Found attribute merger - 3 patterns -> 1 pattern
 DEBUG: Identified 3 optimized sections
@@ -1649,12 +1571,12 @@ DEBUG: Replaced section at position 1206 with <simpletag3/>
 Created 3 rule placeholders
 Original chunk of Org chunk: 5008
 Cleaned chunk of Org chunk: 3254
-Original chunk of rules result: 4681
-Cleaned chunk of rules result: 3004
+Original chunk of rules result: 4522
+Cleaned chunk of rules result: 2936
 LLM Decision Factors:
-  Size reduction from rules: 0.08
+  Size reduction from rules: 0.10
   Rules effectiveness: 0.03
-  Remaining complexity: 0.39
+  Remaining complexity: 0.38
   Too small: False
   Decision: PROCESS WITH LLM (score: 0.25)
 DEBUG - Placeholder map:
@@ -1676,22 +1598,20 @@ DEBUG - Rules result preview:
 																		<xsl:attribute name="QuoteID" namespace="">
 																			<xsl:value-of select="."/>
 																		</xsl:attribute>
-																	</xsl:for-each><xsl:for-each select="ns0:PromoDesc">
-																	...
+																	</xsl:for-each><xsl:copy-of select="ns0:PromoDesc"/><xsl:for-each sele...
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: template line 1 and RateQualifier, line 28, column 33 (<string>, line 28)
 Final fallback: Cannot parse template text, skipping rule-based processing
+Optimizing element pattern: ns0:PromoDesc -> copy-of
+Applied element creation pattern optimization
+Applied text-based for-each merging
 Inside Rules finder
+Recorded actions for pattern ae59798c in SQLite cache
 Before LLM XSLT :  <xsl:for-each select="@QuoteID">
 																		
 																		<xsl:attribute name="QuoteID" namespace="">
 																			<xsl:value-of select="."/>
 																		</xsl:attribute>
-																	</xsl:for-each><xsl:for-each select="ns0:PromoDesc">
-																		
-																		<PromoDesc>
-																			<xsl:value-of select="."/>
-																		</PromoDesc>
-																	</xsl:for-each><xsl:for-each select="ns0:RateComments">
+																	</xsl:for-each><xsl:copy-of select="ns0:PromoDesc"/><xsl:for-each select="ns0:RateComments">
 																		
 																		<RateComments>
 																			<xsl:for-each select="ns0:RateComment">
@@ -1763,80 +1683,43 @@ Before LLM XSLT :  <xsl:for-each select="@QuoteID">
 Inside LLM
 Model Used: o3-mini
 Refined LLM <xsl:for-each select="@*[name()='QuoteID']">
-  <xsl:attribute name="{name()}" namespace="">
-    <xsl:value-of select="."/>
-  </xsl:attribute>
-</xsl:for-each><xsl:for-each select="ns0:PromoDesc">
-  <PromoDesc>
-    <xsl:value-of select="."/>
-  </PromoDesc>
-</xsl:for-each><xsl:for-each select="ns0:RateComments">
-  <RateComments>
-    <xsl:for-each select="ns0:RateComment">
-      <RateComment>
-        <xsl:for-each select="@*[name()='Formatted']">
-          <xsl:attribute name="{name()}" namespace="">
-            <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-          </xsl:attribute>
-        </xsl:for-each>
-        <simpletag1/><simpletag2/><simpletag3/>
-        <xsl:value-of select="."/>
-      </RateComment>
-    </xsl:for-each>
-  </RateComments>
+	<xsl:attribute name="QuoteID" namespace="">
+		<xsl:value-of select="."/>
+	</xsl:attribute>
+</xsl:for-each>
+<xsl:copy-of select="ns0:PromoDesc"/>
+<xsl:for-each select="ns0:RateComments">
+	<RateComments>
+		<xsl:for-each select="ns0:RateComment">
+			<RateComment>
+				<xsl:for-each select="@*[name()='Formatted']">
+					<xsl:attribute name="Formatted" namespace="">
+						<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+					</xsl:attribute>
+				</xsl:for-each>
+				<simpletag1/><simpletag2/><simpletag3/>
+				<xsl:value-of select="."/>
+			</RateComment>
+		</xsl:for-each>
+	</RateComments>
 </xsl:for-each>
 </RateQualifier>
 </xsl:for-each>
 <xsl:for-each select="ns0:RateRestrictions">
-  <RateRestrictions>
-    <xsl:for-each select="@*[name()='ArriveByFlight']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='MinimumDayInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='MaximumDayInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='AdvancedBookingInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='RestrictedMileageInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='CorporateRateInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='GuaranteeReqInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='MaximumVehiclesAllowed']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="number(.)"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='OvernightInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-Error computing diff actions: Opening and ending tag mismatch: template line 1 and RateQualifier, line 28, column 33 (<string>, line 28)
+	<RateRestrictions>
+		<xsl:for-each select="@*[name()='ArriveByFlight' or name()='MinimumDayInd' or name()='MaximumDayInd' or name()='AdvancedBookingInd' or name()='RestrictedMileageInd' or name()='CorporateRateInd' or name()='GuaranteeReqInd' or name()='OvernightInd']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='MaximumVehiclesAllowed']">
+			<xsl:attribute name="MaximumVehiclesAllowed" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+Error computing diff actions: Opening and ending tag mismatch: template line 1 and RateQualifier, line 23, column 33 (<string>, line 23)
 Recorded actions for pattern ae59798c in SQLite cache
-Stored learned transformation: generic_optimization
+Stored learned transformation: for_each_to_copy_of
 Processed whole chunk with LLM (4304 chars)
 DEBUG: Starting placeholder replacement with 3 placeholders
 DEBUG: Replaced <simpletag1/> with 416 chars of content
@@ -1844,91 +1727,53 @@ DEBUG: Removed placeholder <simpletag2/>
 DEBUG: Removed placeholder <simpletag3/>
 === MERGED XSLT FOR LLM DEBUG ===
 <xsl:for-each select="@*[name()='QuoteID']">
-  <xsl:attribute name="{name()}" namespace="">
-    <xsl:value-of select="."/>
-  </xsl:attribute>
-</xsl:for-each><xsl:for-each select="ns0:PromoDesc">
-  <PromoDesc>
-    <xsl:value-of select="."/>
-  </PromoDesc>
-</xsl:for-each><xsl:for-each select="ns0:RateComments">
-  <RateComments>
-    <xsl:for-each select="ns0:RateComment">
-      <RateComment>
-        <xsl:for-each select="@*[name()='Formatted']">
-          <xsl:attribute name="{name()}" namespace="">
-            <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-          </xsl:attribute>
-        </xsl:for-each>
-        <xsl:for-each select="@Language | @TextFormat | @Name">
+	<xsl:attribute name="QuoteID" namespace="">
+		<xsl:value-of select="."/>
+	</xsl:attribute>
+</xsl:for-each>
+<xsl:copy-of select="ns0:PromoDesc"/>
+<xsl:for-each select="ns0:RateComments">
+	<RateComments>
+		<xsl:for-each select="ns0:RateComment">
+			<RateComment>
+				<xsl:for-each select="@*[name()='Formatted']">
+					<xsl:attribute name="Formatted" namespace="">
+						<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+					</xsl:attribute>
+				</xsl:for-each>
+				<xsl:for-each select="@Language | @TextFormat | @Name">
                                                                 <xsl:attribute name="{name()}" namespace="">
                                                                         <xsl:value-of select="."/>
                                                                 </xsl:attribute>
                                                         </xsl:for-each>
-        <xsl:value-of select="."/>
-      </RateComment>
-    </xsl:for-each>
-  </RateComments>
+				<xsl:value-of select="."/>
+			</RateComment>
+		</xsl:for-each>
+	</RateComments>
 </xsl:for-each>
 </RateQualifier>
 </xsl:for-each>
 <xsl:for-each select="ns0:RateRestrictions">
-  <RateRestrictions>
-    <xsl:for-each select="@*[name()='ArriveByFlight']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='MinimumDayInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='MaximumDayInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='AdvancedBookingInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='RestrictedMileageInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='CorporateRateInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='GuaranteeReqInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='MaximumVehiclesAllowed']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="number(.)"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='OvernightInd']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-      </xsl:attribute>
-    </xsl:for-each>
+	<RateRestrictions>
+		<xsl:for-each select="@*[name()='ArriveByFlight' or name()='MinimumDayInd' or name()='MaximumDayInd' or name()='AdvancedBookingInd' or name()='RestrictedMileageInd' or name()='CorporateRateInd' or name()='GuaranteeReqInd' or name()='OvernightInd']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='MaximumVehiclesAllowed']">
+			<xsl:attribute name="MaximumVehiclesAllowed" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 7 refined length: 3455
+DEBUG: Chunk 7 refined length: 1792
 DEBUG: Chunk 7 - Could not extract inner content, using original chunk
 DEBUG: Chunk 7 - Validating structural tags
 Validating chunk structure
 Input tags: ['PromoDesc', '/PromoDesc', 'RateComments', 'RateComment', '/RateComment', '/RateComments', '/RateQualifier', 'RateRestrictions']
-Output tags: ['PromoDesc', '/PromoDesc', 'RateComments', 'RateComment', '/RateComment', '/RateComments', '/RateQualifier', 'RateRestrictions']
-Tag lists match perfectly
+Output tags: ['RateComments', 'RateComment', '/RateComment', '/RateComments', '/RateQualifier', 'RateRestrictions']
+Output has fewer tags than input - falling back to original chunk
 DEBUG: Chunk 7 - Successfully replaced <Chunk7/> with refined content
-DEBUG: Chunk 7 - Contains 2 union operators - optimization preserved!
 DEBUG: Processing chunk 8/16 - input length: 4887
 Using intelligent chunk processing
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: template line 1 and RateRestrictions, line 32, column 36 (<string>, line 32)
@@ -2091,7 +1936,7 @@ Refined LLM <xsl:for-each select="@*[name()='OneWayPolicy']">
 </xsl:for-each>
 <xsl:for-each select="@*[name()='CancellationPenaltyInd' or name()='ModificationPenaltyInd' or name()='NoShowFeeInd']">
 	<xsl:attribute name="{name()}" namespace="">
-		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+		<xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
 	</xsl:attribute>
 </xsl:for-each>
 <xsl:for-each select="@*[name()='MinimumAge' or name()='MaximumAge']">
@@ -2139,7 +1984,12 @@ Refined LLM <xsl:for-each select="@*[name()='OneWayPolicy']">
 </xsl:for-each>
 <xsl:for-each select="ns0:VehAvailCore/ns0:TotalCharge">
 	<TotalCharge>
-		<xsl:for-each select="@*[name()='RateTotalAmount' or name()='EstimatedTotalAmount' or name()='DecimalPlaces']">
+		<xsl:for-each select="@*[name()='RateTotalAmount']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='EstimatedTotalAmount']">
 			<xsl:attribute name="{name()}" namespace="">
 				<xsl:value-of select="number(.)"/>
 			</xsl:attribute>
@@ -2149,6 +1999,13 @@ Refined LLM <xsl:for-each select="@*[name()='OneWayPolicy']">
 				<xsl:value-of select="."/>
 			</xsl:attribute>
 		</xsl:for-each>
+		<xsl:for-each select="@*[name()='DecimalPlaces']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+	</TotalCharge>
+</xsl:for-each>
 Error computing diff actions: Opening and ending tag mismatch: template line 1 and RateRestrictions, line 32, column 36 (<string>, line 32)
 Recorded actions for pattern 8ba1839c in SQLite cache
 Stored learned transformation: for_each_to_copy_of
@@ -2164,7 +2021,7 @@ DEBUG: Removed placeholder <simpletag2/>
 </xsl:for-each>
 <xsl:for-each select="@*[name()='CancellationPenaltyInd' or name()='ModificationPenaltyInd' or name()='NoShowFeeInd']">
 	<xsl:attribute name="{name()}" namespace="">
-		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+		<xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
 	</xsl:attribute>
 </xsl:for-each>
 <xsl:for-each select="@*[name()='MinimumAge' or name()='MaximumAge']">
@@ -2216,7 +2073,12 @@ DEBUG: Removed placeholder <simpletag2/>
 </xsl:for-each>
 <xsl:for-each select="ns0:VehAvailCore/ns0:TotalCharge">
 	<TotalCharge>
-		<xsl:for-each select="@*[name()='RateTotalAmount' or name()='EstimatedTotalAmount' or name()='DecimalPlaces']">
+		<xsl:for-each select="@*[name()='RateTotalAmount']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='EstimatedTotalAmount']">
 			<xsl:attribute name="{name()}" namespace="">
 				<xsl:value-of select="number(.)"/>
 			</xsl:attribute>
@@ -2226,14 +2088,109 @@ DEBUG: Removed placeholder <simpletag2/>
 				<xsl:value-of select="."/>
 			</xsl:attribute>
 		</xsl:for-each>
+		<xsl:for-each select="@*[name()='DecimalPlaces']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+	</TotalCharge>
+</xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 8 refined length: 2601
+DEBUG: Chunk 8 refined length: 2929
 DEBUG: Chunk 8 - Could not extract inner content, using original chunk
 DEBUG: Chunk 8 - Validating structural tags
 Validating chunk structure
 Input tags: ['/RateRestrictions', 'RateGuarantee', 'Description', '/Description', '/RateGuarantee', 'PickupReturnRule', '/PickupReturnRule', 'NoShowFeeInfo', '/NoShowFeeInfo', '/RentalRate', 'TotalCharge']
-Output tags: ['/RateRestrictions', 'RateGuarantee', 'Description', '/Description', '/RateGuarantee', 'PickupReturnRule', '/PickupReturnRule', 'NoShowFeeInfo', '/NoShowFeeInfo', '/RentalRate', 'TotalCharge']
-Tag lists match perfectly
+Output tags: ['/RateRestrictions', 'RateGuarantee', 'Description', '/Description', '/RateGuarantee', 'PickupReturnRule', '/PickupReturnRule', 'NoShowFeeInfo', '/NoShowFeeInfo', '/RentalRate', 'TotalCharge', '/TotalCharge']
+Output has extra tags - fixing discrepancies
+Extra tags found in output: ['/TotalCharge']
+Removing extra tag: /TotalCharge
+Removing first duplicate closing tag TotalCharge and subsequent closing tags
+Found first closing TotalCharge at line 80: </TotalCharge>
+Marking closing tag for removal at line 80: </TotalCharge>
+Marking closing tag for removal at line 81: </xsl:for-each>
+Removing line 81: </xsl:for-each>
+Removing line 80: </TotalCharge>
+Removed 2 closing tag lines
+Content after llm xslt repair :  <xsl:for-each select="@*[name()='OneWayPolicy']">
+	<xsl:attribute name="{name()}" namespace="">
+		<xsl:value-of select="."/>
+	</xsl:attribute>
+</xsl:for-each>
+<xsl:for-each select="@*[name()='CancellationPenaltyInd' or name()='ModificationPenaltyInd' or name()='NoShowFeeInd']">
+	<xsl:attribute name="{name()}" namespace="">
+		<xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
+	</xsl:attribute>
+</xsl:for-each>
+<xsl:for-each select="@*[name()='MinimumAge' or name()='MaximumAge']">
+	<xsl:attribute name="{name()}" namespace="">
+		<xsl:value-of select="number(.)"/>
+	</xsl:attribute>
+</xsl:for-each>
+</RateRestrictions>
+</xsl:for-each>
+<xsl:for-each select="ns0:RateGuarantee">
+	<RateGuarantee>
+		<xsl:for-each select="@AbsoluteDeadline | @OffsetTimeUnit">
+                                                                <xsl:attribute name="{name()}" namespace="">
+                                                                        <xsl:value-of select="."/>
+                                                                </xsl:attribute>
+                                                        </xsl:for-each>
+		<xsl:for-each select="@*[name()='OffsetUnitMultiplier']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='OffsetDropTime']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="."/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="ns0:Description">
+			<Description>
+				<xsl:copy-of select="@node()"/>
+				<xsl:copy-of select="node()"/>
+			</Description>
+		</xsl:for-each>
+	</RateGuarantee>
+</xsl:for-each>
+<xsl:for-each select="ns0:PickupReturnRule">
+	<PickupReturnRule>
+		<xsl:copy-of select="@node()"/>
+		<xsl:copy-of select="node()"/>
+	</PickupReturnRule>
+</xsl:for-each>
+<xsl:for-each select="ns0:NoShowFeeInfo">
+	<NoShowFeeInfo>
+		<xsl:call-template name="tbf:tbf1_NoShowFeeType">
+			<xsl:with-param name="input" select="."/>
+		</xsl:call-template>
+	</NoShowFeeInfo>
+</xsl:for-each>
+</RentalRate>
+</xsl:for-each>
+<xsl:for-each select="ns0:VehAvailCore/ns0:TotalCharge">
+	<TotalCharge>
+		<xsl:for-each select="@*[name()='RateTotalAmount']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='EstimatedTotalAmount']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='CurrencyCode']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="."/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='DecimalPlaces']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
 DEBUG: Chunk 8 - Successfully replaced <Chunk8/> with refined content
 DEBUG: Chunk 8 - Contains 1 union operators - optimization preserved!
 DEBUG: Processing chunk 9/16 - input length: 4540
@@ -2390,7 +2347,7 @@ Refined LLM <simpletag1/>
 																	</xsl:for-each>
 																	<Equipment>
 																		<xsl:attribute name="EquipType" namespace="">
-																			<xsl:value-of select="ns0:Equipment/@EquipType"/>
+																			<xsl:value-of select="ns0:Equipment/@*[name()='EquipType']"/>
 																		</xsl:attribute>
 																		<xsl:for-each select="ns0:Equipment/@*[name()='Quantity']">
 																			
@@ -2470,7 +2427,7 @@ DEBUG: Removed placeholder <simpletag7/>
 																	</xsl:for-each>
 																	<Equipment>
 																		<xsl:attribute name="EquipType" namespace="">
-																			<xsl:value-of select="ns0:Equipment/@EquipType"/>
+																			<xsl:value-of select="ns0:Equipment/@*[name()='EquipType']"/>
 																		</xsl:attribute>
 																		<xsl:for-each select="ns0:Equipment/@*[name()='Quantity']">
 																			
@@ -2521,7 +2478,7 @@ DEBUG: Removed placeholder <simpletag7/>
 																		
 																		
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 9 refined length: 3722
+DEBUG: Chunk 9 refined length: 3734
 DEBUG: Chunk 9 - Could not extract inner content, using original chunk
 DEBUG: Chunk 9 - Validating structural tags
 Validating chunk structure
@@ -2536,23 +2493,48 @@ Cannot parse template text even after wrapping: Opening and ending tag mismatch:
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
-No rules applied, using original chunk
+Optimizing direct attribute copy: @CurrencyCode -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
+Rules applied: 1 optimizations performed
+DEBUG - Rules result length: 4716 chars
+DEBUG - Original length: 4828 chars
+DEBUG: Identifying optimized sections...
+DEBUG: Original chunk length: 4828
+DEBUG: Rules result length: 4716
+DEBUG: Found 0 union selects in rules result
+DEBUG: Identified 0 optimized sections
+DEBUG: Found 0 optimized sections
+DEBUG: No optimized sections identified, sending original chunk to LLM
 Created 0 rule placeholders
 Original chunk of Org chunk: 4828
 Cleaned chunk of Org chunk: 2768
-Original chunk of rules result: 4828
-Cleaned chunk of rules result: 2768
+Original chunk of rules result: 4716
+Cleaned chunk of rules result: 2701
 LLM Decision Factors:
-  Size reduction from rules: 0.00
-  Rules effectiveness: 0.00
+  Size reduction from rules: 0.02
+  Rules effectiveness: 0.03
   Remaining complexity: 0.07
   Too small: False
   Decision: PROCESS WITH LLM (score: 0.00)
+DEBUG - Rules result preview:
+<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tbf="http://www.altova.com/MapForce/UDF/tbf" xmlns:ns0="http://www.opentravel.org/OTA/2003/05" xmlns:xs="http://www.w3.org/2001/XMLSchema" match="/"><xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
+																			
+																			<TaxAmounts>
+																				<xsl:for-each select="ns0:TaxAmount">
+																					
+																					<TaxAmount>
+																						<xsl:attribute name="Total" namespace="">
+			...
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: template line 1 and Charge, line 95, column 27 (<string>, line 95)
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing direct attribute copy: @CurrencyCode -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
 Inside Rules finder
+Recorded actions for pattern 9ae2583e in SQLite cache
 Before LLM XSLT :  <xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
 																			
 																			<TaxAmounts>
@@ -2562,9 +2544,7 @@ Before LLM XSLT :  <xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
 																						<xsl:attribute name="Total" namespace="">
 																							<xsl:value-of select="number(@Total)"/>
 																						</xsl:attribute>
-																						<xsl:attribute name="CurrencyCode" namespace="">
-																							<xsl:value-of select="@CurrencyCode"/>
-																						</xsl:attribute>
+																						<xsl:copy-of select="@CurrencyCode"/>
 																						<xsl:for-each select="@TaxCode">
 																							
 																							<xsl:attribute name="TaxCode" namespace="">
@@ -2656,125 +2636,117 @@ Before LLM XSLT :  <xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
 Inside LLM
 Model Used: o3-mini
 Refined LLM <xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
-																		
-																			<TaxAmounts>
-																				<xsl:for-each select="ns0:TaxAmount">
-																					
-																					<TaxAmount>
-																						<xsl:for-each select="@*[name()='Total' or name()='CurrencyCode' or name()='TaxCode' or name()='Percentage' or name()='Description']">
-																							<xsl:attribute name="{name()}">
-																								<xsl:choose>
-																									<xsl:when test="name()='Total' or name()='Percentage'">
-																										<xsl:value-of select="number(.)"/>
-																									</xsl:when>
-																									<xsl:otherwise>
-																										<xsl:value-of select="."/>
-																									</xsl:otherwise>
-																								</xsl:choose>
-																							</xsl:attribute>
-																						</xsl:for-each>
-																					</TaxAmount>
-																				</xsl:for-each>
-																			</TaxAmounts>
-																		</xsl:for-each>
-																		<xsl:for-each select="ns0:Charge/ns0:MinMax">
-																			
-																			<MinMax>
-																				<xsl:for-each select="@*[name()='MaxCharge' or name()='MinCharge' or name()='MaxChargeDays']">
-																					
-																					<xsl:attribute name="{name()}">
-																						<xsl:value-of select="number(.)"/>
-																					</xsl:attribute>
-																				</xsl:for-each>
-																			</MinMax>
-																		</xsl:for-each>
-																		<xsl:for-each select="ns0:Charge/ns0:Calculation">
-																			
-																			<Calculation>
-																				<xsl:for-each select="@*[name()='UnitCharge' or name()='UnitName' or name()='Quantity' or name()='Percentage' or name()='Applicability' or name()='MaxQuantity' or name()='Total']">
-																					
-																					<xsl:attribute name="{name()}">
-																						<xsl:choose>
-																							<xsl:when test="name()='UnitCharge' or name()='Quantity' or name()='Percentage' or name()='MaxQuantity' or name()='Total'">
-																								<xsl:value-of select="number(.)"/>
-																							</xsl:when>
-																							<xsl:otherwise>
-																								<xsl:value-of select="."/>
-																							</xsl:otherwise>
-																						</xsl:choose>
-																					</xsl:attribute>
-																				</xsl:for-each>
-																			</Calculation>
-																		</xsl:for-each>
-																	</Charge>
-																</PricedEquip>
-															</xsl:for-each>
-														</PricedEquips>
-													</xsl:for-each>
-Error computing diff actions: Opening and ending tag mismatch: template line 1 and Charge, line 95, column 27 (<string>, line 95)
+	<TaxAmounts>
+		<xsl:for-each select="ns0:TaxAmount">
+			<TaxAmount>
+				<xsl:attribute name="Total" namespace="">
+					<xsl:value-of select="number(@Total)"/>
+				</xsl:attribute>
+				<xsl:copy-of select="@CurrencyCode"/>
+				<xsl:for-each select="@*[name() = 'TaxCode' or name() = 'Percentage' or name() = 'Description']">
+					<xsl:attribute name="{name()}" namespace="">
+						<xsl:choose>
+							<xsl:when test="name() = 'Percentage'">
+								<xsl:value-of select="number(.)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="."/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+				</xsl:for-each>
+			</TaxAmount>
+		</xsl:for-each>
+	</TaxAmounts>
+</xsl:for-each>
+<xsl:for-each select="ns0:Charge/ns0:MinMax">
+	<MinMax>
+		<xsl:for-each select="@*[name() = 'MaxCharge' or name() = 'MinCharge' or name() = 'MaxChargeDays']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+	</MinMax>
+</xsl:for-each>
+<xsl:for-each select="ns0:Charge/ns0:Calculation">
+	<Calculation>
+		<xsl:for-each select="@*[name() = 'UnitCharge' or name() = 'Quantity' or name() = 'Percentage' or name() = 'MaxQuantity' or name() = 'Total']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name() = 'UnitName' or name() = 'Applicability']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="."/>
+			</xsl:attribute>
+		</xsl:for-each>
+	</Calculation>
+</xsl:for-each>
+</Charge>
+</PricedEquip>
+</xsl:for-each>
+</PricedEquips>
+</xsl:for-each>
+Error computing diff actions: Opening and ending tag mismatch: template line 1 and Charge, line 93, column 27 (<string>, line 93)
 Recorded actions for pattern 9ae2583e in SQLite cache
-Stored learned transformation: generic_optimization
+Stored learned transformation: for_each_to_copy_of
 Processed whole chunk with LLM (4828 chars)
 DEBUG: Starting placeholder replacement with 0 placeholders
 === MERGED XSLT FOR LLM DEBUG ===
 <xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
-																		
-																			<TaxAmounts>
-																				<xsl:for-each select="ns0:TaxAmount">
-																					
-																					<TaxAmount>
-																						<xsl:for-each select="@*[name()='Total' or name()='CurrencyCode' or name()='TaxCode' or name()='Percentage' or name()='Description']">
-																							<xsl:attribute name="{name()}">
-																								<xsl:choose>
-																									<xsl:when test="name()='Total' or name()='Percentage'">
-																										<xsl:value-of select="number(.)"/>
-																									</xsl:when>
-																									<xsl:otherwise>
-																										<xsl:value-of select="."/>
-																									</xsl:otherwise>
-																								</xsl:choose>
-																							</xsl:attribute>
-																						</xsl:for-each>
-																					</TaxAmount>
-																				</xsl:for-each>
-																			</TaxAmounts>
-																		</xsl:for-each>
-																		<xsl:for-each select="ns0:Charge/ns0:MinMax">
-																			
-																			<MinMax>
-																				<xsl:for-each select="@*[name()='MaxCharge' or name()='MinCharge' or name()='MaxChargeDays']">
-																					
-																					<xsl:attribute name="{name()}">
-																						<xsl:value-of select="number(.)"/>
-																					</xsl:attribute>
-																				</xsl:for-each>
-																			</MinMax>
-																		</xsl:for-each>
-																		<xsl:for-each select="ns0:Charge/ns0:Calculation">
-																			
-																			<Calculation>
-																				<xsl:for-each select="@*[name()='UnitCharge' or name()='UnitName' or name()='Quantity' or name()='Percentage' or name()='Applicability' or name()='MaxQuantity' or name()='Total']">
-																					
-																					<xsl:attribute name="{name()}">
-																						<xsl:choose>
-																							<xsl:when test="name()='UnitCharge' or name()='Quantity' or name()='Percentage' or name()='MaxQuantity' or name()='Total'">
-																								<xsl:value-of select="number(.)"/>
-																							</xsl:when>
-																							<xsl:otherwise>
-																								<xsl:value-of select="."/>
-																							</xsl:otherwise>
-																						</xsl:choose>
-																					</xsl:attribute>
-																				</xsl:for-each>
-																			</Calculation>
-																		</xsl:for-each>
-																	</Charge>
-																</PricedEquip>
-															</xsl:for-each>
-														</PricedEquips>
-													</xsl:for-each>
+	<TaxAmounts>
+		<xsl:for-each select="ns0:TaxAmount">
+			<TaxAmount>
+				<xsl:attribute name="Total" namespace="">
+					<xsl:value-of select="number(@Total)"/>
+				</xsl:attribute>
+				<xsl:copy-of select="@CurrencyCode"/>
+				<xsl:for-each select="@*[name() = 'TaxCode' or name() = 'Percentage' or name() = 'Description']">
+					<xsl:attribute name="{name()}" namespace="">
+						<xsl:choose>
+							<xsl:when test="name() = 'Percentage'">
+								<xsl:value-of select="number(.)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="."/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+				</xsl:for-each>
+			</TaxAmount>
+		</xsl:for-each>
+	</TaxAmounts>
+</xsl:for-each>
+<xsl:for-each select="ns0:Charge/ns0:MinMax">
+	<MinMax>
+		<xsl:for-each select="@*[name() = 'MaxCharge' or name() = 'MinCharge' or name() = 'MaxChargeDays']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+	</MinMax>
+</xsl:for-each>
+<xsl:for-each select="ns0:Charge/ns0:Calculation">
+	<Calculation>
+		<xsl:for-each select="@*[name() = 'UnitCharge' or name() = 'Quantity' or name() = 'Percentage' or name() = 'MaxQuantity' or name() = 'Total']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name() = 'UnitName' or name() = 'Applicability']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="."/>
+			</xsl:attribute>
+		</xsl:for-each>
+	</Calculation>
+</xsl:for-each>
+</Charge>
+</PricedEquip>
+</xsl:for-each>
+</PricedEquips>
+</xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 10 refined length: 2656
+DEBUG: Chunk 10 refined length: 1709
 DEBUG: Chunk 10 - Could not extract inner content, using original chunk
 DEBUG: Chunk 10 - Validating structural tags
 Validating chunk structure
@@ -2788,32 +2760,58 @@ Cannot parse template text even after wrapping: Opening and ending tag mismatch:
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
-No rules applied, using original chunk
+Optimizing direct attribute copy: @Purpose -> copy-of
+Optimizing direct attribute copy: @CurrencyCode -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
+Rules applied: 1 optimizations performed
+DEBUG - Rules result length: 4937 chars
+DEBUG - Original length: 5144 chars
+DEBUG: Identifying optimized sections...
+DEBUG: Original chunk length: 5144
+DEBUG: Rules result length: 4937
+DEBUG: Found 0 union selects in rules result
+DEBUG: Identified 0 optimized sections
+DEBUG: Found 0 optimized sections
+DEBUG: No optimized sections identified, sending original chunk to LLM
 Created 0 rule placeholders
 Original chunk of Org chunk: 5144
 Cleaned chunk of Org chunk: 3261
-Original chunk of rules result: 5144
-Cleaned chunk of rules result: 3261
+Original chunk of rules result: 4937
+Cleaned chunk of rules result: 3132
 LLM Decision Factors:
-  Size reduction from rules: 0.00
-  Rules effectiveness: 0.00
-  Remaining complexity: 0.26
+  Size reduction from rules: 0.04
+  Rules effectiveness: 0.03
+  Remaining complexity: 0.27
   Too small: False
   Decision: PROCESS WITH LLM (score: 0.00)
+DEBUG - Rules result preview:
+<xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tbf="http://www.altova.com/MapForce/UDF/tbf" xmlns:ns0="http://www.opentravel.org/OTA/2003/05" xmlns:xs="http://www.w3.org/2001/XMLSchema" match="/"><xsl:for-each select="ns0:VehAvailCore/ns0:Fees">
+														
+														<Fees>
+															<xsl:for-each select="ns0:Fee">
+																
+																<Fee>
+																	<xsl:copy-of select="@Purpose"/>
+																	<xsl:for-each select="@CurrencyCode">
+					...
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: MinMax line 94 and xsl:template, line 100, column 50 (<string>, line 100)
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing direct attribute copy: @Purpose -> copy-of
+Optimizing direct attribute copy: @CurrencyCode -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
 Inside Rules finder
+Recorded actions for pattern 9a0f3308 in SQLite cache
 Before LLM XSLT :  <xsl:for-each select="ns0:VehAvailCore/ns0:Fees">
 														
 														<Fees>
 															<xsl:for-each select="ns0:Fee">
 																
 																<Fee>
-																	<xsl:attribute name="Purpose" namespace="">
-																		<xsl:value-of select="@Purpose"/>
-																	</xsl:attribute>
+																	<xsl:copy-of select="@Purpose"/>
 																	<xsl:for-each select="@CurrencyCode">
 																		
 																		<xsl:attribute name="CurrencyCode" namespace="">
@@ -2873,9 +2871,7 @@ Before LLM XSLT :  <xsl:for-each select="ns0:VehAvailCore/ns0:Fees">
 																					<xsl:attribute name="Total" namespace="">
 																						<xsl:value-of select="number(@Total)"/>
 																					</xsl:attribute>
-																					<xsl:attribute name="CurrencyCode" namespace="">
-																						<xsl:value-of select="@CurrencyCode"/>
-																					</xsl:attribute>
+																					<xsl:copy-of select="@CurrencyCode"/>
 																					<xsl:for-each select="@TaxCode">
 																						
 																						<xsl:attribute name="TaxCode" namespace="">
@@ -2909,135 +2905,129 @@ Before LLM XSLT :  <xsl:for-each select="ns0:VehAvailCore/ns0:Fees">
 Inside LLM
 Model Used: o3-mini
 Refined LLM <xsl:for-each select="ns0:VehAvailCore/ns0:Fees">
-	<Fees>
-		<xsl:for-each select="ns0:Fee">
-			<Fee>
-				<xsl:for-each select="@*">
-					<xsl:choose>
-						<xsl:when test="name() = 'DecimalPlaces' or name() = 'Amount'">
-							<xsl:attribute name="{name()}">
-								<xsl:value-of select="number(.)"/>
-							</xsl:attribute>
-						</xsl:when>
-						<xsl:when test="name() = 'TaxInclusive' or name() = 'GuaranteedInd' or name() = 'IncludedInRate' or name() = 'IncludedInEstTotalInd' or name() = 'RateConvertInd' or name() = 'RequiredInd'">
-							<xsl:attribute name="{name()}">
-								<xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
-							</xsl:attribute>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="{name()}">
-								<xsl:value-of select="."/>
-							</xsl:attribute>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:for-each>
-				<xsl:for-each select="ns0:TaxAmounts">
-					<TaxAmounts>
-						<xsl:for-each select="ns0:TaxAmount">
-							<TaxAmount>
-								<xsl:for-each select="@*">
-									<xsl:choose>
-										<xsl:when test="name() = 'Total' or name() = 'Percentage'">
-											<xsl:attribute name="{name()}">
-												<xsl:value-of select="number(.)"/>
-											</xsl:attribute>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:attribute name="{name()}">
-												<xsl:value-of select="."/>
-											</xsl:attribute>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:for-each>
-							</TaxAmount>
-						</xsl:for-each>
-					</TaxAmounts>
-				</xsl:for-each>
-				<xsl:for-each select="ns0:MinMax">
-					<MinMax>
-						<xsl:for-each select="@*">
-							<xsl:choose>
-								<xsl:when test="name() = 'MaxCharge'">
-									<xsl:attribute name="{name()}">
-										<xsl:value-of select="number(.)"/>
-									</xsl:attribute>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:attribute name="{name()}">
-										<xsl:value-of select="."/>
-									</xsl:attribute>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:for-each>
-Error computing diff actions: Opening and ending tag mismatch: MinMax line 94 and xsl:template, line 100, column 50 (<string>, line 100)
+														
+														<Fees>
+															<xsl:for-each select="ns0:Fee">
+																
+																<Fee>
+                              <xsl:for-each select="@*[name()='Purpose' or name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='TaxInclusive' or name()='Description' or name()='GuaranteedInd' or name()='IncludedInRate' or name()='IncludedInEstTotalInd' or name()='RateConvertInd' or name()='RequiredInd']">
+                                <xsl:attribute name="{name()}">
+                                  <xsl:choose>
+                                    <xsl:when test="name()='DecimalPlaces' or name()='Amount'">
+                                      <xsl:value-of select="number(.)"/>
+                                    </xsl:when>
+                                    <xsl:when test="name()='TaxInclusive' or name()='GuaranteedInd' or name()='IncludedInRate' or name()='IncludedInEstTotalInd' or name()='RateConvertInd' or name()='RequiredInd'">
+                                      <xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                      <xsl:value-of select="."/>
+                                    </xsl:otherwise>
+                                  </xsl:choose>
+                                </xsl:attribute>
+                              </xsl:for-each>
+																
+																	<xsl:for-each select="ns0:TaxAmounts">
+																		
+																		<TaxAmounts>
+																			<xsl:for-each select="ns0:TaxAmount">
+																				
+																				<TaxAmount>
+																					<xsl:attribute name="Total" namespace="">
+																						<xsl:value-of select="number(@Total)"/>
+																					</xsl:attribute>
+																					<xsl:copy-of select="@CurrencyCode"/>
+																					<xsl:for-each select="@*[name()='TaxCode' or name()='Percentage' or name()='Description']">
+														
+																						<xsl:attribute name="{name()}">
+																							<xsl:choose>
+																								<xsl:when test="name()='Percentage'">
+																									<xsl:value-of select="number(.)"/>
+																								</xsl:when>
+																								<xsl:otherwise>
+																									<xsl:value-of select="."/>
+																								</xsl:otherwise>
+																							</xsl:choose>
+																						</xsl:attribute>
+																					</xsl:for-each>
+																				</TaxAmount>
+																			</xsl:for-each>
+																		</TaxAmounts>
+																	</xsl:for-each>
+																	<xsl:for-each select="ns0:MinMax">
+																		
+																		<MinMax>
+																			<xsl:for-each select="@*[name()='MaxCharge']">
+																				
+																				<xsl:attribute name="{name()}">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each>
+Error computing diff actions: Opening and ending tag mismatch: MinMax line 90 and xsl:template, line 96, column 50 (<string>, line 96)
 Recorded actions for pattern 9a0f3308 in SQLite cache
-Stored learned transformation: generic_optimization
+Stored learned transformation: for_each_to_copy_of
 Processed whole chunk with LLM (5144 chars)
 DEBUG: Starting placeholder replacement with 0 placeholders
 === MERGED XSLT FOR LLM DEBUG ===
 <xsl:for-each select="ns0:VehAvailCore/ns0:Fees">
-	<Fees>
-		<xsl:for-each select="ns0:Fee">
-			<Fee>
-				<xsl:for-each select="@*">
-					<xsl:choose>
-						<xsl:when test="name() = 'DecimalPlaces' or name() = 'Amount'">
-							<xsl:attribute name="{name()}">
-								<xsl:value-of select="number(.)"/>
-							</xsl:attribute>
-						</xsl:when>
-						<xsl:when test="name() = 'TaxInclusive' or name() = 'GuaranteedInd' or name() = 'IncludedInRate' or name() = 'IncludedInEstTotalInd' or name() = 'RateConvertInd' or name() = 'RequiredInd'">
-							<xsl:attribute name="{name()}">
-								<xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
-							</xsl:attribute>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="{name()}">
-								<xsl:value-of select="."/>
-							</xsl:attribute>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:for-each>
-				<xsl:for-each select="ns0:TaxAmounts">
-					<TaxAmounts>
-						<xsl:for-each select="ns0:TaxAmount">
-							<TaxAmount>
-								<xsl:for-each select="@*">
-									<xsl:choose>
-										<xsl:when test="name() = 'Total' or name() = 'Percentage'">
-											<xsl:attribute name="{name()}">
-												<xsl:value-of select="number(.)"/>
-											</xsl:attribute>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:attribute name="{name()}">
-												<xsl:value-of select="."/>
-											</xsl:attribute>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:for-each>
-							</TaxAmount>
-						</xsl:for-each>
-					</TaxAmounts>
-				</xsl:for-each>
-				<xsl:for-each select="ns0:MinMax">
-					<MinMax>
-						<xsl:for-each select="@*">
-							<xsl:choose>
-								<xsl:when test="name() = 'MaxCharge'">
-									<xsl:attribute name="{name()}">
-										<xsl:value-of select="number(.)"/>
-									</xsl:attribute>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:attribute name="{name()}">
-										<xsl:value-of select="."/>
-									</xsl:attribute>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:for-each>
+														
+														<Fees>
+															<xsl:for-each select="ns0:Fee">
+																
+																<Fee>
+                              <xsl:for-each select="@*[name()='Purpose' or name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='TaxInclusive' or name()='Description' or name()='GuaranteedInd' or name()='IncludedInRate' or name()='IncludedInEstTotalInd' or name()='RateConvertInd' or name()='RequiredInd']">
+                                <xsl:attribute name="{name()}">
+                                  <xsl:choose>
+                                    <xsl:when test="name()='DecimalPlaces' or name()='Amount'">
+                                      <xsl:value-of select="number(.)"/>
+                                    </xsl:when>
+                                    <xsl:when test="name()='TaxInclusive' or name()='GuaranteedInd' or name()='IncludedInRate' or name()='IncludedInEstTotalInd' or name()='RateConvertInd' or name()='RequiredInd'">
+                                      <xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                      <xsl:value-of select="."/>
+                                    </xsl:otherwise>
+                                  </xsl:choose>
+                                </xsl:attribute>
+                              </xsl:for-each>
+																
+																	<xsl:for-each select="ns0:TaxAmounts">
+																		
+																		<TaxAmounts>
+																			<xsl:for-each select="ns0:TaxAmount">
+																				
+																				<TaxAmount>
+																					<xsl:attribute name="Total" namespace="">
+																						<xsl:value-of select="number(@Total)"/>
+																					</xsl:attribute>
+																					<xsl:copy-of select="@CurrencyCode"/>
+																					<xsl:for-each select="@*[name()='TaxCode' or name()='Percentage' or name()='Description']">
+														
+																						<xsl:attribute name="{name()}">
+																							<xsl:choose>
+																								<xsl:when test="name()='Percentage'">
+																									<xsl:value-of select="number(.)"/>
+																								</xsl:when>
+																								<xsl:otherwise>
+																									<xsl:value-of select="."/>
+																								</xsl:otherwise>
+																							</xsl:choose>
+																						</xsl:attribute>
+																					</xsl:for-each>
+																				</TaxAmount>
+																			</xsl:for-each>
+																		</TaxAmounts>
+																	</xsl:for-each>
+																	<xsl:for-each select="ns0:MinMax">
+																		
+																		<MinMax>
+																			<xsl:for-each select="@*[name()='MaxCharge']">
+																				
+																				<xsl:attribute name="{name()}">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 11 refined length: 2052
+DEBUG: Chunk 11 refined length: 3098
 DEBUG: Chunk 11 - Could not extract inner content, using original chunk
 DEBUG: Chunk 11 - Validating structural tags
 Validating chunk structure
@@ -3051,13 +3041,16 @@ Cannot parse template text even after wrapping: Opening and ending tag mismatch:
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing direct attribute copy: @Type -> copy-of
+Optimizing direct attribute copy: @ID -> copy-of
+Applied direct attribute copy optimization
 Applied text-based for-each merging
 Rules applied: 1 optimizations performed
-DEBUG - Rules result length: 4711 chars
+DEBUG - Rules result length: 4533 chars
 DEBUG - Original length: 5154 chars
 DEBUG: Identifying optimized sections...
 DEBUG: Original chunk length: 5154
-DEBUG: Rules result length: 4711
+DEBUG: Rules result length: 4533
 DEBUG: Found 1 union selects in rules result
 DEBUG: Found attribute merger - 4 patterns -> 1 pattern
 DEBUG: Identified 4 optimized sections
@@ -3077,10 +3070,10 @@ DEBUG: Replaced section at position 3245 with <simpletag4/>
 Created 4 rule placeholders
 Original chunk of Org chunk: 5154
 Cleaned chunk of Org chunk: 3163
-Original chunk of rules result: 4711
-Cleaned chunk of rules result: 2788
+Original chunk of rules result: 4533
+Cleaned chunk of rules result: 2672
 LLM Decision Factors:
-  Size reduction from rules: 0.12
+  Size reduction from rules: 0.16
   Rules effectiveness: 0.03
   Remaining complexity: 0.00
   Too small: False
@@ -3109,7 +3102,12 @@ Cannot parse template text even after wrapping: Opening and ending tag mismatch:
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing direct attribute copy: @Type -> copy-of
+Optimizing direct attribute copy: @ID -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
 Inside Rules finder
+Recorded actions for pattern 8f787160 in SQLite cache
 Before LLM XSLT :  <xsl:for-each select="@MinCharge">
 																				
 																				<xsl:attribute name="MinCharge" namespace="">
@@ -3171,12 +3169,8 @@ Before LLM XSLT :  <xsl:for-each select="@MinCharge">
 													<xsl:for-each select="ns0:VehAvailCore/ns0:Reference">
 														
 														<Reference>
-															<xsl:attribute name="Type" namespace="">
-																<xsl:value-of select="@Type"/>
-															</xsl:attribute>
-															<xsl:attribute name="ID" namespace="">
-																<xsl:value-of select="@ID"/>
-															</xsl:attribute>
+															<xsl:copy-of select="@Type"/>
+															<xsl:copy-of select="@ID"/>
 															<simpletag1/><simpletag2/><simpletag3/><simpletag4/><xsl:for-each select="ns0:CompanyName">
 																
 																<CompanyName>
@@ -3209,59 +3203,60 @@ Before LLM XSLT :  <xsl:for-each select="@MinCharge">
 Inside LLM
 Model Used: o3-mini
 Refined LLM <xsl:for-each select="@*[name()='MinCharge' or name()='MaxChargeDays']">
-  <xsl:attribute name="{name()}" namespace="">
-    <xsl:value-of select="number(.)"/>
-  </xsl:attribute>
+	<xsl:attribute name="{name()}" namespace="">
+		<xsl:value-of select="number(.)"/>
+	</xsl:attribute>
 </xsl:for-each>
 </MinMax>
 </xsl:for-each>
 <xsl:for-each select="ns0:Calculation">
-  <Calculation>
-    <xsl:for-each select="@*[name()='UnitCharge' or name()='Quantity' or name()='Percentage' or name()='MaxQuantity' or name()='Total']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="number(.)"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='UnitName' or name()='Applicability']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="."/>
-      </xsl:attribute>
-    </xsl:for-each>
-  </Calculation>
+	<Calculation>
+		<xsl:for-each select="@*[name()='UnitCharge' or name()='Quantity' or name()='Percentage' or name()='MaxQuantity' or name()='Total']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='UnitName' or name()='Applicability']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="."/>
+			</xsl:attribute>
+		</xsl:for-each>
+	</Calculation>
 </xsl:for-each>
 </Fee>
 </xsl:for-each>
 </Fees>
 </xsl:for-each>
 <xsl:for-each select="ns0:VehAvailCore/ns0:Reference">
-  <Reference>
-    <xsl:for-each select="@*[name()='Type' or name()='ID']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="."/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <simpletag1/><simpletag2/><simpletag3/><simpletag4/>
-    <xsl:for-each select="ns0:CompanyName">
-      <CompanyName>
-        <xsl:copy-of select="@*|node()"/>
-      </CompanyName>
-    </xsl:for-each>
-    <xsl:for-each select="ns0:TPA_Extensions">
-      <TPA_Extensions>
-        <xsl:copy-of select="@*|node()"/>
-      </TPA_Extensions>
-    </xsl:for-each>
-  </Reference>
+	<Reference>
+		<xsl:copy-of select="@Type"/>
+		<xsl:copy-of select="@ID"/>
+		<simpletag1/><simpletag2/><simpletag3/><simpletag4/>
+		<xsl:for-each select="ns0:CompanyName">
+			<CompanyName>
+				<xsl:copy-of select="@node()"/>
+				<xsl:copy-of select="node()"/>
+			</CompanyName>
+		</xsl:for-each>
+		<xsl:for-each select="ns0:TPA_Extensions">
+			<TPA_Extensions>
+				<xsl:copy-of select="@node()"/>
+				<xsl:copy-of select="node()"/>
+			</TPA_Extensions>
+		</xsl:for-each>
+	</Reference>
 </xsl:for-each>
 <xsl:for-each select="ns0:VehAvailCore/ns0:Vendor">
-  <Vendor>
-    <xsl:copy-of select="@*|node()"/>
-  </Vendor>
+	<Vendor>
+		<xsl:copy-of select="@node()"/>
+		<xsl:copy-of select="node()"/>
+	</Vendor>
 </xsl:for-each>
 <xsl:for-each select="ns0:VehAvailCore/ns0:VendorLocation">
-  <VendorLocation>
-    <xsl:copy-of select="@*|node()"/>
-  </VendorLocation>
+	<VendorLocation>
+		<xsl:copy-of select="@node()"/>
+		<xsl:copy-of select="node()"/>
+	</VendorLocation>
 </xsl:for-each>
 Error computing diff actions: Opening and ending tag mismatch: template line 1 and MinMax, line 12, column 28 (<string>, line 12)
 Recorded actions for pattern 8f787160 in SQLite cache
@@ -3274,66 +3269,67 @@ DEBUG: Removed placeholder <simpletag3/>
 DEBUG: Removed placeholder <simpletag4/>
 === MERGED XSLT FOR LLM DEBUG ===
 <xsl:for-each select="@*[name()='MinCharge' or name()='MaxChargeDays']">
-  <xsl:attribute name="{name()}" namespace="">
-    <xsl:value-of select="number(.)"/>
-  </xsl:attribute>
+	<xsl:attribute name="{name()}" namespace="">
+		<xsl:value-of select="number(.)"/>
+	</xsl:attribute>
 </xsl:for-each>
 </MinMax>
 </xsl:for-each>
 <xsl:for-each select="ns0:Calculation">
-  <Calculation>
-    <xsl:for-each select="@*[name()='UnitCharge' or name()='Quantity' or name()='Percentage' or name()='MaxQuantity' or name()='Total']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="number(.)"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='UnitName' or name()='Applicability']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="."/>
-      </xsl:attribute>
-    </xsl:for-each>
-  </Calculation>
+	<Calculation>
+		<xsl:for-each select="@*[name()='UnitCharge' or name()='Quantity' or name()='Percentage' or name()='MaxQuantity' or name()='Total']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="number(.)"/>
+			</xsl:attribute>
+		</xsl:for-each>
+		<xsl:for-each select="@*[name()='UnitName' or name()='Applicability']">
+			<xsl:attribute name="{name()}" namespace="">
+				<xsl:value-of select="."/>
+			</xsl:attribute>
+		</xsl:for-each>
+	</Calculation>
 </xsl:for-each>
 </Fee>
 </xsl:for-each>
 </Fees>
 </xsl:for-each>
 <xsl:for-each select="ns0:VehAvailCore/ns0:Reference">
-  <Reference>
-    <xsl:for-each select="@*[name()='Type' or name()='ID']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="."/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@URL | @Instance | @ID_Context | @DateTime">
+	<Reference>
+		<xsl:copy-of select="@Type"/>
+		<xsl:copy-of select="@ID"/>
+		<xsl:for-each select="@URL | @Instance | @ID_Context | @DateTime">
                                                                 <xsl:attribute name="{name()}" namespace="">
                                                                         <xsl:value-of select="."/>
                                                                 </xsl:attribute>
                                                         </xsl:for-each>
-    <xsl:for-each select="ns0:CompanyName">
-      <CompanyName>
-        <xsl:copy-of select="@*|node()"/>
-      </CompanyName>
-    </xsl:for-each>
-    <xsl:for-each select="ns0:TPA_Extensions">
-      <TPA_Extensions>
-        <xsl:copy-of select="@*|node()"/>
-      </TPA_Extensions>
-    </xsl:for-each>
-  </Reference>
+		<xsl:for-each select="ns0:CompanyName">
+			<CompanyName>
+				<xsl:copy-of select="@node()"/>
+				<xsl:copy-of select="node()"/>
+			</CompanyName>
+		</xsl:for-each>
+		<xsl:for-each select="ns0:TPA_Extensions">
+			<TPA_Extensions>
+				<xsl:copy-of select="@node()"/>
+				<xsl:copy-of select="node()"/>
+			</TPA_Extensions>
+		</xsl:for-each>
+	</Reference>
 </xsl:for-each>
 <xsl:for-each select="ns0:VehAvailCore/ns0:Vendor">
-  <Vendor>
-    <xsl:copy-of select="@*|node()"/>
-  </Vendor>
+	<Vendor>
+		<xsl:copy-of select="@node()"/>
+		<xsl:copy-of select="node()"/>
+	</Vendor>
 </xsl:for-each>
 <xsl:for-each select="ns0:VehAvailCore/ns0:VendorLocation">
-  <VendorLocation>
-    <xsl:copy-of select="@*|node()"/>
-  </VendorLocation>
+	<VendorLocation>
+		<xsl:copy-of select="@node()"/>
+		<xsl:copy-of select="node()"/>
+	</VendorLocation>
 </xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 12 refined length: 2142
+DEBUG: Chunk 12 refined length: 2068
 DEBUG: Chunk 12 - Could not extract inner content, using original chunk
 DEBUG: Chunk 12 - Validating structural tags
 Validating chunk structure
@@ -3341,7 +3337,7 @@ Input tags: ['/MinMax', 'Calculation', '/Calculation', '/Fee', '/Fees', 'Referen
 Output tags: ['/MinMax', 'Calculation', '/Calculation', '/Fee', '/Fees', 'Reference', 'CompanyName', '/CompanyName', 'TPA_Extensions', '/TPA_Extensions', '/Reference', 'Vendor', '/Vendor', 'VendorLocation', '/VendorLocation']
 Tag lists match perfectly
 DEBUG: Chunk 12 - Successfully replaced <Chunk12/> with refined content
-DEBUG: Chunk 12 - Contains 7 union operators - optimization preserved!
+DEBUG: Chunk 12 - Contains 3 union operators - optimization preserved!
 DEBUG: Processing chunk 13/16 - input length: 4855
 Using intelligent chunk processing
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: template line 1 and VehAvailCore, line 29, column 28 (<string>, line 29)
@@ -3349,13 +3345,15 @@ Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied complex pattern merging with value-of grouping
 Applied flexible pattern merging
+Optimizing direct attribute copy: @CoverageTextType -> copy-of
+Applied direct attribute copy optimization
 Applied text-based for-each merging
 Rules applied: 1 optimizations performed
-DEBUG - Rules result length: 4911 chars
+DEBUG - Rules result length: 4797 chars
 DEBUG - Original length: 5088 chars
 DEBUG: Identifying optimized sections...
 DEBUG: Original chunk length: 5088
-DEBUG: Rules result length: 4911
+DEBUG: Rules result length: 4797
 DEBUG: Found 2 union selects in rules result
 DEBUG: Found attribute merger - 2 patterns -> 1 pattern
 DEBUG: Found attribute merger - 2 patterns -> 1 pattern
@@ -3376,10 +3374,10 @@ DEBUG: Replaced section at position 3770 with <simpletag4/>
 Created 4 rule placeholders
 Original chunk of Org chunk: 5088
 Cleaned chunk of Org chunk: 3162
-Original chunk of rules result: 4911
-Cleaned chunk of rules result: 2897
+Original chunk of rules result: 4797
+Cleaned chunk of rules result: 2826
 LLM Decision Factors:
-  Size reduction from rules: 0.08
+  Size reduction from rules: 0.11
   Rules effectiveness: 0.03
   Remaining complexity: 0.15
   Too small: False
@@ -3411,7 +3409,11 @@ Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied complex pattern merging with value-of grouping
 Applied flexible pattern merging
+Optimizing direct attribute copy: @CoverageTextType -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
 Inside Rules finder
+Recorded actions for pattern d58062f1 in SQLite cache
 Before LLM XSLT :  <xsl:for-each select="ns0:VehAvailCore/ns0:DropOffLocation">
 														
 														<DropOffLocation>
@@ -3473,9 +3475,7 @@ Before LLM XSLT :  <xsl:for-each select="ns0:VehAvailCore/ns0:DropOffLocation">
 																			</xsl:for-each><xsl:for-each select="ns0:Coverage/ns0:Details">
 																				
 																				<Details>
-																					<xsl:attribute name="CoverageTextType" namespace="">
-																						<xsl:value-of select="@CoverageTextType"/>
-																					</xsl:attribute>
+																					<xsl:copy-of select="@CoverageTextType"/>
 																					<xsl:for-each select="@Formatted">
 																						
 																						<xsl:attribute name="Formatted" namespace="">
@@ -3517,9 +3517,7 @@ Refined LLM <xsl:for-each select="ns0:VehAvailCore/ns0:DropOffLocation">
 	<TPA_Extensions>
 		<xsl:for-each select="ns0:ExtendedVehicle">
 			<ExtendedVehicle>
-				<xsl:attribute name="KeylessAccess" namespace="">
-					<xsl:value-of select="@*[name()='KeylessAccess']"/>
-				</xsl:attribute>
+				<xsl:copy-of select="@*[name()='KeylessAccess']"/>
 			</ExtendedVehicle>
 		</xsl:for-each>
 	</TPA_Extensions>
@@ -3527,44 +3525,48 @@ Refined LLM <xsl:for-each select="ns0:VehAvailCore/ns0:DropOffLocation">
 </VehAvailCore>
 <xsl:for-each select="ns0:VehAvailInfo">
 	<VehAvailInfo>
-		<xsl:attribute name="ChargeablePeriod" namespace="">
-			<xsl:value-of select="@*[name()='ChargeablePeriod']"/>
-		</xsl:attribute>
+		<xsl:for-each select="@ChargeablePeriod">
+			<xsl:copy-of select="@*[name()='ChargeablePeriod']"/>
+		</xsl:for-each>
 		<xsl:for-each select="ns0:PricedCoverages">
 			<PricedCoverages>
 				<xsl:for-each select="ns0:PricedCoverage">
 					<PricedCoverage>
-						<xsl:attribute name="Required" namespace="">
-							<xsl:value-of select="boolean(translate(normalize-space(@*[name()='Required']), ' 0false', ''))"/>
-						</xsl:attribute>
+						<xsl:for-each select="@Required">
+							<xsl:attribute name="Required" namespace="">
+								<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+							</xsl:attribute>
+						</xsl:for-each>
 						<Coverage>
 							<xsl:attribute name="CoverageType" namespace="">
-								<xsl:value-of select="ns0:Coverage/@*[name()='CoverageType']"/>
+								<xsl:value-of select="ns0:Coverage/@CoverageType"/>
 							</xsl:attribute>
-							<xsl:attribute name="Code" namespace="">
-								<xsl:value-of select="ns0:Coverage/@*[name()='Code']"/>
-							</xsl:attribute>
+							<xsl:for-each select="ns0:Coverage/@Code">
+								<xsl:copy-of select="@*[name()='Code']"/>
+							</xsl:for-each>
 							<xsl:for-each select="ns0:Coverage/ns0:Details">
 								<Details>
-									<xsl:attribute name="CoverageTextType" namespace="">
-										<xsl:value-of select="@*[name()='CoverageTextType']"/>
-									</xsl:attribute>
-									<xsl:attribute name="Formatted" namespace="">
-										<xsl:value-of select="boolean(translate(normalize-space(@*[name()='Formatted']), ' 0false', ''))"/>
-									</xsl:attribute>
+									<xsl:copy-of select="@CoverageTextType"/>
+									<xsl:for-each select="@Formatted">
+										<xsl:attribute name="Formatted" namespace="">
+											<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+										</xsl:attribute>
+									</xsl:for-each>
 									<simpletag1/><simpletag2/>
 									<xsl:value-of select="."/>
 								</Details>
 							</xsl:for-each>
 						</Coverage>
 						<Charge>
-							<xsl:attribute name="CurrencyCode" namespace="">
-								<xsl:value-of select="ns0:Charge/@*[name()='CurrencyCode']"/>
-							</xsl:attribute>
+							<xsl:for-each select="ns0:Charge/@CurrencyCode">
+								<xsl:copy-of select="@*[name()='CurrencyCode']"/>
+							</xsl:for-each>
 							<simpletag3/><simpletag4/>
-							<xsl:attribute name="TaxInclusive" namespace="">
-								<xsl:value-of select="boolean(translate(normalize-space(ns0:Charge/@*[name()='TaxInclusive']), ' 0false', ''))"/>
-							</xsl:attribute>
+							<xsl:for-each select="ns0:Charge/@TaxInclusive">
+								<xsl:attribute name="TaxInclusive" namespace="">
+									<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+								</xsl:attribute>
+							</xsl:for-each>
 Error computing diff actions: Opening and ending tag mismatch: template line 1 and VehAvailCore, line 29, column 28 (<string>, line 29)
 Recorded actions for pattern d58062f1 in SQLite cache
 Stored learned transformation: for_each_to_copy_of
@@ -3591,9 +3593,7 @@ DEBUG: Removed placeholder <simpletag4/>
 	<TPA_Extensions>
 		<xsl:for-each select="ns0:ExtendedVehicle">
 			<ExtendedVehicle>
-				<xsl:attribute name="KeylessAccess" namespace="">
-					<xsl:value-of select="@*[name()='KeylessAccess']"/>
-				</xsl:attribute>
+				<xsl:copy-of select="@*[name()='KeylessAccess']"/>
 			</ExtendedVehicle>
 		</xsl:for-each>
 	</TPA_Extensions>
@@ -3601,31 +3601,33 @@ DEBUG: Removed placeholder <simpletag4/>
 </VehAvailCore>
 <xsl:for-each select="ns0:VehAvailInfo">
 	<VehAvailInfo>
-		<xsl:attribute name="ChargeablePeriod" namespace="">
-			<xsl:value-of select="@*[name()='ChargeablePeriod']"/>
-		</xsl:attribute>
+		<xsl:for-each select="@ChargeablePeriod">
+			<xsl:copy-of select="@*[name()='ChargeablePeriod']"/>
+		</xsl:for-each>
 		<xsl:for-each select="ns0:PricedCoverages">
 			<PricedCoverages>
 				<xsl:for-each select="ns0:PricedCoverage">
 					<PricedCoverage>
-						<xsl:attribute name="Required" namespace="">
-							<xsl:value-of select="boolean(translate(normalize-space(@*[name()='Required']), ' 0false', ''))"/>
-						</xsl:attribute>
+						<xsl:for-each select="@Required">
+							<xsl:attribute name="Required" namespace="">
+								<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+							</xsl:attribute>
+						</xsl:for-each>
 						<Coverage>
 							<xsl:attribute name="CoverageType" namespace="">
-								<xsl:value-of select="ns0:Coverage/@*[name()='CoverageType']"/>
+								<xsl:value-of select="ns0:Coverage/@CoverageType"/>
 							</xsl:attribute>
-							<xsl:attribute name="Code" namespace="">
-								<xsl:value-of select="ns0:Coverage/@*[name()='Code']"/>
-							</xsl:attribute>
+							<xsl:for-each select="ns0:Coverage/@Code">
+								<xsl:copy-of select="@*[name()='Code']"/>
+							</xsl:for-each>
 							<xsl:for-each select="ns0:Coverage/ns0:Details">
 								<Details>
-									<xsl:attribute name="CoverageTextType" namespace="">
-										<xsl:value-of select="@*[name()='CoverageTextType']"/>
-									</xsl:attribute>
-									<xsl:attribute name="Formatted" namespace="">
-										<xsl:value-of select="boolean(translate(normalize-space(@*[name()='Formatted']), ' 0false', ''))"/>
-									</xsl:attribute>
+									<xsl:copy-of select="@CoverageTextType"/>
+									<xsl:for-each select="@Formatted">
+										<xsl:attribute name="Formatted" namespace="">
+											<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+										</xsl:attribute>
+									</xsl:for-each>
 									<xsl:for-each select="@Language | @TextFormat">
                                                                 <xsl:attribute name="{name()}" namespace="">
                                                                         <xsl:value-of select="."/>
@@ -3636,19 +3638,21 @@ DEBUG: Removed placeholder <simpletag4/>
 							</xsl:for-each>
 						</Coverage>
 						<Charge>
-							<xsl:attribute name="CurrencyCode" namespace="">
-								<xsl:value-of select="ns0:Charge/@*[name()='CurrencyCode']"/>
-							</xsl:attribute>
+							<xsl:for-each select="ns0:Charge/@CurrencyCode">
+								<xsl:copy-of select="@*[name()='CurrencyCode']"/>
+							</xsl:for-each>
 							<xsl:for-each select="ns0:Charge/@DecimalPlaces | ns0:Charge/@Amount">
                                                                 <xsl:attribute name="{name()}" namespace="">
                                                                         <xsl:value-of select="number(.)"/>
                                                                 </xsl:attribute>
                                                         </xsl:for-each>
-							<xsl:attribute name="TaxInclusive" namespace="">
-								<xsl:value-of select="boolean(translate(normalize-space(ns0:Charge/@*[name()='TaxInclusive']), ' 0false', ''))"/>
-							</xsl:attribute>
+							<xsl:for-each select="ns0:Charge/@TaxInclusive">
+								<xsl:attribute name="TaxInclusive" namespace="">
+									<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+								</xsl:attribute>
+							</xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 13 refined length: 3258
+DEBUG: Chunk 13 refined length: 3195
 DEBUG: Chunk 13 - Could not extract inner content, using original chunk
 DEBUG: Chunk 13 - Validating structural tags
 Validating chunk structure
@@ -3664,13 +3668,15 @@ Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied complex pattern merging with value-of grouping
 Applied flexible pattern merging
+Optimizing direct attribute copy: @CurrencyCode -> copy-of
+Applied direct attribute copy optimization
 Applied text-based for-each merging
 Rules applied: 1 optimizations performed
-DEBUG - Rules result length: 4493 chars
+DEBUG - Rules result length: 4379 chars
 DEBUG - Original length: 5229 chars
 DEBUG: Identifying optimized sections...
 DEBUG: Original chunk length: 5229
-DEBUG: Rules result length: 4493
+DEBUG: Rules result length: 4379
 DEBUG: Found 1 union selects in rules result
 DEBUG: Found attribute merger - 4 patterns -> 1 pattern
 DEBUG: Identified 4 optimized sections
@@ -3690,10 +3696,10 @@ DEBUG: Replaced section at position 531 with <simpletag4/>
 Created 4 rule placeholders
 Original chunk of Org chunk: 5229
 Cleaned chunk of Org chunk: 3142
-Original chunk of rules result: 4493
-Cleaned chunk of rules result: 2554
+Original chunk of rules result: 4379
+Cleaned chunk of rules result: 2487
 LLM Decision Factors:
-  Size reduction from rules: 0.19
+  Size reduction from rules: 0.21
   Rules effectiveness: 0.03
   Remaining complexity: 0.11
   Too small: False
@@ -3722,7 +3728,11 @@ Cannot parse template text even after wrapping: Opening and ending tag mismatch:
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing direct attribute copy: @CurrencyCode -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
 Inside Rules finder
+Recorded actions for pattern 6593a55c in SQLite cache
 Before LLM XSLT :  <xsl:for-each select="ns0:Charge/@Description">
 																				
 																				<xsl:attribute name="Description" namespace="">
@@ -3737,9 +3747,7 @@ Before LLM XSLT :  <xsl:for-each select="ns0:Charge/@Description">
 																							<xsl:attribute name="Total" namespace="">
 																								<xsl:value-of select="number(@Total)"/>
 																							</xsl:attribute>
-																							<xsl:attribute name="CurrencyCode" namespace="">
-																								<xsl:value-of select="@CurrencyCode"/>
-																							</xsl:attribute>
+																							<xsl:copy-of select="@CurrencyCode"/>
 																							<xsl:for-each select="@TaxCode">
 																								
 																								<xsl:attribute name="TaxCode" namespace="">
@@ -3804,71 +3812,83 @@ Before LLM XSLT :  <xsl:for-each select="ns0:Charge/@Description">
 Inside LLM
 Model Used: o3-mini
 Refined LLM <xsl:for-each select="ns0:Charge/@*[name()='Description']">
-	<xsl:attribute name="Description" namespace="">
-		<xsl:value-of select="substring(., 0, 62)"/>
-	</xsl:attribute>
-</xsl:for-each><simpletag1/><simpletag2/><simpletag3/><simpletag4/><xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
-	<TaxAmounts>
-		<xsl:for-each select="ns0:TaxAmount">
-			<TaxAmount>
-				<xsl:for-each select="@*[name()='TaxCode']">
-					<xsl:attribute name="TaxCode" namespace="">
-						<xsl:value-of select="."/>
-					</xsl:attribute>
-				</xsl:for-each>
-				<xsl:for-each select="@*[name()='Percentage']">
-					<xsl:attribute name="Percentage" namespace="">
-						<xsl:value-of select="number(.)"/>
-					</xsl:attribute>
-				</xsl:for-each>
-				<xsl:for-each select="@*[name()='Description']">
-					<xsl:attribute name="Description" namespace="">
-						<xsl:value-of select="."/>
-					</xsl:attribute>
-				</xsl:for-each>
-			</TaxAmount>
-		</xsl:for-each>
-	</TaxAmounts>
-</xsl:for-each>
-<xsl:for-each select="ns0:Charge/ns0:MinMax">
-	<MinMax>
-		<xsl:for-each select="@*[name()='MaxCharge']">
-			<xsl:attribute name="MaxCharge" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-		<xsl:for-each select="@*[name()='MinCharge']">
-			<xsl:attribute name="MinCharge" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-		<xsl:for-each select="@*[name()='MaxChargeDays']">
-			<xsl:attribute name="MaxChargeDays" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-	</MinMax>
-</xsl:for-each>
-<xsl:for-each select="ns0:Charge/ns0:Calculation">
-	<Calculation>
-		<xsl:for-each select="@*[name()='UnitCharge']">
-			<xsl:attribute name="UnitCharge" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-		<xsl:for-each select="@*[name()='UnitName']">
-			<xsl:attribute name="UnitName" namespace="">
-				<xsl:value-of select="."/>
-			</xsl:attribute>
-		</xsl:for-each>
-		<xsl:for-each select="@*[name()='Quantity']">
-			<xsl:attribute name="Quantity" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-Error computing diff actions: Opening and ending tag mismatch: Calculation line 61 and xsl:template, line 77, column 52 (<string>, line 77)
+																				
+																				<xsl:attribute name="Description" namespace="">
+																					<xsl:value-of select="substring(., 0, 62)"/>
+																				</xsl:attribute>
+																			</xsl:for-each><simpletag1/><simpletag2/><simpletag3/><simpletag4/><xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
+																				
+																				<TaxAmounts>
+																					<xsl:for-each select="ns0:TaxAmount">
+																						
+																						<TaxAmount>
+																							<xsl:attribute name="Total" namespace="">
+																								<xsl:value-of select="number(@Total)"/>
+																							</xsl:attribute>
+																							<xsl:copy-of select="@CurrencyCode"/>
+																							<xsl:for-each select="@*[name()='TaxCode']">
+																								
+																								<xsl:attribute name="TaxCode" namespace="">
+																									<xsl:value-of select="."/>
+																								</xsl:attribute>
+																							</xsl:for-each><xsl:for-each select="@*[name()='Percentage']">
+																								
+																								<xsl:attribute name="Percentage" namespace="">
+																									<xsl:value-of select="number(.)"/>
+																								</xsl:attribute>
+																							</xsl:for-each><xsl:for-each select="@*[name()='Description']">
+																								
+																								<xsl:attribute name="Description" namespace="">
+																									<xsl:value-of select="."/>
+																								</xsl:attribute>
+																							</xsl:for-each>
+																						</TaxAmount>
+																					</xsl:for-each>
+																				</TaxAmounts>
+																			</xsl:for-each>
+																			<xsl:for-each select="ns0:Charge/ns0:MinMax">
+																				
+																				<MinMax>
+																					<xsl:for-each select="@*[name()='MaxCharge']">
+																						
+																						<xsl:attribute name="MaxCharge" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each><xsl:for-each select="@*[name()='MinCharge']">
+																						
+																						<xsl:attribute name="MinCharge" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each><xsl:for-each select="@*[name()='MaxChargeDays']">
+																						
+																						<xsl:attribute name="MaxChargeDays" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each>
+																				</MinMax>
+																			</xsl:for-each>
+																			<xsl:for-each select="ns0:Charge/ns0:Calculation">
+																				
+																				<Calculation>
+																					<xsl:for-each select="@*[name()='UnitCharge']">
+																						
+																						<xsl:attribute name="UnitCharge" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each><xsl:for-each select="@*[name()='UnitName']">
+																						
+																						<xsl:attribute name="UnitName" namespace="">
+																							<xsl:value-of select="."/>
+																						</xsl:attribute>
+																					</xsl:for-each><xsl:for-each select="@*[name()='Quantity']">
+																						
+																						<xsl:attribute name="Quantity" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each>
+Error computing diff actions: Opening and ending tag mismatch: Calculation line 59 and xsl:template, line 75, column 52 (<string>, line 75)
 Recorded actions for pattern 6593a55c in SQLite cache
-Stored learned transformation: generic_optimization
+Stored learned transformation: for_each_to_copy_of
 Processed whole chunk with LLM (3981 chars)
 DEBUG: Starting placeholder replacement with 4 placeholders
 DEBUG: Replaced <simpletag1/> with 564 chars of content
@@ -3877,74 +3897,86 @@ DEBUG: Removed placeholder <simpletag3/>
 DEBUG: Removed placeholder <simpletag4/>
 === MERGED XSLT FOR LLM DEBUG ===
 <xsl:for-each select="ns0:Charge/@*[name()='Description']">
-	<xsl:attribute name="Description" namespace="">
-		<xsl:value-of select="substring(., 0, 62)"/>
-	</xsl:attribute>
-</xsl:for-each><xsl:for-each select="ns0:Charge/@GuaranteedInd | ns0:Charge/@IncludedInRate | ns0:Charge/@IncludedInEstTotalInd | ns0:Charge/@RateConvertInd">
+																				
+																				<xsl:attribute name="Description" namespace="">
+																					<xsl:value-of select="substring(., 0, 62)"/>
+																				</xsl:attribute>
+																			</xsl:for-each><xsl:for-each select="ns0:Charge/@GuaranteedInd | ns0:Charge/@IncludedInRate | ns0:Charge/@IncludedInEstTotalInd | ns0:Charge/@RateConvertInd">
                                                                 <xsl:attribute name="{name()}" namespace="">
                                                                         <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
                                                                 </xsl:attribute>
                                                         </xsl:for-each><xsl:for-each select="ns0:Charge/ns0:TaxAmounts">
-	<TaxAmounts>
-		<xsl:for-each select="ns0:TaxAmount">
-			<TaxAmount>
-				<xsl:for-each select="@*[name()='TaxCode']">
-					<xsl:attribute name="TaxCode" namespace="">
-						<xsl:value-of select="."/>
-					</xsl:attribute>
-				</xsl:for-each>
-				<xsl:for-each select="@*[name()='Percentage']">
-					<xsl:attribute name="Percentage" namespace="">
-						<xsl:value-of select="number(.)"/>
-					</xsl:attribute>
-				</xsl:for-each>
-				<xsl:for-each select="@*[name()='Description']">
-					<xsl:attribute name="Description" namespace="">
-						<xsl:value-of select="."/>
-					</xsl:attribute>
-				</xsl:for-each>
-			</TaxAmount>
-		</xsl:for-each>
-	</TaxAmounts>
-</xsl:for-each>
-<xsl:for-each select="ns0:Charge/ns0:MinMax">
-	<MinMax>
-		<xsl:for-each select="@*[name()='MaxCharge']">
-			<xsl:attribute name="MaxCharge" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-		<xsl:for-each select="@*[name()='MinCharge']">
-			<xsl:attribute name="MinCharge" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-		<xsl:for-each select="@*[name()='MaxChargeDays']">
-			<xsl:attribute name="MaxChargeDays" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-	</MinMax>
-</xsl:for-each>
-<xsl:for-each select="ns0:Charge/ns0:Calculation">
-	<Calculation>
-		<xsl:for-each select="@*[name()='UnitCharge']">
-			<xsl:attribute name="UnitCharge" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
-		<xsl:for-each select="@*[name()='UnitName']">
-			<xsl:attribute name="UnitName" namespace="">
-				<xsl:value-of select="."/>
-			</xsl:attribute>
-		</xsl:for-each>
-		<xsl:for-each select="@*[name()='Quantity']">
-			<xsl:attribute name="Quantity" namespace="">
-				<xsl:value-of select="number(.)"/>
-			</xsl:attribute>
-		</xsl:for-each>
+																				
+																				<TaxAmounts>
+																					<xsl:for-each select="ns0:TaxAmount">
+																						
+																						<TaxAmount>
+																							<xsl:attribute name="Total" namespace="">
+																								<xsl:value-of select="number(@Total)"/>
+																							</xsl:attribute>
+																							<xsl:copy-of select="@CurrencyCode"/>
+																							<xsl:for-each select="@*[name()='TaxCode']">
+																								
+																								<xsl:attribute name="TaxCode" namespace="">
+																									<xsl:value-of select="."/>
+																								</xsl:attribute>
+																							</xsl:for-each><xsl:for-each select="@*[name()='Percentage']">
+																								
+																								<xsl:attribute name="Percentage" namespace="">
+																									<xsl:value-of select="number(.)"/>
+																								</xsl:attribute>
+																							</xsl:for-each><xsl:for-each select="@*[name()='Description']">
+																								
+																								<xsl:attribute name="Description" namespace="">
+																									<xsl:value-of select="."/>
+																								</xsl:attribute>
+																							</xsl:for-each>
+																						</TaxAmount>
+																					</xsl:for-each>
+																				</TaxAmounts>
+																			</xsl:for-each>
+																			<xsl:for-each select="ns0:Charge/ns0:MinMax">
+																				
+																				<MinMax>
+																					<xsl:for-each select="@*[name()='MaxCharge']">
+																						
+																						<xsl:attribute name="MaxCharge" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each><xsl:for-each select="@*[name()='MinCharge']">
+																						
+																						<xsl:attribute name="MinCharge" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each><xsl:for-each select="@*[name()='MaxChargeDays']">
+																						
+																						<xsl:attribute name="MaxChargeDays" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each>
+																				</MinMax>
+																			</xsl:for-each>
+																			<xsl:for-each select="ns0:Charge/ns0:Calculation">
+																				
+																				<Calculation>
+																					<xsl:for-each select="@*[name()='UnitCharge']">
+																						
+																						<xsl:attribute name="UnitCharge" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each><xsl:for-each select="@*[name()='UnitName']">
+																						
+																						<xsl:attribute name="UnitName" namespace="">
+																							<xsl:value-of select="."/>
+																						</xsl:attribute>
+																					</xsl:for-each><xsl:for-each select="@*[name()='Quantity']">
+																						
+																						<xsl:attribute name="Quantity" namespace="">
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:attribute>
+																					</xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 14 refined length: 2674
+DEBUG: Chunk 14 refined length: 4266
 DEBUG: Chunk 14 - Could not extract inner content, using original chunk
 DEBUG: Chunk 14 - Validating structural tags
 Validating chunk structure
@@ -3959,13 +3991,15 @@ Cannot parse template text even after wrapping: Opening and ending tag mismatch:
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing direct attribute copy: @RuleType -> copy-of
+Applied direct attribute copy optimization
 Applied text-based for-each merging
 Rules applied: 1 optimizations performed
-DEBUG - Rules result length: 5049 chars
+DEBUG - Rules result length: 4949 chars
 DEBUG - Original length: 5114 chars
 DEBUG: Identifying optimized sections...
 DEBUG: Original chunk length: 5114
-DEBUG: Rules result length: 5049
+DEBUG: Rules result length: 4949
 DEBUG: Found 1 union selects in rules result
 DEBUG: Found attribute merger - 2 patterns -> 1 pattern
 DEBUG: Identified 2 optimized sections
@@ -3979,10 +4013,10 @@ DEBUG: Replaced section at position 4328 with <simpletag2/>
 Created 2 rule placeholders
 Original chunk of Org chunk: 5114
 Cleaned chunk of Org chunk: 3066
-Original chunk of rules result: 5049
-Cleaned chunk of rules result: 2937
+Original chunk of rules result: 4949
+Cleaned chunk of rules result: 2874
 LLM Decision Factors:
-  Size reduction from rules: 0.04
+  Size reduction from rules: 0.06
   Rules effectiveness: 0.03
   Remaining complexity: 0.12
   Too small: False
@@ -4009,7 +4043,11 @@ Cannot parse template text even after wrapping: Opening and ending tag mismatch:
 Final fallback: Cannot parse template text, skipping rule-based processing
 Applied simple pattern merging
 Applied flexible pattern merging
+Optimizing direct attribute copy: @RuleType -> copy-of
+Applied direct attribute copy optimization
+Applied text-based for-each merging
 Inside Rules finder
+Recorded actions for pattern 72bdbd1a in SQLite cache
 Before LLM XSLT :  <xsl:for-each select="@Percentage">
 																						
 																						<xsl:attribute name="Percentage" namespace="">
@@ -4075,9 +4113,7 @@ Before LLM XSLT :  <xsl:for-each select="@Percentage">
 																<xsl:for-each select="ns0:PaymentRule">
 																	
 																	<PaymentRule>
-																		<xsl:attribute name="RuleType" namespace="">
-																			<xsl:value-of select="@RuleType"/>
-																		</xsl:attribute>
+																		<xsl:copy-of select="@RuleType"/>
 																		<xsl:for-each select="@CurrencyCode">
 																			
 																			<xsl:attribute name="CurrencyCode" namespace="">
@@ -4107,14 +4143,16 @@ Before LLM XSLT :  <xsl:for-each select="@Percentage">
 <!-- END OF FRAGMENT -->
 Inside LLM
 Model Used: o3-mini
-Refined LLM <xsl:for-each select="@*[name()='Percentage' or name()='MaxQuantity' or name()='Total']">
+Refined LLM <xsl:for-each select="@*[name()='Percentage' or name()='Applicability' or name()='MaxQuantity' or name()='Total']">
   <xsl:attribute name="{name()}" namespace="">
-    <xsl:value-of select="number(.)"/>
-  </xsl:attribute>
-</xsl:for-each>
-<xsl:for-each select="@*[name()='Applicability']">
-  <xsl:attribute name="{name()}" namespace="">
-    <xsl:value-of select="."/>
+    <xsl:choose>
+      <xsl:when test="name()='Applicability'">
+        <xsl:value-of select="."/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="number(.)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:attribute>
 </xsl:for-each>
 </Calculation>
@@ -4122,59 +4160,69 @@ Refined LLM <xsl:for-each select="@*[name()='Percentage' or name()='MaxQuantity'
 </Charge>
 <xsl:for-each select="ns0:Deductible">
   <Deductible>
-    <xsl:for-each select="@*[name()='DecimalPlaces' or name()='Amount' or name()='LiabilityAmount' or name()='ExcessAmount']">
+    <xsl:for-each select="@*[name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='LiabilityAmount' or name()='ExcessAmount']">
       <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="number(.)"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='CurrencyCode']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="."/>
+        <xsl:choose>
+          <xsl:when test="name()='CurrencyCode'">
+            <xsl:value-of select="."/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="number(.)"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:attribute>
     </xsl:for-each>
   </Deductible>
 </xsl:for-each>
 </PricedCoverage>
 </xsl:for-each>
+</PricedCoverages>
+</xsl:for-each>
 <xsl:for-each select="ns0:PaymentRules">
   <PaymentRules>
     <xsl:for-each select="ns0:PaymentRule">
       <PaymentRule>
-        <xsl:attribute name="RuleType" namespace="">
-          <xsl:value-of select="@RuleType"/>
-        </xsl:attribute>
-        <xsl:for-each select="@*[name()='CurrencyCode']">
+        <xsl:copy-of select="@RuleType"/>
+        <xsl:for-each select="@*[name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='Percent' or name()='RateConvertedInd']">
           <xsl:attribute name="{name()}" namespace="">
-            <xsl:value-of select="."/>
-          </xsl:attribute>
-        </xsl:for-each>
-        <xsl:for-each select="@*[name()='DecimalPlaces' or name()='Amount' or name()='Percent']">
-          <xsl:attribute name="{name()}" namespace="">
-            <xsl:value-of select="number(.)"/>
+            <xsl:choose>
+              <xsl:when test="name()='CurrencyCode'">
+                <xsl:value-of select="."/>
+              </xsl:when>
+              <xsl:when test="name()='DecimalPlaces'">
+                <xsl:value-of select="number(.)"/>
+              </xsl:when>
+              <xsl:when test="name()='Amount'">
+                <xsl:value-of select="number(.)"/>
+              </xsl:when>
+              <xsl:when test="name()='Percent'">
+                <xsl:value-of select="number(.)"/>
+              </xsl:when>
+              <xsl:when test="name()='RateConvertedInd'">
+                <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+              </xsl:when>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:for-each>
         <simpletag1/><simpletag2/>
-        <xsl:for-each select="@*[name()='RateConvertedInd']">
-          <xsl:attribute name="{name()}" namespace="">
-            <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-          </xsl:attribute>
-        </xsl:for-each>
 Error computing diff actions: Opening and ending tag mismatch: template line 1 and Calculation, line 22, column 35 (<string>, line 22)
 Recorded actions for pattern 72bdbd1a in SQLite cache
-Stored learned transformation: generic_optimization
+Stored learned transformation: for_each_to_copy_of
 Processed whole chunk with LLM (4666 chars)
 DEBUG: Starting placeholder replacement with 2 placeholders
 DEBUG: Replaced <simpletag1/> with 409 chars of content
 DEBUG: Removed placeholder <simpletag2/>
 === MERGED XSLT FOR LLM DEBUG ===
-<xsl:for-each select="@*[name()='Percentage' or name()='MaxQuantity' or name()='Total']">
+<xsl:for-each select="@*[name()='Percentage' or name()='Applicability' or name()='MaxQuantity' or name()='Total']">
   <xsl:attribute name="{name()}" namespace="">
-    <xsl:value-of select="number(.)"/>
-  </xsl:attribute>
-</xsl:for-each>
-<xsl:for-each select="@*[name()='Applicability']">
-  <xsl:attribute name="{name()}" namespace="">
-    <xsl:value-of select="."/>
+    <xsl:choose>
+      <xsl:when test="name()='Applicability'">
+        <xsl:value-of select="."/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="number(.)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:attribute>
 </xsl:for-each>
 </Calculation>
@@ -4182,35 +4230,48 @@ DEBUG: Removed placeholder <simpletag2/>
 </Charge>
 <xsl:for-each select="ns0:Deductible">
   <Deductible>
-    <xsl:for-each select="@*[name()='DecimalPlaces' or name()='Amount' or name()='LiabilityAmount' or name()='ExcessAmount']">
+    <xsl:for-each select="@*[name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='LiabilityAmount' or name()='ExcessAmount']">
       <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="number(.)"/>
-      </xsl:attribute>
-    </xsl:for-each>
-    <xsl:for-each select="@*[name()='CurrencyCode']">
-      <xsl:attribute name="{name()}" namespace="">
-        <xsl:value-of select="."/>
+        <xsl:choose>
+          <xsl:when test="name()='CurrencyCode'">
+            <xsl:value-of select="."/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="number(.)"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:attribute>
     </xsl:for-each>
   </Deductible>
 </xsl:for-each>
 </PricedCoverage>
 </xsl:for-each>
+</PricedCoverages>
+</xsl:for-each>
 <xsl:for-each select="ns0:PaymentRules">
   <PaymentRules>
     <xsl:for-each select="ns0:PaymentRule">
       <PaymentRule>
-        <xsl:attribute name="RuleType" namespace="">
-          <xsl:value-of select="@RuleType"/>
-        </xsl:attribute>
-        <xsl:for-each select="@*[name()='CurrencyCode']">
+        <xsl:copy-of select="@RuleType"/>
+        <xsl:for-each select="@*[name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='Percent' or name()='RateConvertedInd']">
           <xsl:attribute name="{name()}" namespace="">
-            <xsl:value-of select="."/>
-          </xsl:attribute>
-        </xsl:for-each>
-        <xsl:for-each select="@*[name()='DecimalPlaces' or name()='Amount' or name()='Percent']">
-          <xsl:attribute name="{name()}" namespace="">
-            <xsl:value-of select="number(.)"/>
+            <xsl:choose>
+              <xsl:when test="name()='CurrencyCode'">
+                <xsl:value-of select="."/>
+              </xsl:when>
+              <xsl:when test="name()='DecimalPlaces'">
+                <xsl:value-of select="number(.)"/>
+              </xsl:when>
+              <xsl:when test="name()='Amount'">
+                <xsl:value-of select="number(.)"/>
+              </xsl:when>
+              <xsl:when test="name()='Percent'">
+                <xsl:value-of select="number(.)"/>
+              </xsl:when>
+              <xsl:when test="name()='RateConvertedInd'">
+                <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+              </xsl:when>
+            </xsl:choose>
           </xsl:attribute>
         </xsl:for-each>
         <xsl:for-each select="@DateTime | @PaymentType">
@@ -4218,20 +4279,16 @@ DEBUG: Removed placeholder <simpletag2/>
                                                                         <xsl:value-of select="."/>
                                                                 </xsl:attribute>
                                                         </xsl:for-each>
-        <xsl:for-each select="@*[name()='RateConvertedInd']">
-          <xsl:attribute name="{name()}" namespace="">
-            <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-          </xsl:attribute>
-        </xsl:for-each>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 15 refined length: 2366
+DEBUG: Chunk 15 refined length: 2700
 DEBUG: Chunk 15 - Could not extract inner content, using original chunk
 DEBUG: Chunk 15 - Validating structural tags
 Validating chunk structure
 Input tags: ['/Calculation', '/Charge', 'Deductible', '/Deductible', '/PricedCoverage', '/PricedCoverages', 'PaymentRules', 'PaymentRule']
-Output tags: ['/Calculation', '/Charge', 'Deductible', '/Deductible', '/PricedCoverage', 'PaymentRules', 'PaymentRule']
-Output has fewer tags than input - falling back to original chunk
+Output tags: ['/Calculation', '/Charge', 'Deductible', '/Deductible', '/PricedCoverage', '/PricedCoverages', 'PaymentRules', 'PaymentRule']
+Tag lists match perfectly
 DEBUG: Chunk 15 - Successfully replaced <Chunk15/> with refined content
+DEBUG: Chunk 15 - Contains 1 union operators - optimization preserved!
 DEBUG: Processing chunk 16/16 - input length: 2854
 Using intelligent chunk processing
 Cannot parse template text even after wrapping: Opening and ending tag mismatch: template line 1 and PaymentRule, line 23, column 32 (<string>, line 23)
@@ -4360,18 +4417,14 @@ Before LLM XSLT :  <simpletag1/><simpletag3/><xsl:for-each select="@OffsetUnitMu
 <!-- END OF FRAGMENT -->
 Inside LLM
 Model Used: o3-mini
-Refined LLM <simpletag1/><simpletag3/>
-<xsl:for-each select="@*[name()='OffsetUnitMultiplier' or name()='OffsetDropTime']">
-	<xsl:attribute name="{name()}" namespace="">
-		<xsl:choose>
-			<xsl:when test="name()='OffsetUnitMultiplier'">
-				<xsl:value-of select="number(.)"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="."/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:attribute>
+Refined LLM <simpletag1/><simpletag3/><xsl:for-each select="@*[name()='OffsetUnitMultiplier']">
+  <xsl:attribute name="OffsetUnitMultiplier" namespace="">
+    <xsl:value-of select="number(.)"/>
+  </xsl:attribute>
+</xsl:for-each><xsl:for-each select="@*[name()='OffsetDropTime']">
+  <xsl:attribute name="OffsetDropTime" namespace="">
+    <xsl:value-of select="."/>
+  </xsl:attribute>
 </xsl:for-each>
 <xsl:value-of select="."/>
 </PaymentRule>
@@ -4381,24 +4434,21 @@ Refined LLM <simpletag1/><simpletag3/>
 </VehAvailInfo>
 </xsl:for-each>
 <xsl:for-each select="ns0:AdvanceBooking">
-	<AdvanceBooking>
-		<simpletag5/><simpletag7/>
-		<xsl:for-each select="@*[name()='OffsetUnitMultiplier' or name()='OffsetDropTime' or name()='RulesApplyInd']">
-			<xsl:attribute name="{name()}" namespace="">
-				<xsl:choose>
-					<xsl:when test="name()='OffsetUnitMultiplier'">
-						<xsl:value-of select="number(.)"/>
-					</xsl:when>
-					<xsl:when test="name()='RulesApplyInd'">
-						<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="."/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
-		</xsl:for-each>
-	</AdvanceBooking>
+  <AdvanceBooking>
+    <simpletag5/><simpletag7/><xsl:for-each select="@*[name()='OffsetUnitMultiplier']">
+      <xsl:attribute name="OffsetUnitMultiplier" namespace="">
+        <xsl:value-of select="number(.)"/>
+      </xsl:attribute>
+    </xsl:for-each><xsl:for-each select="@*[name()='OffsetDropTime']">
+      <xsl:attribute name="OffsetDropTime" namespace="">
+        <xsl:value-of select="."/>
+      </xsl:attribute>
+    </xsl:for-each><xsl:for-each select="@*[name()='RulesApplyInd']">
+      <xsl:attribute name="RulesApplyInd" namespace="">
+        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+      </xsl:attribute>
+    </xsl:for-each>
+  </AdvanceBooking>
 </xsl:for-each>
 </VehAvail>
 </xsl:for-each>
@@ -4406,7 +4456,7 @@ Refined LLM <simpletag1/><simpletag3/>
 </VehVendorAvail>
 </xsl:for-each>
 </VehVendorAvails>
-</VehAvailRSCore>
+</VehAvailRSCore>	
 </xsl:for-each>
 </xsl:for-each>
 </OTA_VehAvailRateRS>
@@ -4428,18 +4478,14 @@ DEBUG: Placeholder <simpletag8/> not found in LLM result
                                                                 <xsl:attribute name="{name()}" namespace="">
                                                                         <xsl:value-of select="."/>
                                                                 </xsl:attribute>
-                                                        </xsl:for-each>
-<xsl:for-each select="@*[name()='OffsetUnitMultiplier' or name()='OffsetDropTime']">
-	<xsl:attribute name="{name()}" namespace="">
-		<xsl:choose>
-			<xsl:when test="name()='OffsetUnitMultiplier'">
-				<xsl:value-of select="number(.)"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="."/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:attribute>
+                                                        </xsl:for-each><xsl:for-each select="@*[name()='OffsetUnitMultiplier']">
+  <xsl:attribute name="OffsetUnitMultiplier" namespace="">
+    <xsl:value-of select="number(.)"/>
+  </xsl:attribute>
+</xsl:for-each><xsl:for-each select="@*[name()='OffsetDropTime']">
+  <xsl:attribute name="OffsetDropTime" namespace="">
+    <xsl:value-of select="."/>
+  </xsl:attribute>
 </xsl:for-each>
 <xsl:value-of select="."/>
 </PaymentRule>
@@ -4449,24 +4495,21 @@ DEBUG: Placeholder <simpletag8/> not found in LLM result
 </VehAvailInfo>
 </xsl:for-each>
 <xsl:for-each select="ns0:AdvanceBooking">
-	<AdvanceBooking>
-		
-		<xsl:for-each select="@*[name()='OffsetUnitMultiplier' or name()='OffsetDropTime' or name()='RulesApplyInd']">
-			<xsl:attribute name="{name()}" namespace="">
-				<xsl:choose>
-					<xsl:when test="name()='OffsetUnitMultiplier'">
-						<xsl:value-of select="number(.)"/>
-					</xsl:when>
-					<xsl:when test="name()='RulesApplyInd'">
-						<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="."/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
-		</xsl:for-each>
-	</AdvanceBooking>
+  <AdvanceBooking>
+    <xsl:for-each select="@*[name()='OffsetUnitMultiplier']">
+      <xsl:attribute name="OffsetUnitMultiplier" namespace="">
+        <xsl:value-of select="number(.)"/>
+      </xsl:attribute>
+    </xsl:for-each><xsl:for-each select="@*[name()='OffsetDropTime']">
+      <xsl:attribute name="OffsetDropTime" namespace="">
+        <xsl:value-of select="."/>
+      </xsl:attribute>
+    </xsl:for-each><xsl:for-each select="@*[name()='RulesApplyInd']">
+      <xsl:attribute name="RulesApplyInd" namespace="">
+        <xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+      </xsl:attribute>
+    </xsl:for-each>
+  </AdvanceBooking>
 </xsl:for-each>
 </VehAvail>
 </xsl:for-each>
@@ -4474,12 +4517,12 @@ DEBUG: Placeholder <simpletag8/> not found in LLM result
 </VehVendorAvail>
 </xsl:for-each>
 </VehVendorAvails>
-</VehAvailRSCore>
+</VehAvailRSCore>	
 </xsl:for-each>
 </xsl:for-each>
 </OTA_VehAvailRateRS>
 === END MERGED XSLT DEBUG ===
-DEBUG: Chunk 16 refined length: 1755
+DEBUG: Chunk 16 refined length: 1808
 DEBUG: Chunk 16 - Could not extract inner content, using original chunk
 DEBUG: Chunk 16 - Validating structural tags
 Validating chunk structure
@@ -4488,7 +4531,9 @@ Output tags: ['/PaymentRule', '/PaymentRules', '/VehAvailInfo', 'AdvanceBooking'
 Tag lists match perfectly
 DEBUG: Chunk 16 - Successfully replaced <Chunk16/> with refined content
 DEBUG: Chunk 16 - Contains 1 union operators - optimization preserved!
-DEBUG: Final template length: 32861
-DEBUG: Final template union count: 70
+DEBUG: Final template length: 33265
+DEBUG: Final template union count: 59
 [SUCCESS] Successfully replaced template /... with refined version
 DEBUG: Preserved original stylesheet tag: <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:tbf="http://www.altova.com/MapForce/UDF/tbf" xmlns:ns0="http://www.opentravel.org/OTA/2003/05" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" exclude-result-prefixes="tbf ns0 xs">
+Inside 9
+  Stopping...

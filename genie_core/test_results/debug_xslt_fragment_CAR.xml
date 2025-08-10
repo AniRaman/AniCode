@@ -8,9 +8,7 @@
 				<Warnings>
 					<xsl:for-each select="ns0:Warning">
 						<Warning>
-							<xsl:attribute name="Type" namespace="">
-								<xsl:value-of select="@Type"/>
-							</xsl:attribute>
+							<xsl:copy-of select="@Type"/>
 							<xsl:for-each select="@Language">
 								<xsl:attribute name="Language" namespace="">
 									<xsl:value-of select="."/>
@@ -168,8 +166,33 @@ ACRISS
 													</xsl:for-each>
 													<xsl:for-each select="ns0:VehAvailCore/ns0:Vehicle/ns0:VehIdentity">
 														<VehIdentity>
-															<xsl:for-each select="@VehicleAssetNumber | @LicensePlateNumber | @StateProvCode | @CountryCode | @VehicleID_Number | @VehicleColor">
-																<xsl:attribute name="{name()}" namespace="">
+															<xsl:for-each select="@VehicleAssetNumber">
+																<xsl:attribute name="VehicleAssetNumber" namespace="">
+																	<xsl:value-of select="."/>
+																</xsl:attribute>
+															</xsl:for-each>
+															<xsl:for-each select="@LicensePlateNumber">
+																<xsl:attribute name="LicensePlateNumber" namespace="">
+																	<xsl:value-of select="."/>
+																</xsl:attribute>
+															</xsl:for-each>
+															<xsl:for-each select="@StateProvCode">
+																<xsl:attribute name="StateProvCode" namespace="">
+																	<xsl:value-of select="."/>
+																</xsl:attribute>
+															</xsl:for-each>
+															<xsl:for-each select="@CountryCode">
+																<xsl:attribute name="CountryCode" namespace="">
+																	<xsl:value-of select="."/>
+																</xsl:attribute>
+															</xsl:for-each>
+															<xsl:for-each select="@VehicleID_Number">
+																<xsl:attribute name="VehicleID_Number" namespace="">
+																	<xsl:value-of select="."/>
+																</xsl:attribute>
+															</xsl:for-each>
+															<xsl:for-each select="@VehicleColor">
+																<xsl:attribute name="VehicleColor" namespace="">
 																	<xsl:value-of select="."/>
 																</xsl:attribute>
 															</xsl:for-each>
@@ -178,25 +201,28 @@ ACRISS
 												</Vehicle>
 												<xsl:for-each select="ns0:VehAvailCore/ns0:RentalRate">
 													<RentalRate>
-														<xsl:for-each select="@*[name() = 'QuoteID']">
-															<xsl:attribute name="QuoteID">
+														<xsl:for-each select="@QuoteID">
+															<xsl:attribute name="QuoteID" namespace="">
 																<xsl:value-of select="."/>
 															</xsl:attribute>
 														</xsl:for-each>
 														<xsl:for-each select="ns0:RateDistance">
 															<RateDistance>
-																<xsl:for-each select="@*[name() = 'Unlimited']">
-																	<xsl:attribute name="Unlimited">
-																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-																	</xsl:attribute>
-																</xsl:for-each>
-																<xsl:for-each select="@*[name() = 'Quantity']">
-																	<xsl:attribute name="Quantity">
+																<xsl:attribute name="Unlimited" namespace="">
+																	<xsl:value-of select="boolean(translate(normalize-space(string(@Unlimited)), ' 0false', ''))"/>
+																</xsl:attribute>
+																<xsl:for-each select="@Quantity">
+																	<xsl:attribute name="Quantity" namespace="">
 																		<xsl:value-of select="number(.)"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@DistUnitName | @VehiclePeriodUnitName">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@DistUnitName">
+																	<xsl:attribute name="DistUnitName" namespace="">
+																		<xsl:value-of select="."/>
+																	</xsl:attribute>
+																</xsl:for-each>
+																<xsl:for-each select="@VehiclePeriodUnitName">
+																	<xsl:attribute name="VehiclePeriodUnitName" namespace="">
 																		<xsl:value-of select="."/>
 																	</xsl:attribute>
 																</xsl:for-each>
@@ -206,28 +232,26 @@ ACRISS
 															<VehicleCharges>
 																<xsl:for-each select="ns0:VehicleCharge">
 																	<VehicleCharge>
-																		<xsl:for-each select="@*[name() = 'Purpose']">
-																			<xsl:attribute name="Purpose">
+																		<xsl:attribute name="Purpose" namespace="">
+																			<xsl:value-of select="@Purpose"/>
+																		</xsl:attribute>
+																		<xsl:for-each select="@CurrencyCode">
+																			<xsl:attribute name="CurrencyCode" namespace="">
 																				<xsl:value-of select="."/>
 																			</xsl:attribute>
 																		</xsl:for-each>
-																		<xsl:for-each select="@*[name() = 'CurrencyCode']">
-																			<xsl:attribute name="CurrencyCode">
-																				<xsl:value-of select="."/>
-																			</xsl:attribute>
-																		</xsl:for-each>
-																		<xsl:for-each select="@*[name() = 'DecimalPlaces']">
-																			<xsl:attribute name="DecimalPlaces">
+																		<xsl:for-each select="@DecimalPlaces">
+																			<xsl:attribute name="DecimalPlaces" namespace="">
 																				<xsl:value-of select="number(.)"/>
 																			</xsl:attribute>
 																		</xsl:for-each>
-																		<xsl:for-each select="@*[name() = 'Amount']">
-																			<xsl:attribute name="Amount">
+																		<xsl:for-each select="@Amount">
+																			<xsl:attribute name="Amount" namespace="">
 																				<xsl:value-of select="number(.)"/>
 																			</xsl:attribute>
 																		</xsl:for-each>
-																		<xsl:for-each select="@*[name() = 'TaxInclusive']">
-																			<xsl:attribute name="TaxInclusive">
+																		<xsl:for-each select="@TaxInclusive">
+																			<xsl:attribute name="TaxInclusive" namespace="">
 																				<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																			</xsl:attribute>
 																		</xsl:for-each>
@@ -245,22 +269,15 @@ ACRISS
 																			<TaxAmounts>
 																				<xsl:for-each select="ns0:TaxAmount">
 																					<TaxAmount>
-																						<xsl:attribute name="Total" namespace="">
-																							<xsl:value-of select="number(@Total)"/>
-																						</xsl:attribute>
-																						<xsl:attribute name="CurrencyCode" namespace="">
-																							<xsl:value-of select="@CurrencyCode"/>
-																						</xsl:attribute>
-																						<xsl:for-each select="@*[name()='TaxCode' or name()='Percentage' or name()='Description']">
+																						<xsl:for-each select="@*[name()='Total' or name()='Percentage']">
 																							<xsl:attribute name="{name()}" namespace="">
-																								<xsl:choose>
-																									<xsl:when test="name()='Percentage'">
-																										<xsl:value-of select="number(.)"/>
-																									</xsl:when>
-																									<xsl:otherwise>
-																										<xsl:value-of select="."/>
-																									</xsl:otherwise>
-																								</xsl:choose>
+																								<xsl:value-of select="number(.)"/>
+																							</xsl:attribute>
+																						</xsl:for-each>
+																						<xsl:copy-of select="@CurrencyCode"/>
+																						<xsl:for-each select="@*[name()='TaxCode' or name()='Description']">
+																							<xsl:attribute name="{name()}" namespace="">
+																								<xsl:value-of select="."/>
 																							</xsl:attribute>
 																						</xsl:for-each>
 																					</TaxAmount>
@@ -278,16 +295,14 @@ ACRISS
 																		</xsl:for-each>
 																		<xsl:for-each select="ns0:Calculation">
 																			<Calculation>
-																				<xsl:for-each select="@*[name()='UnitCharge' or name()='UnitName']">
+																				<xsl:for-each select="@*[name()='UnitCharge']">
 																					<xsl:attribute name="{name()}" namespace="">
-																						<xsl:choose>
-																							<xsl:when test="name()='UnitCharge'">
-																								<xsl:value-of select="number(.)"/>
-																							</xsl:when>
-																							<xsl:otherwise>
-																								<xsl:value-of select="."/>
-																							</xsl:otherwise>
-																						</xsl:choose>
+																						<xsl:value-of select="number(.)"/>
+																					</xsl:attribute>
+																				</xsl:for-each>
+																				<xsl:for-each select="@*[name()='UnitName']">
+																					<xsl:attribute name="{name()}" namespace="">
+																						<xsl:value-of select="."/>
 																					</xsl:attribute>
 																				</xsl:for-each>
 																				<xsl:for-each select="@Quantity">
@@ -343,8 +358,8 @@ ACRISS
 																		<xsl:value-of select="."/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='QuoteID']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@QuoteID">
+																	<xsl:attribute name="QuoteID" namespace="">
 																		<xsl:value-of select="."/>
 																	</xsl:attribute>
 																</xsl:for-each>
@@ -357,13 +372,23 @@ ACRISS
 																	<RateComments>
 																		<xsl:for-each select="ns0:RateComment">
 																			<RateComment>
-																				<xsl:for-each select="@*[name()='Formatted']">
-																					<xsl:attribute name="{name()}" namespace="">
+																				<xsl:for-each select="@Formatted">
+																					<xsl:attribute name="Formatted" namespace="">
 																						<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																					</xsl:attribute>
 																				</xsl:for-each>
-																				<xsl:for-each select="@Language | @TextFormat | @Name">
-																					<xsl:attribute name="{name()}" namespace="">
+																				<xsl:for-each select="@Language">
+																					<xsl:attribute name="Language" namespace="">
+																						<xsl:value-of select="."/>
+																					</xsl:attribute>
+																				</xsl:for-each>
+																				<xsl:for-each select="@TextFormat">
+																					<xsl:attribute name="TextFormat" namespace="">
+																						<xsl:value-of select="."/>
+																					</xsl:attribute>
+																				</xsl:for-each>
+																				<xsl:for-each select="@Name">
+																					<xsl:attribute name="Name" namespace="">
 																						<xsl:value-of select="."/>
 																					</xsl:attribute>
 																				</xsl:for-each>
@@ -376,48 +401,48 @@ ACRISS
 														</xsl:for-each>
 														<xsl:for-each select="ns0:RateRestrictions">
 															<RateRestrictions>
-																<xsl:for-each select="@*[name()='ArriveByFlight']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@ArriveByFlight">
+																	<xsl:attribute name="ArriveByFlight" namespace="">
 																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='MinimumDayInd']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@MinimumDayInd">
+																	<xsl:attribute name="MinimumDayInd" namespace="">
 																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='MaximumDayInd']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@MaximumDayInd">
+																	<xsl:attribute name="MaximumDayInd" namespace="">
 																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='AdvancedBookingInd']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@AdvancedBookingInd">
+																	<xsl:attribute name="AdvancedBookingInd" namespace="">
 																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='RestrictedMileageInd']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@RestrictedMileageInd">
+																	<xsl:attribute name="RestrictedMileageInd" namespace="">
 																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='CorporateRateInd']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@CorporateRateInd">
+																	<xsl:attribute name="CorporateRateInd" namespace="">
 																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='GuaranteeReqInd']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@GuaranteeReqInd">
+																	<xsl:attribute name="GuaranteeReqInd" namespace="">
 																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='MaximumVehiclesAllowed']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@MaximumVehiclesAllowed">
+																	<xsl:attribute name="MaximumVehiclesAllowed" namespace="">
 																		<xsl:value-of select="number(.)"/>
 																	</xsl:attribute>
 																</xsl:for-each>
-																<xsl:for-each select="@*[name()='OvernightInd']">
-																	<xsl:attribute name="{name()}" namespace="">
+																<xsl:for-each select="@OvernightInd">
+																	<xsl:attribute name="OvernightInd" namespace="">
 																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
@@ -428,7 +453,7 @@ ACRISS
 																</xsl:for-each>
 																<xsl:for-each select="@*[name()='CancellationPenaltyInd' or name()='ModificationPenaltyInd' or name()='NoShowFeeInd']">
 																	<xsl:attribute name="{name()}" namespace="">
-																		<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+																		<xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
 																	</xsl:attribute>
 																</xsl:for-each>
 																<xsl:for-each select="@*[name()='MinimumAge' or name()='MaximumAge']">
@@ -480,7 +505,12 @@ ACRISS
 												</xsl:for-each>
 												<xsl:for-each select="ns0:VehAvailCore/ns0:TotalCharge">
 													<TotalCharge>
-														<xsl:for-each select="@*[name()='RateTotalAmount' or name()='EstimatedTotalAmount' or name()='DecimalPlaces']">
+														<xsl:for-each select="@*[name()='RateTotalAmount']">
+															<xsl:attribute name="{name()}" namespace="">
+																<xsl:value-of select="number(.)"/>
+															</xsl:attribute>
+														</xsl:for-each>
+														<xsl:for-each select="@*[name()='EstimatedTotalAmount']">
 															<xsl:attribute name="{name()}" namespace="">
 																<xsl:value-of select="number(.)"/>
 															</xsl:attribute>
@@ -488,6 +518,11 @@ ACRISS
 														<xsl:for-each select="@*[name()='CurrencyCode']">
 															<xsl:attribute name="{name()}" namespace="">
 																<xsl:value-of select="."/>
+															</xsl:attribute>
+														</xsl:for-each>
+														<xsl:for-each select="@*[name()='DecimalPlaces']">
+															<xsl:attribute name="{name()}" namespace="">
+																<xsl:value-of select="number(.)"/>
 															</xsl:attribute>
 														</xsl:for-each>
 														<xsl:for-each select="ns0:Charge/@GuaranteedInd | ns0:Charge/@IncludedInRate | ns0:Charge/@IncludedInEstTotalInd | ns0:Charge/@RateConvertInd">
@@ -508,7 +543,7 @@ ACRISS
 																</xsl:for-each>
 																<Equipment>
 																	<xsl:attribute name="EquipType" namespace="">
-																		<xsl:value-of select="ns0:Equipment/@EquipType"/>
+																		<xsl:value-of select="ns0:Equipment/@*[name()='EquipType']"/>
 																	</xsl:attribute>
 																	<xsl:for-each select="ns0:Equipment/@*[name()='Quantity']">
 																		<xsl:attribute name="Quantity" namespace="">
@@ -551,10 +586,14 @@ ACRISS
 																		<TaxAmounts>
 																			<xsl:for-each select="ns0:TaxAmount">
 																				<TaxAmount>
-																					<xsl:for-each select="@*[name()='Total' or name()='CurrencyCode' or name()='TaxCode' or name()='Percentage' or name()='Description']">
-																						<xsl:attribute name="{name()}">
+																					<xsl:attribute name="Total" namespace="">
+																						<xsl:value-of select="number(@Total)"/>
+																					</xsl:attribute>
+																					<xsl:copy-of select="@CurrencyCode"/>
+																					<xsl:for-each select="@*[name() = 'TaxCode' or name() = 'Percentage' or name() = 'Description']">
+																						<xsl:attribute name="{name()}" namespace="">
 																							<xsl:choose>
-																								<xsl:when test="name()='Total' or name()='Percentage'">
+																								<xsl:when test="name() = 'Percentage'">
 																									<xsl:value-of select="number(.)"/>
 																								</xsl:when>
 																								<xsl:otherwise>
@@ -569,8 +608,8 @@ ACRISS
 																	</xsl:for-each>
 																	<xsl:for-each select="ns0:Charge/ns0:MinMax">
 																		<MinMax>
-																			<xsl:for-each select="@*[name()='MaxCharge' or name()='MinCharge' or name()='MaxChargeDays']">
-																				<xsl:attribute name="{name()}">
+																			<xsl:for-each select="@*[name() = 'MaxCharge' or name() = 'MinCharge' or name() = 'MaxChargeDays']">
+																				<xsl:attribute name="{name()}" namespace="">
 																					<xsl:value-of select="number(.)"/>
 																				</xsl:attribute>
 																			</xsl:for-each>
@@ -578,16 +617,14 @@ ACRISS
 																	</xsl:for-each>
 																	<xsl:for-each select="ns0:Charge/ns0:Calculation">
 																		<Calculation>
-																			<xsl:for-each select="@*[name()='UnitCharge' or name()='UnitName' or name()='Quantity' or name()='Percentage' or name()='Applicability' or name()='MaxQuantity' or name()='Total']">
-																				<xsl:attribute name="{name()}">
-																					<xsl:choose>
-																						<xsl:when test="name()='UnitCharge' or name()='Quantity' or name()='Percentage' or name()='MaxQuantity' or name()='Total'">
-																							<xsl:value-of select="number(.)"/>
-																						</xsl:when>
-																						<xsl:otherwise>
-																							<xsl:value-of select="."/>
-																						</xsl:otherwise>
-																					</xsl:choose>
+																			<xsl:for-each select="@*[name() = 'UnitCharge' or name() = 'Quantity' or name() = 'Percentage' or name() = 'MaxQuantity' or name() = 'Total']">
+																				<xsl:attribute name="{name()}" namespace="">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:attribute>
+																			</xsl:for-each>
+																			<xsl:for-each select="@*[name() = 'UnitName' or name() = 'Applicability']">
+																				<xsl:attribute name="{name()}" namespace="">
+																					<xsl:value-of select="."/>
 																				</xsl:attribute>
 																			</xsl:for-each>
 																		</Calculation>
@@ -601,42 +638,40 @@ ACRISS
 													<Fees>
 														<xsl:for-each select="ns0:Fee">
 															<Fee>
-																<xsl:for-each select="@*">
-																	<xsl:choose>
-																		<xsl:when test="name() = 'DecimalPlaces' or name() = 'Amount'">
-																			<xsl:attribute name="{name()}">
+																<xsl:for-each select="@*[name()='Purpose' or name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='TaxInclusive' or name()='Description' or name()='GuaranteedInd' or name()='IncludedInRate' or name()='IncludedInEstTotalInd' or name()='RateConvertInd' or name()='RequiredInd']">
+																	<xsl:attribute name="{name()}">
+																		<xsl:choose>
+																			<xsl:when test="name()='DecimalPlaces' or name()='Amount'">
 																				<xsl:value-of select="number(.)"/>
-																			</xsl:attribute>
-																		</xsl:when>
-																		<xsl:when test="name() = 'TaxInclusive' or name() = 'GuaranteedInd' or name() = 'IncludedInRate' or name() = 'IncludedInEstTotalInd' or name() = 'RateConvertInd' or name() = 'RequiredInd'">
-																			<xsl:attribute name="{name()}">
+																			</xsl:when>
+																			<xsl:when test="name()='TaxInclusive' or name()='GuaranteedInd' or name()='IncludedInRate' or name()='IncludedInEstTotalInd' or name()='RateConvertInd' or name()='RequiredInd'">
 																				<xsl:value-of select="boolean(translate(normalize-space(.), ' 0false', ''))"/>
-																			</xsl:attribute>
-																		</xsl:when>
-																		<xsl:otherwise>
-																			<xsl:attribute name="{name()}">
+																			</xsl:when>
+																			<xsl:otherwise>
 																				<xsl:value-of select="."/>
-																			</xsl:attribute>
-																		</xsl:otherwise>
-																	</xsl:choose>
+																			</xsl:otherwise>
+																		</xsl:choose>
+																	</xsl:attribute>
 																</xsl:for-each>
 																<xsl:for-each select="ns0:TaxAmounts">
 																	<TaxAmounts>
 																		<xsl:for-each select="ns0:TaxAmount">
 																			<TaxAmount>
-																				<xsl:for-each select="@*">
-																					<xsl:choose>
-																						<xsl:when test="name() = 'Total' or name() = 'Percentage'">
-																							<xsl:attribute name="{name()}">
+																				<xsl:attribute name="Total" namespace="">
+																					<xsl:value-of select="number(@Total)"/>
+																				</xsl:attribute>
+																				<xsl:copy-of select="@CurrencyCode"/>
+																				<xsl:for-each select="@*[name()='TaxCode' or name()='Percentage' or name()='Description']">
+																					<xsl:attribute name="{name()}">
+																						<xsl:choose>
+																							<xsl:when test="name()='Percentage'">
 																								<xsl:value-of select="number(.)"/>
-																							</xsl:attribute>
-																						</xsl:when>
-																						<xsl:otherwise>
-																							<xsl:attribute name="{name()}">
+																							</xsl:when>
+																							<xsl:otherwise>
 																								<xsl:value-of select="."/>
-																							</xsl:attribute>
-																						</xsl:otherwise>
-																					</xsl:choose>
+																							</xsl:otherwise>
+																						</xsl:choose>
+																					</xsl:attribute>
 																				</xsl:for-each>
 																			</TaxAmount>
 																		</xsl:for-each>
@@ -644,19 +679,10 @@ ACRISS
 																</xsl:for-each>
 																<xsl:for-each select="ns0:MinMax">
 																	<MinMax>
-																		<xsl:for-each select="@*">
-																			<xsl:choose>
-																				<xsl:when test="name() = 'MaxCharge'">
-																					<xsl:attribute name="{name()}">
-																						<xsl:value-of select="number(.)"/>
-																					</xsl:attribute>
-																				</xsl:when>
-																				<xsl:otherwise>
-																					<xsl:attribute name="{name()}">
-																						<xsl:value-of select="."/>
-																					</xsl:attribute>
-																				</xsl:otherwise>
-																			</xsl:choose>
+																		<xsl:for-each select="@*[name()='MaxCharge']">
+																			<xsl:attribute name="{name()}">
+																				<xsl:value-of select="number(.)"/>
+																			</xsl:attribute>
 																		</xsl:for-each>
 																		<xsl:for-each select="@*[name()='MinCharge' or name()='MaxChargeDays']">
 																			<xsl:attribute name="{name()}" namespace="">
@@ -685,11 +711,8 @@ ACRISS
 												</xsl:for-each>
 												<xsl:for-each select="ns0:VehAvailCore/ns0:Reference">
 													<Reference>
-														<xsl:for-each select="@*[name()='Type' or name()='ID']">
-															<xsl:attribute name="{name()}" namespace="">
-																<xsl:value-of select="."/>
-															</xsl:attribute>
-														</xsl:for-each>
+														<xsl:copy-of select="@Type"/>
+														<xsl:copy-of select="@ID"/>
 														<xsl:for-each select="@URL | @Instance | @ID_Context | @DateTime">
 															<xsl:attribute name="{name()}" namespace="">
 																<xsl:value-of select="."/>
@@ -697,24 +720,28 @@ ACRISS
 														</xsl:for-each>
 														<xsl:for-each select="ns0:CompanyName">
 															<CompanyName>
-																<xsl:copy-of select="@*|node()"/>
+																<xsl:copy-of select="@node()"/>
+																<xsl:copy-of select="node()"/>
 															</CompanyName>
 														</xsl:for-each>
 														<xsl:for-each select="ns0:TPA_Extensions">
 															<TPA_Extensions>
-																<xsl:copy-of select="@*|node()"/>
+																<xsl:copy-of select="@node()"/>
+																<xsl:copy-of select="node()"/>
 															</TPA_Extensions>
 														</xsl:for-each>
 													</Reference>
 												</xsl:for-each>
 												<xsl:for-each select="ns0:VehAvailCore/ns0:Vendor">
 													<Vendor>
-														<xsl:copy-of select="@*|node()"/>
+														<xsl:copy-of select="@node()"/>
+														<xsl:copy-of select="node()"/>
 													</Vendor>
 												</xsl:for-each>
 												<xsl:for-each select="ns0:VehAvailCore/ns0:VendorLocation">
 													<VendorLocation>
-														<xsl:copy-of select="@*|node()"/>
+														<xsl:copy-of select="@node()"/>
+														<xsl:copy-of select="node()"/>
 													</VendorLocation>
 												</xsl:for-each>
 												<xsl:for-each select="ns0:VehAvailCore/ns0:DropOffLocation">
@@ -733,9 +760,7 @@ ACRISS
 													<TPA_Extensions>
 														<xsl:for-each select="ns0:ExtendedVehicle">
 															<ExtendedVehicle>
-																<xsl:attribute name="KeylessAccess" namespace="">
-																	<xsl:value-of select="@*[name()='KeylessAccess']"/>
-																</xsl:attribute>
+																<xsl:copy-of select="@*[name()='KeylessAccess']"/>
 															</ExtendedVehicle>
 														</xsl:for-each>
 													</TPA_Extensions>
@@ -743,31 +768,33 @@ ACRISS
 											</VehAvailCore>
 											<xsl:for-each select="ns0:VehAvailInfo">
 												<VehAvailInfo>
-													<xsl:attribute name="ChargeablePeriod" namespace="">
-														<xsl:value-of select="@*[name()='ChargeablePeriod']"/>
-													</xsl:attribute>
+													<xsl:for-each select="@ChargeablePeriod">
+														<xsl:copy-of select="@*[name()='ChargeablePeriod']"/>
+													</xsl:for-each>
 													<xsl:for-each select="ns0:PricedCoverages">
 														<PricedCoverages>
 															<xsl:for-each select="ns0:PricedCoverage">
 																<PricedCoverage>
-																	<xsl:attribute name="Required" namespace="">
-																		<xsl:value-of select="boolean(translate(normalize-space(@*[name()='Required']), ' 0false', ''))"/>
-																	</xsl:attribute>
+																	<xsl:for-each select="@Required">
+																		<xsl:attribute name="Required" namespace="">
+																			<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+																		</xsl:attribute>
+																	</xsl:for-each>
 																	<Coverage>
 																		<xsl:attribute name="CoverageType" namespace="">
-																			<xsl:value-of select="ns0:Coverage/@*[name()='CoverageType']"/>
+																			<xsl:value-of select="ns0:Coverage/@CoverageType"/>
 																		</xsl:attribute>
-																		<xsl:attribute name="Code" namespace="">
-																			<xsl:value-of select="ns0:Coverage/@*[name()='Code']"/>
-																		</xsl:attribute>
+																		<xsl:for-each select="ns0:Coverage/@Code">
+																			<xsl:copy-of select="@*[name()='Code']"/>
+																		</xsl:for-each>
 																		<xsl:for-each select="ns0:Coverage/ns0:Details">
 																			<Details>
-																				<xsl:attribute name="CoverageTextType" namespace="">
-																					<xsl:value-of select="@*[name()='CoverageTextType']"/>
-																				</xsl:attribute>
-																				<xsl:attribute name="Formatted" namespace="">
-																					<xsl:value-of select="boolean(translate(normalize-space(@*[name()='Formatted']), ' 0false', ''))"/>
-																				</xsl:attribute>
+																				<xsl:copy-of select="@CoverageTextType"/>
+																				<xsl:for-each select="@Formatted">
+																					<xsl:attribute name="Formatted" namespace="">
+																						<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+																					</xsl:attribute>
+																				</xsl:for-each>
 																				<xsl:for-each select="@Language | @TextFormat">
 																					<xsl:attribute name="{name()}" namespace="">
 																						<xsl:value-of select="."/>
@@ -778,17 +805,19 @@ ACRISS
 																		</xsl:for-each>
 																	</Coverage>
 																	<Charge>
-																		<xsl:attribute name="CurrencyCode" namespace="">
-																			<xsl:value-of select="ns0:Charge/@*[name()='CurrencyCode']"/>
-																		</xsl:attribute>
+																		<xsl:for-each select="ns0:Charge/@CurrencyCode">
+																			<xsl:copy-of select="@*[name()='CurrencyCode']"/>
+																		</xsl:for-each>
 																		<xsl:for-each select="ns0:Charge/@DecimalPlaces | ns0:Charge/@Amount">
 																			<xsl:attribute name="{name()}" namespace="">
 																				<xsl:value-of select="number(.)"/>
 																			</xsl:attribute>
 																		</xsl:for-each>
-																		<xsl:attribute name="TaxInclusive" namespace="">
-																			<xsl:value-of select="boolean(translate(normalize-space(ns0:Charge/@*[name()='TaxInclusive']), ' 0false', ''))"/>
-																		</xsl:attribute>
+																		<xsl:for-each select="ns0:Charge/@TaxInclusive">
+																			<xsl:attribute name="TaxInclusive" namespace="">
+																				<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+																			</xsl:attribute>
+																		</xsl:for-each>
 																		<xsl:for-each select="ns0:Charge/@*[name()='Description']">
 																			<xsl:attribute name="Description" namespace="">
 																				<xsl:value-of select="substring(., 0, 62)"/>
@@ -803,6 +832,10 @@ ACRISS
 																			<TaxAmounts>
 																				<xsl:for-each select="ns0:TaxAmount">
 																					<TaxAmount>
+																						<xsl:attribute name="Total" namespace="">
+																							<xsl:value-of select="number(@Total)"/>
+																						</xsl:attribute>
+																						<xsl:copy-of select="@CurrencyCode"/>
 																						<xsl:for-each select="@*[name()='TaxCode']">
 																							<xsl:attribute name="TaxCode" namespace="">
 																								<xsl:value-of select="."/>
@@ -858,24 +891,16 @@ ACRISS
 																						<xsl:value-of select="number(.)"/>
 																					</xsl:attribute>
 																				</xsl:for-each>
-																				<xsl:for-each select="@Percentage">
-																					<xsl:attribute name="Percentage" namespace="">
-																						<xsl:value-of select="number(.)"/>
-																					</xsl:attribute>
-																				</xsl:for-each>
-																				<xsl:for-each select="@Applicability">
-																					<xsl:attribute name="Applicability" namespace="">
-																						<xsl:value-of select="."/>
-																					</xsl:attribute>
-																				</xsl:for-each>
-																				<xsl:for-each select="@MaxQuantity">
-																					<xsl:attribute name="MaxQuantity" namespace="">
-																						<xsl:value-of select="number(.)"/>
-																					</xsl:attribute>
-																				</xsl:for-each>
-																				<xsl:for-each select="@Total">
-																					<xsl:attribute name="Total" namespace="">
-																						<xsl:value-of select="number(.)"/>
+																				<xsl:for-each select="@*[name()='Percentage' or name()='Applicability' or name()='MaxQuantity' or name()='Total']">
+																					<xsl:attribute name="{name()}" namespace="">
+																						<xsl:choose>
+																							<xsl:when test="name()='Applicability'">
+																								<xsl:value-of select="."/>
+																							</xsl:when>
+																							<xsl:otherwise>
+																								<xsl:value-of select="number(.)"/>
+																							</xsl:otherwise>
+																						</xsl:choose>
 																					</xsl:attribute>
 																				</xsl:for-each>
 																			</Calculation>
@@ -883,29 +908,16 @@ ACRISS
 																	</Charge>
 																	<xsl:for-each select="ns0:Deductible">
 																		<Deductible>
-																			<xsl:for-each select="@CurrencyCode">
-																				<xsl:attribute name="CurrencyCode" namespace="">
-																					<xsl:value-of select="."/>
-																				</xsl:attribute>
-																			</xsl:for-each>
-																			<xsl:for-each select="@DecimalPlaces">
-																				<xsl:attribute name="DecimalPlaces" namespace="">
-																					<xsl:value-of select="number(.)"/>
-																				</xsl:attribute>
-																			</xsl:for-each>
-																			<xsl:for-each select="@Amount">
-																				<xsl:attribute name="Amount" namespace="">
-																					<xsl:value-of select="number(.)"/>
-																				</xsl:attribute>
-																			</xsl:for-each>
-																			<xsl:for-each select="@LiabilityAmount">
-																				<xsl:attribute name="LiabilityAmount" namespace="">
-																					<xsl:value-of select="number(.)"/>
-																				</xsl:attribute>
-																			</xsl:for-each>
-																			<xsl:for-each select="@ExcessAmount">
-																				<xsl:attribute name="ExcessAmount" namespace="">
-																					<xsl:value-of select="number(.)"/>
+																			<xsl:for-each select="@*[name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='LiabilityAmount' or name()='ExcessAmount']">
+																				<xsl:attribute name="{name()}" namespace="">
+																					<xsl:choose>
+																						<xsl:when test="name()='CurrencyCode'">
+																							<xsl:value-of select="."/>
+																						</xsl:when>
+																						<xsl:otherwise>
+																							<xsl:value-of select="number(.)"/>
+																						</xsl:otherwise>
+																					</xsl:choose>
 																				</xsl:attribute>
 																			</xsl:for-each>
 																		</Deductible>
@@ -918,42 +930,31 @@ ACRISS
 														<PaymentRules>
 															<xsl:for-each select="ns0:PaymentRule">
 																<PaymentRule>
-																	<xsl:attribute name="RuleType" namespace="">
-																		<xsl:value-of select="@RuleType"/>
-																	</xsl:attribute>
-																	<xsl:for-each select="@CurrencyCode">
-																		<xsl:attribute name="CurrencyCode" namespace="">
+																	<xsl:copy-of select="@RuleType"/>
+																	<xsl:for-each select="@*[name()='CurrencyCode' or name()='DecimalPlaces' or name()='Amount' or name()='Percent' or name()='RateConvertedInd']">
+																		<xsl:attribute name="{name()}" namespace="">
+																			<xsl:choose>
+																				<xsl:when test="name()='CurrencyCode'">
+																					<xsl:value-of select="."/>
+																				</xsl:when>
+																				<xsl:when test="name()='DecimalPlaces'">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:when>
+																				<xsl:when test="name()='Amount'">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:when>
+																				<xsl:when test="name()='Percent'">
+																					<xsl:value-of select="number(.)"/>
+																				</xsl:when>
+																				<xsl:when test="name()='RateConvertedInd'">
+																					<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
+																				</xsl:when>
+																			</xsl:choose>
+																		</xsl:attribute>
+																	</xsl:for-each>
+																	<xsl:for-each select="@DateTime | @PaymentType">
+																		<xsl:attribute name="{name()}" namespace="">
 																			<xsl:value-of select="."/>
-																		</xsl:attribute>
-																	</xsl:for-each>
-																	<xsl:for-each select="@DecimalPlaces">
-																		<xsl:attribute name="DecimalPlaces" namespace="">
-																			<xsl:value-of select="number(.)"/>
-																		</xsl:attribute>
-																	</xsl:for-each>
-																	<xsl:for-each select="@Amount">
-																		<xsl:attribute name="Amount" namespace="">
-																			<xsl:value-of select="number(.)"/>
-																		</xsl:attribute>
-																	</xsl:for-each>
-																	<xsl:for-each select="@Percent">
-																		<xsl:attribute name="Percent" namespace="">
-																			<xsl:value-of select="number(.)"/>
-																		</xsl:attribute>
-																	</xsl:for-each>
-																	<xsl:for-each select="@DateTime">
-																		<xsl:attribute name="DateTime" namespace="">
-																			<xsl:value-of select="."/>
-																		</xsl:attribute>
-																	</xsl:for-each>
-																	<xsl:for-each select="@PaymentType">
-																		<xsl:attribute name="PaymentType" namespace="">
-																			<xsl:value-of select="."/>
-																		</xsl:attribute>
-																	</xsl:for-each>
-																	<xsl:for-each select="@RateConvertedInd">
-																		<xsl:attribute name="RateConvertedInd" namespace="">
-																			<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 																		</xsl:attribute>
 																	</xsl:for-each>
 																	<xsl:for-each select="@AbsoluteDeadline | @OffsetTimeUnit">
@@ -961,16 +962,14 @@ ACRISS
 																			<xsl:value-of select="."/>
 																		</xsl:attribute>
 																	</xsl:for-each>
-																	<xsl:for-each select="@*[name()='OffsetUnitMultiplier' or name()='OffsetDropTime']">
-																		<xsl:attribute name="{name()}" namespace="">
-																			<xsl:choose>
-																				<xsl:when test="name()='OffsetUnitMultiplier'">
-																					<xsl:value-of select="number(.)"/>
-																				</xsl:when>
-																				<xsl:otherwise>
-																					<xsl:value-of select="."/>
-																				</xsl:otherwise>
-																			</xsl:choose>
+																	<xsl:for-each select="@*[name()='OffsetUnitMultiplier']">
+																		<xsl:attribute name="OffsetUnitMultiplier" namespace="">
+																			<xsl:value-of select="number(.)"/>
+																		</xsl:attribute>
+																	</xsl:for-each>
+																	<xsl:for-each select="@*[name()='OffsetDropTime']">
+																		<xsl:attribute name="OffsetDropTime" namespace="">
+																			<xsl:value-of select="."/>
 																		</xsl:attribute>
 																	</xsl:for-each>
 																	<xsl:value-of select="."/>
@@ -982,19 +981,19 @@ ACRISS
 											</xsl:for-each>
 											<xsl:for-each select="ns0:AdvanceBooking">
 												<AdvanceBooking>
-													<xsl:for-each select="@*[name()='OffsetUnitMultiplier' or name()='OffsetDropTime' or name()='RulesApplyInd']">
-														<xsl:attribute name="{name()}" namespace="">
-															<xsl:choose>
-																<xsl:when test="name()='OffsetUnitMultiplier'">
-																	<xsl:value-of select="number(.)"/>
-																</xsl:when>
-																<xsl:when test="name()='RulesApplyInd'">
-																	<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
-																</xsl:when>
-																<xsl:otherwise>
-																	<xsl:value-of select="."/>
-																</xsl:otherwise>
-															</xsl:choose>
+													<xsl:for-each select="@*[name()='OffsetUnitMultiplier']">
+														<xsl:attribute name="OffsetUnitMultiplier" namespace="">
+															<xsl:value-of select="number(.)"/>
+														</xsl:attribute>
+													</xsl:for-each>
+													<xsl:for-each select="@*[name()='OffsetDropTime']">
+														<xsl:attribute name="OffsetDropTime" namespace="">
+															<xsl:value-of select="."/>
+														</xsl:attribute>
+													</xsl:for-each>
+													<xsl:for-each select="@*[name()='RulesApplyInd']">
+														<xsl:attribute name="RulesApplyInd" namespace="">
+															<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 														</xsl:attribute>
 													</xsl:for-each>
 												</AdvanceBooking>

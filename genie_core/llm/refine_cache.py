@@ -5,16 +5,20 @@ A "fingerprint" is a SHA-256 hash computed from the ordered list of XSLT control
  appear in the template.  All attributes and literal result elements are ignored so that
  templates with the same control-flow skeleton map to a single fingerprint.
 
-The module also contains a *rule-based* refiner that performs the three hard-coded
- clean-ups requested by the user, so that repeated shapes can be refined without an LLM
- round-trip:
+The module also contains a *rule-based* refiner that performs optimizations
+ so that repeated shapes can be refined without an LLM round-trip:
     1. Remove <xsl:variable name="var*_cur" select="." /> boilerplate.
     2. Merge simple attribute loops into a single xsl:copy-of (if <=10 attributes).
     3. Collapse trivial nested for-each loops into literal result elements (best-effort).
+    4. Optimize direct attribute copying to xsl:copy-of.
+    5. Convert conditional attribute patterns to xsl:copy-of.
+    6. Merge multiple consecutive xsl:copy-of elements.
+    7. Optimize simple element copying patterns.
+    8. Eliminate trivial for-each loops.
+    9. Standardize boolean type conversion patterns.
+    10. Simplify complex boolean patterns (Rule 8).
 
-Only the first two rules are implemented deterministically; rule 3 is a noop placeholder
- that can be expanded later.  These rules are *safe* – they will skip a template if it
- detects any unexpected complexity.
+These rules are *safe* – they will skip a template if they detect any unexpected complexity.
 """
 from __future__ import annotations
 
@@ -566,6 +570,36 @@ def _text_based_for_each_merge(template_text: str) -> str:
         result = _process_flexible_matches(result, flexible_matches)
         print("Applied flexible pattern merging")
     
+    # 4. Process element creation patterns (NEW) - Calculate on ORIGINAL text to avoid position shifts
+    # Pattern handles both simple (ns0:StreetText) and complex (*[name()='ns0:StreetText']) XPath selectors
+    element_pattern = r'<xsl:for-each\s+select="([^"]+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*)?<(\w+)[^>]*>\s*<xsl:value-of\s+select="\."[^>]*/?>\s*</\2>\s*</xsl:for-each>'
+    
+    element_matches = list(re.finditer(element_pattern, template_text, re.DOTALL))  # Use original template_text
+    
+    if len(element_matches) >= 1:
+        result = _process_element_creation_patterns_safe(result, element_matches, template_text)
+        print("Applied element creation pattern optimization")
+    
+    # 5. Process direct attribute copy patterns (NEW)
+    # Pattern: <xsl:attribute name="Type"><xsl:value-of select="@Type"/></xsl:attribute>
+    direct_attr_pattern = r'<xsl:attribute\s+name="(\w+)"[^>]*>\s*<xsl:value-of\s+select="@\1"[^>]*/?>\s*</xsl:attribute>'
+    
+    direct_attr_matches = list(re.finditer(direct_attr_pattern, result, re.DOTALL))
+    
+    if len(direct_attr_matches) >= 1:
+        result = _process_direct_attribute_patterns(result, direct_attr_matches)
+        print("Applied direct attribute copy optimization")
+    
+    # 6. Process simple element copy patterns (NEW)
+    # Pattern: <ElementName><xsl:value-of select="path/to/ElementName"/></ElementName>
+    simple_element_pattern = r'<(\w+)[^>]*>\s*<xsl:value-of\s+select="([^"]*\1)"[^>]*/?>\s*</\1>'
+    
+    simple_element_matches = list(re.finditer(simple_element_pattern, result, re.DOTALL))
+    
+    if len(simple_element_matches) >= 1:
+        result = _process_simple_element_patterns(result, simple_element_matches)
+        print("Applied simple element copy optimization")
+    
     return result
 
 
@@ -666,14 +700,33 @@ def _process_complex_matches_with_valueof(template_text: str, matches):
 
 def _process_matches_with_base_selector(template_text: str, matches, base_selector: str, extract_attr_from_group: int):
     """Helper to process matches where all have the same base selector."""
-    # Group consecutive matches
+    import re
+    
+    # Group consecutive matches, but only if there are no element patterns between them
     consecutive_groups = []
     current_group = [matches[0]]
     
     for i in range(1, len(matches)):
         # Check if this match is close to the previous one (within 200 chars)
-        if matches[i].start() - current_group[-1].end() < 200:
-            current_group.append(matches[i])
+        distance = matches[i].start() - current_group[-1].end()
+        if distance < 200:
+            # Check if there are any element patterns between these matches
+            between_start = current_group[-1].end()
+            between_end = matches[i].start()
+            between_content = template_text[between_start:between_end]
+            
+            # Look for element creation patterns in between
+            element_pattern = r'<xsl:for-each\s+select="([^"@]+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*)?<(\w+)[^>]*>\s*<xsl:value-of\s+select="[^"]*"[^>]*/?>\s*</\2>\s*</xsl:for-each>'
+            
+            if re.search(element_pattern, between_content, re.DOTALL):
+                # Element pattern found between - start new group
+                if len(current_group) > 1:
+                    consecutive_groups.append(current_group)
+                current_group = [matches[i]]
+                print(f"Breaking consecutive group due to element pattern between attribute matches")
+            else:
+                # No element patterns - safe to group
+                current_group.append(matches[i])
         else:
             if len(current_group) > 1:
                 consecutive_groups.append(current_group)
@@ -766,6 +819,167 @@ def _process_matches_with_dynamic_selector(template_text: str, matches, group_fo
     print("result", result)
     return result
 
+
+def _process_element_creation_patterns(template_text: str, matches):
+    """Process element creation patterns like <xsl:for-each select='ns0:StreetText'><StreetText><xsl:value-of select='.'/></StreetText></xsl:for-each>."""
+    import re
+    
+    result = template_text
+    offset = 0
+    
+    for match in matches:
+        select_expr = match.group(1)  # e.g., "ns0:StreetText" or "*[name()='ns0:StreetText']"
+        element_name = match.group(2)  # e.g., "StreetText"
+        
+        # Check if this is a simple element copying pattern:
+        # - for-each selects from source elements
+        # - creates elements with same name (just without namespace)
+        # - uses xsl:value-of select="." to copy content
+        
+        # Extract element name from select expression for validation
+        if "name()=" in select_expr:
+            # Handle complex XPath like "*[name()='ns0:StreetText']"
+            name_match = re.search(r"name\(\)='[^:]*:?([^']+)'", select_expr)
+            if name_match:
+                select_element = name_match.group(1)  # Extract "StreetText" from "ns0:StreetText"
+            else:
+                select_element = ""
+        else:
+            # Handle simple XPath like "ns0:StreetText"
+            select_element = select_expr.split(':')[-1] if ':' in select_expr else select_expr
+        
+        # Only optimize if element names match (ignoring namespace prefixes)
+        if select_element == element_name:
+            # This is a simple copy pattern - optimize to copy-of
+            optimized = f'<xsl:copy-of select="{select_expr}"/>'
+            print(f"Optimizing element pattern: {select_expr} -> copy-of")
+        else:
+            # Different element names - keep as for-each but remove unnecessary variable
+            # Remove the variable declaration if present
+            original_match = match.group(0)
+            if 'xsl:variable' in original_match:
+                # Remove variable and clean up
+                optimized = re.sub(
+                    r'<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*',
+                    '',
+                    original_match
+                )
+                print(f"Removing unnecessary variable from element pattern: {element_name}")
+            else:
+                optimized = original_match
+        
+        # Replace in result
+        start_pos = match.start() + offset
+        end_pos = match.end() + offset
+        
+        result = result[:start_pos] + optimized + result[end_pos:]
+        offset += len(optimized) - (end_pos - start_pos)
+    
+    return result
+
+
+def _process_element_creation_patterns_safe(current_result: str, matches_from_original: list, original_text: str):
+    """Process element creation patterns where matches were found on original text but need to be applied to current result."""
+    import re
+    
+    # For each match found on original text, try to find the same pattern in current result
+    for match in matches_from_original:
+        select_expr = match.group(1)  # e.g., "ns0:StreetText" or "*[name()='ns0:StreetText']"
+        element_name = match.group(2)  # e.g., "StreetText"
+        
+        # Re-search for the pattern in current result using flexible matching
+        element_pattern = r'<xsl:for-each\s+select="' + re.escape(select_expr) + r'"[^>]*>\s*(?:\s*<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*)?<' + re.escape(element_name) + r'[^>]*>\s*<xsl:value-of\s+select="\."[^>]*/?>\s*</' + re.escape(element_name) + r'>\s*</xsl:for-each>'
+        
+        pattern_match = re.search(element_pattern, current_result, re.DOTALL)
+        if pattern_match:
+            # Pattern found in current result - we can optimize it
+            current_pattern = pattern_match.group(0)
+            
+            # Extract element name from select expression for validation
+            if "name()=" in select_expr:
+                # Handle complex XPath like "*[name()='ns0:StreetText']"
+                name_match = re.search(r"name\(\)='[^:]*:?([^']+)'", select_expr)
+                if name_match:
+                    select_element = name_match.group(1)  # Extract "StreetText" from "ns0:StreetText"
+                else:
+                    select_element = ""
+            else:
+                # Handle simple XPath like "ns0:StreetText"
+                select_element = select_expr.split(':')[-1] if ':' in select_expr else select_expr
+            
+            # Only optimize if element names match (ignoring namespace prefixes)
+            if select_element == element_name:
+                # This is a simple copy pattern - optimize to copy-of
+                optimized = f'<xsl:copy-of select="{select_expr}"/>'
+                print(f"Optimizing element pattern: {select_expr} -> copy-of")
+            else:
+                # Different element names - keep as for-each but remove unnecessary variable
+                if 'xsl:variable' in current_pattern:
+                    # Remove variable and clean up
+                    optimized = re.sub(
+                        r'<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*',
+                        '',
+                        current_pattern
+                    )
+                    print(f"Removing unnecessary variable from element pattern: {element_name}")
+                else:
+                    optimized = current_pattern
+            
+            # Replace in current result
+            current_result = current_result.replace(current_pattern, optimized)
+        else:
+            # Pattern was already modified by earlier processing - skip it
+            print(f"Skipping element pattern (not found in current result): {select_expr}")
+    
+    return current_result
+
+
+def _process_direct_attribute_patterns(template_text: str, matches):
+    """Process direct attribute copy patterns like <xsl:attribute name='Type'><xsl:value-of select='@Type'/></xsl:attribute>."""
+    result = template_text
+    offset = 0
+    
+    for match in matches:
+        attr_name = match.group(1)  # e.g., "Type"
+        original_pattern = match.group(0)
+        
+        # Convert to copy-of
+        optimized = f'<xsl:copy-of select="@{attr_name}"/>'
+        print(f"Optimizing direct attribute copy: @{attr_name} -> copy-of")
+        
+        # Replace in result
+        start_pos = match.start() + offset
+        end_pos = match.end() + offset
+        
+        result = result[:start_pos] + optimized + result[end_pos:]
+        offset += len(optimized) - (end_pos - start_pos)
+    
+    return result
+
+
+def _process_simple_element_patterns(template_text: str, matches):
+    """Process simple element copy patterns like <ContactInfo><xsl:value-of select='path/ContactInfo'/></ContactInfo>."""
+    result = template_text
+    offset = 0
+    
+    for match in matches:
+        element_name = match.group(1)  # e.g., "ContactInfo"
+        select_path = match.group(2)   # e.g., "ns0:ContactInfo" or "path/ContactInfo"
+        original_pattern = match.group(0)
+        
+        # Convert to copy-of
+        optimized = f'<xsl:copy-of select="{select_path}"/>'
+        print(f"Optimizing simple element copy: {element_name} -> copy-of")
+        
+        # Replace in result
+        start_pos = match.start() + offset
+        end_pos = match.end() + offset
+        
+        result = result[:start_pos] + optimized + result[end_pos:]
+        offset += len(optimized) - (end_pos - start_pos)
+    
+    return result
+
 def _process_flexible_matches(template_text: str, matches):
     """Process matches with flexible pattern where select and attribute names might differ."""
     import re
@@ -801,14 +1015,31 @@ def _process_flexible_matches(template_text: str, matches):
         if len(group) < 2:
             continue  # Need at least 2 to merge
         
-        # Check if matches are consecutive
+        # Check if matches are consecutive, but avoid consuming element patterns
         group.sort(key=lambda x: x['match'].start())
         consecutive_groups = []
         current_group = [group[0]]
         
         for i in range(1, len(group)):
-            if group[i]['match'].start() - current_group[-1]['match'].end() < 200:
-                current_group.append(group[i])
+            distance = group[i]['match'].start() - current_group[-1]['match'].end()
+            if distance < 200:
+                # Check if there are any element patterns between these matches (same logic as simple processing)
+                between_start = current_group[-1]['match'].end()
+                between_end = group[i]['match'].start()
+                between_content = template_text[between_start:between_end]
+                
+                # Look for element creation patterns in between
+                element_pattern = r'<xsl:for-each\s+select="([^"@]+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*)?<(\w+)[^>]*>\s*<xsl:value-of\s+select="[^"]*"[^>]*/?>\s*</\2>\s*</xsl:for-each>'
+                
+                if re.search(element_pattern, between_content, re.DOTALL):
+                    # Element pattern found between - start new group
+                    if len(current_group) > 1:
+                        consecutive_groups.append(current_group)
+                    current_group = [group[i]]
+                    print(f"Breaking flexible consecutive group due to element pattern between attribute matches")
+                else:
+                    # No element patterns - safe to group
+                    current_group.append(group[i])
             else:
                 if len(current_group) > 1:
                     consecutive_groups.append(current_group)
@@ -1123,6 +1354,54 @@ def _optimize_boolean_type_conversion(elem: etree._Element) -> bool:
     return changed
 
 
+def _optimize_complex_boolean_patterns(elem: etree._Element) -> bool:
+    """
+    Rule 8: Complex Boolean Pattern Optimization
+    
+    Simplify overly complex boolean test patterns.
+    
+    Pattern 1: boolean(translate(normalize-space($var), ' 0', ''))
+    Pattern 2: number(boolean(...))
+    """
+    changed = False
+    
+    # Pattern 1: Simplify boolean(translate(normalize-space(...), ' 0', '')) in if tests
+    if_elements = elem.xpath(".//xsl:if[contains(@test, 'boolean(translate(normalize-space(')]", namespaces=NSMAP)
+    
+    for if_elem in if_elements:
+        test_expr = if_elem.get("test", "")
+        
+        # Simple pattern: boolean(translate(normalize-space($var), ' 0', ''))
+        if "', ' 0', ''))" in test_expr:
+            import re
+            # Extract the variable reference
+            match = re.search(r'boolean\(translate\(normalize-space\(([^)]+)\)', test_expr)
+            if match:
+                var_ref = match.group(1)
+                # Simplify to direct variable test
+                if_elem.set("test", f"{var_ref} and {var_ref} != '0'")
+                changed = True
+    
+    # Pattern 2: Optimize number(boolean(...)) patterns in value-of
+    value_of_elements = elem.xpath(".//xsl:value-of[contains(@select, 'number(boolean(')]", namespaces=NSMAP)
+    
+    for value_of_elem in value_of_elements:
+        select_expr = value_of_elem.get("select", "")
+        
+        # Pattern: number(boolean(translate(...)))
+        if "number(boolean(translate(" in select_expr and "'false0 '" in select_expr:
+            import re
+            # Extract the inner expression
+            match = re.search(r'number\(boolean\(translate\(([^,]+),', select_expr)
+            if match:
+                inner_expr = match.group(1)
+                # Convert to if-then-else
+                value_of_elem.set("select", f"if ({inner_expr} and {inner_expr} != '0' and {inner_expr} != 'false') then 1 else 0")
+                changed = True
+    
+    return changed
+
+
 def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]]]:
     """Attempt deterministic refinement. Returns (refined_text, actions)."""
     wrapper_used = False
@@ -1219,6 +1498,12 @@ def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]]]:
     if _collapse_nested_loops(elem):
         changed = True
         actions.append({"op": "collapse_nested_loops"})
+
+    # 10. optimize complex boolean patterns (Rule 8)
+    if _optimize_complex_boolean_patterns(elem):
+        print("complex_boolean_patterns applied")
+        changed = True
+        actions.append({"op": "complex_boolean_patterns"})
 
     if not changed:
         return template_text, actions
