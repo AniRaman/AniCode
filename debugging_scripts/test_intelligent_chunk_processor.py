@@ -129,10 +129,9 @@ def test_pattern_learning():
     
     processor = IntelligentChunkProcessor()
     
-    # Get initial count of learned transformations from the database
-    from genie_core.llm.refine_cache import get_learned_transformations
-    initial_patterns = len(get_learned_transformations())
-    print(f"Initial learned transformations: {initial_patterns}")
+    # Get initial count from processor statistics
+    initial_patterns = processor.stats['patterns_learned']
+    print(f"Initial patterns learned count: {initial_patterns}")
     
     # Test pattern learning with a transformation that should be detected
     original = '''<xsl:for-each select="@Status">
@@ -147,10 +146,10 @@ def test_pattern_learning():
     # Learn from this transformation
     processor.learn_from_llm_output(original, optimized)
     
-    final_patterns = len(get_learned_transformations())
-    print(f"Final learned transformations: {final_patterns}")
+    final_patterns = processor.stats['patterns_learned']
+    print(f"Final patterns learned count: {final_patterns}")
     
-    # Check if the system detected and stored any transformation
+    # Check if the system detected any transformation
     success = final_patterns > initial_patterns
     
     # If no patterns were learned, test with mock LLM output
@@ -158,8 +157,8 @@ def test_pattern_learning():
         print("Testing with mock LLM output...")
         mock_optimized = f"<!-- LLM Processed -->\n{original}"
         processor.learn_from_llm_output(original, mock_optimized)
-        final_patterns_mock = len(get_learned_transformations())
-        print(f"Transformations after mock test: {final_patterns_mock}")
+        final_patterns_mock = processor.stats['patterns_learned']
+        print(f"Patterns after mock test: {final_patterns_mock}")
         success = final_patterns_mock > initial_patterns
     
     print(f"Pattern learning: {'SUCCESS' if success else 'FAILED'}")

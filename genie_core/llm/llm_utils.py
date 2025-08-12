@@ -540,16 +540,18 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
             print("Inside DB, found the pattern, Applying actions....")
             return apply_actions(chunk_text, cached)
 
-        # 2) deterministic rules (always run)
-        ruled_text, rule_actions = rule_based_refine(chunk_text)
+        # 2) deterministic rules (always run, no caching - they're fast to recompute)
+        ruled_text, rule_actions, placeholder_map = rule_based_refine(chunk_text)
         print("Inside Rules finder")
         if rule_actions:
-            cache_actions(fp, rule_actions)
             # If deterministic merge_attr_loops applied, skip LLM – fully refined already
             if any(a.get('op') == 'merge_attr_loops' for a in rule_actions):
                 print("merge_attr_loops applied – skipping LLM call")
-                print("Ruled text inside merge_attr_loops: ", ruled_text)
-                return ruled_text
+                # Replace placeholders since we're skipping LLM
+                from .refine_cache import replace_placeholders
+                final_result = replace_placeholders(ruled_text, placeholder_map) if placeholder_map else ruled_text
+                print("Ruled text inside merge_attr_loops: ", final_result)
+                return final_result
         else:
             ruled_text = chunk_text  # unchanged
 
@@ -606,13 +608,21 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
             actions = _compute_edit_actions(before_elem, after_elem)
             if actions:
                 cache_actions(fp, actions)
-            return refined_llm
+            
+            # Replace placeholders in LLM result
+            from .refine_cache import replace_placeholders
+            final_result = replace_placeholders(refined_llm, placeholder_map) if placeholder_map else refined_llm
+            return final_result
             
         except Exception as e:
             print(f"Error computing diff actions: {e}")
             # Fallback to passthrough if diff fails
             cache_actions(fp, [{"op": "llm_passthrough", "refined": refined_llm}])
-            return refined_llm
+            
+            # Replace placeholders in LLM result
+            from .refine_cache import replace_placeholders
+            final_result = replace_placeholders(refined_llm, placeholder_map) if placeholder_map else refined_llm
+            return final_result
 
     def _create_well_formed_chunks(body: str, max_chars: int) -> list:
         """Create well-formed XML chunks from template body that can be parsed by lxml."""
@@ -1080,8 +1090,37 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
             print("Tag lists match perfectly")
             return refined_chunk
         elif len(output_tags) < len(input_tags):
-            print("Output has fewer tags than input - falling back to original chunk")
-            return input_chunk
+            print("Output has fewer tags than input - applying XML validation logic")
+            
+            # Count element tags (non-XSLT tags) in input vs output
+            input_tag_count = len(input_tags)
+            output_tag_count = len(output_tags)
+            tag_difference = abs(output_tag_count - input_tag_count)
+            
+            print(f"Tag count difference: {tag_difference} (input: {input_tag_count}, output: {output_tag_count})")
+            
+            # If difference is odd, fall back to original chunk
+            if tag_difference % 2 == 1:
+                print("Odd tag difference detected - falling back to original chunk")
+                return input_chunk
+            
+            # For even differences, validate that different tags form complete pairs
+            if tag_difference > 0:
+                # Check if all different tags have proper opening/closing pairs
+                if _validate_tag_pairs(input_tags, output_tags):
+                    print("Even tag difference with proper pairs - using refined chunk")
+                    return refined_chunk
+                else:
+                    print("Tag pairs not properly matched - falling back to original chunk")
+                    return input_chunk
+            
+            # No difference in count but content differs - validate pairs
+            if not _validate_tag_pairs_content(input_tags, output_tags):
+                print("Tag pairing validation failed - falling back to original chunk")
+                return input_chunk
+            
+            # All validation passed for fewer tags case
+            return refined_chunk
         else:
             print("Output has extra tags - fixing discrepancies")
             return _fix_tag_discrepancies(refined_chunk, input_tags, output_tags)
@@ -1160,7 +1199,77 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
             print(f"Could not find first closing {tag_name}")
             return content
 
+    def _validate_tag_pairs(input_tags: list, output_tags: list) -> bool:
+        """Validate that different tags between input and output form complete opening/closing pairs."""
+        import re
+        
+        # Find tags that are different between input and output
+        input_set = set(input_tags)
+        output_set = set(output_tags)
+        
+        different_tags = (input_set - output_set) | (output_set - input_set)
+        
+        if not different_tags:
+            return True  # No differences, validation passes
+        
+        print(f"Different tags to validate: {different_tags}")
+        
+        # For each different tag, check if it has a matching opening/closing pair
+        for tag in different_tags:
+            if tag.startswith('/'):
+                # This is a closing tag, find its opening counterpart
+                opening_tag = tag[1:]  # Remove the '/'
+                if opening_tag not in different_tags:
+                    print(f"Closing tag {tag} has no matching opening tag in differences")
+                    return False
+            else:
+                # This is an opening tag, find its closing counterpart  
+                closing_tag = '/' + tag
+                if closing_tag not in different_tags:
+                    print(f"Opening tag {tag} has no matching closing tag in differences")
+                    return False
+        
+        print("All different tags have proper opening/closing pairs")
+        return True
     
+    def _validate_tag_pairs_content(input_tags: list, output_tags: list) -> bool:
+        """Validate that tag pairs are properly matched in content ordering."""
+        # Create dictionaries to count opening and closing tags
+        input_pairs = _count_tag_pairs(input_tags)
+        output_pairs = _count_tag_pairs(output_tags)
+        
+        # Check if all tag pairs are balanced in both input and output
+        for tag_name, counts in input_pairs.items():
+            if counts['open'] != counts['close']:
+                print(f"Input has unbalanced tag pairs for {tag_name}: {counts['open']} open, {counts['close']} close")
+                return False
+        
+        for tag_name, counts in output_pairs.items():
+            if counts['open'] != counts['close']:
+                print(f"Output has unbalanced tag pairs for {tag_name}: {counts['open']} open, {counts['close']} close")
+                return False
+        
+        print("All tag pairs are properly balanced")
+        return True
+    
+    def _count_tag_pairs(tags: list) -> dict:
+        """Count opening and closing tags for each tag name."""
+        pairs = {}
+        
+        for tag in tags:
+            if tag.startswith('/'):
+                # Closing tag
+                tag_name = tag[1:]
+                if tag_name not in pairs:
+                    pairs[tag_name] = {'open': 0, 'close': 0}
+                pairs[tag_name]['close'] += 1
+            else:
+                # Opening tag
+                if tag not in pairs:
+                    pairs[tag] = {'open': 0, 'close': 0}
+                pairs[tag]['open'] += 1
+        
+        return pairs
 
     # --- iterate templates in document order ---
 

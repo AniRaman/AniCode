@@ -64,20 +64,6 @@ def _get_conn() -> sqlite3.Connection:
                 actions_json  TEXT
             )"""
     )
-    # Create table for learned transformations from LLM
-    conn.execute(
-        """CREATE TABLE IF NOT EXISTS learned_transformations (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                original_pattern_hash TEXT NOT NULL,
-                original_pattern TEXT NOT NULL,
-                optimized_pattern TEXT NOT NULL,
-                transformation_type TEXT NOT NULL,
-                pattern_regex TEXT,
-                replacement_template TEXT,
-                is_rule_candidate BOOLEAN DEFAULT 1,
-                created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )"""
-    )
     # Ensure the new column exists when upgrading from old schema
     cols = [row[1] for row in conn.execute("PRAGMA table_info(refinements)")]
     if "actions_json" not in cols:
@@ -104,142 +90,6 @@ def cache_actions(fingerprint: str, actions: List[Dict[str, Any]]) -> None:
         )
         conn.commit()
     print(f"Recorded actions for pattern {fingerprint[:8]} in SQLite cache")
-
-
-def store_learned_transformation(original_pattern: str, optimized_pattern: str, transformation_type: str) -> None:
-    """Store a learned transformation from LLM output for potential rule creation."""
-    import hashlib
-    
-    original_hash = hashlib.md5(original_pattern.encode()).hexdigest()
-    
-    # Don't store if we already have this exact transformation
-    with _get_conn() as conn:
-        existing = conn.execute(
-            "SELECT id FROM learned_transformations WHERE original_pattern_hash = ?",
-            (original_hash,)
-        ).fetchone()
-        
-        if existing:
-            return  # Already stored
-        
-        # Extract potential rule pattern
-        pattern_regex, replacement_template = _extract_rule_pattern(original_pattern, optimized_pattern, transformation_type)
-        
-        conn.execute(
-            """INSERT INTO learned_transformations 
-               (original_pattern_hash, original_pattern, optimized_pattern, transformation_type, 
-                pattern_regex, replacement_template) 
-               VALUES (?, ?, ?, ?, ?, ?)""",
-            (original_hash, original_pattern[:500], optimized_pattern[:500], 
-             transformation_type, pattern_regex, replacement_template)
-        )
-        conn.commit()
-        print(f"Stored learned transformation: {transformation_type}")
-
-
-def get_learned_transformations() -> List[Dict[str, Any]]:
-    """Get all learned transformations that could become rules."""
-    with _get_conn() as conn:
-        rows = conn.execute(
-            """SELECT original_pattern, optimized_pattern, transformation_type, 
-                      pattern_regex, replacement_template, created_date
-               FROM learned_transformations 
-               WHERE is_rule_candidate = 1 
-               ORDER BY created_date DESC"""
-        ).fetchall()
-        
-        return [
-            {
-                'original_pattern': row[0],
-                'optimized_pattern': row[1], 
-                'transformation_type': row[2],
-                'pattern_regex': row[3],
-                'replacement_template': row[4],
-                'created_date': row[5]
-            }
-            for row in rows
-        ]
-
-
-def check_for_learned_pattern(pattern: str) -> Optional[str]:
-    """Check if we have a learned optimization for this pattern."""
-    pattern_hash = hashlib.md5(pattern.encode()).hexdigest()
-    
-    with _get_conn() as conn:
-        row = conn.execute(
-            "SELECT optimized_pattern FROM learned_transformations WHERE original_pattern_hash = ?",
-            (pattern_hash,)
-        ).fetchone()
-        
-        return row[0] if row else None
-
-
-def _extract_rule_pattern(original: str, optimized: str, transformation_type: str) -> Tuple[Optional[str], Optional[str]]:
-    """Extract regex pattern and replacement template from LLM transformation for potential rule creation."""
-    
-    if transformation_type == "variable_removal":
-        # Look for variable removal pattern
-        if 'xsl:variable' in original and 'xsl:variable' not in optimized:
-            return (r'<xsl:variable\s+name="var\d+_cur"\s+select="\."\s*/>', "")
-    
-    elif transformation_type == "for_each_to_copy_of":
-        # Look for for-each to copy-of conversion
-        if 'xsl:for-each' in original and 'xsl:copy-of' in optimized:
-            # Try to extract the select attribute pattern
-            import re
-            select_match = re.search(r'select="([^"]*@\w+)"', original)
-            if select_match:
-                select_attr = select_match.group(1)
-                pattern = f'<xsl:for-each\\s+select="{re.escape(select_attr)}"[^>]*>.*?</xsl:for-each>'
-                replacement = f'<xsl:copy-of select="{select_attr}"/>'
-                return (pattern, replacement)
-    
-    elif transformation_type == "attribute_simplification":
-        # Look for attribute simplification patterns
-        if original.count('<xsl:attribute') > optimized.count('<xsl:attribute'):
-            # Multiple attributes simplified - could be a pattern
-            import re
-            attr_pattern = r'<xsl:for-each\s+select="@(\w+)"[^>]*>\s*<xsl:attribute\s+name="\1"[^>]*>\s*<xsl:value-of\s+select="\."/>\s*</xsl:attribute>\s*</xsl:for-each>'
-            if re.search(attr_pattern, original):
-                return (attr_pattern, r'<xsl:copy-of select="@\1"/>')
-    
-    # Generic patterns - return None if we can't extract a clear rule
-    return (None, None)
-
-
-def print_learned_transformations_report():
-    """Print a report of learned transformations for rule development."""
-    transformations = get_learned_transformations()
-    
-    if not transformations:
-        print("No learned transformations found.")
-        return
-    
-    print(f"\n=== LEARNED TRANSFORMATIONS REPORT ===")
-    print(f"Total transformations: {len(transformations)}")
-    
-    # Group by transformation type
-    by_type = {}
-    for t in transformations:
-        t_type = t['transformation_type']
-        if t_type not in by_type:
-            by_type[t_type] = []
-        by_type[t_type].append(t)
-    
-    for t_type, items in by_type.items():
-        print(f"\n{t_type.upper()} ({len(items)} instances):")
-        for i, item in enumerate(items[:3], 1):  # Show max 3 examples
-            print(f"  Example {i}:")
-            if item['pattern_regex']:
-                print(f"    Regex: {item['pattern_regex']}")
-                print(f"    Replace: {item['replacement_template']}")
-            else:
-                print(f"    Original (first 100 chars): {item['original_pattern'][:100]}...")
-                print(f"    Optimized (first 100 chars): {item['optimized_pattern'][:100]}...")
-        if len(items) > 3:
-            print(f"    ... and {len(items) - 3} more")
-    
-    print("\n" + "=" * 50)
 
 
 def apply_cached_actions(template_text: str, fingerprint: str) -> str:
@@ -346,7 +196,7 @@ def _remove_var_cur(elem: etree._Element) -> bool:
     return bool(to_remove)
 
 
-def _merge_simple_attr_loops(template: etree._Element) -> Tuple[bool, List[str], bool]:
+def _merge_simple_attr_loops(template: etree._Element, placeholder_map=None, placeholder_counter=None) -> Tuple[bool, List[str], bool]:
     """Collapse consecutive attribute for-each loops into **one** union loop.
 
     This rule finds any block of consecutive <xsl:for-each> siblings that select
@@ -379,6 +229,7 @@ def _merge_simple_attr_loops(template: etree._Element) -> Tuple[bool, List[str],
             block_loops: List[etree._Element] = []
             block_attr_names: List[str] = []
             block_prefixes: List[str] = []
+            block_valueof_select: str = ""
 
             j = i
             while j < len(children):
@@ -416,6 +267,22 @@ def _merge_simple_attr_loops(template: etree._Element) -> Tuple[bool, List[str],
                 if len(attr_elems) != 1 or attr_elems[0].get("name") != attr_name:
                     break # must have one attribute child that matches
 
+                # Check value-of expression compatibility
+                value_of_elems = attr_elems[0].xpath("./xsl:value-of", namespaces=NSMAP)
+                if len(value_of_elems) != 1:
+                    break # must have exactly one value-of
+                
+                current_valueof_select = value_of_elems[0].get("select", "")
+                
+                # For first loop in block, store the value-of expression
+                if j == i:
+                    block_valueof_select = current_valueof_select
+                else:
+                    # For subsequent loops, check if value-of expressions match
+                    if current_valueof_select != block_valueof_select:
+                        print(f"Breaking tree-based merge: value-of mismatch ({block_valueof_select} vs {current_valueof_select})")
+                        break # Different value-of expressions, can't merge
+
                 # Pattern matches, add to current block
                 block_loops.append(child)
                 block_attr_names.append(attr_name)
@@ -427,30 +294,70 @@ def _merge_simple_attr_loops(template: etree._Element) -> Tuple[bool, List[str],
                 overall_changed = True
                 all_merged_attrs.extend(block_attr_names)
 
-                # Use the prefix from the first loop for the new select
-                base_prefix = block_prefixes[0]
-                first_fe = block_loops[0]
-                
-                # For namespace patterns, we need to reconstruct properly
-                if "/" in base_prefix and not base_prefix.startswith(("$input/@", "./@", "@")):
-                    # This is a namespace pattern like "ns0:VehRentalCore/@"
-                    # Remove trailing /@ to get base element
-                    base_element = base_prefix.rstrip("/@")
-                    select_parts = [f"{base_element}/@{attr}" for attr in block_attr_names]
+                # If placeholders are enabled, create placeholder for this merge
+                if placeholder_map is not None and placeholder_counter is not None:
+                    # Create optimized content as string
+                    base_prefix = block_prefixes[0]
+                    
+                    # For namespace patterns, we need to reconstruct properly
+                    if "/" in base_prefix and not base_prefix.startswith(("$input/@", "./@", "@")):
+                        # This is a namespace pattern like "ns0:VehRentalCore/@"
+                        # Remove trailing /@ to get base element
+                        base_element = base_prefix.rstrip("/@")
+                        select_parts = [f"{base_element}/@{attr}" for attr in block_attr_names]
+                    else:
+                        # Traditional pattern
+                        select_parts = [f"{base_prefix}{attr}" for attr in block_attr_names]
+                    
+                    # Create optimized content string
+                    union_select = " | ".join(select_parts)
+                    optimized_content = f'''<xsl:for-each select="{union_select}">
+\t\t\t<xsl:attribute name="{{name()}}">
+\t\t\t\t<xsl:value-of select="."/>
+\t\t\t</xsl:attribute>
+\t\t</xsl:for-each>'''
+                    
+                    # Create placeholder
+                    placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                    placeholder_map[placeholder] = optimized_content
+                    placeholder_counter[0] += 1
+                    
+                    # Replace all block loops with a single placeholder element
+                    placeholder_elem = etree.Element(placeholder.replace('<', '').replace('/>', '').replace('>', ''))
+                    
+                    # Insert placeholder at position of first loop
+                    parent.insert(list(parent).index(block_loops[0]), placeholder_elem)
+                    
+                    # Remove all original loops
+                    for loop in block_loops:
+                        parent.remove(loop)
+                        
+                    print(f"Created placeholder for attribute merge: {len(block_attr_names)} attributes -> {placeholder}")
                 else:
-                    # Traditional pattern
-                    select_parts = [f"{base_prefix}{attr}" for attr in block_attr_names]
-                
-                first_fe.set("select", " | ".join(select_parts))
+                    # No placeholders - direct tree modification (existing behavior)
+                    base_prefix = block_prefixes[0]
+                    first_fe = block_loops[0]
+                    
+                    # For namespace patterns, we need to reconstruct properly
+                    if "/" in base_prefix and not base_prefix.startswith(("$input/@", "./@", "@")):
+                        # This is a namespace pattern like "ns0:VehRentalCore/@"
+                        # Remove trailing /@ to get base element
+                        base_element = base_prefix.rstrip("/@")
+                        select_parts = [f"{base_element}/@{attr}" for attr in block_attr_names]
+                    else:
+                        # Traditional pattern
+                        select_parts = [f"{base_prefix}{attr}" for attr in block_attr_names]
+                    
+                    first_fe.set("select", " | ".join(select_parts))
 
-                for var in first_fe.xpath("./xsl:variable", namespaces=NSMAP):
-                    var.getparent().remove(var)
-                
-                attr_elem = first_fe.xpath("./xsl:attribute", namespaces=NSMAP)[0]
-                attr_elem.set("name", "{name()}")
+                    for var in first_fe.xpath("./xsl:variable", namespaces=NSMAP):
+                        var.getparent().remove(var)
+                    
+                    attr_elem = first_fe.xpath("./xsl:attribute", namespaces=NSMAP)[0]
+                    attr_elem.set("name", "{name()}")
 
-                for fe_to_remove in block_loops[1:]:
-                    parent.remove(fe_to_remove)
+                    for fe_to_remove in block_loops[1:]:
+                        parent.remove(fe_to_remove)
                 
                 # A merge happened. The list of children has changed.
                 # We restart the scan on the modified parent.
@@ -489,7 +396,7 @@ def _merge_simple_attr_loops(template: etree._Element) -> Tuple[bool, List[str],
     return overall_changed, all_merged_attrs, is_template_pure_block
 
 
-def _collapse_nested_loops(template: etree._Element) -> bool:
+def _collapse_nested_loops(template: etree._Element, placeholder_map=None, placeholder_counter=None) -> bool:
     """Collapse trivial nested for-each loops into literal result elements (best-effort)."""
     # TODO: implement this
     return False
@@ -522,86 +429,6 @@ def _compute_edit_actions(before_elem: etree._Element, after_elem: etree._Elemen
     }]
     
     return actions
-
-
-def _text_based_for_each_merge(template_text: str) -> str:
-    """Apply text-based for-each merging for unparseable fragments."""
-    #print("before template_text: ", template_text)
-    import re
-    
-    # Look for patterns like consecutive for-each loops for attributes
-    # Updated pattern to handle:
-    # 1. Simple direct attributes (@attr)
-    # 2. Namespace prefixes in selectors (ns0:Element/@attr)
-    # 3. Variable whitespace and newlines
-    # 4. Different attribute naming patterns
-    # 5. Optional namespace attributes
-    
-    # Process ALL patterns in a single pass instead of early returns
-    # This allows chunks with mixed simple and complex patterns to be fully processed
-    
-    result = template_text
-    
-    # 1. Process simple patterns first (@AttrName)
-    simple_attr_pattern = r'<xsl:for-each\s+select="@(\w+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*(?:/>|>[^<]*</xsl:variable>)\s*)?<xsl:attribute\s+name="\1"[^>]*>\s*<xsl:value-of\s+select="\."[^>]*/?>\s*</xsl:attribute>\s*</xsl:for-each>'
-    
-    simple_matches = list(re.finditer(simple_attr_pattern, result, re.DOTALL))
-    
-    if len(simple_matches) >= 2:
-        result = _process_simple_matches(result, simple_matches)
-        print("Applied simple pattern merging")
-    
-    # 2. Process complex patterns (ns0:Element/@AttrName) - enhanced to handle different value-of expressions
-    # This pattern captures the value-of expression as well
-    complex_attr_pattern = r'<xsl:for-each\s+select="([^"]*[^@]/@(\w+))"[^>]*>\s*(?:\s*<xsl:variable[^>]*(?:/>|>[^<]*</xsl:variable>)\s*)?<xsl:attribute\s+name="\2"[^>]*>\s*<xsl:value-of\s+select="([^"]*)"[^>]*/?>\s*</xsl:attribute>\s*</xsl:for-each>'
-    
-    complex_matches = list(re.finditer(complex_attr_pattern, result, re.DOTALL))
-    
-    if len(complex_matches) >= 2:
-        result = _process_complex_matches_with_valueof(result, complex_matches)
-        print("Applied complex pattern merging with value-of grouping")
-    
-    # 3. Process flexible patterns (catch-all for remaining cases)
-    flexible_pattern = r'<xsl:for-each\s+select="([^"]*@\w+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*(?:/>|>[^<]*</xsl:variable>)\s*)?<xsl:attribute\s+name="(\w+)"[^>]*>\s*<xsl:value-of\s+select="\."[^>]*/?>\s*</xsl:attribute>\s*</xsl:for-each>'
-    
-    flexible_matches = list(re.finditer(flexible_pattern, result, re.DOTALL))
-    
-    if len(flexible_matches) >= 2:
-        result = _process_flexible_matches(result, flexible_matches)
-        print("Applied flexible pattern merging")
-    
-    # 4. Process element creation patterns (NEW) - Calculate on ORIGINAL text to avoid position shifts
-    # Pattern handles both simple (ns0:StreetText) and complex (*[name()='ns0:StreetText']) XPath selectors
-    element_pattern = r'<xsl:for-each\s+select="([^"]+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*)?<(\w+)[^>]*>\s*<xsl:value-of\s+select="\."[^>]*/?>\s*</\2>\s*</xsl:for-each>'
-    
-    element_matches = list(re.finditer(element_pattern, template_text, re.DOTALL))  # Use original template_text
-    
-    if len(element_matches) >= 1:
-        result = _process_element_creation_patterns_safe(result, element_matches, template_text)
-        print("Applied element creation pattern optimization")
-    
-    # 5. Process direct attribute copy patterns (NEW)
-    # Pattern: <xsl:attribute name="Type"><xsl:value-of select="@Type"/></xsl:attribute>
-    direct_attr_pattern = r'<xsl:attribute\s+name="(\w+)"[^>]*>\s*<xsl:value-of\s+select="@\1"[^>]*/?>\s*</xsl:attribute>'
-    
-    direct_attr_matches = list(re.finditer(direct_attr_pattern, result, re.DOTALL))
-    
-    if len(direct_attr_matches) >= 1:
-        result = _process_direct_attribute_patterns(result, direct_attr_matches)
-        print("Applied direct attribute copy optimization")
-    
-    # 6. Process simple element copy patterns (NEW)
-    # Pattern: <ElementName><xsl:value-of select="path/to/ElementName"/></ElementName>
-    simple_element_pattern = r'<(\w+)[^>]*>\s*<xsl:value-of\s+select="([^"]*\1)"[^>]*/?>\s*</\1>'
-    
-    simple_element_matches = list(re.finditer(simple_element_pattern, result, re.DOTALL))
-    
-    if len(simple_element_matches) >= 1:
-        result = _process_simple_element_patterns(result, simple_element_matches)
-        print("Applied simple element copy optimization")
-    
-    return result
-
 
 def _process_simple_matches(template_text: str, matches):
     """Process simple @attr matches like select='@Status' name='Status'."""
@@ -698,11 +525,11 @@ def _process_complex_matches_with_valueof(template_text: str, matches):
     return result
 
 
-def _process_matches_with_base_selector(template_text: str, matches, base_selector: str, extract_attr_from_group: int):
+def _process_matches_with_base_selector(template_text: str, matches, base_selector: str, extract_attr_from_group: int, placeholder_map=None, placeholder_counter=None):
     """Helper to process matches where all have the same base selector."""
     import re
     
-    # Group consecutive matches, but only if there are no element patterns between them
+    # Group consecutive matches, but only if there are no structural patterns between them
     consecutive_groups = []
     current_group = [matches[0]]
     
@@ -710,22 +537,23 @@ def _process_matches_with_base_selector(template_text: str, matches, base_select
         # Check if this match is close to the previous one (within 200 chars)
         distance = matches[i].start() - current_group[-1].end()
         if distance < 200:
-            # Check if there are any element patterns between these matches
+            # Check if there are any structural patterns between these matches
             between_start = current_group[-1].end()
             between_end = matches[i].start()
             between_content = template_text[between_start:between_end]
             
-            # Look for element creation patterns in between
-            element_pattern = r'<xsl:for-each\s+select="([^"@]+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*)?<(\w+)[^>]*>\s*<xsl:value-of\s+select="[^"]*"[^>]*/?>\s*</\2>\s*</xsl:for-each>'
+            # Look for structural tags (non-xsl tags) between matches
+            structural_pattern = r'<(?!/?xsl:|/?\s*xsl:)[^>]+>'
+            has_structural_tags = bool(re.search(structural_pattern, between_content))
             
-            if re.search(element_pattern, between_content, re.DOTALL):
-                # Element pattern found between - start new group
+            if has_structural_tags:
+                # Structural elements found between - start new group
                 if len(current_group) > 1:
                     consecutive_groups.append(current_group)
                 current_group = [matches[i]]
-                print(f"Breaking consecutive group due to element pattern between attribute matches")
+                print(f"Breaking consecutive group due to structural elements between attribute matches")
             else:
-                # No element patterns - safe to group
+                # No structural barriers - safe to group
                 current_group.append(matches[i])
         else:
             if len(current_group) > 1:
@@ -758,23 +586,54 @@ def _process_matches_with_base_selector(template_text: str, matches, base_select
         start_pos = group[0].start() + offset
         end_pos = group[-1].end() + offset
         
-        result = result[:start_pos] + merged_for_each + result[end_pos:]
-        offset += len(merged_for_each) - (end_pos - start_pos)
+        # If placeholder parameters provided, create placeholder
+        if placeholder_map is not None and placeholder_counter is not None:
+            placeholder = f"<simpletag{placeholder_counter[0]}/>"
+            placeholder_map[placeholder] = merged_for_each
+            placeholder_counter[0] += 1
+            replacement = placeholder
+        else:
+            replacement = merged_for_each
+        
+        result = result[:start_pos] + replacement + result[end_pos:]
+        offset += len(replacement) - (end_pos - start_pos)
     
     return result
 
 
-def _process_matches_with_dynamic_selector(template_text: str, matches, group_for_full_select: int, group_for_attr: int):
+def _process_matches_with_dynamic_selector(template_text: str, matches, group_for_full_select: int, group_for_attr: int, placeholder_map=None, placeholder_counter=None):
     """Helper to process matches where we need to extract the base selector dynamically."""
     import re
     print("inside dynamic selector")
-    # Group consecutive matches
+    
+    # Group consecutive matches, but only if they have the same value-of expression
     consecutive_groups = []
     current_group = [matches[0]]
     
     for i in range(1, len(matches)):
+        # Check proximity first
         if matches[i].start() - current_group[-1].end() < 200:
-            current_group.append(matches[i])
+            # Now check if value-of expressions are identical
+            current_valueof = current_group[0].group(3) if len(current_group[0].groups()) >= 3 else "."
+            new_valueof = matches[i].group(3) if len(matches[i].groups()) >= 3 else "."
+            
+            # Check if there are structural elements between matches
+            between_start = current_group[-1].end()
+            between_end = matches[i].start()
+            between_content = template_text[between_start:between_end]
+            
+            # Look for structural tags (non-xsl tags) between matches
+            structural_pattern = r'<(?!/?xsl:|/?\s*xsl:)[^>]+>'
+            has_structural_tags = bool(re.search(structural_pattern, between_content))
+            
+            if current_valueof == new_valueof and not has_structural_tags:
+                current_group.append(matches[i])
+                print(f"Grouped attribute with same value-of: {current_valueof}")
+            else:
+                if len(current_group) > 1:
+                    consecutive_groups.append(current_group)
+                    print(f"Starting new group: value-of mismatch ({current_valueof} vs {new_valueof}) or structural barrier")
+                current_group = [matches[i]]
         else:
             if len(current_group) > 1:
                 consecutive_groups.append(current_group)
@@ -814,9 +673,18 @@ def _process_matches_with_dynamic_selector(template_text: str, matches, group_fo
         start_pos = group[0].start() + offset
         end_pos = group[-1].end() + offset
         
-        result = result[:start_pos] + merged_for_each + result[end_pos:]
-        offset += len(merged_for_each) - (end_pos - start_pos)
-    print("result", result)
+        # If placeholder parameters provided, create placeholder
+        if placeholder_map is not None and placeholder_counter is not None:
+            placeholder = f"<simpletag{placeholder_counter[0]}/>"
+            placeholder_map[placeholder] = merged_for_each
+            placeholder_counter[0] += 1
+            replacement = placeholder
+        else:
+            replacement = merged_for_each
+        
+        result = result[:start_pos] + replacement + result[end_pos:]
+        offset += len(replacement) - (end_pos - start_pos)
+
     return result
 
 
@@ -1076,7 +944,7 @@ def _process_flexible_matches(template_text: str, matches):
 # Additional Rule-Based Optimizations
 # ---------------------------------------------------------------------------
 
-def _optimize_direct_attribute_copy(elem: etree._Element) -> bool:
+def _optimize_direct_attribute_copy(elem: etree._Element, placeholder_map=None, placeholder_counter=None) -> bool:
     """
     Convert direct attribute copying patterns to xsl:copy-of.
     
@@ -1103,20 +971,39 @@ def _optimize_direct_attribute_copy(elem: etree._Element) -> bool:
             
             # Check if it's a direct attribute reference: @AttrName
             if select_expr == f"@{attr_name}":
-                # Replace with xsl:copy-of
-                copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
-                copy_of_elem.set("select", select_expr)
+                print(f"Optimizing direct attribute copy: @{attr_name} -> copy-of")
                 
-                # Replace the attribute element with copy-of
-                parent = attr_elem.getparent()
-                if parent is not None:
-                    parent.replace(attr_elem, copy_of_elem)
-                    changed = True
+                # Create optimized version
+                optimized_content = f'<xsl:copy-of select="{select_expr}"/>'
+                
+                # If placeholder parameters provided, create placeholder
+                if placeholder_map is not None and placeholder_counter is not None:
+                    placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                    placeholder_map[placeholder] = optimized_content
+                    placeholder_counter[0] += 1
+                    
+                    # Replace original with placeholder
+                    placeholder_elem = etree.Element("placeholder")
+                    placeholder_elem.tag = placeholder.replace('<', '').replace('/>', '').replace('>', '')
+                    
+                    parent = attr_elem.getparent()
+                    if parent is not None:
+                        parent.replace(attr_elem, placeholder_elem)
+                        changed = True
+                else:
+                    # No placeholders - direct replacement
+                    copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
+                    copy_of_elem.set("select", select_expr)
+                    
+                    parent = attr_elem.getparent()
+                    if parent is not None:
+                        parent.replace(attr_elem, copy_of_elem)
+                        changed = True
     
     return changed
 
 
-def _optimize_conditional_attribute_to_copy_of(elem: etree._Element) -> bool:
+def _optimize_conditional_attribute_to_copy_of(elem: etree._Element, placeholder_map=None, placeholder_counter=None) -> bool:
     """
     Convert conditional attribute patterns to xsl:copy-of.
     
@@ -1152,20 +1039,37 @@ def _optimize_conditional_attribute_to_copy_of(elem: etree._Element) -> bool:
                     # Check if attribute has single xsl:value-of with select="."
                     value_of_elems = attr_elem.xpath("./xsl:value-of[@select='.']", namespaces=NSMAP)
                     if len(value_of_elems) == 1:
-                        # Replace with xsl:copy-of
+                        # Create xsl:copy-of
                         copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
                         copy_of_elem.set("select", select_attr)
                         
-                        # Replace the for-each element with copy-of
-                        parent = for_each_elem.getparent()
-                        if parent is not None:
-                            parent.replace(for_each_elem, copy_of_elem)
-                            changed = True
+                        # If placeholder parameters provided, create placeholder
+                        if placeholder_map is not None and placeholder_counter is not None:
+                            # Store optimized content
+                            optimized_content = etree.tostring(copy_of_elem, encoding="unicode")
+                            placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                            placeholder_map[placeholder] = optimized_content
+                            
+                            # Create placeholder element 
+                            placeholder_elem = etree.Element(f"simpletag{placeholder_counter[0]}")
+                            
+                            # Replace the for-each element with placeholder
+                            parent = for_each_elem.getparent()
+                            if parent is not None:
+                                parent.replace(for_each_elem, placeholder_elem)
+                                changed = True
+                                placeholder_counter[0] += 1
+                        else:
+                            # Original behavior - replace with copy-of directly
+                            parent = for_each_elem.getparent()
+                            if parent is not None:
+                                parent.replace(for_each_elem, copy_of_elem)
+                                changed = True
     
     return changed
 
 
-def _optimize_multiple_copy_of_merge(elem: etree._Element) -> bool:
+def _optimize_multiple_copy_of_merge(elem: etree._Element, placeholder_map=None, placeholder_counter=None) -> bool:
     """
     Merge multiple consecutive xsl:copy-of elements into a single union.
     
@@ -1216,8 +1120,22 @@ def _optimize_multiple_copy_of_merge(elem: etree._Element) -> bool:
                 merged_copy_of = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
                 merged_copy_of.set("select", merged_select)
                 
-                # Replace the first copy-of element with merged one
-                parent.replace(copy_of_group[0], merged_copy_of)
+                # If placeholder parameters provided, create placeholder
+                if placeholder_map is not None and placeholder_counter is not None:
+                    # Store optimized content
+                    optimized_content = etree.tostring(merged_copy_of, encoding="unicode")
+                    placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                    placeholder_map[placeholder] = optimized_content
+                    
+                    # Create placeholder element 
+                    placeholder_elem = etree.Element(f"simpletag{placeholder_counter[0]}")
+                    
+                    # Replace the first copy-of element with placeholder
+                    parent.replace(copy_of_group[0], placeholder_elem)
+                    placeholder_counter[0] += 1
+                else:
+                    # Original behavior - replace with merged copy-of directly
+                    parent.replace(copy_of_group[0], merged_copy_of)
                 
                 # Remove the rest
                 for copy_of_elem in copy_of_group[1:]:
@@ -1234,7 +1152,7 @@ def _optimize_multiple_copy_of_merge(elem: etree._Element) -> bool:
     return changed
 
 
-def _optimize_simple_element_copy(elem: etree._Element) -> bool:
+def _optimize_simple_element_copy(elem: etree._Element, placeholder_map=None, placeholder_counter=None) -> bool:
     """
     Optimize simple element copying patterns.
     
@@ -1274,15 +1192,33 @@ def _optimize_simple_element_copy(elem: etree._Element) -> bool:
                     copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
                     copy_of_elem.set("select", select_expr)
                     
-                    parent = for_each_elem.getparent()
-                    if parent is not None:
-                        parent.replace(for_each_elem, copy_of_elem)
-                        changed = True
+                    # If placeholder parameters provided, create placeholder
+                    if placeholder_map is not None and placeholder_counter is not None:
+                        # Store optimized content
+                        optimized_content = etree.tostring(copy_of_elem, encoding="unicode")
+                        placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                        placeholder_map[placeholder] = optimized_content
+                        
+                        # Create placeholder element 
+                        placeholder_elem = etree.Element(f"simpletag{placeholder_counter[0]}")
+                        
+                        # Replace the for-each element with placeholder
+                        parent = for_each_elem.getparent()
+                        if parent is not None:
+                            parent.replace(for_each_elem, placeholder_elem)
+                            changed = True
+                            placeholder_counter[0] += 1
+                    else:
+                        # Original behavior - replace with copy-of directly
+                        parent = for_each_elem.getparent()
+                        if parent is not None:
+                            parent.replace(for_each_elem, copy_of_elem)
+                            changed = True
     
     return changed
 
 
-def _optimize_trivial_for_each_elimination(elem: etree._Element) -> bool:
+def _optimize_trivial_for_each_elimination(elem: etree._Element, placeholder_map=None, placeholder_counter=None) -> bool:
     """
     Eliminate trivial for-each loops that can be simplified.
     
@@ -1322,15 +1258,33 @@ def _optimize_trivial_for_each_elimination(elem: etree._Element) -> bool:
                     copy_of_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}copy-of")
                     copy_of_elem.set("select", select_expr)
                     
-                    parent = for_each_elem.getparent()
-                    if parent is not None:
-                        parent.replace(for_each_elem, copy_of_elem)
-                        changed = True
+                    # If placeholder parameters provided, create placeholder
+                    if placeholder_map is not None and placeholder_counter is not None:
+                        # Store optimized content
+                        optimized_content = etree.tostring(copy_of_elem, encoding="unicode")
+                        placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                        placeholder_map[placeholder] = optimized_content
+                        
+                        # Create placeholder element 
+                        placeholder_elem = etree.Element(f"simpletag{placeholder_counter[0]}")
+                        
+                        # Replace the for-each element with placeholder
+                        parent = for_each_elem.getparent()
+                        if parent is not None:
+                            parent.replace(for_each_elem, placeholder_elem)
+                            changed = True
+                            placeholder_counter[0] += 1
+                    else:
+                        # Original behavior - replace with copy-of directly
+                        parent = for_each_elem.getparent()
+                        if parent is not None:
+                            parent.replace(for_each_elem, copy_of_elem)
+                            changed = True
     
     return changed
 
 
-def _optimize_boolean_type_conversion(elem: etree._Element) -> bool:
+def _optimize_boolean_type_conversion(elem: etree._Element, placeholder_map=None, placeholder_counter=None) -> bool:
     """
     Standardize boolean type conversion patterns.
     
@@ -1354,7 +1308,7 @@ def _optimize_boolean_type_conversion(elem: etree._Element) -> bool:
     return changed
 
 
-def _optimize_complex_boolean_patterns(elem: etree._Element) -> bool:
+def _optimize_complex_boolean_patterns(elem: etree._Element, placeholder_map=None, placeholder_counter=None) -> bool:
     """
     Rule 8: Complex Boolean Pattern Optimization
     
@@ -1402,9 +1356,11 @@ def _optimize_complex_boolean_patterns(elem: etree._Element) -> bool:
     return changed
 
 
-def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]]]:
-    """Attempt deterministic refinement. Returns (refined_text, actions)."""
+def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]], Dict[str, str]]:
+    """Attempt deterministic refinement with per-rule placeholders. Returns (text_with_placeholders, actions, placeholder_map)."""
     wrapper_used = False
+    placeholder_map = {}
+    placeholder_counter = [1]  # Use list to pass by reference
     try:
         elem = etree.fromstring(template_text.encode())
     except Exception:
@@ -1421,7 +1377,7 @@ def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]]]:
         try:
             elem = etree.fromstring(wrapped.encode())
         except Exception as e:
-            print(f"Cannot parse template text even after wrapping: {e}")
+            print("Cannot parse template text even after wrapping")
             # Try one more time with a more aggressive approach
             try:
                 # If the fragment starts with incomplete XML, try to fix it
@@ -1432,15 +1388,15 @@ def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]]]:
                     wrapper_used = True
                 else:
                     # It's text content, skip rule-based processing
-                    return template_text, []
+                    return template_text, [], {}
             except Exception:
-                print("Final fallback: Cannot parse template text, skipping rule-based processing")
+                print("Final fallback: Cannot parse template text, skipping tree-based processing")
                 # Try text-based for-each merging as a last resort
-                text_merged = _text_based_for_each_merge(template_text)
+                text_merged, text_placeholder_map = _text_based_for_each_merge_with_placeholders(template_text, placeholder_counter)
                 if text_merged != template_text:
                     print("Applied text-based for-each merging")
-                    return text_merged, [{"op": "text_based_merge"}]
-                return template_text, []
+                    return text_merged, [{"op": "text_based_merge"}], text_placeholder_map
+                return template_text, [], {}
 
     changed = False
     actions: List[Dict[str, Any]] = []
@@ -1452,70 +1408,215 @@ def rule_based_refine(template_text: str) -> Tuple[str, List[Dict[str, Any]]]:
         actions.append({"op": "remove_var_cur"})
 
     # 2. optimize direct attribute copying  
-    if _optimize_direct_attribute_copy(elem):
+    if _optimize_direct_attribute_copy(elem, placeholder_map, placeholder_counter):
         print("direct_attribute_copy applied")
         changed = True
         actions.append({"op": "direct_attribute_copy"})
 
     # 3. optimize conditional attributes to copy-of
-    if _optimize_conditional_attribute_to_copy_of(elem):
+    if _optimize_conditional_attribute_to_copy_of(elem, placeholder_map, placeholder_counter):
         print("conditional_attribute_to_copy_of applied")
         changed = True
         actions.append({"op": "conditional_attribute_to_copy_of"})
 
     # 4. optimize simple element copying
-    if _optimize_simple_element_copy(elem):
+    if _optimize_simple_element_copy(elem, placeholder_map, placeholder_counter):
         print("simple_element_copy applied")
         changed = True
         actions.append({"op": "simple_element_copy"})
 
     # 5. optimize trivial for-each elimination
-    if _optimize_trivial_for_each_elimination(elem):
+    if _optimize_trivial_for_each_elimination(elem, placeholder_map, placeholder_counter):
         print("trivial_for_each_elimination applied")
         changed = True
         actions.append({"op": "trivial_for_each_elimination"})
 
     # 6. optimize boolean type conversion
-    if _optimize_boolean_type_conversion(elem):
+    if _optimize_boolean_type_conversion(elem, placeholder_map, placeholder_counter):
         print("boolean_type_conversion applied")
         changed = True
         actions.append({"op": "boolean_type_conversion"})
 
     # 7. merge simple loops
-    merged, attr_list, pure_block = _merge_simple_attr_loops(elem)
+    merged, attr_list, pure_block = _merge_simple_attr_loops(elem, placeholder_map, placeholder_counter)
     if merged:
         changed = True
         op_name = "merge_attr_loops" if pure_block else "merge_attr_loops_partial"
         actions.append({"op": op_name, "attrs": attr_list})
 
     # 8. merge multiple copy-of elements
-    if _optimize_multiple_copy_of_merge(elem):
+    if _optimize_multiple_copy_of_merge(elem, placeholder_map, placeholder_counter):
         print("multiple_copy_of_merge applied")
         changed = True
         actions.append({"op": "multiple_copy_of_merge"})
 
     # 9. collapse nested loops (simple implementation)
-    if _collapse_nested_loops(elem):
+    if _collapse_nested_loops(elem, placeholder_map, placeholder_counter):
         changed = True
         actions.append({"op": "collapse_nested_loops"})
 
     # 10. optimize complex boolean patterns (Rule 8)
-    if _optimize_complex_boolean_patterns(elem):
+    if _optimize_complex_boolean_patterns(elem, placeholder_map, placeholder_counter):
         print("complex_boolean_patterns applied")
         changed = True
         actions.append({"op": "complex_boolean_patterns"})
 
     if not changed:
-        return template_text, actions
+        return template_text, actions, {}
 
+    # Generate the text with placeholders
     if wrapper_used:
         # Strip the dummy wrapper and serialize only its children
         refined_parts = [
             etree.tostring(child, encoding="unicode", pretty_print=True)
             for child in elem
         ]
-        refined_text = "".join(refined_parts)
+        text_with_placeholders = "".join(refined_parts)
     else:
-        refined_text = etree.tostring(elem, encoding="unicode", pretty_print=True)
+        text_with_placeholders = etree.tostring(elem, encoding="unicode", pretty_print=True)
 
-    return refined_text, actions
+    return text_with_placeholders, actions, placeholder_map
+
+
+def _text_based_for_each_merge_with_placeholders(template_text: str, placeholder_counter) -> Tuple[str, Dict[str, str]]:
+    """Apply text-based for-each merging and create placeholders for ALL patterns.
+    
+    This function handles 6 different XSLT optimization patterns:
+    1. Simple attribute merging: @Status + @Type -> union selector
+    2. Complex attribute merging: ns0:Element/@attr1 + ns0:Element/@attr2 -> union selector  
+    3. Flexible attribute merging: catch-all for remaining attribute patterns
+    4. Element creation optimization: for-each with element creation -> copy-of
+    5. Direct attribute copy: attribute with value-of @attr -> copy-of
+    6. Simple element copy: element with value-of select -> copy-of
+    
+    Each optimization creates individual placeholders for granular LLM integration.
+    """
+    import re
+    
+    placeholder_map = {}
+    result = template_text
+    
+    # 1. Process simple attribute patterns (@AttrName) - merge consecutive simple attribute loops
+    # Pattern: <xsl:for-each select="@Status"><xsl:attribute name="Status"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>
+    # Optimized: <xsl:for-each select="@Status | @Language | @Type"><xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>
+    simple_attr_pattern = r'<xsl:for-each\s+select="@(\w+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*(?:/>|>[^<]*</xsl:variable>)\s*)?<xsl:attribute\s+name="\1"[^>]*>\s*<xsl:value-of\s+select="\."[^>]*/?>\s*</xsl:attribute>\s*</xsl:for-each>'
+    simple_matches = list(re.finditer(simple_attr_pattern, result, re.DOTALL))
+    
+    if len(simple_matches) >= 2:
+        result = _process_matches_with_base_selector(result, simple_matches, "@", extract_attr_from_group=1, placeholder_map=placeholder_map, placeholder_counter=placeholder_counter)
+        print("Applied simple pattern merging")
+    
+    # 2. Process complex attribute patterns (ns0:Element/@AttrName) - merge namespaced attribute loops
+    # Pattern: <xsl:for-each select="ns0:VehRentalCore/@PickUpDateTime"><xsl:attribute name="PickUpDateTime"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>
+    # Optimized: <xsl:for-each select="ns0:VehRentalCore/@PickUpDateTime | ns0:VehRentalCore/@ReturnDateTime"><xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>
+    complex_attr_pattern = r'<xsl:for-each\s+select="([^"]*[^@]/@(\w+))"[^>]*>\s*(?:\s*<xsl:variable[^>]*(?:/>|>[^<]*</xsl:variable>)\s*)?<xsl:attribute\s+name="\2"[^>]*>\s*<xsl:value-of\s+select="([^"]*)"[^>]*/?>\s*</xsl:attribute>\s*</xsl:for-each>'
+    complex_matches = list(re.finditer(complex_attr_pattern, result, re.DOTALL))
+    
+    if len(complex_matches) >= 2:
+        result = _process_matches_with_dynamic_selector(result, complex_matches, group_for_full_select=1, group_for_attr=2, placeholder_map=placeholder_map, placeholder_counter=placeholder_counter)
+        print("Applied complex pattern merging with value-of grouping")
+    
+    # 3. Process flexible attribute patterns (catch-all) - merge remaining attribute patterns
+    # Pattern: <xsl:for-each select="complex/@attr"><xsl:attribute name="attr"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>
+    # Optimized: <xsl:for-each select="complex/@attr1 | complex/@attr2"><xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>
+    flexible_pattern = r'<xsl:for-each\s+select="([^"]*@\w+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*(?:/>|>[^<]*</xsl:variable>)\s*)?<xsl:attribute\s+name="(\w+)"[^>]*>\s*<xsl:value-of\s+select="\."[^>]*/?>\s*</xsl:attribute>\s*</xsl:for-each>'
+    flexible_matches = list(re.finditer(flexible_pattern, result, re.DOTALL))
+    
+    if len(flexible_matches) >= 2:
+        result = _process_matches_with_dynamic_selector(result, flexible_matches, group_for_full_select=1, group_for_attr=2, placeholder_map=placeholder_map, placeholder_counter=placeholder_counter)
+        print("Applied flexible pattern merging")
+    
+    # 4. Process element creation patterns - optimize simple element copying
+    # Pattern: <xsl:for-each select="ns0:Success"><Success><xsl:value-of select="."/></Success></xsl:for-each>
+    # Optimized: <xsl:copy-of select="ns0:Success"/>
+    element_pattern = r'<xsl:for-each\s+select="([^"]+)"[^>]*>\s*(?:\s*<xsl:variable[^>]*name="var\d+_cur"[^>]*select="\."[^>]*(?:/>|></xsl:variable>)\s*)?<(\w+)[^>]*>\s*<xsl:value-of\s+select="\."[^>]*/?>\s*</\2>\s*</xsl:for-each>'
+    element_matches = list(re.finditer(element_pattern, template_text, re.DOTALL))
+    
+    if len(element_matches) >= 1:
+        # Process each element match individually with placeholders
+        current_result = result
+        for match in element_matches:
+            original_pattern = match.group(0)
+            # Apply optimization to just this pattern
+            temp_text = _process_element_creation_patterns_safe(original_pattern, [match], template_text)
+            if temp_text != original_pattern:
+                placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                placeholder_map[placeholder] = temp_text
+                placeholder_counter[0] += 1
+                current_result = current_result.replace(original_pattern, placeholder, 1)
+        if current_result != result:
+            result = current_result
+            print("Applied element creation pattern optimization")
+    
+    # 5. Process direct attribute copy patterns - convert attribute patterns to copy-of
+    # Pattern: <xsl:attribute name="Type"><xsl:value-of select="@Type"/></xsl:attribute>
+    # Optimized: <xsl:copy-of select="@Type"/>
+    direct_attr_pattern = r'<xsl:attribute\s+name="(\w+)"[^>]*>\s*<xsl:value-of\s+select="@\1"[^>]*/?>\s*</xsl:attribute>'
+    direct_attr_matches = list(re.finditer(direct_attr_pattern, result, re.DOTALL))
+    
+    if len(direct_attr_matches) >= 1:
+        # Process each direct attribute match individually with placeholders
+        current_result = result
+        for match in direct_attr_matches:
+            original_pattern = match.group(0)
+            attr_name = match.group(1)
+            
+            # Create optimized version directly
+            optimized_content = f'<xsl:copy-of select="@{attr_name}"/>'
+            print(f"Optimizing direct attribute copy: @{attr_name} -> copy-of")
+            
+            if optimized_content != original_pattern:
+                placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                placeholder_map[placeholder] = optimized_content
+                placeholder_counter[0] += 1
+                current_result = current_result.replace(original_pattern, placeholder, 1)
+        if current_result != result:
+            result = current_result
+            print("Applied direct attribute copy optimization")
+            print("placeholder inside direct attribute copy optimization", placeholder_map)
+    
+    # 6. Process simple element copy patterns - convert element value copying to copy-of
+    # Pattern: <ContactInfo><xsl:value-of select="ns0:ContactInfo"/></ContactInfo>
+    # Optimized: <xsl:copy-of select="ns0:ContactInfo"/>
+    simple_element_pattern = r'<(\w+)[^>]*>\s*<xsl:value-of\s+select="([^"]*\1)"[^>]*/?>\s*</\1>'
+    simple_element_matches = list(re.finditer(simple_element_pattern, result, re.DOTALL))
+    
+    if len(simple_element_matches) >= 1:
+        # Process each simple element match individually with placeholders
+        current_result = result
+        for match in simple_element_matches:
+            original_pattern = match.group(0)
+            # Apply optimization to just this pattern
+            temp_text = _process_simple_element_patterns(original_pattern, [match])
+            if temp_text != original_pattern:
+                placeholder = f"<simpletag{placeholder_counter[0]}/>"
+                placeholder_map[placeholder] = temp_text
+                placeholder_counter[0] += 1
+                current_result = current_result.replace(original_pattern, placeholder, 1)
+        if current_result != result:
+            result = current_result
+            print("Applied simple element copy optimization")
+    
+    return result, placeholder_map
+
+
+def replace_placeholders(text_with_placeholders: str, placeholder_map: Dict[str, str]) -> str:
+    """Replace placeholders with their optimized content."""
+    import re
+    result = text_with_placeholders
+    print("Inside replace_placeholders")
+    
+    # Sort placeholders by number to ensure correct replacement order
+    sorted_placeholders = sorted(placeholder_map.items(), 
+                                key=lambda x: int(x[0].replace('<simpletag', '').replace('/>', ''))
+                                if x[0].startswith('<simpletag') else 999)
+    
+    for placeholder_key, optimized_content in sorted_placeholders:
+        # Extract tag name from placeholder key (e.g., "<simpletag1/>" -> "simpletag1")
+        tag_name = placeholder_key.replace('<', '').replace('/>', '')
+        
+        # Use regex to match the placeholder element with any attributes
+        pattern = rf'<{tag_name}[^>]*/?>'
+        result = re.sub(pattern, optimized_content, result)
+        
+    return result
