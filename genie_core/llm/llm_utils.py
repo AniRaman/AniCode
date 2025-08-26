@@ -3,6 +3,8 @@ import json
 import pandas as pd
 import streamlit as st
 import re
+import textwrap
+from collections import Counter
 import numpy as np
 import chromadb
 from openai import AzureOpenAI
@@ -25,6 +27,11 @@ httpx_client = httpx.Client(verify=False)
 _ = load_dotenv(find_dotenv())
 
 global model_name_used
+
+import sys
+# Open the file once at the top of your main script
+log_file = open("full_output_log.txt", "w", encoding="utf-8")
+sys.stdout = log_file  # Redirect all print output globally
 
 gpt4o_model_name = os.getenv("GPT4O_MODEL_DEPLOYMENT_NAME")
 o1_model_name = os.getenv("o1_MODEL_DEPLOYMENT_NAME")
@@ -114,7 +121,7 @@ class Agent:
             print(f"Error in get_chat_completion: {e.__cause__}")
             st.error(f"Error in get_chat_completion: {e}")
             return None
-
+    
 def setup_agent(model_name):
     """
     Sets up an agent with the specified model name by loading environment variables and initializing the GPT client.
@@ -180,6 +187,20 @@ def get_chat_completion(input_messages, model_name=o3_mini_model_name):
         return response
     except Exception as e:
         # print(f"Error in get_chat_completion: {e.__cause__}")
+        st.error(f"Error in get_chat_completion: {e}")
+        return None
+
+def get_chat_completion_with_stop(input_messages, model_name=o3_mini_model_name):
+    try:
+        print(f"Model Used: {o3_mini_model_name}")
+        response = o3client.chat.completions.create(
+            model=model_name,
+            messages=input_messages,
+            stop=["<!-- END OF FRAGMENT -->"]
+            )
+        return response
+    except Exception as e:
+        print(f"Error in get_chat_completion: {e.__cause__}")
         st.error(f"Error in get_chat_completion: {e}")
         return None
     
@@ -443,6 +464,11 @@ def process_response_html(llm_response):
 def initiate_conversation_with_LLM_xslt(xslt_content):
     import re
     from lxml import etree
+    
+    # Extract original stylesheet tag to preserve it exactly
+    original_stylesheet_match = re.search(r'<xsl:stylesheet[^>]*>', xslt_content)
+    original_stylesheet_tag = original_stylesheet_match.group(0) if original_stylesheet_match else None
+    
     # Pre-clean: remove unnecessary <xsl:variable> boilerplate
     var_pattern = r'<xsl:variable\s+name="var\d+_[^"]*"\s+select="\."\s*/>'
     xslt_clean = re.sub(var_pattern, "", xslt_content)
@@ -456,7 +482,7 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
         rule_based_refine,
         apply_actions,
     )
-    from .hierarchical_processor import HierarchicalProcessor
+    from .intelligent_chunk_processor import IntelligentChunkProcessor
     # Extract templates and IDs
     templates = []
     for tmpl in tree.findall(".//xsl:template", namespaces=NSMAP):
@@ -470,39 +496,36 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
 
     char_budget = 5000 # maximum characters for a single LLM prompt / chunk
     
-    # Initialize hierarchical processor
-    hierarchical_processor = HierarchicalProcessor()
+    
+    # Initialize intelligent chunk processor
+    intelligent_processor = IntelligentChunkProcessor()
 
+    def _process_chunk_intelligently(chunk_text: str) -> str:
+        """Process chunk using intelligent pattern separation."""
+        def llm_function(pattern_text):
+            # Use the existing LLM processing logic
+            return _process_chunk_with_llm_only(pattern_text)
+        
+        return intelligent_processor.process_chunk_intelligently(chunk_text, llm_function)
+    
+    def _process_chunk_with_llm_only(chunk_text: str) -> str:
+        """Process chunk with LLM only (for complex patterns)."""
+        # Use existing LLM processing logic
+        return _process_chunk_original(chunk_text)
+    
     def _process_chunk(chunk_text: str) -> str:
         """Refine a template (or segment) using cache, deterministic rules, then LLM."""
+        # Check if we should use intelligent processing
+        if len(chunk_text) > 1000:  # Use intelligent processing for larger chunks
+            print("Using intelligent chunk processing")
+            return _process_chunk_intelligently(chunk_text)
+        else:
+            print("Using standard chunk processing")
+            return _process_chunk_original(chunk_text)
+    
+    def _process_chunk_original(chunk_text: str) -> str:
+        """Original chunk processing logic (renamed for clarity)."""
 
-        seed_before = """	<xsl:template name="tbf:tbf2_">
-                                <xsl:param name="input" select="/.."/>
-                                <xsl:for-each select="$input/@AbsoluteDeadline">
-                                    <xsl:variable name="var1_current" select="."/>
-                                    <xsl:attribute name="AbsoluteDeadline">
-                                        <xsl:value-of select="."/>
-                                    </xsl:attribute>
-                                </xsl:for-each>
-                                <xsl:for-each select="$input/@OffsetUnitMultiplier">
-                                    <xsl:variable name="var3_current" select="."/>
-                                    <xsl:attribute name="OffsetUnitMultiplier">
-                                        <xsl:value-of select="."/>
-                                    </xsl:attribute>
-                                </xsl:for-each>
-                                <xsl:for-each select="$input/@OffsetDropTime">
-                                    <xsl:variable name="var4_current" select="."/>
-                                    <xsl:attribute name="OffsetDropTime">
-                                        <xsl:value-of select="."/>
-                                    </xsl:attribute>
-                                </xsl:for-each>
-                            </xsl:template> """
-        seed_after = """<xsl:template name="tbf:tbf2_">
-                            <xsl:param name="input"/>
-                            <xsl:copy-of select="$input/@AbsoluteDeadline | 
-                                                $input/@OffsetUnitMultiplier | 
-                                                $input/@OffsetDropTime"/>
-                        </xsl:template>"""
         # --- fingerprint ---
         try:
             fp_elem = etree.fromstring(chunk_text.encode())
@@ -517,31 +540,61 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
             print("Inside DB, found the pattern, Applying actions....")
             return apply_actions(chunk_text, cached)
 
-        # 2) deterministic rules (always run)
-        ruled_text, rule_actions = rule_based_refine(chunk_text)
+        # 2) deterministic rules (always run, no caching - they're fast to recompute)
+        ruled_text, rule_actions, placeholder_map = rule_based_refine(chunk_text)
         print("Inside Rules finder")
         if rule_actions:
-            cache_actions(fp, rule_actions)
             # If deterministic merge_attr_loops applied, skip LLM – fully refined already
             if any(a.get('op') == 'merge_attr_loops' for a in rule_actions):
                 print("merge_attr_loops applied – skipping LLM call")
-                print("Ruled text inside merge_attr_loops: ", ruled_text)
-                return ruled_text
+                # Replace placeholders since we're skipping LLM
+                from .refine_cache import replace_placeholders
+                final_result = replace_placeholders(ruled_text, placeholder_map) if placeholder_map else ruled_text
+                print("Ruled text inside merge_attr_loops: ", final_result)
+                return final_result
         else:
             ruled_text = chunk_text  # unchanged
 
         # 3) LLM refinement – single template
-        print("Before LLM XSLT : ", ruled_text)
-        agent = setup_agent("o3_mini")
+        def extract_template_body(xslt_chunk: str) -> str:
+            # Match everything inside <xsl:template ...>...</xsl:template>
+            match = re.search(r"<xsl:template[^>]*>(.*?)</xsl:template>", xslt_chunk, re.DOTALL)
+            if match:
+                inner_content = match.group(1).strip()
+                return inner_content
+            return xslt_chunk.strip()
+            
+        refined_inner = extract_template_body(ruled_text) 
+        ruled_text_with_marker = refined_inner + "\n" + "<!-- END OF FRAGMENT -->"
+        print("Before LLM XSLT : ", ruled_text_with_marker)
         print("Inside LLM")
         prompts = [
-            {"role": "system", "content": '''You are an expert XSLT refiner. Return only the refined <xsl:template> element without commentary or markdown. 
-                                                Follow the example given for refining Efficiently : "Example before sending to LLM :\n{seed_before}\nExample after receiving from LLM:\n{seed_after}" '''},
-            {"role": "user", "content": ruled_text},
+        {
+            "role": "system",
+            "content": (
+            "You are an expert in XSLT 1.0. Simplify incomplete XSLT fragments using @* with name() filters. "
+            "Do not add, remove, or close any tags. Leave any partially shown elements exactly as-is—assume they belong to surrounding context. "
+            "Always avoid repetition, avoid completing missing parts, and return only raw XML without markdown or commentary. "
+            "Stop exactly at the end marker <!-- END OF FRAGMENT -->."
+            )
+        },
+        {
+            "role": "user",
+            "content": f"""
+        CRITICAL INSTRUCTIONS:
+        1. Simplify this XSLT fragment as much as possible with efficient XPath and XSLT 1.0 syntax.
+        2. Apply any needed transformations (substring, boolean, number) inline.
+        3. Use attribute wildcards (@*) and name() filters when applicable.
+        4. Do not add template wrappers or closing tags—keep it incomplete exactly as given.
+        5. Return only the refined chunk without commentary or markdown.
+
+        {ruled_text_with_marker}
+        """
+        }
         ]
-        agent.set_prompts(prompts)
-        _, response = agent.get_chat_completion()
-        llm_out = response.choices[0].message.content.strip()
+
+        gpt_response = get_chat_completion_with_stop(prompts,o3_mini_model_name)
+        llm_out = gpt_response.choices[0].message.content.strip()
         m = re.search(r'(<xsl:template[\s\S]*?</xsl:template>)', llm_out)
         refined_llm = m.group(1) if m else llm_out
         print("Refined LLM", refined_llm)
@@ -555,13 +608,21 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
             actions = _compute_edit_actions(before_elem, after_elem)
             if actions:
                 cache_actions(fp, actions)
-            return refined_llm
+            
+            # Replace placeholders in LLM result
+            from .refine_cache import replace_placeholders
+            final_result = replace_placeholders(refined_llm, placeholder_map) if placeholder_map else refined_llm
+            return final_result
             
         except Exception as e:
             print(f"Error computing diff actions: {e}")
             # Fallback to passthrough if diff fails
             cache_actions(fp, [{"op": "llm_passthrough", "refined": refined_llm}])
-            return refined_llm
+            
+            # Replace placeholders in LLM result
+            from .refine_cache import replace_placeholders
+            final_result = replace_placeholders(refined_llm, placeholder_map) if placeholder_map else refined_llm
+            return final_result
 
     def _create_well_formed_chunks(body: str, max_chars: int) -> list:
         """Create well-formed XML chunks from template body that can be parsed by lxml."""
@@ -897,281 +958,385 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
         return chunks
 
     def _process_large_template(tmpl_text: str) -> str:
-        """Split oversized template body into well-formed XML chunks, refine each, then stitch back."""
+        """Process each chunk with placeholders and replace sequentially."""
         m = re.search(r'(<xsl:template[^>]*>)([\s\S]*?)(</xsl:template>)', tmpl_text)
         if not m:
             return _process_chunk(tmpl_text)
         open_tag, body, close_tag = m.groups()
         
-        # Create well-formed XML chunks instead of character-based splitting
+        # Create well-formed XML chunks from body
         chunks = _create_well_formed_chunks(body, char_budget)
         
-        refined_bodies = []
-        for chunk in chunks:
+        def format_xslt_chunk(chunk_text):
+            """Format XSLT chunk with proper line breaks and indentation."""
+            # Add newlines after closing tags
+            formatted = re.sub(r'>(<[^/][^>]*>)', r'>\n\1', chunk_text)
+            # Add newlines before closing tags if they're immediately after content
+            formatted = re.sub(r'>([^<\n]+)</([^>]+)>', r'>\n\1\n</\2>', formatted)
+            # Add newlines after self-closing tags
+            formatted = re.sub(r'/>(<[^>]*>)', r'/>\n\1', formatted)
+            # Clean up multiple newlines
+            formatted = re.sub(r'\n\s*\n', r'\n', formatted)
+            # Add basic indentation
+            lines = formatted.split('\n')
+            indent_level = 0
+            formatted_lines = []
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    continue
+                # Decrease indent for closing tags
+                if line.startswith('</'):
+                    indent_level = max(0, indent_level - 1)
+                # Add indentation
+                formatted_lines.append('\t' * indent_level + line)
+                # Increase indent for opening tags (but not self-closing)
+                if line.startswith('<') and not line.startswith('</') and not line.endswith('/>'):
+                    indent_level += 1
+            return '\n'.join(formatted_lines)
+
+        # Step 1: Replace all chunks with placeholders
+        current_template = tmpl_text
+        
+        # Format the entire template consistently
+        current_template = format_xslt_chunk(current_template)
+        current_template = "\n".join(line.strip() for line in current_template.splitlines() if line.strip())
+
+        for i, chunk in enumerate(chunks):
+            placeholder = f"<Chunk{i+1}/>"
+            # Format the chunk properly
+            chunk = format_xslt_chunk(chunk)
+            chunk = "\n".join(line.strip() for line in chunk.splitlines() if line.strip())
+            # if i == 0:
+            #     with open("first_chunk_formatted.txt", "w", encoding="utf-8") as file:
+            #         file.write(chunk) 
+            current_template = current_template.replace(chunk, placeholder, 1)
+            print(f"DEBUG: Replaced chunk {i+1} with {placeholder}")
+        
+        # Step 2: Process each chunk and replace its placeholder
+        for i, chunk in enumerate(chunks):
+            placeholder = f"<Chunk{i+1}/>"
+            print(f"DEBUG: Processing chunk {i+1}/{len(chunks)} - input length: {len(chunk)}")
+            
+            # Process this chunk
             seg_text = f"{open_tag}{chunk}{close_tag}"
             refined_seg = _process_chunk(seg_text)
-            # strip wrappers again to join bodies cleanly
-            inner = refined_seg[len(open_tag):-len(close_tag)] if refined_seg.startswith(open_tag) and refined_seg.endswith(close_tag) else chunk
-            refined_bodies.append(inner)
-        return f"{open_tag}{''.join(refined_bodies)}{close_tag}"
+            print(f"DEBUG: Chunk {i+1} refined length: {len(refined_seg)}")
+            
+            # Extract inner content from refined result
+            refined_inner = _extract_inner_content_from_refined(refined_seg, open_tag, close_tag, chunk, i+1)
+            
+            # Validate chunk structure and fix tag discrepancies
+            print(f"DEBUG: Chunk {i+1} - Validating structural tags")
+            refined_inner = _validate_chunk_structure(chunk, refined_inner)
+            # Format the refined content consistently
+            refined_inner = format_xslt_chunk(refined_inner)
+            refined_inner = "\n".join(line.strip() for line in refined_inner.splitlines() if line.strip())
+            # Replace placeholder with refined content
+            if placeholder in current_template:
+                current_template = current_template.replace(placeholder, refined_inner, 1)            
+                print(f"DEBUG: Chunk {i+1} - Successfully replaced {placeholder} with refined content")
+            else:
+                print(f"DEBUG: Chunk {i+1} - ERROR: {placeholder} not found in template!")
+            
+            # Check for optimizations
+            union_count = refined_inner.count('|')
+            if union_count > 0:
+                print(f"DEBUG: Chunk {i+1} - Contains {union_count} union operators - optimization preserved!")
+        
+        print(f"DEBUG: Final template length: {len(current_template)}")
+        print(f"DEBUG: Final template union count: {current_template.count('|')}")
+        return current_template
+    
+    def _extract_inner_content_from_refined(refined_seg: str, open_tag: str, close_tag: str, original_chunk: str, chunk_num: int) -> str:
+        """Extract inner content from refined template by simply removing the template wrapper."""
+        
+        # Simple regex to extract everything between template tags
+        pattern = r'<xsl:template[^>]*>(.*)</xsl:template>'
+        match = re.search(pattern, refined_seg, re.DOTALL)
+        
+        if match:
+            inner = match.group(1)
+            print(f"DEBUG: Chunk {chunk_num} - Extracted inner content ({len(inner)} chars)")
+            return inner
+        else:
+            print(f"DEBUG: Chunk {chunk_num} - Could not extract inner content, using original chunk")
+            return refined_seg
+    
+    def _extract_structural_tag_names(content: str) -> list:
+        """Extract non-XSL tag names in order (opening and closing)."""
+        import re
+        tag_list = []
+        
+        # Find all tags that don't start with xsl:
+        for match in re.finditer(r'<(/?(?!xsl:)\w+)[^>]*>', content):
+            tag_name = match.group(1)
+            if tag_name.startswith('/'):
+                tag_list.append('/' + tag_name[1:])  # closing tag like "/TaxAmount"
+            else:
+                tag_list.append(tag_name)  # opening tag like "TaxAmount"
+        
+        return tag_list
+
+    def _validate_chunk_structure(input_chunk: str, refined_chunk: str) -> str:
+        """Compare structural tags and fix discrepancies."""
+        input_tags = _extract_structural_tag_names(input_chunk)
+        output_tags = _extract_structural_tag_names(refined_chunk)
+        print("Validating chunk structure")
+        print(f"Input tags: {input_tags}")
+        print(f"Output tags: {output_tags}")
+        
+        if input_tags == output_tags:
+            print("Tag lists match perfectly")
+            return refined_chunk
+        elif len(output_tags) < len(input_tags):
+            print("Output has fewer tags than input - applying XML validation logic")
+            
+            # Count element tags (non-XSLT tags) in input vs output
+            input_tag_count = len(input_tags)
+            output_tag_count = len(output_tags)
+            tag_difference = abs(output_tag_count - input_tag_count)
+            
+            print(f"Tag count difference: {tag_difference} (input: {input_tag_count}, output: {output_tag_count})")
+            
+            # If difference is odd, fall back to original chunk
+            if tag_difference % 2 == 1:
+                print("Odd tag difference detected - falling back to original chunk")
+                return input_chunk
+            
+            # For even differences, validate that different tags form complete pairs
+            if tag_difference > 0:
+                # Check if all different tags have proper opening/closing pairs
+                if _validate_tag_pairs(input_tags, output_tags):
+                    print("Even tag difference with proper pairs - using refined chunk")
+                    return refined_chunk
+                else:
+                    print("Tag pairs not properly matched - falling back to original chunk")
+                    return input_chunk
+            
+            # No difference in count but content differs - validate pairs
+            if not _validate_tag_pairs_content(input_tags, output_tags):
+                print("Tag pairing validation failed - falling back to original chunk")
+                return input_chunk
+            
+            # All validation passed for fewer tags case
+            return refined_chunk
+        else:
+            print("Output has extra tags - fixing discrepancies")
+            return _fix_tag_discrepancies(refined_chunk, input_tags, output_tags)
+
+    def _fix_tag_discrepancies(refined_chunk: str, input_tags: list, output_tags: list) -> str:
+        """Remove extra tags from refined chunk until it matches input structure."""
+        current_content = refined_chunk
+        
+        # Find extra tags in output that aren't in input
+        extra_tags = []
+        for tag in output_tags:
+            if tag not in input_tags:
+                extra_tags.append(tag)
+        
+        print(f"Extra tags found in output: {extra_tags}")
+        
+        # Remove each extra tag
+        for extra_tag in extra_tags:
+            print(f"Removing extra tag: {extra_tag}")
+            
+            if extra_tag.startswith('/'):
+                # It's a closing tag, extract the tag name
+                tag_name = extra_tag[1:]  # Remove the '/'
+            else:
+                # It's an opening tag
+                tag_name = extra_tag
+            
+            # Apply the removal logic
+            current_content = _remove_first_complete_tag_block(current_content, tag_name)
+        
+        print("Content after llm xslt repair : ", current_content)
+        return current_content
+
+    def _remove_first_complete_tag_block(content: str, tag_name: str) -> str:
+        """Remove first duplicate closing tag and all closing tags until next opening tag."""
+        import re
+        
+        print(f"Removing first duplicate closing tag {tag_name} and subsequent closing tags")
+        
+        lines = content.split('\n')
+        closing_pattern = f'</{tag_name}>'
+        
+        # Find the first occurrence of the duplicate closing tag
+        first_closing_line = -1
+        for i, line in enumerate(lines):
+            if closing_pattern in line:
+                first_closing_line = i
+                print(f"Found first closing {tag_name} at line {i + 1}: {line.strip()[:100]}")
+                break
+        
+        if first_closing_line >= 0:
+            # Starting from this closing tag, remove all closing tags until we find an opening tag
+            lines_to_remove = []
+            
+            for i in range(first_closing_line, len(lines)):
+                line = lines[i].strip()
+                
+                # Check if this line contains an opening tag (but not self-closing)
+                if re.search(r'<[^/!][^>]*[^/]>', line) and not line.startswith('</'):
+                    print(f"Found opening tag at line {i + 1}, stopping removal: {line[:100]}")
+                    break
+                
+                # Check if this line contains a closing tag
+                if re.search(r'</[^>]+>', line):
+                    lines_to_remove.append(i)
+                    print(f"Marking closing tag for removal at line {i + 1}: {line[:100]}")
+            
+            # Remove the marked lines (in reverse order to maintain indices)
+            for line_idx in reversed(lines_to_remove):
+                print(f"Removing line {line_idx + 1}: {lines[line_idx].strip()[:100]}")
+                lines.pop(line_idx)
+            
+            print(f"Removed {len(lines_to_remove)} closing tag lines")
+            return '\n'.join(lines)
+        else:
+            print(f"Could not find first closing {tag_name}")
+            return content
+
+    def _validate_tag_pairs(input_tags: list, output_tags: list) -> bool:
+        """Validate that different tags between input and output form complete opening/closing pairs."""
+        import re
+        
+        # Find tags that are different between input and output
+        input_set = set(input_tags)
+        output_set = set(output_tags)
+        
+        different_tags = (input_set - output_set) | (output_set - input_set)
+        
+        if not different_tags:
+            return True  # No differences, validation passes
+        
+        print(f"Different tags to validate: {different_tags}")
+        
+        # For each different tag, check if it has a matching opening/closing pair
+        for tag in different_tags:
+            if tag.startswith('/'):
+                # This is a closing tag, find its opening counterpart
+                opening_tag = tag[1:]  # Remove the '/'
+                if opening_tag not in different_tags:
+                    print(f"Closing tag {tag} has no matching opening tag in differences")
+                    return False
+            else:
+                # This is an opening tag, find its closing counterpart  
+                closing_tag = '/' + tag
+                if closing_tag not in different_tags:
+                    print(f"Opening tag {tag} has no matching closing tag in differences")
+                    return False
+        
+        print("All different tags have proper opening/closing pairs")
+        return True
+    
+    def _validate_tag_pairs_content(input_tags: list, output_tags: list) -> bool:
+        """Validate that tag pairs are properly matched in content ordering."""
+        # Create dictionaries to count opening and closing tags
+        input_pairs = _count_tag_pairs(input_tags)
+        output_pairs = _count_tag_pairs(output_tags)
+        
+        # Check if all tag pairs are balanced in both input and output
+        for tag_name, counts in input_pairs.items():
+            if counts['open'] != counts['close']:
+                print(f"Input has unbalanced tag pairs for {tag_name}: {counts['open']} open, {counts['close']} close")
+                return False
+        
+        for tag_name, counts in output_pairs.items():
+            if counts['open'] != counts['close']:
+                print(f"Output has unbalanced tag pairs for {tag_name}: {counts['open']} open, {counts['close']} close")
+                return False
+        
+        print("All tag pairs are properly balanced")
+        return True
+    
+    def _count_tag_pairs(tags: list) -> dict:
+        """Count opening and closing tags for each tag name."""
+        pairs = {}
+        
+        for tag in tags:
+            if tag.startswith('/'):
+                # Closing tag
+                tag_name = tag[1:]
+                if tag_name not in pairs:
+                    pairs[tag_name] = {'open': 0, 'close': 0}
+                pairs[tag_name]['close'] += 1
+            else:
+                # Opening tag
+                if tag not in pairs:
+                    pairs[tag] = {'open': 0, 'close': 0}
+                pairs[tag]['open'] += 1
+        
+        return pairs
 
     # --- iterate templates in document order ---
-    hierarchical_reports = []
+
     for t in templates:
         original = t["text"]
+        print(f"DEBUG: Processing template {t['id'][:50]}... ({len(original)} chars, budget: {char_budget})")
         if len(original) <= char_budget:
             print("Inside ProcessChunk")
             refined = _process_chunk(original)
         else:
-            print("Inside ProcessLargeTemplate - Using Hierarchical Processing")
-            # Use hierarchical processing for large templates
-            refined, hierarchical_report = hierarchical_processor.process_template_hierarchically(original)
-            hierarchical_reports.append({
-                'template_id': t["id"],
-                'report': hierarchical_report
-            })
-            print(f"Hierarchical processing complete: {hierarchical_report['rule_coverage_percent']:.1f}% rule-based")
+            print("Inside ProcessLargeTemplate")
+            refined = _process_large_template(original)
 
-        # Replace in XML tree
         try:
-            new_elem = etree.fromstring(refined.encode())
+            with open("debug_xslt_fragment.xml", "w", encoding="utf-8") as f:
+                f.write(refined)
+            
+            # Handle both complete templates and body-only content
+            if not refined.strip().startswith('<xsl:template'):
+                print(f"DEBUG: Refined content is body-only, reconstructing template")
+                
+                # Extract namespace declarations from original stylesheet tag
+                import re
+                if original_stylesheet_tag:
+                    xmlns_pattern = r'xmlns:?[^=]*="[^"]*"'
+                    xmlns_matches = re.findall(xmlns_pattern, original_stylesheet_tag)
+                    namespace_attrs = ' '.join(xmlns_matches)
+                else:
+                    # Fallback to basic namespaces if stylesheet tag not found
+                    namespace_attrs = 'xmlns:xsl="http://www.w3.org/1999/XSL/Transform"'
+                
+                # Parse refined content with namespace context (like _create_well_formed_chunks)
+                temp_wrapper = f'<temp {namespace_attrs}>{refined}</temp>'
+                temp_root = etree.fromstring(temp_wrapper.encode())
+                
+                # Create new template element with original attributes
+                original_template_attrs = dict(t["elem"].attrib)
+                new_elem = etree.Element("{http://www.w3.org/1999/XSL/Transform}template", original_template_attrs)
+                
+                # Move all parsed children from temp wrapper to template
+                for child in temp_root:
+                    new_elem.append(child)
+                    
+                print(f"DEBUG: Reconstructed template with {len(list(new_elem))} children")
+            else:
+                # Complete template - parse normally
+                new_elem = etree.fromstring(refined.encode())
+            
             t["elem"].getparent().replace(t["elem"], new_elem)
-        except Exception:
-            # In case of malformed refined snippet – keep original
-            pass
+            print(f"[SUCCESS] Successfully replaced template {t['id'][:50]}... with refined version")
+        except Exception as e:
+            print(f"[ERROR] Failed to replace template {t['id'][:50]}... Error: {e}")
+            print(f"[ERROR] Refined content (first 200 chars): {refined[:200]}...")
+            print(f"[ERROR] Keeping original template for {t['id'][:50]}...")
 
     final_xslt = etree.tostring(tree, encoding="unicode", pretty_print=True)
-    st.session_state.generated_xslt = final_xslt
     
-    # Store hierarchical processing reports for analysis
-    if hierarchical_reports:
-        st.session_state.hierarchical_reports = hierarchical_reports
-        
-        # Print summary of hierarchical processing
-        total_templates = len(hierarchical_reports)
-        avg_rule_coverage = sum(r['report']['rule_coverage_percent'] for r in hierarchical_reports) / total_templates
-        total_blocks = sum(r['report']['total_blocks'] for r in hierarchical_reports)
-        total_rule_based = sum(r['report']['rule_based_blocks'] for r in hierarchical_reports)
-        
-        print(f"\n=== HIERARCHICAL PROCESSING SUMMARY ===")
-        print(f"Templates processed hierarchically: {total_templates}")
-        print(f"Average rule coverage: {avg_rule_coverage:.1f}%")
-        print(f"Total blocks identified: {total_blocks}")
-        print(f"Blocks handled by rules: {total_rule_based}")
-        print(f"LLM calls reduced by hierarchical processing")
-        
+    # Preserve the original stylesheet tag exactly as provided in input
+    if original_stylesheet_tag:
+        # Replace the generated stylesheet tag with the original one
+        final_xslt = re.sub(r'<xsl:stylesheet[^>]*>', original_stylesheet_tag, final_xslt, count=1)
+        print(f"DEBUG: Preserved original stylesheet tag: {original_stylesheet_tag}")
+    
+    st.session_state.generated_xslt = final_xslt
+           
     print("Inside 9")
     return
-
-#     # ---------------------------------------------------------------------
-#     # Legacy batch logic (kept for reference, will never be executed)
-#     # ---------------------------------------------------------------------
-#     refined_map = {}
-#     templates_for_llm = []
-#     for t in templates:
-#         actions = get_cached_actions(t["fp"])
-#         if actions:
-#             print(f"Pattern {t['fp'][:8]} found in DB/cache – applying recorded actions, no LLM call.")
-#             refined_map[t["text"]] = apply_actions(t["text"], actions)
-#             continue
-#         # apply deterministic rules
-#         auto_refined, actions_new = rule_based_refine(t["text"])
-#         if actions_new:
-#             print(f"Pattern {t['fp'][:8]} handled by rule-based refinement – no LLM call.")
-#             refined_map[t["text"]] = auto_refined
-#             cache_actions(t["fp"], actions_new)
-#             continue
-#         # else needs LLM
-#         templates_for_llm.append(t)
-
-#     if not templates_for_llm:
-#         # all done via cache/rules
-#         final_templates = [refined_map.get(t["text"], t["text"]) for t in templates]
-#         return "".join(final_templates)  # quick exit, caller handles assembly
-
-#     # Build dependency graph using templates_for_llm
-#     deps = {t["id"]: set() for t in templates_for_llm}
-#     for t in templates_for_llm:
-#         for call in t["elem"].findall(".//xsl:call-template", namespaces=NSMAP):
-#             callee = call.get("name")
-#             if callee in deps:
-#                 deps[t["id"]].add(callee)
-#     # Topological sort
-#     sorted_ids = []
-#     temp_deps = {k: set(v) for k, v in deps.items()}
-#     while temp_deps:
-#         ready = [k for k, v in temp_deps.items() if not v]
-#         if not ready:
-#             ready = list(temp_deps.keys())
-#         for rid in ready:
-#             sorted_ids.append(rid)
-#             temp_deps.pop(rid)
-#             for vals in temp_deps.values():
-#                 vals.discard(rid)
-#     sorted_templates = [next(t for t in templates_for_llm if t["id"] == sid) for sid in sorted_ids]
-
-#     # Preserve header/footer
-#     # Determine header and footer around templates
-#     template_pattern = re.compile(r'<xsl:template[\s\S]*?</xsl:template>')
-#     matches = list(template_pattern.finditer(xslt_clean))
-#     if matches:
-#         first, last = matches[0], matches[-1]
-#         header = xslt_clean[: first.start()]
-#         footer = xslt_clean[last.end() :]
-#     else:
-#         header = ''
-#         footer = ''
-    
-#     # Chunk templates by size and handle oversized templates
-#     char_budget = 1000
-#     chunks_data = []
-#     current_content = ""
-#     current_templates = []
-#     for t in sorted_templates:
-#         s = t["text"]
-#         if len(s) > char_budget:
-#             # flush existing chunk
-#             if current_content:
-#                 chunks_data.append({"content": current_content, "template_texts": current_templates, "segmented": False})
-#                 current_content = ""
-#                 current_templates = []
-#             # split oversized template into segments
-#             match = re.search(r'(<xsl:template[^>]*>)([\s\S]*?)(</xsl:template>)', s)
-#             if match:
-#                 open_tag, body, close_tag = match.groups()
-#                 parts = [body[i:i+char_budget] for i in range(0, len(body), char_budget)]
-#                 for part in parts:
-#                     seg = open_tag + part + close_tag
-#                     chunks_data.append({
-#                         "content": seg,
-#                         "template_texts": [seg],
-#                         "segmented": True,
-#                         "template_id": t["id"],
-#                         "open_tag": open_tag,
-#                         "close_tag": close_tag,
-#                         "full_template": s
-#                     })
-#             else:
-#                 # fallback to single chunk
-#                 chunks_data.append({"content": s, "template_texts": [s], "segmented": False})
-#         else:
-#             # within budget, try adding to current chunk
-#             if current_content and len(current_content) + len(s) > char_budget:
-#                 chunks_data.append({"content": current_content, "template_texts": current_templates, "segmented": False})
-#                 current_content = ""
-#                 current_templates = []
-#             current_content += s
-#             current_templates.append(s)
-#     # flush last chunk
-#     if current_content:
-#         chunks_data.append({"content": current_content, "template_texts": current_templates, "segmented": False})
-#     #print(chunks)
-#     # Seed example for first chunk
-#     seed_before = """	<xsl:template name="tbf:tbf2_">
-# 		<xsl:param name="input" select="/.."/>
-# 		<xsl:for-each select="$input/@AbsoluteDeadline">
-# 			<xsl:variable name="var1_current" select="."/>
-# 			<xsl:attribute name="AbsoluteDeadline">
-# 				<xsl:value-of select="."/>
-# 			</xsl:attribute>
-# 		</xsl:for-each>
-# 		<xsl:for-each select="$input/@OffsetUnitMultiplier">
-# 			<xsl:variable name="var3_current" select="."/>
-# 			<xsl:attribute name="OffsetUnitMultiplier">
-# 				<xsl:value-of select="."/>
-# 			</xsl:attribute>
-# 		</xsl:for-each>
-# 		<xsl:for-each select="$input/@OffsetDropTime">
-# 			<xsl:variable name="var4_current" select="."/>
-# 			<xsl:attribute name="OffsetDropTime">
-# 				<xsl:value-of select="."/>
-# 			</xsl:attribute>
-# 		</xsl:for-each>
-# 	</xsl:template> """
-#     seed_after = """<xsl:template name="tbf:tbf2_">
-#   <xsl:param name="input"/>
-#   <xsl:copy-of select="$input/@AbsoluteDeadline | 
-#                      $input/@OffsetUnitMultiplier | 
-#                      $input/@OffsetDropTime"/>
-# </xsl:template>"""
-#     # refined_map already partially filled
-#     # Batch refine over template chunks
-#     for idx, chunk in enumerate(chunks_data):
-#         # Debug: show chunk info
-#         print(f"Refining chunk {idx+1}/{len(chunks_data)} with {len(chunk['template_texts'])} templates")
-#         agent = setup_agent("o3_mini")
-#         # System prompt to return only refined templates
-#         prompts = [
-#             {"role": "system", "content": "You are an expert XSLT transformation refiner. Only return the refined <xsl:template> elements without any additional commentary or markdown formatting."}
-#         ]
-#         if idx == 0:
-#             prompts.append({"role": "user", "content": f"Example before:\n{seed_before}\nExample after:\n{seed_after}"})
-#         prompts.append({"role": "user", "content": f"Global header:\n{header}"})
-#         prompts.append({"role": "user", "content": f"Refine these templates for readability & performance within 2000 tokens:\n{chunk['content']}"})
-#         agent.set_prompts(prompts)
-#         _, response = agent.get_chat_completion()
-#         print("Inside 1")
-#         # Extract refined template snippets
-#         refined_snips = re.findall(r'(<xsl:template[\s\S]*?</xsl:template>)', response.choices[0].message.content)
-#         # Debug: number of snippets extracted
-#         print(f"Extracted {len(refined_snips)} template snippets from LLM response")
-#         # Map each original to its refined version
-#         for orig, new in zip(chunk["template_texts"], refined_snips):
-#             print("Inside 2")
-#             refined_map[orig] = new
-#             # cache for future
-#             # Compute fingerprint again (same as t['fp'])
-#             fp = compute_fingerprint(etree.fromstring(orig.encode()))
-#             # TODO: derive generic actions from LLM diff; skipping for now
-
-#         # Merge segmented template parts back into full templates
-#     seg_map = {}
-#     for chunk in chunks_data:
-#         print("Inside 3")
-#         if chunk.get('segmented'):
-#             print("Inside 4")
-#             tid = chunk['template_id']
-#             entry = seg_map.setdefault(tid, {'open': chunk['open_tag'], 'close': chunk['close_tag'], 'full': chunk['full_template'], 'bodies': []})
-#             refined_chunk = refined_map.get(chunk['content'], chunk['content'])
-#             # strip open/close tags
-#             body = refined_chunk[len(entry['open']):-len(entry['close'])]
-#             entry['bodies'].append(body)
-#     for entry in seg_map.values():
-#         print("Inside 5")
-#         full_refined = entry['open'] + ''.join(entry['bodies']) + entry['close']
-#         refined_map[entry['full']] = full_refined
-#     # Reassemble final XSLT via AST to avoid duplication
-#     from copy import deepcopy
-#     XSLT_NS = "http://www.w3.org/1999/XSL/Transform"
-#     # Create a new stylesheet root preserving namespace and attributes
-#     new_root = etree.Element(tree.tag, tree.attrib, nsmap=tree.nsmap)
-#     # Append children in original order, replacing templates with refined versions
-#     for child in tree:
-#         print("Inside 6")
-#         if isinstance(child.tag, str) and etree.QName(child.tag).namespace == XSLT_NS and etree.QName(child.tag).localname == "template":
-#             print("Inside 7")
-#             orig_text = etree.tostring(child, encoding="unicode", pretty_print=True)
-#             refined_text = refined_map.get(orig_text, orig_text)
-#             try:
-#                 # Try parsing snippet directly
-#                 new_elem = etree.fromstring(refined_text)
-#             except etree.XMLSyntaxError:
-#                 # Inject xsl namespace declaration into <xsl:template> tag
-#                 ns_injected = re.sub(r'(<xsl:template\b)', r'\1 xmlns:xsl="' + XSLT_NS + '"', refined_text, count=1)
-#                 new_elem = etree.fromstring(ns_injected)
-#             new_root.append(new_elem)
-#         else:
-#             print("Inside 8")
-#             new_root.append(deepcopy(child))
-#     # Serialize final XSLT
-#     final_xslt = etree.tostring(new_root, encoding="unicode", pretty_print=True)
-#     st.session_state.generated_xslt = final_xslt
-#     print("Inside 9")
-#     return
-    
-#     # final_xslt = header + "".join(refined_map.get(t["text"], t["text"]) for t in templates) + footer
-#     # st.session_state.generated_xslt = final_xslt
-#     # return
 
 def subsequent_conversation_with_LLM_xslt(xslt_file):
     # Load prompts and create GPT client
