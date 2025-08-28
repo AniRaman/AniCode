@@ -1605,7 +1605,7 @@ def llm_process(context, message, input_xml, transformed_xml, main_xslt):
         main_xslt = ref_xslt_code[-1]
     return main_xslt
 
-def process_user_response(message, chat_history, input_xml, transformed_xml, main_xslt, specs):
+def process_user_response_original(message, chat_history, input_xml, transformed_xml, main_xslt, specs):
     print("-----------")
     print(message)
     print(chat_history)
@@ -1764,3 +1764,37 @@ def process_user_response(message, chat_history, input_xml, transformed_xml, mai
 
     chat_history.append((message, bot_message))
     return user_request,bot_message, chat_history, main_xslt
+
+
+# Backward compatibility wrapper for agentic approach
+def process_user_response(message, chat_history, input_xml, transformed_xml, main_xslt, specs):
+    """
+    Backward compatibility wrapper for process_user_response
+    
+    Can switch between original conversation-based approach and new agentic approach
+    based on USE_AGENTIC_XSLT environment variable
+    """
+    import os
+    
+    USE_AGENTIC_APPROACH = os.getenv("USE_AGENTIC_XSLT", "true").lower() == "true"
+    
+    if USE_AGENTIC_APPROACH:
+        # Use new agentic approach
+        print("Using AGENTIC approach for XSLT processing")
+        try:
+            from genie_core.llm.agentic_xslt_processor import process_user_request_agentic
+            return process_user_request_agentic(
+                message, chat_history, input_xml, transformed_xml, main_xslt, specs
+            )
+        except Exception as e:
+            print(f"Error in agentic approach, falling back to original: {e}")
+            # Fallback to original approach if agentic fails
+            return process_user_response_original(
+                message, chat_history, input_xml, transformed_xml, main_xslt, specs
+            )
+    else:
+        # Use original approach  
+        print("Using ORIGINAL approach for XSLT processing")
+        return process_user_response_original(
+            message, chat_history, input_xml, transformed_xml, main_xslt, specs
+        )

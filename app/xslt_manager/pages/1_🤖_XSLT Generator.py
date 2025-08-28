@@ -47,6 +47,56 @@ def handle_sidebar_file_uploads():
     st.header("Upload Files")
     source_xml_file = st.file_uploader("Upload Source XML", type=["xml"])
     target_xml_file = st.file_uploader("Upload Target XML", type=["xml"])
+    
+    st.header("Specifications")
+    specs_input_type = st.radio("Specification Source:", ["URL", "File Upload"], horizontal=True)
+    
+    specs_url = None
+    specs_file = None
+    
+    if specs_input_type == "URL":
+        specs_url = st.text_input("Specifications URL", placeholder="Enter the URL containing specifications (e.g., Confluence page)")
+        # Store specs URL in session state for processing
+        if specs_url:
+            st.session_state.specs_url_input = specs_url
+            st.session_state.specs_file_input = None
+    else:
+        specs_file = st.file_uploader("Upload Specifications File", type=["html", "mhtml", "htm", "md", "csv"])
+        # Store specs file in session state for processing
+        if specs_file:
+            st.session_state.specs_file_input = specs_file
+            st.session_state.specs_url_input = None
+    
+    # Show status of inputs
+    st.subheader("Input Status")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if source_xml_file:
+            st.success("✅ Source XML")
+        else:
+            st.error("❌ Source XML")
+    
+    with col2:
+        if target_xml_file:
+            st.success("✅ Target XML") 
+        else:
+            st.error("❌ Target XML")
+    
+    with col3:
+        specs_provided = specs_url or specs_file
+        if specs_provided:
+            specs_type = "Specs URL" if specs_url else f"Specs File ({specs_file.name})" if specs_file else "Specs"
+            st.success(f"✅ {specs_type}")
+        else:
+            st.error("❌ Specifications")
+    
+    # Show ready status
+    if source_xml_file and target_xml_file and specs_provided:
+        st.success("🚀 All inputs ready! XSLT generation will start automatically.")
+    else:
+        missing_count = sum([not source_xml_file, not target_xml_file, not specs_provided])
+        st.info(f"⏳ Please provide {missing_count} more input{'s' if missing_count != 1 else ''} to start automatic processing.")
     # if "specs_refiner_output" in st.session_state:
     #     use_existing_specs = st.checkbox("Use existing specifications from Specs Refiner")
     #     if use_existing_specs:
@@ -64,14 +114,110 @@ def handle_sidebar_file_uploads():
     #     my_regex = rf"\t*<{re.escape(st.session_state.root_element)}>.*</{re.escape(st.session_state.root_element)}>"
     #     st.session_state.input_xml = re.findall(my_regex, st.session_state.source_xml, flags=re.DOTALL)[0]
 
-    return source_xml_file, target_xml_file, transformation_type
+    return source_xml_file, target_xml_file, transformation_type, specs_url, specs_file
 
-# Function to handle chat input and LLM conversation
-def handle_chat_input(source_xml_file, target_xml_file, transformation_type, prompt):
+# Function to handle automatic processing when all inputs are ready
+def check_and_auto_process(source_xml_file, target_xml_file, specs_url, specs_file):
+    """Check if all 3 inputs are provided and auto-start processing"""
+    
+    # Check if all three inputs are provided (either URL or file for specs)
+    specs_provided = specs_url or specs_file
+    if source_xml_file and target_xml_file and specs_provided:
+        # Process XML files
+        st.session_state.source_xml = process_xml(source_xml_file)
+        st.session_state.target_xml = process_xml(target_xml_file)
+        
+        # Create unique identifier for this combination of inputs
+        specs_identifier = specs_url if specs_url else f"file:{specs_file.name}"
+        current_inputs = f"{source_xml_file.name}|{target_xml_file.name}|{specs_identifier}"
+        
+        if not hasattr(st.session_state, 'last_processed_inputs') or st.session_state.last_processed_inputs != current_inputs:
+            st.session_state.last_processed_inputs = current_inputs
+            
+            # Auto-generate message for agentic processing
+            if specs_url:
+                auto_message = f"Generate XSLT from {specs_url}"
+            else:
+                auto_message = f"Generate XSLT from uploaded specifications file: {specs_file.name}"
+            
+            with st.spinner("🚀 All inputs detected! Auto-processing XSLT generation..."):
+                write_chat_message("assistant", ":blue[All inputs detected - starting automatic XSLT generation...]")
+                write_chat_message("user", auto_message, None)
+                
+                user_req, bot_message, st.session_state.chat_history, st.session_state.generated_xslt = process_user_response(
+                    auto_message, 
+                    st.session_state.chat_history, 
+                    st.session_state.source_xml, 
+                    st.session_state.target_xml, 
+                    st.session_state.generated_xslt, 
+                    st.session_state.specs_file
+                )
+                
+                write_chat_message("assistant", f":green[{bot_message}]")
+                
+                # Handle the response
+                if user_req:
+                    st.session_state.auto_processed = True
+                    st.session_state.ask_yes_no = True  # Enable refinement options
+                    st.success("✅ XSLT generated successfully! You can now refine it or download it.")
+                    st.rerun()  # Refresh to show the pills
+                else:
+                    # If there was an error, show it
+                    if "error" in bot_message.lower() or "missing" in bot_message.lower():
+                        st.error(f"Auto-processing failed: {bot_message}")
+                    else:
+                        st.info(bot_message)
+            
+            return True  # Indicates auto-processing happened
+    
+    return False  # No auto-processing
+
+# Function to handle chat input and LLM conversation  
+def handle_chat_input(source_xml_file, target_xml_file, transformation_type, specs_url, specs_file, prompt):
     st.title(":blue[Conversational Bot]")
     init_objects_into_session()
-    if st.session_state.ask_yes_no == False:
-        prompt = st.chat_input("Type START to continue")
+    
+    # Check for automatic processing first
+    auto_processed = check_and_auto_process(source_xml_file, target_xml_file, specs_url, specs_file)
+    
+    # Show processing status
+    if auto_processed or hasattr(st.session_state, 'auto_processed'):
+        st.info("✅ Automatic processing completed! Use the chat below for refinements or ask questions.")
+    
+    # Handle refinement pills after auto-processing
+    if st.session_state.ask_yes_no == True:
+        col1, col2 = st.columns([4, 7.8])
+        with col1:
+            st.markdown(
+                """
+                <div style="display: flex; align-items: center; margin-left: 18.9px;">
+                    <span style="font-size: 16.4px; margin-right: 9.8px;">🤖</span>
+                <span style="color: #0073E6; font-size: 16px; font-weight: bold; margin-right: 10px;">
+                    Do you want to refine the generated XSLT?
+                </span>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        with col2:
+            options = ["Yes", "No"]
+            user_response = st.pills("",options, selection_mode="single",label_visibility="collapsed")
+            # Save the user selection in session state when a selection is made
+            if user_response == "Yes":
+                st.session_state.user_response = user_response
+                st.session_state.ask_yes_no = False
+                st.rerun()
+            elif user_response == "No":
+                st.session_state.ask_yes_no = False
+                st.success("✅ XSLT generation completed! You can download it from the output tab.")
+    
+    # Handle manual chat input
+    elif st.session_state.ask_yes_no == False and not auto_processed:
+        specs_provided = specs_url or specs_file
+        if source_xml_file and target_xml_file and specs_provided:
+            prompt = st.chat_input("💬 Ask for refinements (e.g., 'Fix TaxAmount to include currency') or other questions")
+        else:
+            prompt = st.chat_input("📝 Provide all inputs above, or enter manual commands (e.g., 'Generate XSLT from [URL]')")
     # elif st.session_state.ask_yes_no == True and st.session_state.url != None:
     #     st.session_state.url = None
     #     st.rerun()
@@ -103,10 +249,20 @@ def handle_chat_input(source_xml_file, target_xml_file, transformation_type, pro
 
     if prompt:
         if source_xml_file and target_xml_file:
-            st.session_state.source_xml = process_xml(source_xml_file)
-            st.session_state.target_xml = process_xml(target_xml_file)
+            # Only process XMLs if they haven't been processed in auto-processing
+            if not hasattr(st.session_state, 'source_xml') or not st.session_state.source_xml:
+                st.session_state.source_xml = process_xml(source_xml_file)
+                st.session_state.target_xml = process_xml(target_xml_file)
+                
             write_chat_message("user", prompt, None)
-            user_req,bot_message,st.session_state.chat_history,st.session_state.generated_xslt = process_user_response(prompt, st.session_state.chat_history, st.session_state.source_xml, st.session_state.target_xml, st.session_state.generated_xslt, st.session_state.specs_file)           
+            user_req,bot_message,st.session_state.chat_history,st.session_state.generated_xslt = process_user_response(
+                prompt, 
+                st.session_state.chat_history, 
+                st.session_state.source_xml, 
+                st.session_state.target_xml, 
+                st.session_state.generated_xslt, 
+                st.session_state.specs_file
+            )           
             write_chat_message("assistant", f":green[{bot_message}]")
         
             if user_req:
@@ -395,9 +551,9 @@ def main():
 
     with tab1:
         with st.sidebar:
-            source_xml_file, target_xml_file, transformation_type = handle_sidebar_file_uploads()
+            source_xml_file, target_xml_file, transformation_type, specs_url, specs_file = handle_sidebar_file_uploads()
 
-        handle_chat_input(source_xml_file, target_xml_file, transformation_type, prompt)
+        handle_chat_input(source_xml_file, target_xml_file, transformation_type, specs_url, specs_file, prompt)
         display_generated_xslt()
 
     with tab2:
