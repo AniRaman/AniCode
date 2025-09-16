@@ -25,9 +25,19 @@ def _avt_to_string(avt: Optional[str]) -> str:
         return ''
     return re.sub(r'[{}]', '', avt)
 
-def _strip_xpath(expr: str) -> str:
+def _strip_xpath(expr: str, context_element: etree._Element = None) -> str:
     """Strip wrapping functions to extract the raw XPath expression."""
     expr = expr.strip()
+    # handle local-name() patterns: *[local-name()='ElementName'] -> find full input path
+    localname_match = re.search(r"local-name\(\)\s*=\s*['\"]([^'\"]+)['\"]", expr)
+    if localname_match and context_element is not None:
+        element_name = localname_match.group(1)
+        # Find the full XML input path from for-each ancestors
+        full_path = _extract_input_path_from_foreach(context_element, element_name)
+        return full_path if full_path else element_name
+    elif localname_match:
+        return localname_match.group(1)
+    # handle function wrappers
     m = re.match(r'^[A-Za-z_][A-Za-z0-9_-]*\((.*)\)$', expr)
     if m:
         inner = m.group(1)
@@ -41,6 +51,80 @@ def _strip_xpath(expr: str) -> str:
             part += ch
         return part.strip()
     return expr
+
+def _extract_input_path_from_foreach(context_element: etree._Element, element_name: str) -> str:
+    """Extract full input XML path by walking up for-each ancestors and combining select paths."""
+    # Walk up ancestors to find all xsl:for-each elements
+    foreach_selects = []
+    current = context_element
+
+    while current is not None:
+        if (current.tag.startswith('{http://www.w3.org/1999/XSL/Transform}') and
+            etree.QName(current.tag).localname == 'for-each'):
+            select_attr = current.get('select', '').strip()
+            if select_attr:
+                foreach_selects.insert(0, select_attr)  # Insert at beginning for correct order
+        current = current.getparent()
+
+    # Parse and combine all select paths
+    combined_path = _combine_select_paths(foreach_selects)
+
+    # Add the target element name if not already in path
+    if element_name and element_name not in combined_path:
+        if combined_path and not combined_path.endswith('/'):
+            combined_path += '/' + element_name
+        else:
+            combined_path = (combined_path or '') + element_name
+
+    # Ensure path starts with /
+    if combined_path and not combined_path.startswith('/'):
+        combined_path = '/' + combined_path
+
+    return combined_path or ('/' + element_name)
+
+def _combine_select_paths(select_paths: list) -> str:
+    """Combine multiple for-each select paths into a single input path."""
+    if not select_paths:
+        return ''
+
+    combined_parts = []
+
+    for select_path in select_paths:
+        # Parse this select path and extract clean elements
+        path_parts = _parse_select_path(select_path)
+        combined_parts.extend(path_parts)
+
+    return '/' + '/'.join(combined_parts) if combined_parts else ''
+
+def _parse_select_path(select_path: str) -> list:
+    """Parse a for-each select path and extract clean element names."""
+    select_path = select_path.strip()
+
+    # Handle local-name() patterns: *[local-name()='ElementName' and namespace-uri()='']
+    localname_pattern = r"\*\[local-name\(\)\s*=\s*['\"]([^'\"]+)['\"][^\]]*\]"
+    matches = re.findall(localname_pattern, select_path)
+    if matches:
+        return matches
+
+    # Handle simple path patterns: Root/Contact/EmailAddress
+    if '/' in select_path:
+        # Split by / and clean each part
+        parts = []
+        for part in select_path.split('/'):
+            part = part.strip()
+            if part and part != '.' and not part.startswith('@'):
+                # Remove any predicates like [position()=1]
+                clean_part = re.sub(r'\[.*?\]', '', part)
+                if clean_part:
+                    parts.append(clean_part)
+        return parts
+
+    # Single element
+    if select_path and select_path != '.' and not select_path.startswith('@'):
+        clean_element = re.sub(r'\[.*?\]', '', select_path)
+        return [clean_element] if clean_element else []
+
+    return []
 
 def _split_args(expr: str) -> List[str]:
     parts, depth, cur = [], 0, ''
@@ -72,8 +156,12 @@ def _parse_functions(expr: str) -> List[Tuple[str, List[str]]]:
 
 def _extract_input_paths(expr: str) -> List[str]:
     expr = expr.strip()
-    # skip literal strings
+    # capture literal strings without quotes, skip punctuation-only strings
     if expr.startswith(("'", '"')) and expr.endswith(("'", '"')):
+        literal = expr[1:-1]
+        # skip if it's just punctuation/symbols (length <= 2 and no alphanumeric)
+        if len(literal) <= 2 and not any(c.isalnum() for c in literal):
+            return []
         return []
     # parse nested functions
     calls = _parse_functions(expr)
@@ -96,10 +184,15 @@ def _extract_input_paths(expr: str) -> List[str]:
 
 def _phrase_value_of(node: etree._Element) -> str:
     sel = node.get('select', '').strip()
-    raw = _strip_xpath(sel)
-    # skip default value-of dot (loop context)
-    if raw == '.':
-        return ''
+    raw = _strip_xpath(sel, node)  # Pass context for path resolution
+    # handle select="." by resolving context
+    if sel == '.':
+        # Get input path from for-each ancestors
+        resolved_path = _extract_input_path_from_foreach(node, '')
+        if resolved_path and resolved_path != '/':
+            return f"Outputs current context from {resolved_path}"
+        else:
+            return "Outputs current context"
     calls = _parse_functions(sel)
     phrases: List[str] = []
     functions = ['concat', 'substring']
@@ -128,7 +221,7 @@ def _phrase_value_of(node: etree._Element) -> str:
         parts = sel.split(' - ', 1)
         if len(parts) == 2:
             return f"Subtract {parts[1].strip()} from {parts[0].strip()}"
-    return f"Outputs text of {sel}"
+    return f"Outputs text of {raw}"
 
 PHRASE_HANDLERS = {
     # skip dot selections
@@ -330,22 +423,41 @@ class XsltSpecGenerator:
         
         # Format remarks in batches
         if self.remarks_to_format:
-            loop = asyncio.get_event_loop()
-            if loop.is_running():
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-            
-            # Get unique remarks to format
-            unique_remarks = list(self.remarks_to_format.keys())
-            formatted_remarks = loop.run_until_complete(
-                batch_format_remarks(unique_remarks)
-            )
-            
-            # Update specs with formatted remarks
-            for orig, formatted in formatted_remarks.items():
-                for spec in self.remarks_to_format[orig]:
-                    spec.formatted_remarks = formatted
-                    spec.remarks = formatted
+            try:
+                # Try to run async batch formatting
+                try:
+                    loop = asyncio.get_event_loop()
+                    if loop.is_running():
+                        # Event loop is running, skip LLM formatting to avoid conflicts
+                        print("Warning: Event loop is running, skipping LLM remark formatting")
+                        formatted_remarks = {}
+                    else:
+                        # Get unique remarks to format
+                        unique_remarks = list(self.remarks_to_format.keys())
+                        formatted_remarks = loop.run_until_complete(
+                            batch_format_remarks(unique_remarks)
+                        )
+                except RuntimeError:
+                    # No event loop exists, create one
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    try:
+                        unique_remarks = list(self.remarks_to_format.keys())
+                        formatted_remarks = loop.run_until_complete(
+                            batch_format_remarks(unique_remarks)
+                        )
+                    finally:
+                        loop.close()
+
+                # Update specs with formatted remarks
+                for orig, formatted in formatted_remarks.items():
+                    for spec in self.remarks_to_format[orig]:
+                        spec.formatted_remarks = formatted
+                        spec.remarks = formatted
+
+            except Exception as e:
+                print(f"Warning: Could not format remarks with LLM: {e}")
+                # Continue without formatting - remarks will remain as-is
         
         # Compute transitive outputs across call graph
         self.link_calls()
@@ -376,16 +488,25 @@ class XsltSpecGenerator:
             for attr in elem.attrib.keys():
                 # find all candidate XSLT snippets for this attribute
                 xpath_expr = (
-                    f"//xsl:for-each[contains(@select, '@{attr}')]|"
-                    f"//xsl:value-of[contains(@select, '@{attr}')]|"
+                    f"//xsl:for-each[contains(@select, '@{attr}') or contains(@select, \"local-name()='{attr}\")]|"
+                    f"//xsl:value-of[contains(@select, '@{attr}') or contains(@select, \"local-name()='{attr}\")]|"
                     f"//xsl:attribute[@name='{attr}']"
                 )
                 snippets = self.tree.xpath(xpath_expr, namespaces=NSMAP)
-                if snippets:
+                # Filter snippets by matching output path
+                matching_snippets = []
+                for snippet in snippets:
+                    snippet_path = self._extract_output_path_from_xslt(snippet)
+                    if snippet_path == xml_path_str:
+                        matching_snippets.append(snippet)
+                
+                if matching_snippets:
                     # pick best snippet: prefer for-each, then value-of, then attribute
-                    best = next((sn for sn in snippets if etree.QName(sn.tag).localname == 'for-each'), None)
-                    best = best or next((sn for sn in snippets if etree.QName(sn.tag).localname == 'value-of'), None)
-                    best = best or next((sn for sn in snippets if etree.QName(sn.tag).localname == 'attribute'), None)
+                    best = next((sn for sn in matching_snippets if etree.QName(sn.tag).localname == 'for-each'), None)
+                    if best is None:
+                        best = next((sn for sn in matching_snippets if etree.QName(sn.tag).localname == 'value-of'), None)
+                    if best is None:
+                        best = next((sn for sn in matching_snippets if etree.QName(sn.tag).localname == 'attribute'), None)
                     spec = self.spec_from_element(best)
                     rows.append({
                         'xml_output_node_path': xml_path_str,
@@ -410,14 +531,21 @@ class XsltSpecGenerator:
                         'inputs': [],
                         'outputs': [],
                         'calls': [],
-                        'remarks': f"Fallback copy for @{attr}"
+                        'remarks': f"No info found for @{attr} in XSLT"
                     })
             # child-element specs
             # literal elements in XSLT matching this XML tag
             xpath_el = f"//xsl:template//*[local-name()='{xml_tag}' and namespace-uri()!='{XSLT_NS}']"
             snippets_el = self.tree.xpath(xpath_el, namespaces=NSMAP)
-            if snippets_el:
-                for sn in snippets_el:
+            # Filter element snippets by matching output path
+            matching_element_snippets = []
+            for snippet in snippets_el:
+                snippet_path = self._extract_output_path_from_xslt(snippet)
+                if snippet_path == xml_path_str:
+                    matching_element_snippets.append(snippet)
+            
+            if matching_element_snippets:
+                for sn in matching_element_snippets:
                     spec = self.spec_from_element(sn)
                     rows.append({
                         'xml_output_node_path': xml_path_str,
@@ -441,13 +569,14 @@ class XsltSpecGenerator:
                     'inputs': [],
                     'outputs': [],
                     'calls': [],
-                    'remarks': f"Fallback copy for <{xml_tag}>"
+                    'remarks': f"No info found for <{xml_tag}> in XSLT"
                 })
         # Remove duplicate rows with same spec_type and xml_output_node_path
         seen = set()
         unique_rows = []
         for row in rows:
-            key = (row['spec_type'], row['xml_output_node_path'])
+            # Include xslt_snippet in key to allow different XSLT logic for same XML path
+            key = (row['spec_type'], row['xml_output_node_path'], row.get('xslt_snippet', ''))
             if key not in seen:
                 seen.add(key)
                 unique_rows.append(row)
@@ -462,17 +591,145 @@ class XsltSpecGenerator:
         unique_remarks = sorted({row['remarks'] for row in rows if row.get('remarks') and needs_llm_formatting(row['remarks'])})
         #print("unique_remarks",unique_remarks)
         if unique_remarks:
-            # run async batch formatting
-            loop = asyncio.get_event_loop()
-            if loop.is_running():
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-            formatted_map = loop.run_until_complete(batch_format_remarks(unique_remarks))
-            for row in rows:
-                orig = row.get('remarks')
-                if orig in formatted_map:
-                    row['remarks'] = formatted_map[orig]
-        return rows
+            try:
+                # Try to run async batch formatting
+                try:
+                    loop = asyncio.get_event_loop()
+                    if loop.is_running():
+                        # Event loop is running, skip LLM formatting to avoid conflicts
+                        print("Warning: Event loop is running, skipping LLM remark formatting")
+                        formatted_map = {}
+                    else:
+                        formatted_map = loop.run_until_complete(batch_format_remarks(unique_remarks))
+                except RuntimeError:
+                    # No event loop exists, create one
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    try:
+                        formatted_map = loop.run_until_complete(batch_format_remarks(unique_remarks))
+                    finally:
+                        loop.close()
+
+                # Apply formatted remarks
+                for row in rows:
+                    orig = row.get('remarks')
+                    if orig in formatted_map:
+                        row['remarks'] = formatted_map[orig]
+
+            except Exception as e:
+                print(f"Warning: Could not format remarks with LLM: {e}")
+                # Continue without formatting - remarks will remain as-is
+        # Keep original before merging
+        original_rows = rows.copy()
+        merged_rows = self._merge_duplicate_paths(rows)
+        
+        # Store both for file writing
+        self._original_specs = original_rows
+        self._merged_specs = merged_rows
+        
+        return merged_rows
+
+    def _merge_duplicate_paths(self, rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Merge specs that have same spec_type and xml_output_node_path."""
+        from collections import defaultdict
+        
+        # Group by (spec_type, xml_output_node_path)
+        groups = defaultdict(list)
+        for row in rows:
+            key = (row.get('spec_type'), row.get('xml_output_node_path'))
+            groups[key].append(row)
+        
+        merged_rows = []
+        seen_keys = set()
+        
+        # Maintain original order, merge duplicates
+        for row in rows:
+            key = (row.get('spec_type'), row.get('xml_output_node_path'))
+            
+            if key in seen_keys:
+                continue  # Skip, already processed
+                
+            seen_keys.add(key)
+            group = groups[key]
+            
+            if len(group) == 1:
+                # No duplicates, keep as-is
+                merged_rows.append(row)
+            else:
+                # Merge duplicates
+                merged = self._merge_spec_group(group)
+                merged_rows.append(merged)
+        
+        return merged_rows
+    
+    def _merge_spec_group(self, specs: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Merge a group of specs with same spec_type and xml_output_node_path."""
+        if not specs:
+            return {}
+            
+        # Start with first spec as base
+        merged = specs[0].copy()
+        
+        # Collect all unique inputs (filter out empty lists)
+        all_inputs = set()
+        for spec in specs:
+            inputs = spec.get('inputs', [])
+            if inputs:  # Skip empty lists
+                all_inputs.update(inputs)
+        merged['inputs'] = list(all_inputs) if all_inputs else []
+        
+        # Collect all unique outputs (filter out empty lists) 
+        all_outputs = set()
+        for spec in specs:
+            outputs = spec.get('outputs', [])
+            if outputs:  # Skip empty lists
+                all_outputs.update(outputs)
+        merged['outputs'] = list(all_outputs) if all_outputs else []
+        
+        # Collect all unique calls (filter out empty lists)
+        all_calls = set()
+        for spec in specs:
+            calls = spec.get('calls', [])
+            if calls:  # Skip empty lists
+                all_calls.update(calls)
+        merged['calls'] = list(all_calls) if all_calls else []
+        
+        # Concatenate remarks with " OR "
+        remarks_parts = []
+        for spec in specs:
+            remark = spec.get('remarks', '').strip()
+            if remark and remark not in remarks_parts:
+                remarks_parts.append(remark)
+        merged['remarks'] = ' OR '.join(remarks_parts) if remarks_parts else ''
+        
+        return merged
+
+    def _extract_output_path_from_xslt(self, snippet_element: etree._Element) -> str:
+        """Extract the output XML path from an XSLT snippet by walking up literal elements."""
+        # Find the target element (the one being processed - usually the snippet_element itself or a descendant)
+        target = snippet_element
+        
+        # If this is a for-each or other control element, find the literal output element
+        if etree.QName(snippet_element.tag).localname in ('for-each', 'if', 'choose', 'when', 'otherwise', 'variable'):
+            # Find first literal (non-xsl) descendant element
+            for desc in snippet_element.iter():
+                if not desc.tag.startswith('{http://www.w3.org/1999/XSL/Transform}'):
+                    target = desc
+                    break
+        
+        # Walk up ancestors to build path, collecting all literal elements
+        path_parts = []
+        current = target
+        
+        while current is not None:
+            # Skip xsl: namespace elements but continue walking up
+            if not current.tag.startswith('{http://www.w3.org/1999/XSL/Transform}'):
+                tag = etree.QName(current.tag).localname
+                path_parts.insert(0, tag)
+            current = current.getparent()
+            # Stop only when we reach the root (no more parents)
+        
+        return '/' + '/'.join(path_parts) if path_parts else ''
 
     def spec_from_element(self, element: etree._Element) -> TemplateSpec:
         # Name of spec: XSLT template name/match, else element localname
@@ -505,36 +762,49 @@ class XsltSpecGenerator:
                     var_name = sub[1:]
                     var_nodes = self.tree.xpath(f"//xsl:variable[@name='{var_name}']", namespaces=NSMAP)
                     if var_nodes and var_nodes[0].get('select'):
-                        inputs.add(_strip_xpath(var_nodes[0].get('select')))
+                        inputs.add(_strip_xpath(var_nodes[0].get('select'), element))
                     else:
                         inputs.add(sub)
                 elif re.match(r'^[0-9]+(\.[0-9]+)?$', sub):
                     continue
                 else:
-                    inputs.add(_strip_xpath(sub))
+                    inputs.add(_strip_xpath(sub, element))
         # capture xsl:param inside snippet
         for p in element.xpath('.//xsl:param', namespaces=NSMAP):
             inputs.add(f"${p.get('name')}" )
-        # capture descendant select attributes, ignore '.' (loop context)
+        # capture descendant select attributes, resolve '.' (loop context)
         for node in element.xpath('.//*[@select]', namespaces=NSMAP):
             sel = node.get('select', '').strip()
-            if not sel or sel == '.':
+            if not sel:
                 continue
+            # resolve descendant select="." by walking up parents
+            if sel == '.':
+                anc = node.getparent()
+                while anc is not None:
+                    parent_sel = anc.get('select')
+                    if parent_sel and parent_sel.strip() != '.':
+                        sel = parent_sel.strip()
+                        break
+                    anc = anc.getparent()
+                # if still "." after resolution, skip it
+                if sel == '.':
+                    continue
             for sub in _extract_input_paths(sel):
                 sub = sub.strip()
                 if not sub or sub == '.':
                     continue
                 if sub.startswith('$'):
-                    var_name = sub[1:]
-                    var_nodes = self.tree.xpath(f"//xsl:variable[@name='{var_name}']", namespaces=NSMAP)
+                    var_name = sub[1:].split('/')[0].split('[')[0]
+                    xpath_expr = etree.XPath("//xsl:variable[@name=$v]", namespaces=NSMAP)
+                    var_nodes = xpath_expr(self.tree, v=var_name)
                     if var_nodes and var_nodes[0].get('select'):
-                        inputs.add(_strip_xpath(var_nodes[0].get('select')))
+                        inputs.add(_strip_xpath(var_nodes[0].get('select'), element))
                     else:
                         inputs.add(sub)
                 elif re.match(r'^[0-9]+(\.[0-9]+)?$', sub):
                     continue
                 else:
-                    inputs.add(_strip_xpath(sub))
+                    inputs.add(_strip_xpath(sub, element))
         for c in element.xpath('.//xsl:call-template', namespaces=NSMAP):
             calls.add(f"call:{c.get('name')}")
         # extract outputs
@@ -590,8 +860,18 @@ if __name__ == '__main__':
     if len(sys.argv) >= 3:
         xml_path = sys.argv[2]
         mapping = gen.generate_specs_for_xml(xml_path)
+        
+        # Write merged specs to main file
         mapping_json = json.dumps(mapping, indent=2)
         mapping_file = Path(xslt_path).stem + "_mapping_specs.txt"
         with open(mapping_file, "w", encoding="utf-8") as f:
             f.write(mapping_json)
-        print(f"Mapping specs written to {mapping_file}")
+        print(f"Mapping specs (merged) written to {mapping_file}")
+        
+        # Write original specs to before_merge file
+        if hasattr(gen, '_original_specs'):
+            original_json = json.dumps(gen._original_specs, indent=2)
+            before_merge_file = Path(xslt_path).stem + "_mapping_specs_before_merge.txt"
+            with open(before_merge_file, "w", encoding="utf-8") as f:
+                f.write(original_json)
+            print(f"Original specs (before merge) written to {before_merge_file}")

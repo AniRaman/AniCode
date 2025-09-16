@@ -25,7 +25,7 @@
       "coverage_start_date"
     ],
     "calls": [],
-    "remarks": "Similar to the first, this one processes the departure date by extracting and concatenating the year, month, and day parts from the departureDate field, resulting in a consistent YYYYMMDD date string."
+    "remarks": "This transformation does the same as the first one but for the flight\u2019s departure date, forming a continuous date string from its year, month, and day components."
   },
   {
     "xml_output_node_path": "/root/coverage_end_date",
@@ -40,7 +40,7 @@
       "coverage_end_date"
     ],
     "calls": [],
-    "remarks": "This transformation takes an arrival date value, extracts the year (first 4 characters), the month (next 2 characters), and the day (following 2 characters), then joins them together to form a complete date in YYYYMMDD format."
+    "remarks": "This transformation takes the flight\u2019s arrival date, extracts the year (first 4 characters), the month (next 2 characters), and the day (following 2 characters), and then concatenates them into one continuous date string (format: YYYYMMDD)."
   },
   {
     "xml_output_node_path": "/root/coverage_start_hour_number",
@@ -86,7 +86,7 @@
       "currency"
     ],
     "calls": [],
-    "remarks": "Here, the transformation looks for an agent-specified currency; if one is provided, it uses that value. If not, it defaults to the preferred currency code from the pricing information."
+    "remarks": "This transformation determines which currency code to use for insurance pricing by checking if an agent-specified currency exists; if so, it uses that, otherwise it falls back on a predefined preferred currency code."
   },
   {
     "xml_output_node_path": "/root/exposure_name",
@@ -133,7 +133,7 @@
       "lang_locale"
     ],
     "calls": [],
-    "remarks": "This logic determines the language to use by first checking for a coded language in the user preferences. If found, it takes that; otherwise, it uses the language from the original request. Finally, it ensures the language is set either to 'EN' or 'FR'."
+    "remarks": "This transformation identifies the user's language preference by first examining a coded language setting and then possibly comparing it to the originator's language attribute, ultimately outputting the language code (for example, EN for English or FR for French)."
   },
   {
     "xml_output_node_path": "/root/external_id",
@@ -207,7 +207,7 @@
       "region"
     ],
     "calls": [],
-    "remarks": "Similar to the previous item, this transformation deals with addresses labeled 'ARE' but now looks for location and region details with the qualifier '84', outputting the respective names accordingly."
+    "remarks": "This transformation similarly checks the subscriber's address for a specific qualifier ('ARE') and outputs the name found in the region details tagged with qualifier 84; if that isn't present, it then retrieves the name from the location details with qualifier 84."
   },
   {
     "xml_output_node_path": "/root/billing_address/country",
@@ -223,7 +223,7 @@
       "country"
     ],
     "calls": [],
-    "remarks": "In this case, the transformation targets addresses with a specific qualifier (\u2018ARE\u2019) and a location detail qualifier of '162'. It outputs the associated location name and then, similarly, retrieves the region name for that same address type."
+    "remarks": "This transformation looks for a specific subscriber address (labeled with a particular qualifier for 'ARE') and first attempts to get the associated name from the location details marked with qualifier 162; if that isn't available, it retrieves the name from the region details with the same qualifier."
   },
   {
     "xml_output_node_path": "/root/billing_address/postal_code",
@@ -239,6 +239,6 @@
       "postal_code"
     ],
     "calls": [],
-    "remarks": "This transformation checks if an external postal code variable is provided and not empty; if it is, that value is used. Otherwise, it falls back to using the subscriber\u2019s zip code found in the request."
+    "remarks": "This transformation checks if a zip code is already available in a given variable; if it is, that value is used, otherwise it retrieves the zip code from the subscriber's primary address."
   }
 ]

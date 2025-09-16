@@ -220,40 +220,66 @@ http://www.altova.com/mapforce
 									</xsl:for-each>
 								</cns:EmailAddress>
 							</xsl:for-each>
+							<xsl:variable name="var5_nested">
+								<xsl:for-each select="*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Contact' and namespace-uri()='']">
+									<xsl:variable name="var6_cur" select="."/>
+									<xsl:value-of select="number(boolean(*[local-name()='Email' and namespace-uri()='']))"/>
+								</xsl:for-each>
+							</xsl:variable>
+							<xsl:if test="not(boolean(translate(normalize-space($var5_nested), ' 0', '')))">
+								<cns:EmailAddress>
+									<cns:EmailAddressText>
+										<xsl:value-of select="'NONE'"/>
+									</cns:EmailAddressText>
+								</cns:EmailAddress>
+							</xsl:if>
 							<xsl:for-each select="*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Contact' and namespace-uri()='']/*[local-name()='Phone' and namespace-uri()='']">
-								<xsl:variable name="var5_cur" select="."/>
+								<xsl:variable name="var7_cur" select="."/>
 								<cns:Phone>
 									<xsl:for-each select="*[local-name()='PhoneNumber' and namespace-uri()='']">
-										<xsl:variable name="var6_cur" select="."/>
+										<xsl:variable name="var8_cur" select="."/>
 										<cns:PhoneNumber>
 											<xsl:value-of select="."/>
 										</cns:PhoneNumber>
 									</xsl:for-each>
 								</cns:Phone>
 							</xsl:for-each>
+							<xsl:variable name="var9_nested">
+								<xsl:for-each select="*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Contact' and namespace-uri()='']">
+									<xsl:variable name="var10_cur" select="."/>
+									<xsl:value-of select="number(boolean(*[local-name()='Phone' and namespace-uri()='']))"/>
+								</xsl:for-each>
+							</xsl:variable>
+							<xsl:if test="not(boolean(translate(normalize-space($var9_nested), ' 0', '')))">
+								<cns:Phone>
+									<cns:PhoneNumber>
+										<xsl:value-of select="'NONE'"/>
+									</cns:PhoneNumber>
+								</cns:Phone>
+							</xsl:if>
 							<xsl:for-each select="*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Contact' and namespace-uri()='']/*[local-name()='Address' and namespace-uri()='']">
-								<xsl:variable name="var7_cur" select="."/>
+								<xsl:variable name="var11_cur" select="."/>
 								<cns:PostalAddress>
 									<xsl:for-each select="*[local-name()='CityName' and namespace-uri()='']">
-										<xsl:variable name="var8_cur" select="."/>
+										<xsl:variable name="var12_cur" select="."/>
 										<cns:CityName>
 											<xsl:value-of select="."/>
 										</cns:CityName>
 									</xsl:for-each>
 									<xsl:for-each select="*[local-name()='CountryCode' and namespace-uri()='']">
-										<xsl:variable name="var9_cur" select="."/>
+										<xsl:variable name="var13_cur" select="."/>
 										<cns:CountryCode>
 											<xsl:value-of select="."/>
 										</cns:CountryCode>
 									</xsl:for-each>
 									<xsl:for-each select="*[local-name()='Zip' and namespace-uri()='']">
-										<xsl:variable name="var10_cur" select="."/>
+										<xsl:variable name="var14_cur" select="."/>
 										<cns:PostalCode>
 											<xsl:value-of select="."/>
 										</cns:PostalCode>
 									</xsl:for-each>
 									<xsl:for-each select="*[local-name()='line' and namespace-uri()='']">
-										<xsl:variable name="var11_cur" select="."/>
+										<xsl:variable name="var15_cur" select="."/>
 										<cns:StreetText>
 											<xsl:value-of select="."/>
 										</cns:StreetText>
@@ -272,7 +298,7 @@ http://www.altova.com/mapforce
 								<xsl:value-of select="*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Name' and namespace-uri()='']"/>
 							</cns:Name>
 							<xsl:for-each select="*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='IATA_Number' and namespace-uri()='']">
-								<xsl:variable name="var12_cur" select="."/>
+								<xsl:variable name="var16_cur" select="."/>
 								<cns:OrgID>
 									<xsl:value-of select="."/>
 								</cns:OrgID>
@@ -309,7 +335,7 @@ http://www.altova.com/mapforce
 			</xsl:for-each>
 			<PayloadAttributes>
 				<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='Context' and namespace-uri()='']/*[local-name()='correlationID' and namespace-uri()='']">
-					<xsl:variable name="var13_cur" select="."/>
+					<xsl:variable name="var17_cur" select="."/>
 					<cns:CorrelationID>
 						<xsl:value-of select="."/>
 					</cns:CorrelationID>
@@ -323,26 +349,26 @@ http://www.altova.com/mapforce
 				<cns:CreateOrder>
 					<cns:AcceptSelectedQuotedOfferList>
 						<cns:SelectedPricedOffer>
-							<xsl:variable name="var14_nested">
+							<xsl:variable name="var18_nested">
 								<xsl:choose>
 									<xsl:when test="(count(*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']) = 1)">
 										<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']/*[local-name()='ID' and namespace-uri()='']">
-											<xsl:variable name="var15_cur" select="."/>
+											<xsl:variable name="var19_cur" select="."/>
 											<xsl:value-of select="'1'"/>
 										</xsl:for-each>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']">
-											<xsl:variable name="var16_cur" select="."/>
+											<xsl:variable name="var20_cur" select="."/>
 											<xsl:for-each select="*[local-name()='ID' and namespace-uri()='']">
-												<xsl:variable name="var17_filter" select="."/>
-												<xsl:variable name="var18_nested">
-													<xsl:for-each select="$var16_cur/*[local-name()='product' and namespace-uri()='']">
-														<xsl:variable name="var19_cur" select="."/>
+												<xsl:variable name="var21_filter" select="."/>
+												<xsl:variable name="var22_nested">
+													<xsl:for-each select="$var20_cur/*[local-name()='product' and namespace-uri()='']">
+														<xsl:variable name="var23_cur" select="."/>
 														<xsl:value-of select="number(boolean(*[local-name()='EST' and namespace-uri()='']))"/>
 													</xsl:for-each>
 												</xsl:variable>
-												<xsl:if test="not(boolean(translate(normalize-space($var18_nested), ' 0', '')))">
+												<xsl:if test="not(boolean(translate(normalize-space($var22_nested), ' 0', '')))">
 													<xsl:value-of select="'1'"/>
 												</xsl:if>
 											</xsl:for-each>
@@ -350,27 +376,27 @@ http://www.altova.com/mapforce
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
-							<xsl:if test="boolean(translate(normalize-space($var14_nested), ' 0', ''))">
+							<xsl:if test="boolean(translate(normalize-space($var18_nested), ' 0', ''))">
 								<cns:OfferRefID>
 									<xsl:choose>
 										<xsl:when test="(count(*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']) = 1)">
 											<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']/*[local-name()='ID' and namespace-uri()='']">
-												<xsl:variable name="var20_cur" select="."/>
+												<xsl:variable name="var24_cur" select="."/>
 												<xsl:value-of select="."/>
 											</xsl:for-each>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']">
-												<xsl:variable name="var21_cur" select="."/>
+												<xsl:variable name="var25_cur" select="."/>
 												<xsl:for-each select="*[local-name()='ID' and namespace-uri()='']">
-													<xsl:variable name="var22_filter" select="."/>
-													<xsl:variable name="var23_nested">
-														<xsl:for-each select="$var21_cur/*[local-name()='product' and namespace-uri()='']">
-															<xsl:variable name="var24_cur" select="."/>
+													<xsl:variable name="var26_filter" select="."/>
+													<xsl:variable name="var27_nested">
+														<xsl:for-each select="$var25_cur/*[local-name()='product' and namespace-uri()='']">
+															<xsl:variable name="var28_cur" select="."/>
 															<xsl:value-of select="number(boolean(*[local-name()='EST' and namespace-uri()='']))"/>
 														</xsl:for-each>
 													</xsl:variable>
-													<xsl:if test="not(boolean(translate(normalize-space($var23_nested), ' 0', '')))">
+													<xsl:if test="not(boolean(translate(normalize-space($var27_nested), ' 0', '')))">
 														<xsl:value-of select="."/>
 													</xsl:if>
 												</xsl:for-each>
@@ -379,31 +405,31 @@ http://www.altova.com/mapforce
 									</xsl:choose>
 								</cns:OfferRefID>
 							</xsl:if>
-							<xsl:variable name="var25_nested">
+							<xsl:variable name="var29_nested">
 								<xsl:choose>
 									<xsl:when test="(count(*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']) = 1)">
 										<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']/*[local-name()='property' and namespace-uri()='']">
-											<xsl:variable name="var26_cur" select="."/>
-											<xsl:for-each select="(./*[local-name()='value' and namespace-uri()=''])[($var26_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode')]">
-												<xsl:variable name="var27_filter" select="."/>
+											<xsl:variable name="var30_cur" select="."/>
+											<xsl:for-each select="(./*[local-name()='value' and namespace-uri()=''])[($var30_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode')]">
+												<xsl:variable name="var31_filter" select="."/>
 												<xsl:value-of select="'1'"/>
 											</xsl:for-each>
 										</xsl:for-each>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']">
-											<xsl:variable name="var28_cur" select="."/>
+											<xsl:variable name="var32_cur" select="."/>
 											<xsl:for-each select="*[local-name()='property' and namespace-uri()='']">
-												<xsl:variable name="var29_cur" select="."/>
+												<xsl:variable name="var33_cur" select="."/>
 												<xsl:for-each select="*[local-name()='value' and namespace-uri()='']">
-													<xsl:variable name="var30_filter" select="."/>
-													<xsl:variable name="var31_nested">
-														<xsl:for-each select="$var28_cur/*[local-name()='product' and namespace-uri()='']">
-															<xsl:variable name="var32_cur" select="."/>
+													<xsl:variable name="var34_filter" select="."/>
+													<xsl:variable name="var35_nested">
+														<xsl:for-each select="$var32_cur/*[local-name()='product' and namespace-uri()='']">
+															<xsl:variable name="var36_cur" select="."/>
 															<xsl:value-of select="number(boolean(*[local-name()='EST' and namespace-uri()='']))"/>
 														</xsl:for-each>
 													</xsl:variable>
-													<xsl:if test="(not(boolean(translate(normalize-space($var31_nested), ' 0', ''))) and ($var29_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode'))">
+													<xsl:if test="(not(boolean(translate(normalize-space($var35_nested), ' 0', ''))) and ($var33_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode'))">
 														<xsl:value-of select="'1'"/>
 													</xsl:if>
 												</xsl:for-each>
@@ -412,32 +438,32 @@ http://www.altova.com/mapforce
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
-							<xsl:if test="boolean(translate(normalize-space($var25_nested), ' 0', ''))">
+							<xsl:if test="boolean(translate(normalize-space($var29_nested), ' 0', ''))">
 								<cns:OwnerCode>
 									<xsl:choose>
 										<xsl:when test="(count(*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']) = 1)">
 											<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']/*[local-name()='property' and namespace-uri()='']">
-												<xsl:variable name="var33_cur" select="."/>
-												<xsl:for-each select="(./*[local-name()='value' and namespace-uri()=''])[($var33_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode')]">
-													<xsl:variable name="var34_filter" select="."/>
+												<xsl:variable name="var37_cur" select="."/>
+												<xsl:for-each select="(./*[local-name()='value' and namespace-uri()=''])[($var37_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode')]">
+													<xsl:variable name="var38_filter" select="."/>
 													<xsl:value-of select="."/>
 												</xsl:for-each>
 											</xsl:for-each>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']">
-												<xsl:variable name="var35_cur" select="."/>
+												<xsl:variable name="var39_cur" select="."/>
 												<xsl:for-each select="*[local-name()='property' and namespace-uri()='']">
-													<xsl:variable name="var36_cur" select="."/>
+													<xsl:variable name="var40_cur" select="."/>
 													<xsl:for-each select="*[local-name()='value' and namespace-uri()='']">
-														<xsl:variable name="var37_filter" select="."/>
-														<xsl:variable name="var38_nested">
-															<xsl:for-each select="$var35_cur/*[local-name()='product' and namespace-uri()='']">
-																<xsl:variable name="var39_cur" select="."/>
+														<xsl:variable name="var41_filter" select="."/>
+														<xsl:variable name="var42_nested">
+															<xsl:for-each select="$var39_cur/*[local-name()='product' and namespace-uri()='']">
+																<xsl:variable name="var43_cur" select="."/>
 																<xsl:value-of select="number(boolean(*[local-name()='EST' and namespace-uri()='']))"/>
 															</xsl:for-each>
 														</xsl:variable>
-														<xsl:if test="(not(boolean(translate(normalize-space($var38_nested), ' 0', ''))) and ($var36_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode'))">
+														<xsl:if test="(not(boolean(translate(normalize-space($var42_nested), ' 0', ''))) and ($var40_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode'))">
 															<xsl:value-of select="."/>
 														</xsl:if>
 													</xsl:for-each>
@@ -448,16 +474,16 @@ http://www.altova.com/mapforce
 								</cns:OwnerCode>
 							</xsl:if>
 							<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']/*[local-name()='product' and namespace-uri()='']">
-								<xsl:variable name="var40_cur" select="."/>
+								<xsl:variable name="var44_cur" select="."/>
 								<cns:SelectedOfferItem>
 									<xsl:for-each select="*[local-name()='ID' and namespace-uri()='']">
-										<xsl:variable name="var41_cur" select="."/>
+										<xsl:variable name="var45_cur" select="."/>
 										<cns:OfferItemRefID>
 											<xsl:value-of select="."/>
 										</cns:OfferItemRefID>
 									</xsl:for-each>
 									<xsl:for-each select="*[local-name()='RefIDs' and namespace-uri()='']">
-										<xsl:variable name="var42_cur" select="."/>
+										<xsl:variable name="var46_cur" select="."/>
 										<!-- Manual change start: Call template from Xslt Lib -->
 										<xsl:variable name="PaxRefIDSplit">
 											<xsl:call-template name="split"/>
@@ -470,7 +496,7 @@ http://www.altova.com/mapforce
 									</xsl:for-each>
 									<!-- Manual change end: Call template from Xslt Lib -->
 									<xsl:for-each select="*[local-name()='EST' and namespace-uri()='']/*[local-name()='Data' and namespace-uri()='']/*[local-name()='seatNbr' and namespace-uri()='']">
-										<xsl:variable name="var43_cur" select="."/>
+										<xsl:variable name="var47_cur" select="."/>
 										<cns:SelectedSeat>
 											<cns:ColumnID>
 												<xsl:value-of select="substring(., string-length(string(.)), 1)"/>
@@ -488,20 +514,20 @@ http://www.altova.com/mapforce
 				<cns:DataLists>
 					<cns:ContactInfoList>
 						<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='actor' and namespace-uri()='']">
-							<xsl:variable name="var44_cur" select="."/>
+							<xsl:variable name="var48_cur" select="."/>
 							<xsl:for-each select="*[local-name()='contact' and namespace-uri()='']">
-								<xsl:variable name="var45_filter" select="."/>
-								<xsl:variable name="var46_nested">
+								<xsl:variable name="var49_filter" select="."/>
+								<xsl:variable name="var50_nested">
 									<xsl:choose>
 										<xsl:when test="*[local-name()='contactType' and namespace-uri()='']">
 											<xsl:for-each select="*[local-name()='contactType' and namespace-uri()='']">
-												<xsl:variable name="var47_cur" select="."/>
-												<xsl:variable name="var48_nested">
+												<xsl:variable name="var51_cur" select="."/>
+												<xsl:variable name="var52_nested">
 													<xsl:call-template name="vmf:vmf1_inputtoresult">
 														<xsl:with-param name="input" select="string(.)"/>
 													</xsl:call-template>
 												</xsl:variable>
-												<xsl:value-of select="number(boolean(translate($var48_nested, 'false0 ', '')))"/>
+												<xsl:value-of select="number(boolean(translate($var52_nested, 'false0 ', '')))"/>
 											</xsl:for-each>
 										</xsl:when>
 										<xsl:otherwise>
@@ -509,10 +535,10 @@ http://www.altova.com/mapforce
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:variable>
-								<xsl:if test="boolean(translate(normalize-space($var46_nested), ' 0', ''))">
+								<xsl:if test="boolean(translate(normalize-space($var50_nested), ' 0', ''))">
 									<cns:ContactInfo>
-										<xsl:for-each select="$var44_cur/*[local-name()='ID' and namespace-uri()='']">
-											<xsl:variable name="var49_cur" select="."/>
+										<xsl:for-each select="$var48_cur/*[local-name()='ID' and namespace-uri()='']">
+											<xsl:variable name="var53_cur" select="."/>
 											<cns:ContactInfoID>
 												<xsl:value-of select="concat('CIPAX', translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', ''), '_')"/>
 											</cns:ContactInfoID>
@@ -521,10 +547,10 @@ http://www.altova.com/mapforce
 											<xsl:value-of select="'OTH'"/>
 										</cns:ContactPurposeText>
 										<xsl:for-each select="*[local-name()='email' and namespace-uri()='']">
-											<xsl:variable name="var50_cur" select="."/>
+											<xsl:variable name="var54_cur" select="."/>
 											<cns:EmailAddress>
 												<xsl:for-each select="*[local-name()='label' and namespace-uri()='']">
-													<xsl:variable name="var51_cur" select="."/>
+													<xsl:variable name="var55_cur" select="."/>
 													<cns:ContactTypeText>
 														<xsl:value-of select="."/>
 													</cns:ContactTypeText>
@@ -536,29 +562,29 @@ http://www.altova.com/mapforce
 												</cns:EmailAddressText>
 											</cns:EmailAddress>
 										</xsl:for-each>
-										<xsl:for-each select="$var44_cur/*[local-name()='ID' and namespace-uri()='']">
-											<xsl:variable name="var52_cur" select="."/>
+										<xsl:for-each select="$var48_cur/*[local-name()='ID' and namespace-uri()='']">
+											<xsl:variable name="var56_cur" select="."/>
 											<cns:IndividualRefID>
 												<xsl:value-of select="."/>
 											</cns:IndividualRefID>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='phone' and namespace-uri()='']">
-											<xsl:variable name="var53_cur" select="."/>
+											<xsl:variable name="var57_cur" select="."/>
 											<cns:Phone>
 												<xsl:for-each select="*[local-name()='label' and namespace-uri()='']">
-													<xsl:variable name="var54_cur" select="."/>
+													<xsl:variable name="var58_cur" select="."/>
 													<cns:ContactTypeText>
 														<xsl:value-of select="."/>
 													</cns:ContactTypeText>
 												</xsl:for-each>
 												<xsl:for-each select="*[local-name()='overseasCode' and namespace-uri()='']">
-													<xsl:variable name="var55_cur" select="."/>
+													<xsl:variable name="var59_cur" select="."/>
 													<cns:CountryDialingCode>
 														<xsl:value-of select="."/>
 													</cns:CountryDialingCode>
 												</xsl:for-each>
 												<xsl:for-each select="(./node())[./self::text()]">
-													<xsl:variable name="var56_filter" select="."/>
+													<xsl:variable name="var60_filter" select="."/>
 													<cns:PhoneNumber>
 														<xsl:value-of select="translate(., concat(' `~!@#$%^&amp;*()-_=+[]{}|\:;&quot;',&quot;',./&lt;&gt;?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), '')"/>
 													</cns:PhoneNumber>
@@ -570,47 +596,47 @@ http://www.altova.com/mapforce
 							</xsl:for-each>
 						</xsl:for-each>
 						<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='actor' and namespace-uri()='']">
-							<xsl:variable name="var57_cur" select="."/>
+							<xsl:variable name="var61_cur" select="."/>
 							<xsl:for-each select="*[local-name()='contact' and namespace-uri()='']">
-								<xsl:variable name="var58_filter" select="."/>
-								<xsl:variable name="var59_nested">
+								<xsl:variable name="var62_filter" select="."/>
+								<xsl:variable name="var63_nested">
 									<xsl:for-each select="*[local-name()='contactType' and namespace-uri()='']">
-										<xsl:variable name="var60_cur" select="."/>
-										<xsl:variable name="var61_nested">
+										<xsl:variable name="var64_cur" select="."/>
+										<xsl:variable name="var65_nested">
 											<xsl:call-template name="vmf:vmf2_inputtoresult">
 												<xsl:with-param name="input" select="string(.)"/>
 											</xsl:call-template>
 										</xsl:variable>
-										<xsl:value-of select="number(boolean(translate($var61_nested, 'false0 ', '')))"/>
+										<xsl:value-of select="number(boolean(translate($var65_nested, 'false0 ', '')))"/>
 									</xsl:for-each>
 								</xsl:variable>
-								<xsl:if test="boolean(translate(normalize-space($var59_nested), ' 0', ''))">
+								<xsl:if test="boolean(translate(normalize-space($var63_nested), ' 0', ''))">
 									<cns:ContactInfo>
-										<xsl:for-each select="$var57_cur/*[local-name()='ID' and namespace-uri()='']">
-											<xsl:variable name="var62_cur" select="."/>
+										<xsl:for-each select="$var61_cur/*[local-name()='ID' and namespace-uri()='']">
+											<xsl:variable name="var66_cur" select="."/>
 											<cns:ContactInfoID>
 												<xsl:value-of select="concat('CIPAX', translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', ''), '_')"/>
 											</cns:ContactInfoID>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='contactType' and namespace-uri()='']">
-											<xsl:variable name="var63_cur" select="."/>
+											<xsl:variable name="var67_cur" select="."/>
 											<cns:ContactPurposeText>
-												<xsl:variable name="var64_nested">
+												<xsl:variable name="var68_nested">
 													<xsl:call-template name="vmf:vmf3_inputtoresult">
 														<xsl:with-param name="input" select="string(.)"/>
 													</xsl:call-template>
 												</xsl:variable>
-												<xsl:value-of select="$var64_nested"/>
+												<xsl:value-of select="$var68_nested"/>
 											</cns:ContactPurposeText>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='ContactRefusedInd' and namespace-uri()='']">
-											<xsl:variable name="var65_cur" select="."/>
+											<xsl:variable name="var69_cur" select="."/>
 											<cns:ContactRefusedInd>
 												<xsl:value-of select="boolean(translate(normalize-space(string(.)), ' 0false', ''))"/>
 											</cns:ContactRefusedInd>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='email' and namespace-uri()='']">
-											<xsl:variable name="var66_cur" select="."/>
+											<xsl:variable name="var70_cur" select="."/>
 											<cns:EmailAddress>
 												<cns:EmailAddressText>
 													<!-- Manual change start -->
@@ -619,40 +645,16 @@ http://www.altova.com/mapforce
 												</cns:EmailAddressText>
 											</cns:EmailAddress>
 										</xsl:for-each>
-										<xsl:for-each select="$var57_cur/*[local-name()='ID' and namespace-uri()='']">
-											<xsl:variable name="var67_cur" select="."/>
+										<xsl:for-each select="$var61_cur/*[local-name()='ID' and namespace-uri()='']">
+											<xsl:variable name="var71_cur" select="."/>
 											<cns:IndividualRefID>
 												<xsl:value-of select="."/>
 											</cns:IndividualRefID>
 										</xsl:for-each>
-										<xsl:for-each select="$var57_cur/*[local-name()='address' and namespace-uri()='']/*[local-name()='addresseeName' and namespace-uri()='']">
-											<xsl:variable name="var68_filter" select="."/>
-											<xsl:variable name="var69_nested">
-												<xsl:for-each select="$var58_filter/*[local-name()='contactType' and namespace-uri()='']">
-													<xsl:variable name="var70_cur" select="."/>
-													<xsl:variable name="var71_nested">
-														<xsl:call-template name="vmf:vmf4_inputtoresult">
-															<xsl:with-param name="input" select="string(.)"/>
-														</xsl:call-template>
-													</xsl:variable>
-													<xsl:value-of select="number(boolean(translate($var71_nested, 'false0 ', '')))"/>
-												</xsl:for-each>
-											</xsl:variable>
-											<xsl:if test="boolean(translate(normalize-space($var69_nested), ' 0', ''))">
-												<cns:OtherAddress>
-													<cns:ContactTypeText>
-														<xsl:value-of select="'GSTIN'"/>
-													</cns:ContactTypeText>
-													<cns:OtherAddressText>
-														<xsl:value-of select="."/>
-													</cns:OtherAddressText>
-												</cns:OtherAddress>
-											</xsl:if>
-										</xsl:for-each>
-										<xsl:for-each select="$var57_cur/*[local-name()='address' and namespace-uri()='']/*[local-name()='companyName' and namespace-uri()='']">
+										<xsl:for-each select="$var61_cur/*[local-name()='address' and namespace-uri()='']/*[local-name()='addresseeName' and namespace-uri()='']">
 											<xsl:variable name="var72_filter" select="."/>
 											<xsl:variable name="var73_nested">
-												<xsl:for-each select="$var58_filter/*[local-name()='contactType' and namespace-uri()='']">
+												<xsl:for-each select="$var62_filter/*[local-name()='contactType' and namespace-uri()='']">
 													<xsl:variable name="var74_cur" select="."/>
 													<xsl:variable name="var75_nested">
 														<xsl:call-template name="vmf:vmf4_inputtoresult">
@@ -665,6 +667,30 @@ http://www.altova.com/mapforce
 											<xsl:if test="boolean(translate(normalize-space($var73_nested), ' 0', ''))">
 												<cns:OtherAddress>
 													<cns:ContactTypeText>
+														<xsl:value-of select="'GSTIN'"/>
+													</cns:ContactTypeText>
+													<cns:OtherAddressText>
+														<xsl:value-of select="."/>
+													</cns:OtherAddressText>
+												</cns:OtherAddress>
+											</xsl:if>
+										</xsl:for-each>
+										<xsl:for-each select="$var61_cur/*[local-name()='address' and namespace-uri()='']/*[local-name()='companyName' and namespace-uri()='']">
+											<xsl:variable name="var76_filter" select="."/>
+											<xsl:variable name="var77_nested">
+												<xsl:for-each select="$var62_filter/*[local-name()='contactType' and namespace-uri()='']">
+													<xsl:variable name="var78_cur" select="."/>
+													<xsl:variable name="var79_nested">
+														<xsl:call-template name="vmf:vmf4_inputtoresult">
+															<xsl:with-param name="input" select="string(.)"/>
+														</xsl:call-template>
+													</xsl:variable>
+													<xsl:value-of select="number(boolean(translate($var79_nested, 'false0 ', '')))"/>
+												</xsl:for-each>
+											</xsl:variable>
+											<xsl:if test="boolean(translate(normalize-space($var77_nested), ' 0', ''))">
+												<cns:OtherAddress>
+													<cns:ContactTypeText>
 														<xsl:value-of select="'COMPANY'"/>
 													</cns:ContactTypeText>
 													<cns:OtherAddressText>
@@ -674,81 +700,81 @@ http://www.altova.com/mapforce
 											</xsl:if>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='phone' and namespace-uri()='']">
-											<xsl:variable name="var76_cur" select="."/>
+											<xsl:variable name="var80_cur" select="."/>
 											<cns:Phone>
 												<xsl:for-each select="*[local-name()='label' and namespace-uri()='']">
-													<xsl:variable name="var77_cur" select="."/>
+													<xsl:variable name="var81_cur" select="."/>
 													<cns:ContactTypeText>
 														<xsl:value-of select="."/>
 													</cns:ContactTypeText>
 												</xsl:for-each>
 												<xsl:for-each select="*[local-name()='overseasCode' and namespace-uri()='']">
-													<xsl:variable name="var78_cur" select="."/>
+													<xsl:variable name="var82_cur" select="."/>
 													<cns:CountryDialingCode>
 														<xsl:value-of select="."/>
 													</cns:CountryDialingCode>
 												</xsl:for-each>
 												<xsl:for-each select="(./node())[./self::text()]">
-													<xsl:variable name="var79_filter" select="."/>
+													<xsl:variable name="var83_filter" select="."/>
 													<cns:PhoneNumber>
 														<xsl:value-of select="translate(., concat(' `~!@#$%^&amp;*()-_=+[]{}|\:;&quot;',&quot;',./&lt;&gt;?abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;), '')"/>
 													</cns:PhoneNumber>
 												</xsl:for-each>
 											</cns:Phone>
 										</xsl:for-each>
-										<xsl:for-each select="$var57_cur/*[local-name()='address' and namespace-uri()='']">
-											<xsl:variable name="var80_filter" select="."/>
-											<xsl:variable name="var81_nested">
-												<xsl:for-each select="$var58_filter/*[local-name()='contactType' and namespace-uri()='']">
-													<xsl:variable name="var82_cur" select="."/>
-													<xsl:variable name="var83_nested">
+										<xsl:for-each select="$var61_cur/*[local-name()='address' and namespace-uri()='']">
+											<xsl:variable name="var84_filter" select="."/>
+											<xsl:variable name="var85_nested">
+												<xsl:for-each select="$var62_filter/*[local-name()='contactType' and namespace-uri()='']">
+													<xsl:variable name="var86_cur" select="."/>
+													<xsl:variable name="var87_nested">
 														<xsl:call-template name="vmf:vmf4_inputtoresult">
 															<xsl:with-param name="input" select="string(.)"/>
 														</xsl:call-template>
 													</xsl:variable>
-													<xsl:value-of select="number(((boolean(translate($var83_nested, 'false0 ', '')) and boolean($var80_filter/*[local-name()='companyName' and namespace-uri()=''])) and boolean($var80_filter/*[local-name()='addresseeName' and namespace-uri()=''])))"/>
+													<xsl:value-of select="number(((boolean(translate($var87_nested, 'false0 ', '')) and boolean($var84_filter/*[local-name()='companyName' and namespace-uri()=''])) and boolean($var84_filter/*[local-name()='addresseeName' and namespace-uri()=''])))"/>
 												</xsl:for-each>
 											</xsl:variable>
-											<xsl:if test="boolean(translate(normalize-space($var81_nested), ' 0', ''))">
+											<xsl:if test="boolean(translate(normalize-space($var85_nested), ' 0', ''))">
 												<cns:PostalAddress>
 													<xsl:for-each select="*[local-name()='cityName' and namespace-uri()='']">
-														<xsl:variable name="var84_cur" select="."/>
+														<xsl:variable name="var88_cur" select="."/>
 														<cns:CityName>
 															<xsl:value-of select="."/>
 														</cns:CityName>
 													</xsl:for-each>
 													<xsl:for-each select="*[local-name()='countryCode' and namespace-uri()='']">
-														<xsl:variable name="var85_cur" select="."/>
+														<xsl:variable name="var89_cur" select="."/>
 														<cns:CountryCode>
 															<xsl:value-of select="."/>
 														</cns:CountryCode>
 													</xsl:for-each>
 													<xsl:for-each select="*[local-name()='countryName' and namespace-uri()='']">
-														<xsl:variable name="var86_cur" select="."/>
+														<xsl:variable name="var90_cur" select="."/>
 														<cns:CountryName>
 															<xsl:value-of select="."/>
 														</cns:CountryName>
 													</xsl:for-each>
 													<xsl:for-each select="*[local-name()='stateName' and namespace-uri()='']">
-														<xsl:variable name="var87_cur" select="."/>
+														<xsl:variable name="var91_cur" select="."/>
 														<cns:CountrySubDivisionName>
 															<xsl:value-of select="."/>
 														</cns:CountrySubDivisionName>
 													</xsl:for-each>
 													<xsl:for-each select="*[local-name()='zip' and namespace-uri()='']">
-														<xsl:variable name="var88_cur" select="."/>
+														<xsl:variable name="var92_cur" select="."/>
 														<cns:PostalCode>
 															<xsl:value-of select="."/>
 														</cns:PostalCode>
 													</xsl:for-each>
 													<xsl:for-each select="*[local-name()='line' and namespace-uri()='']">
-														<xsl:variable name="var89_cur" select="."/>
+														<xsl:variable name="var93_cur" select="."/>
 														<cns:StreetText>
 															<xsl:value-of select="."/>
 														</cns:StreetText>
 													</xsl:for-each>
 													<xsl:for-each select="*[local-name()='complement' and namespace-uri()='']">
-														<xsl:variable name="var90_cur" select="."/>
+														<xsl:variable name="var94_cur" select="."/>
 														<cns:StreetText>
 															<xsl:value-of select="."/>
 														</cns:StreetText>
@@ -761,91 +787,91 @@ http://www.altova.com/mapforce
 							</xsl:for-each>
 						</xsl:for-each>
 						<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='actor' and namespace-uri()='']">
-							<xsl:variable name="var91_cur" select="."/>
+							<xsl:variable name="var95_cur" select="."/>
 							<xsl:for-each select="*[local-name()='address' and namespace-uri()='']">
-								<xsl:variable name="var92_filter" select="."/>
-								<xsl:variable name="var93_nested">
+								<xsl:variable name="var96_filter" select="."/>
+								<xsl:variable name="var97_nested">
 									<xsl:for-each select="*[local-name()='label' and namespace-uri()='']">
-										<xsl:variable name="var94_cur" select="."/>
-										<xsl:variable name="var95_nested">
+										<xsl:variable name="var98_cur" select="."/>
+										<xsl:variable name="var99_nested">
 											<xsl:call-template name="vmf:vmf5_inputtoresult">
 												<xsl:with-param name="input" select="translate(., 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 											</xsl:call-template>
 										</xsl:variable>
-										<xsl:value-of select="number(boolean(translate($var95_nested, 'false0 ', '')))"/>
+										<xsl:value-of select="number(boolean(translate($var99_nested, 'false0 ', '')))"/>
 									</xsl:for-each>
 								</xsl:variable>
-								<xsl:if test="boolean(translate(normalize-space($var93_nested), ' 0', ''))">
+								<xsl:if test="boolean(translate(normalize-space($var97_nested), ' 0', ''))">
 									<cns:ContactInfo>
-										<xsl:for-each select="$var91_cur/*[local-name()='ID' and namespace-uri()='']">
-											<xsl:variable name="var96_cur" select="."/>
+										<xsl:for-each select="$var95_cur/*[local-name()='ID' and namespace-uri()='']">
+											<xsl:variable name="var100_cur" select="."/>
 											<cns:ContactInfoID>
 												<xsl:value-of select="concat('CIPAX', translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', ''), '_')"/>
 											</cns:ContactInfoID>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='label' and namespace-uri()='']">
-											<xsl:variable name="var97_cur" select="."/>
-											<xsl:variable name="var98_nested">
+											<xsl:variable name="var101_cur" select="."/>
+											<xsl:variable name="var102_nested">
 												<xsl:call-template name="vmf:vmf6_inputtoresult">
 													<xsl:with-param name="input" select="translate(., 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 												</xsl:call-template>
 											</xsl:variable>
-											<xsl:if test="string($var98_nested)">
+											<xsl:if test="string($var102_nested)">
 												<cns:ContactPurposeText>
-													<xsl:variable name="var99_nested">
+													<xsl:variable name="var103_nested">
 														<xsl:call-template name="vmf:vmf6_inputtoresult">
 															<xsl:with-param name="input" select="translate(., 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 														</xsl:call-template>
 													</xsl:variable>
-													<xsl:value-of select="substring($var99_nested, 2)"/>
+													<xsl:value-of select="substring($var103_nested, 2)"/>
 												</cns:ContactPurposeText>
 											</xsl:if>
 										</xsl:for-each>
-										<xsl:for-each select="$var91_cur/*[local-name()='ID' and namespace-uri()='']">
-											<xsl:variable name="var100_cur" select="."/>
+										<xsl:for-each select="$var95_cur/*[local-name()='ID' and namespace-uri()='']">
+											<xsl:variable name="var104_cur" select="."/>
 											<cns:IndividualRefID>
 												<xsl:value-of select="."/>
 											</cns:IndividualRefID>
 										</xsl:for-each>
 										<cns:PostalAddress>
 											<xsl:for-each select="*[local-name()='cityName' and namespace-uri()='']">
-												<xsl:variable name="var101_cur" select="."/>
+												<xsl:variable name="var105_cur" select="."/>
 												<cns:CityName>
 													<xsl:value-of select="."/>
 												</cns:CityName>
 											</xsl:for-each>
 											<xsl:for-each select="*[local-name()='countryCode' and namespace-uri()='']">
-												<xsl:variable name="var102_cur" select="."/>
+												<xsl:variable name="var106_cur" select="."/>
 												<cns:CountryCode>
 													<xsl:value-of select="."/>
 												</cns:CountryCode>
 											</xsl:for-each>
 											<xsl:for-each select="*[local-name()='countryName' and namespace-uri()='']">
-												<xsl:variable name="var103_cur" select="."/>
+												<xsl:variable name="var107_cur" select="."/>
 												<cns:CountryName>
 													<xsl:value-of select="."/>
 												</cns:CountryName>
 											</xsl:for-each>
 											<xsl:for-each select="*[local-name()='stateName' and namespace-uri()='']">
-												<xsl:variable name="var104_cur" select="."/>
+												<xsl:variable name="var108_cur" select="."/>
 												<cns:CountrySubDivisionName>
 													<xsl:value-of select="."/>
 												</cns:CountrySubDivisionName>
 											</xsl:for-each>
 											<xsl:for-each select="*[local-name()='zip' and namespace-uri()='']">
-												<xsl:variable name="var105_cur" select="."/>
+												<xsl:variable name="var109_cur" select="."/>
 												<cns:PostalCode>
 													<xsl:value-of select="."/>
 												</cns:PostalCode>
 											</xsl:for-each>
 											<xsl:for-each select="*[local-name()='line' and namespace-uri()='']">
-												<xsl:variable name="var106_cur" select="."/>
+												<xsl:variable name="var110_cur" select="."/>
 												<cns:StreetText>
 													<xsl:value-of select="."/>
 												</cns:StreetText>
 											</xsl:for-each>
 											<xsl:for-each select="*[local-name()='complement' and namespace-uri()='']">
-												<xsl:variable name="var107_cur" select="."/>
+												<xsl:variable name="var111_cur" select="."/>
 												<cns:StreetText>
 													<xsl:value-of select="."/>
 												</cns:StreetText>
@@ -858,31 +884,31 @@ http://www.altova.com/mapforce
 					</cns:ContactInfoList>
 					<cns:PaxList>
 						<xsl:for-each select="*[local-name()='Request' and namespace-uri()='']/*[local-name()='actor' and namespace-uri()='']">
-							<xsl:variable name="var108_cur" select="."/>
+							<xsl:variable name="var112_cur" select="."/>
 							<cns:Pax>
 								<xsl:for-each select="(./*[local-name()='docRef' and namespace-uri()=''])[not(*[local-name()='taxIdentifier' and namespace-uri()=''])]">
-									<xsl:variable name="var109_filter" select="."/>
+									<xsl:variable name="var113_filter" select="."/>
 									<cns:IdentityDoc>
 										<xsl:for-each select="*[local-name()='dateOfBirth' and namespace-uri()='']">
-											<xsl:variable name="var110_cur" select="."/>
+											<xsl:variable name="var114_cur" select="."/>
 											<cns:Birthdate>
 												<xsl:value-of select="."/>
 											</cns:Birthdate>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='birthPlace' and namespace-uri()='']">
-											<xsl:variable name="var111_filter" select="."/>
-											<xsl:variable name="var112_nested">
-												<xsl:for-each select="$var109_filter/*[local-name()='visa' and namespace-uri()='']/*[local-name()='visaType' and namespace-uri()='']">
-													<xsl:variable name="var113_cur" select="."/>
-													<xsl:variable name="var114_nested">
+											<xsl:variable name="var115_filter" select="."/>
+											<xsl:variable name="var116_nested">
+												<xsl:for-each select="$var113_filter/*[local-name()='visa' and namespace-uri()='']/*[local-name()='visaType' and namespace-uri()='']">
+													<xsl:variable name="var117_cur" select="."/>
+													<xsl:variable name="var118_nested">
 														<xsl:call-template name="vmf:vmf7_inputtoresult">
 															<xsl:with-param name="input" select="string(.)"/>
 														</xsl:call-template>
 													</xsl:variable>
-													<xsl:value-of select="number(boolean(translate($var114_nested, 'false0 ', '')))"/>
+													<xsl:value-of select="number(boolean(translate($var118_nested, 'false0 ', '')))"/>
 												</xsl:for-each>
 											</xsl:variable>
-											<xsl:if test="boolean(translate(normalize-space($var112_nested), ' 0', ''))">
+											<xsl:if test="boolean(translate(normalize-space($var116_nested), ' 0', ''))">
 												<cns:BirthplaceText>
 													<xsl:value-of select="."/>
 												</cns:BirthplaceText>
@@ -891,7 +917,7 @@ http://www.altova.com/mapforce
 										<xsl:choose>
 											<xsl:when test="*[local-name()='nationalityIATACode' and namespace-uri()='']">
 												<xsl:for-each select="*[local-name()='nationalityIATACode' and namespace-uri()='']">
-													<xsl:variable name="var115_cur" select="."/>
+													<xsl:variable name="var119_cur" select="."/>
 													<cns:CitizenshipCountryCode>
 														<xsl:value-of select="."/>
 													</cns:CitizenshipCountryCode>
@@ -899,7 +925,7 @@ http://www.altova.com/mapforce
 											</xsl:when>
 											<xsl:otherwise>
 												<xsl:for-each select="*[local-name()='nationality' and namespace-uri()='']">
-													<xsl:variable name="var116_cur" select="."/>
+													<xsl:variable name="var120_cur" select="."/>
 													<cns:CitizenshipCountryCode>
 														<xsl:value-of select="."/>
 													</cns:CitizenshipCountryCode>
@@ -907,50 +933,50 @@ http://www.altova.com/mapforce
 											</xsl:otherwise>
 										</xsl:choose>
 										<xsl:for-each select="*[local-name()='expirationDate' and namespace-uri()='']">
-											<xsl:variable name="var117_cur" select="."/>
+											<xsl:variable name="var121_cur" select="."/>
 											<cns:ExpiryDate>
 												<xsl:value-of select="."/>
 											</cns:ExpiryDate>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='Gender' and namespace-uri()='']">
-											<xsl:variable name="var118_cur" select="."/>
+											<xsl:variable name="var122_cur" select="."/>
 											<cns:GenderCode>
-												<xsl:variable name="var119_nested">
+												<xsl:variable name="var123_nested">
 													<xsl:call-template name="vmf:vmf8_inputtoresult">
 														<xsl:with-param name="input" select="string(.)"/>
 													</xsl:call-template>
 												</xsl:variable>
-												<xsl:value-of select="$var119_nested"/>
+												<xsl:value-of select="$var123_nested"/>
 											</cns:GenderCode>
 										</xsl:for-each>
-										<xsl:variable name="var120_nested">
+										<xsl:variable name="var124_nested">
 											<xsl:choose>
 												<xsl:when test="*[local-name()='GivenName' and namespace-uri()='']">
 													<xsl:for-each select="*[local-name()='GivenName' and namespace-uri()='']">
-														<xsl:variable name="var121_cur" select="."/>
+														<xsl:variable name="var125_cur" select="."/>
 														<xsl:value-of select="'1'"/>
 													</xsl:for-each>
 												</xsl:when>
 												<xsl:otherwise>
-													<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='FirstName' and namespace-uri()='']">
-														<xsl:variable name="var122_cur" select="."/>
+													<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='FirstName' and namespace-uri()='']">
+														<xsl:variable name="var126_cur" select="."/>
 														<xsl:value-of select="'1'"/>
 													</xsl:for-each>
 												</xsl:otherwise>
 											</xsl:choose>
 										</xsl:variable>
-										<xsl:if test="boolean(translate(normalize-space($var120_nested), ' 0', ''))">
+										<xsl:if test="boolean(translate(normalize-space($var124_nested), ' 0', ''))">
 											<cns:GivenName>
 												<xsl:choose>
 													<xsl:when test="*[local-name()='GivenName' and namespace-uri()='']">
 														<xsl:for-each select="*[local-name()='GivenName' and namespace-uri()='']">
-															<xsl:variable name="var123_cur" select="."/>
+															<xsl:variable name="var127_cur" select="."/>
 															<xsl:value-of select="."/>
 														</xsl:for-each>
 													</xsl:when>
 													<xsl:otherwise>
-														<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='FirstName' and namespace-uri()='']">
-															<xsl:variable name="var124_cur" select="."/>
+														<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='FirstName' and namespace-uri()='']">
+															<xsl:variable name="var128_cur" select="."/>
 															<xsl:value-of select="."/>
 														</xsl:for-each>
 													</xsl:otherwise>
@@ -958,24 +984,24 @@ http://www.altova.com/mapforce
 											</cns:GivenName>
 										</xsl:if>
 										<xsl:for-each select="(./node())[./self::text()]">
-											<xsl:variable name="var125_filter" select="."/>
+											<xsl:variable name="var129_filter" select="."/>
 											<cns:IdentityDocID>
 												<xsl:value-of select="."/>
 											</cns:IdentityDocID>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='type' and namespace-uri()='']">
-											<xsl:variable name="var126_cur" select="."/>
+											<xsl:variable name="var130_cur" select="."/>
 											<cns:IdentityDocTypeCode>
-												<xsl:variable name="var127_nested">
+												<xsl:variable name="var131_nested">
 													<xsl:call-template name="vmf:vmf9_inputtoresult">
 														<xsl:with-param name="input" select="string(.)"/>
 													</xsl:call-template>
 												</xsl:variable>
-												<xsl:value-of select="$var127_nested"/>
+												<xsl:value-of select="$var131_nested"/>
 											</cns:IdentityDocTypeCode>
 										</xsl:for-each>
 										<xsl:for-each select="*[local-name()='issuanceDate' and namespace-uri()='']">
-											<xsl:variable name="var128_cur" select="."/>
+											<xsl:variable name="var132_cur" select="."/>
 											<cns:IssueDate>
 												<xsl:value-of select="."/>
 											</cns:IssueDate>
@@ -983,7 +1009,7 @@ http://www.altova.com/mapforce
 										<xsl:choose>
 											<xsl:when test="*[local-name()='issuerIATACountryCode' and namespace-uri()='']">
 												<xsl:for-each select="*[local-name()='issuerIATACountryCode' and namespace-uri()='']">
-													<xsl:variable name="var129_cur" select="."/>
+													<xsl:variable name="var133_cur" select="."/>
 													<cns:IssuingCountryCode>
 														<xsl:value-of select="."/>
 													</cns:IssuingCountryCode>
@@ -991,41 +1017,41 @@ http://www.altova.com/mapforce
 											</xsl:when>
 											<xsl:otherwise>
 												<xsl:for-each select="*[local-name()='issuer' and namespace-uri()='']">
-													<xsl:variable name="var130_cur" select="."/>
+													<xsl:variable name="var134_cur" select="."/>
 													<cns:IssuingCountryCode>
 														<xsl:value-of select="."/>
 													</cns:IssuingCountryCode>
 												</xsl:for-each>
 											</xsl:otherwise>
 										</xsl:choose>
-										<xsl:variable name="var131_nested">
+										<xsl:variable name="var135_nested">
 											<xsl:choose>
 												<xsl:when test="*[local-name()='Surname' and namespace-uri()='']">
 													<xsl:for-each select="*[local-name()='Surname' and namespace-uri()='']">
-														<xsl:variable name="var132_cur" select="."/>
+														<xsl:variable name="var136_cur" select="."/>
 														<xsl:value-of select="'1'"/>
 													</xsl:for-each>
 												</xsl:when>
 												<xsl:otherwise>
-													<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
-														<xsl:variable name="var133_cur" select="."/>
+													<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
+														<xsl:variable name="var137_cur" select="."/>
 														<xsl:value-of select="'1'"/>
 													</xsl:for-each>
 												</xsl:otherwise>
 											</xsl:choose>
 										</xsl:variable>
-										<xsl:if test="boolean(translate(normalize-space($var131_nested), ' 0', ''))">
+										<xsl:if test="boolean(translate(normalize-space($var135_nested), ' 0', ''))">
 											<cns:Surname>
 												<xsl:choose>
 													<xsl:when test="*[local-name()='Surname' and namespace-uri()='']">
 														<xsl:for-each select="*[local-name()='Surname' and namespace-uri()='']">
-															<xsl:variable name="var134_cur" select="."/>
+															<xsl:variable name="var138_cur" select="."/>
 															<xsl:value-of select="."/>
 														</xsl:for-each>
 													</xsl:when>
 													<xsl:otherwise>
-														<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
-															<xsl:variable name="var135_cur" select="."/>
+														<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
+															<xsl:variable name="var139_cur" select="."/>
 															<xsl:value-of select="."/>
 														</xsl:for-each>
 													</xsl:otherwise>
@@ -1035,11 +1061,11 @@ http://www.altova.com/mapforce
 									</cns:IdentityDoc>
 								</xsl:for-each>
 								<xsl:for-each select="*[local-name()='docRef' and namespace-uri()='']">
-									<xsl:variable name="var136_filter" select="."/>
+									<xsl:variable name="var140_filter" select="."/>
 									<xsl:if test="*[local-name()='taxIdentifier' and namespace-uri()='']">
 										<cns:IdentityDoc>
 											<xsl:for-each select="*[local-name()='taxIdentifier' and namespace-uri()='']">
-												<xsl:variable name="var137_cur" select="."/>
+												<xsl:variable name="var141_cur" select="."/>
 												<cns:IdentityDocID>
 													<xsl:value-of select="*[local-name()='fiscalNumber' and namespace-uri()='']"/>
 												</cns:IdentityDocID>
@@ -1047,21 +1073,21 @@ http://www.altova.com/mapforce
 											<cns:IdentityDocTypeCode>
 												<xsl:choose>
 													<xsl:when test="*[local-name()='taxIdentifier' and namespace-uri()='']">
-														<xsl:variable name="var138_nested">
+														<xsl:variable name="var142_nested">
 															<xsl:for-each select="*[local-name()='taxIdentifier' and namespace-uri()='']">
-																<xsl:variable name="var139_cur" select="."/>
+																<xsl:variable name="var143_cur" select="."/>
 																<xsl:value-of select="*[local-name()='fiscalType' and namespace-uri()='']"/>
 															</xsl:for-each>
 														</xsl:variable>
-														<xsl:value-of select="$var138_nested"/>
+														<xsl:value-of select="$var142_nested"/>
 													</xsl:when>
 													<xsl:otherwise>
 														<xsl:value-of select="'NULL'"/>
 													</xsl:otherwise>
 												</xsl:choose>
 											</cns:IdentityDocTypeCode>
-											<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
-												<xsl:variable name="var140_cur" select="."/>
+											<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
+												<xsl:variable name="var144_cur" select="."/>
 												<cns:Surname>
 													<xsl:value-of select="."/>
 												</cns:Surname>
@@ -1070,24 +1096,24 @@ http://www.altova.com/mapforce
 									</xsl:if>
 								</xsl:for-each>
 								<xsl:for-each select="*[local-name()='docRef' and namespace-uri()='']">
-									<xsl:variable name="var141_cur" select="."/>
+									<xsl:variable name="var145_cur" select="."/>
 									<xsl:for-each select="*[local-name()='visa' and namespace-uri()='']">
-										<xsl:variable name="var142_filter" select="."/>
-										<xsl:variable name="var143_nested">
+										<xsl:variable name="var146_filter" select="."/>
+										<xsl:variable name="var147_nested">
 											<xsl:for-each select="*[local-name()='visaType' and namespace-uri()='']">
-												<xsl:variable name="var144_cur" select="."/>
-												<xsl:variable name="var145_nested">
+												<xsl:variable name="var148_cur" select="."/>
+												<xsl:variable name="var149_nested">
 													<xsl:call-template name="vmf:vmf10_inputtoresult">
 														<xsl:with-param name="input" select="string(.)"/>
 													</xsl:call-template>
 												</xsl:variable>
-												<xsl:value-of select="number(boolean(translate($var145_nested, 'false0 ', '')))"/>
+												<xsl:value-of select="number(boolean(translate($var149_nested, 'false0 ', '')))"/>
 											</xsl:for-each>
 										</xsl:variable>
-										<xsl:if test="boolean(translate(normalize-space($var143_nested), ' 0', ''))">
+										<xsl:if test="boolean(translate(normalize-space($var147_nested), ' 0', ''))">
 											<cns:IdentityDoc>
 												<xsl:for-each select="*[local-name()='visaNumber' and namespace-uri()='']">
-													<xsl:variable name="var146_cur" select="."/>
+													<xsl:variable name="var150_cur" select="."/>
 													<cns:IdentityDocID>
 														<xsl:value-of select="."/>
 													</cns:IdentityDocID>
@@ -1095,34 +1121,34 @@ http://www.altova.com/mapforce
 												<cns:IdentityDocTypeCode>
 													<xsl:value-of select="'VS'"/>
 												</cns:IdentityDocTypeCode>
-												<xsl:variable name="var147_nested">
+												<xsl:variable name="var151_nested">
 													<xsl:choose>
-														<xsl:when test="$var141_cur/*[local-name()='Surname' and namespace-uri()='']">
-															<xsl:for-each select="$var141_cur/*[local-name()='Surname' and namespace-uri()='']">
-																<xsl:variable name="var148_cur" select="."/>
+														<xsl:when test="$var145_cur/*[local-name()='Surname' and namespace-uri()='']">
+															<xsl:for-each select="$var145_cur/*[local-name()='Surname' and namespace-uri()='']">
+																<xsl:variable name="var152_cur" select="."/>
 																<xsl:value-of select="'1'"/>
 															</xsl:for-each>
 														</xsl:when>
 														<xsl:otherwise>
-															<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
-																<xsl:variable name="var149_cur" select="."/>
+															<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
+																<xsl:variable name="var153_cur" select="."/>
 																<xsl:value-of select="'1'"/>
 															</xsl:for-each>
 														</xsl:otherwise>
 													</xsl:choose>
 												</xsl:variable>
-												<xsl:if test="boolean(translate(normalize-space($var147_nested), ' 0', ''))">
+												<xsl:if test="boolean(translate(normalize-space($var151_nested), ' 0', ''))">
 													<cns:Surname>
 														<xsl:choose>
-															<xsl:when test="$var141_cur/*[local-name()='Surname' and namespace-uri()='']">
-																<xsl:for-each select="$var141_cur/*[local-name()='Surname' and namespace-uri()='']">
-																	<xsl:variable name="var150_cur" select="."/>
+															<xsl:when test="$var145_cur/*[local-name()='Surname' and namespace-uri()='']">
+																<xsl:for-each select="$var145_cur/*[local-name()='Surname' and namespace-uri()='']">
+																	<xsl:variable name="var154_cur" select="."/>
 																	<xsl:value-of select="."/>
 																</xsl:for-each>
 															</xsl:when>
 															<xsl:otherwise>
-																<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
-																	<xsl:variable name="var151_cur" select="."/>
+																<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
+																	<xsl:variable name="var155_cur" select="."/>
 																	<xsl:value-of select="."/>
 																</xsl:for-each>
 															</xsl:otherwise>
@@ -1131,7 +1157,7 @@ http://www.altova.com/mapforce
 												</xsl:if>
 												<cns:Visa>
 													<xsl:for-each select="*[local-name()='enterBeforeDate' and namespace-uri()='']">
-														<xsl:variable name="var152_cur" select="."/>
+														<xsl:variable name="var156_cur" select="."/>
 														<cns:ExpiryDate>
 															<xsl:value-of select="."/>
 														</cns:ExpiryDate>
@@ -1139,7 +1165,7 @@ http://www.altova.com/mapforce
 													<xsl:choose>
 														<xsl:when test="*[local-name()='visaHostIATACountryCode' and namespace-uri()='']">
 															<xsl:for-each select="*[local-name()='visaHostIATACountryCode' and namespace-uri()='']">
-																<xsl:variable name="var153_cur" select="."/>
+																<xsl:variable name="var157_cur" select="."/>
 																<cns:HostCountryCode>
 																	<xsl:value-of select="."/>
 																</cns:HostCountryCode>
@@ -1147,7 +1173,7 @@ http://www.altova.com/mapforce
 														</xsl:when>
 														<xsl:otherwise>
 															<xsl:for-each select="*[local-name()='visaHostCountryCode' and namespace-uri()='']">
-																<xsl:variable name="var154_cur" select="."/>
+																<xsl:variable name="var158_cur" select="."/>
 																<cns:HostCountryCode>
 																	<xsl:value-of select="."/>
 																</cns:HostCountryCode>
@@ -1155,7 +1181,7 @@ http://www.altova.com/mapforce
 														</xsl:otherwise>
 													</xsl:choose>
 													<xsl:for-each select="*[local-name()='visaIssuanceDate' and namespace-uri()='']">
-														<xsl:variable name="var155_cur" select="."/>
+														<xsl:variable name="var159_cur" select="."/>
 														<cns:IssueDate>
 															<xsl:value-of select="."/>
 														</cns:IssueDate>
@@ -1163,7 +1189,7 @@ http://www.altova.com/mapforce
 													<xsl:choose>
 														<xsl:when test="*[local-name()='visaIssueIATACountryCode' and namespace-uri()='']">
 															<xsl:for-each select="*[local-name()='visaIssueIATACountryCode' and namespace-uri()='']">
-																<xsl:variable name="var156_cur" select="."/>
+																<xsl:variable name="var160_cur" select="."/>
 																<cns:IssuingCountryCode>
 																	<xsl:value-of select="."/>
 																</cns:IssuingCountryCode>
@@ -1171,7 +1197,7 @@ http://www.altova.com/mapforce
 														</xsl:when>
 														<xsl:otherwise>
 															<xsl:for-each select="*[local-name()='visaIssueCountryCode' and namespace-uri()='']">
-																<xsl:variable name="var157_cur" select="."/>
+																<xsl:variable name="var161_cur" select="."/>
 																<cns:IssuingCountryCode>
 																	<xsl:value-of select="."/>
 																</cns:IssuingCountryCode>
@@ -1179,7 +1205,7 @@ http://www.altova.com/mapforce
 														</xsl:otherwise>
 													</xsl:choose>
 													<xsl:for-each select="*[local-name()='visaNumber' and namespace-uri()='']">
-														<xsl:variable name="var158_cur" select="."/>
+														<xsl:variable name="var162_cur" select="."/>
 														<cns:VisaID>
 															<xsl:value-of select="."/>
 														</cns:VisaID>
@@ -1190,24 +1216,24 @@ http://www.altova.com/mapforce
 									</xsl:for-each>
 								</xsl:for-each>
 								<xsl:for-each select="*[local-name()='docRef' and namespace-uri()='']">
-									<xsl:variable name="var159_cur" select="."/>
+									<xsl:variable name="var163_cur" select="."/>
 									<xsl:for-each select="*[local-name()='visa' and namespace-uri()='']">
-										<xsl:variable name="var160_filter" select="."/>
-										<xsl:variable name="var161_nested">
+										<xsl:variable name="var164_filter" select="."/>
+										<xsl:variable name="var165_nested">
 											<xsl:for-each select="*[local-name()='visaType' and namespace-uri()='']">
-												<xsl:variable name="var162_cur" select="."/>
-												<xsl:variable name="var163_nested">
+												<xsl:variable name="var166_cur" select="."/>
+												<xsl:variable name="var167_nested">
 													<xsl:call-template name="vmf:vmf11_inputtoresult">
 														<xsl:with-param name="input" select="string(.)"/>
 													</xsl:call-template>
 												</xsl:variable>
-												<xsl:value-of select="number(boolean(translate($var163_nested, 'false0 ', '')))"/>
+												<xsl:value-of select="number(boolean(translate($var167_nested, 'false0 ', '')))"/>
 											</xsl:for-each>
 										</xsl:variable>
-										<xsl:if test="boolean(translate(normalize-space($var161_nested), ' 0', ''))">
+										<xsl:if test="boolean(translate(normalize-space($var165_nested), ' 0', ''))">
 											<cns:IdentityDoc>
 												<xsl:for-each select="*[local-name()='visaNumber' and namespace-uri()='']">
-													<xsl:variable name="var164_cur" select="."/>
+													<xsl:variable name="var168_cur" select="."/>
 													<cns:IdentityDocID>
 														<xsl:value-of select="."/>
 													</cns:IdentityDocID>
@@ -1218,7 +1244,7 @@ http://www.altova.com/mapforce
 												<xsl:choose>
 													<xsl:when test="*[local-name()='visaIssueIATACountryCode' and namespace-uri()='']">
 														<xsl:for-each select="*[local-name()='visaIssueIATACountryCode' and namespace-uri()='']">
-															<xsl:variable name="var165_cur" select="."/>
+															<xsl:variable name="var169_cur" select="."/>
 															<cns:IssuingCountryCode>
 																<xsl:value-of select="."/>
 															</cns:IssuingCountryCode>
@@ -1226,7 +1252,7 @@ http://www.altova.com/mapforce
 													</xsl:when>
 													<xsl:when test="*[local-name()='visaHostIATACountryCode' and namespace-uri()='']">
 														<xsl:for-each select="*[local-name()='visaHostIATACountryCode' and namespace-uri()='']">
-															<xsl:variable name="var166_cur" select="."/>
+															<xsl:variable name="var170_cur" select="."/>
 															<cns:IssuingCountryCode>
 																<xsl:value-of select="."/>
 															</cns:IssuingCountryCode>
@@ -1234,7 +1260,7 @@ http://www.altova.com/mapforce
 													</xsl:when>
 													<xsl:when test="*[local-name()='visaIssueCountryCode' and namespace-uri()='']">
 														<xsl:for-each select="*[local-name()='visaIssueCountryCode' and namespace-uri()='']">
-															<xsl:variable name="var167_cur" select="."/>
+															<xsl:variable name="var171_cur" select="."/>
 															<cns:IssuingCountryCode>
 																<xsl:value-of select="."/>
 															</cns:IssuingCountryCode>
@@ -1242,41 +1268,41 @@ http://www.altova.com/mapforce
 													</xsl:when>
 													<xsl:otherwise>
 														<xsl:for-each select="*[local-name()='visaHostCountryCode' and namespace-uri()='']">
-															<xsl:variable name="var168_cur" select="."/>
+															<xsl:variable name="var172_cur" select="."/>
 															<cns:IssuingCountryCode>
 																<xsl:value-of select="."/>
 															</cns:IssuingCountryCode>
 														</xsl:for-each>
 													</xsl:otherwise>
 												</xsl:choose>
-												<xsl:variable name="var169_nested">
+												<xsl:variable name="var173_nested">
 													<xsl:choose>
-														<xsl:when test="$var159_cur/*[local-name()='Surname' and namespace-uri()='']">
-															<xsl:for-each select="$var159_cur/*[local-name()='Surname' and namespace-uri()='']">
-																<xsl:variable name="var170_cur" select="."/>
+														<xsl:when test="$var163_cur/*[local-name()='Surname' and namespace-uri()='']">
+															<xsl:for-each select="$var163_cur/*[local-name()='Surname' and namespace-uri()='']">
+																<xsl:variable name="var174_cur" select="."/>
 																<xsl:value-of select="'1'"/>
 															</xsl:for-each>
 														</xsl:when>
 														<xsl:otherwise>
-															<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
-																<xsl:variable name="var171_cur" select="."/>
+															<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
+																<xsl:variable name="var175_cur" select="."/>
 																<xsl:value-of select="'1'"/>
 															</xsl:for-each>
 														</xsl:otherwise>
 													</xsl:choose>
 												</xsl:variable>
-												<xsl:if test="boolean(translate(normalize-space($var169_nested), ' 0', ''))">
+												<xsl:if test="boolean(translate(normalize-space($var173_nested), ' 0', ''))">
 													<cns:Surname>
 														<xsl:choose>
-															<xsl:when test="$var159_cur/*[local-name()='Surname' and namespace-uri()='']">
-																<xsl:for-each select="$var159_cur/*[local-name()='Surname' and namespace-uri()='']">
-																	<xsl:variable name="var172_cur" select="."/>
+															<xsl:when test="$var163_cur/*[local-name()='Surname' and namespace-uri()='']">
+																<xsl:for-each select="$var163_cur/*[local-name()='Surname' and namespace-uri()='']">
+																	<xsl:variable name="var176_cur" select="."/>
 																	<xsl:value-of select="."/>
 																</xsl:for-each>
 															</xsl:when>
 															<xsl:otherwise>
-																<xsl:for-each select="$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
-																	<xsl:variable name="var173_cur" select="."/>
+																<xsl:for-each select="$var112_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
+																	<xsl:variable name="var177_cur" select="."/>
 																	<xsl:value-of select="."/>
 																</xsl:for-each>
 															</xsl:otherwise>
@@ -1289,32 +1315,32 @@ http://www.altova.com/mapforce
 								</xsl:for-each>
 								<cns:Individual>
 									<xsl:for-each select="*[local-name()='DateOfBirth' and namespace-uri()='']">
-										<xsl:variable name="var174_cur" select="."/>
+										<xsl:variable name="var178_cur" select="."/>
 										<cns:Birthdate>
 											<xsl:value-of select="."/>
 										</cns:Birthdate>
 									</xsl:for-each>
 									<cns:GenderCode>
-										<xsl:variable name="var175_nested">
+										<xsl:variable name="var179_nested">
 											<xsl:for-each select="*[local-name()='Name' and namespace-uri()='']">
-												<xsl:variable name="var176_cur" select="."/>
+												<xsl:variable name="var180_cur" select="."/>
 												<xsl:value-of select="number(boolean(*[local-name()='Type' and namespace-uri()='']))"/>
 											</xsl:for-each>
 										</xsl:variable>
 										<xsl:choose>
-											<xsl:when test="boolean(translate(normalize-space($var175_nested), ' 0', ''))">
-												<xsl:variable name="var177_nested">
+											<xsl:when test="boolean(translate(normalize-space($var179_nested), ' 0', ''))">
+												<xsl:variable name="var181_nested">
 													<xsl:for-each select="*[local-name()='Name' and namespace-uri()='']/*[local-name()='Type' and namespace-uri()='']">
-														<xsl:variable name="var178_cur" select="."/>
-														<xsl:variable name="var179_nested">
+														<xsl:variable name="var182_cur" select="."/>
+														<xsl:variable name="var183_nested">
 															<xsl:call-template name="vmf:vmf12_inputtoresult">
 																<xsl:with-param name="input" select="translate(., 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 															</xsl:call-template>
 														</xsl:variable>
-														<xsl:value-of select="$var179_nested"/>
+														<xsl:value-of select="$var183_nested"/>
 													</xsl:for-each>
 												</xsl:variable>
-												<xsl:value-of select="$var177_nested"/>
+												<xsl:value-of select="$var181_nested"/>
 											</xsl:when>
 											<xsl:otherwise>
 												<xsl:value-of select="'U'"/>
@@ -1322,35 +1348,35 @@ http://www.altova.com/mapforce
 										</xsl:choose>
 									</cns:GenderCode>
 									<xsl:for-each select="*[local-name()='Name' and namespace-uri()='']/*[local-name()='FirstName' and namespace-uri()='']">
-										<xsl:variable name="var180_cur" select="."/>
+										<xsl:variable name="var184_cur" select="."/>
 										<cns:GivenName>
 											<xsl:value-of select="."/>
 										</cns:GivenName>
 									</xsl:for-each>
 									<xsl:for-each select="*[local-name()='ID' and namespace-uri()='']">
-										<xsl:variable name="var181_cur" select="."/>
+										<xsl:variable name="var185_cur" select="."/>
 										<cns:IndividualID>
 											<xsl:value-of select="."/>
 										</cns:IndividualID>
 									</xsl:for-each>
 									<xsl:for-each select="*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']">
-										<xsl:variable name="var182_cur" select="."/>
+										<xsl:variable name="var186_cur" select="."/>
 										<cns:Surname>
 											<xsl:value-of select="."/>
 										</cns:Surname>
 									</xsl:for-each>
 									<xsl:for-each select="*[local-name()='Name' and namespace-uri()='']/*[local-name()='Title' and namespace-uri()='']">
-										<xsl:variable name="var183_cur" select="."/>
+										<xsl:variable name="var187_cur" select="."/>
 										<cns:TitleName>
 											<xsl:value-of select="."/>
 										</cns:TitleName>
 									</xsl:for-each>
 								</cns:Individual>
 								<xsl:for-each select="*[local-name()='loyalty' and namespace-uri()='']">
-									<xsl:variable name="var184_cur" select="."/>
+									<xsl:variable name="var188_cur" select="."/>
 									<cns:LoyaltyProgramAccount>
 										<xsl:for-each select="*[local-name()='identifier' and namespace-uri()='']">
-											<xsl:variable name="var185_cur" select="."/>
+											<xsl:variable name="var189_cur" select="."/>
 											<cns:AccountNumber>
 												<xsl:value-of select="."/>
 											</cns:AccountNumber>
@@ -1358,7 +1384,7 @@ http://www.altova.com/mapforce
 										<cns:LoyaltyProgram>
 											<cns:Carrier>
 												<xsl:for-each select="*[local-name()='companyCode' and namespace-uri()='']">
-													<xsl:variable name="var186_cur" select="."/>
+													<xsl:variable name="var190_cur" select="."/>
 													<cns:AirlineDesigCode>
 														<xsl:value-of select="."/>
 													</cns:AirlineDesigCode>
@@ -1368,7 +1394,7 @@ http://www.altova.com/mapforce
 									</cns:LoyaltyProgramAccount>
 								</xsl:for-each>
 								<xsl:for-each select="*[local-name()='ID' and namespace-uri()='']">
-									<xsl:variable name="var187_cur" select="."/>
+									<xsl:variable name="var191_cur" select="."/>
 									<cns:PaxID>
 										<xsl:value-of select="."/>
 									</cns:PaxID>
@@ -1384,30 +1410,30 @@ http://www.altova.com/mapforce
 								</xsl:if>
 								<!-- Manual change end: Call template from Xslt Lib -->
 								<xsl:for-each select="*[local-name()='PTC' and namespace-uri()='']">
-									<xsl:variable name="var188_cur" select="."/>
+									<xsl:variable name="var192_cur" select="."/>
 									<cns:PTC>
 										<xsl:value-of select="."/>
 									</cns:PTC>
 								</xsl:for-each>
 								<xsl:for-each select="*[local-name()='docRef' and namespace-uri()='']/*[local-name()='visa' and namespace-uri()='']">
-									<xsl:variable name="var189_filter" select="."/>
-									<xsl:variable name="var190_nested">
+									<xsl:variable name="var193_filter" select="."/>
+									<xsl:variable name="var194_nested">
 										<xsl:for-each select="*[local-name()='visaType' and namespace-uri()='']">
-											<xsl:variable name="var191_cur" select="."/>
-											<xsl:variable name="var192_nested">
+											<xsl:variable name="var195_cur" select="."/>
+											<xsl:variable name="var196_nested">
 												<xsl:call-template name="vmf:vmf13_inputtoresult">
 													<xsl:with-param name="input" select="string(.)"/>
 												</xsl:call-template>
 											</xsl:variable>
-											<xsl:value-of select="number(boolean(translate($var192_nested, 'false0 ', '')))"/>
+											<xsl:value-of select="number(boolean(translate($var196_nested, 'false0 ', '')))"/>
 										</xsl:for-each>
 									</xsl:variable>
-									<xsl:if test="boolean(translate(normalize-space($var190_nested), ' 0', ''))">
+									<xsl:if test="boolean(translate(normalize-space($var194_nested), ' 0', ''))">
 										<cns:RedressCase>
 											<xsl:choose>
 												<xsl:when test="*[local-name()='visaHostIATACountryCode' and namespace-uri()='']">
 													<xsl:for-each select="*[local-name()='visaHostIATACountryCode' and namespace-uri()='']">
-														<xsl:variable name="var193_cur" select="."/>
+														<xsl:variable name="var197_cur" select="."/>
 														<cns:CountryCode>
 															<xsl:value-of select="."/>
 														</cns:CountryCode>
@@ -1415,7 +1441,7 @@ http://www.altova.com/mapforce
 												</xsl:when>
 												<xsl:otherwise>
 													<xsl:for-each select="*[local-name()='visaHostCountryCode' and namespace-uri()='']">
-														<xsl:variable name="var194_cur" select="."/>
+														<xsl:variable name="var198_cur" select="."/>
 														<cns:CountryCode>
 															<xsl:value-of select="."/>
 														</cns:CountryCode>
@@ -1423,7 +1449,7 @@ http://www.altova.com/mapforce
 												</xsl:otherwise>
 											</xsl:choose>
 											<xsl:for-each select="*[local-name()='visaNumber' and namespace-uri()='']">
-												<xsl:variable name="var195_cur" select="."/>
+												<xsl:variable name="var199_cur" select="."/>
 												<cns:RedressCaseID>
 													<xsl:value-of select="."/>
 												</cns:RedressCaseID>

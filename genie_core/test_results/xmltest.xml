@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header xmlns="http://www.amadeus.net/1axml-msg/schema/msg-header-1_0.xsd">
+		<MessageHeader ResponseRequested="true" Reverse="true" Terminate="true" id="0001005EX6NGNH" soap:mustUnderstand="1" version="1.0">
+			<From>1ASI</From>
+			<To>1ASIXSELNDC</To>
+			<TimeStamp>
+				<GenerationTime>2020-09-22T09:04:14Z</GenerationTime>
+			</TimeStamp>
+			<FromRef>
+				<ID>01KX1RS8NF</ID>
+				<SequenceNb>1</SequenceNb>
+			</FromRef>
+			<Service id="1AXML" version="1.0">
+				<name>AMA_ConnectivityLayerRQ</name>
+			</Service>
+			<ExtendedData>
+				<DCC VERS="1.0">
+					<MW>
+						<UKEY TRXNB="5-2" VAL="VF02MXN7RL5S1TGM#TQSLYG#91"/>
+						<SAP DCNAME="MUC" FARM="WEB" NAME="1AAPITES1" TYPE="AP"/>
+						<AFY APP="ROC" AS="937_ROC" DCNAME="MUC"/>
+						<AFY APP="SAS" AS="24T_PK1_SAS" DCNAME="MUC"/>
+						<DYNR>
+							<PEAKTK TYPE="AIRIT" VAL="1A"/>
+							<PEAKTK TYPE="ETK_PTT" VAL="BSG"/>
+						</DYNR>
+					</MW>
+					<SEC CONTENTS="UNDEFINED" VERS="2.11">
+						<USERINFOS>
+							<OFFICEID VALUE="NCE1A0950"/>
+							<SIGN VALUE="0004FV"/>
+							<SIGN_OFFICE VALUE="NCE1A0950"/>
+							<OOFF VALUE="NCE1A0950"/>
+							<AREACODE VALUE="A"/>
+							<DCD VALUE="DCD007000000"/>
+							<USERID VALUE="0004FV"/>
+							<ORGANIZATION VALUE="QA-RES-TKT"/>
+							<COUNTRY VALUE="SG"/>
+							<IATANUMBER VALUE="12345675"/>
+							<ORIGINTYPECODE VALUE="A"/>
+							<NID VALUE="1A"/>
+							<VND VALUE="AMSG"/>
+							<TCC VALUE="SIN"/>
+							<CPI VALUE="00"/>
+							<J VAL="01"/>
+							<IUS VAL="0004FV"/>
+							<IOF VAL="NCE1A0950"/>
+							<ISI VAL="0004FV"/>
+							<IOG VAL="QA-RES-TKT"/>
+						</USERINFOS>
+						<USERSETTINGS>
+							<DUTYCODE VALUE="GS"/>
+						</USERSETTINGS>
+						<PREFERENCES>
+							<LANGUAGE VALUE="EN"/>
+							<CURRENCY VALUE="SGD"/>
+						</PREFERENCES>
+						<SECURITYINDICATORS VALUE="YYF8"/>
+						<SIGNER VAL="O"/>
+					</SEC>
+					<APP KEY="-VOID-" NAME="SBR">
+						<APP KEY="C7YAJYPAXWRE1CEMACKIP09AC0" NAME="ID"/>
+						<APP KEY="00FRP1L9KBESTA/0/O" NAME="RES"/>
+					</APP>
+					<TRX>
+						<SRC IP="10.67.126.149:49800"/>
+					</TRX>{=xlog_dcx.replay_from_files(["Altea_21_OrderCreate_1.json","../../Global_EZT.json", "../ALTEA_21_ProviderApiVersionCache.json"])}</DCC>
+			</ExtendedData>
+		</MessageHeader>
+	</soap:Header>
+	<soap:Body>
+		<AMA_ConnectivityLayerRQ>
+			<Requests>
+				<Request>
+					<action>Create</action>
+					<target>SQ</target>
+					<distributionMethod>NDCX</distributionMethod>
+					<TravelAgency>
+						<IATA_Number>00022665</IATA_Number>
+						<AgencyID>NCE1A27QC</AgencyID>
+						<Name>AMADEUS BLR</Name>
+						<Contact>
+							<Address>
+								<CityName>BLR</CityName>
+								<CountryCode>IN</CountryCode>
+								<line>Prestige Tech Park Internal Rd</line>
+								<line>Kadubeesanahalli, Marathahalli</line>
+								<Zip>560103</Zip>
+							</Address>
+							<Email>
+								<EmailAddress>ALTEANDC_TEST@AMADEUS.COM</EmailAddress>
+							</Email>
+							<Phone>
+								<PhoneNumber>33 09723 02-[](2ABC abc0)</PhoneNumber>
+							</Phone>
+						</Contact>
+					</TravelAgency>
+					<set>
+						<ID>SP1F-8007244240060829609-3</ID>
+						<property>
+							<key>OwnerCode</key>
+							<value>SQ</value>
+						</property>
+						<TID>NOT_USED</TID>
+						<product>
+							<ID>SP1F-8007244240060829609-3-1</ID>
+							<RefIDs>T4 T1 T2</RefIDs>
+						</product>
+						<product>
+							<ID>SP1F-8007244240060829609-3-2</ID>
+							<RefIDs>T1</RefIDs>
+						</product>
+					</set>
+					<set>
+						<ID>PRICE</ID>
+						<property>
+							<key>OwnerCode</key>
+							<value>SQ</value>
+						</property>
+						<TID>NOT USED</TID>
+						<product>
+							<ID>PRICE1-SEG2-AED</ID>
+							<EST>
+								<Data>
+									<seatNbr>51B</seatNbr>
+								</Data>
+							</EST>
+							<RefIDs>T1</RefIDs>
+						</product>
+					</set>
+					<actor>
+						<ID>T1</ID>
+						<PTC>ADT</PTC>
+						<DateOfBirth>1998-12-09</DateOfBirth>
+						<Name>
+							<FirstName>JOHN</FirstName>
+							<LastName>SNOW</LastName>
+							<Type>Male</Type>
+						</Name>
+						<RefIDs>T4</RefIDs>
+						<docRef>P12345<type>P</type>
+							<issuer>FR</issuer>
+							<expirationDate>2022-01-01</expirationDate>
+						</docRef>
+						<docRef>
+							<taxIdentifier>
+								<fiscalType>TestType</fiscalType>
+								<fiscalNumber>1234</fiscalNumber>
+							</taxIdentifier>
+						</docRef>
+						<loyalty>
+							<companyCode>SQ</companyCode>
+							<identifier>1234567</identifier>
+						</loyalty>
+						<contact>
+							<email>john.snow@gmail.com</email>
+							<phone>-\+abc(4545)76#@8<overseasCode>001</overseasCode>
+							</phone>
+						</contact>
+						<address>
+							<label>AddressAtOrigin</label>
+							<line>123 STREET</line>
+							<zip>33160</zip>
+							<cityName>MIAMI</cityName>
+							<cityCode>FL</cityCode>
+							<countryCode>US</countryCode>
+							<countryName>AMERICA</countryName>
+							<stateName>ALABAMA</stateName>
+						</address>
+						<address>
+							<label>AddressAtDestination</label>
+							<countryCode>KOR</countryCode>
+							<line>58 AV EDFRGT</line>
+							<cityName>ATLANTA</cityName>
+							<zip>78888</zip>
+							<IATACountryCode>US</IATACountryCode>
+						</address>
+					</actor>
+					<actor>
+						<ID>T2</ID>
+						<PTC>CHD</PTC>
+						<contact>
+							<email>AB@M.COM</email>
+							<email>ALTEANDC_TEST@AMADEUS.COM</email>
+							<phone>1221111111<label>MOBILE</label>
+							</phone>
+						</contact>
+						<DateOfBirth>2018-06-15</DateOfBirth>
+						<Name>
+							<FirstName>JO</FirstName>
+							<LastName>DEPP</LastName>
+						</Name>
+					</actor>
+					<actor>
+						<ID>T4</ID>
+						<PTC>INF</PTC>
+						<DateOfBirth>2018-12-09</DateOfBirth>
+						<Name>
+							<FirstName>JIMMY</FirstName>
+							<LastName>SNOW</LastName>
+							<Type>Male</Type>
+						</Name>
+					</actor>
+					<id>1</id>
+				</Request>
+			</Requests>
+		</AMA_ConnectivityLayerRQ>
+	</soap:Body>
+</soap:Envelope>

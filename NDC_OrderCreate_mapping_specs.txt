@@ -1,0 +1,951 @@
+[
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/ContactInfoID",
+    "xml_output_node_tag": "ContactInfoID",
+    "spec_type": "element",
+    "field_name": "ContactInfoID",
+    "xslt_snippet": "<cns:ContactInfoID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t<xsl:value-of select=\"'AgencyContact-1'\"/>\n\t\t\t\t\t\t\t</cns:ContactInfoID>\n\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "ContactInfoID"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of 'AgencyContact-1'"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/EmailAddress",
+    "xml_output_node_tag": "EmailAddress",
+    "spec_type": "element",
+    "field_name": "EmailAddress",
+    "xslt_snippet": "<cns:EmailAddress xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='EmailAddress' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var4_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<cns:EmailAddressText>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:EmailAddressText>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t</cns:EmailAddress>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "EmailAddress"
+    ],
+    "outputs": [
+      "EmailAddress",
+      "EmailAddressText"
+    ],
+    "calls": [],
+    "remarks": "Iterate over EmailAddress"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/EmailAddress/EmailAddressText",
+    "xml_output_node_tag": "EmailAddressText",
+    "spec_type": "element",
+    "field_name": "EmailAddressText",
+    "xslt_snippet": "<cns:EmailAddressText xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:EmailAddressText>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "EmailAddress"
+    ],
+    "outputs": [
+      "EmailAddressText"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/Phone",
+    "xml_output_node_tag": "Phone",
+    "spec_type": "element",
+    "field_name": "Phone",
+    "xslt_snippet": "<cns:Phone xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='PhoneNumber' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var6_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<cns:PhoneNumber>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:PhoneNumber>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t</cns:Phone>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "PhoneNumber"
+    ],
+    "outputs": [
+      "Phone",
+      "PhoneNumber"
+    ],
+    "calls": [],
+    "remarks": "Iterate over PhoneNumber"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/Phone/PhoneNumber",
+    "xml_output_node_tag": "PhoneNumber",
+    "spec_type": "element",
+    "field_name": "PhoneNumber",
+    "xslt_snippet": "<cns:PhoneNumber xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:PhoneNumber>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "PhoneNumber"
+    ],
+    "outputs": [
+      "PhoneNumber"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/PostalAddress/CityName",
+    "xml_output_node_tag": "CityName",
+    "spec_type": "element",
+    "field_name": "CityName",
+    "xslt_snippet": "<cns:CityName xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:CityName>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "CityName"
+    ],
+    "outputs": [
+      "CityName"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/PostalAddress/CountryCode",
+    "xml_output_node_tag": "CountryCode",
+    "spec_type": "element",
+    "field_name": "CountryCode",
+    "xslt_snippet": "<cns:CountryCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:CountryCode>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "CountryCode"
+    ],
+    "outputs": [
+      "CountryCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/PostalAddress/PostalCode",
+    "xml_output_node_tag": "PostalCode",
+    "spec_type": "element",
+    "field_name": "PostalCode",
+    "xslt_snippet": "<cns:PostalCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:PostalCode>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "Zip"
+    ],
+    "outputs": [
+      "PostalCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ContactInfo/PostalAddress/StreetText",
+    "xml_output_node_tag": "StreetText",
+    "spec_type": "element",
+    "field_name": "StreetText",
+    "xslt_snippet": "<cns:StreetText xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:StreetText>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "line"
+    ],
+    "outputs": [
+      "StreetText"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/Ordinal",
+    "xml_output_node_tag": "Ordinal",
+    "spec_type": "element",
+    "field_name": "Ordinal",
+    "xslt_snippet": "<cns:Ordinal xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t<xsl:value-of select=\"number('1')\"/>\n\t\t\t\t\t\t</cns:Ordinal>\n\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "Ordinal"
+    ],
+    "calls": [],
+    "remarks": "Call number on '1'"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/OrgRole",
+    "xml_output_node_tag": "OrgRole",
+    "spec_type": "element",
+    "field_name": "OrgRole",
+    "xslt_snippet": "<cns:OrgRole xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t<xsl:value-of select=\"'Seller'\"/>\n\t\t\t\t\t\t</cns:OrgRole>\n\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "OrgRole"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of 'Seller'"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ParticipatingOrg",
+    "xml_output_node_tag": "ParticipatingOrg",
+    "spec_type": "element",
+    "field_name": "ParticipatingOrg",
+    "xslt_snippet": "<cns:ParticipatingOrg xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t<cns:Name>\n\t\t\t\t\t\t\t\t<xsl:value-of select=\"*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Name' and namespace-uri()='']\"/>\n\t\t\t\t\t\t\t</cns:Name>\n\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='IATA_Number' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t<xsl:variable name=\"var12_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t<cns:OrgID>\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</cns:OrgID>\n\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t</cns:ParticipatingOrg>\n\t\t\t\t\t\n",
+    "inputs": [
+      "TravelAgency"
+    ],
+    "outputs": [
+      "Name",
+      "OrgID",
+      "ParticipatingOrg"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of *[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Name' and namespace-uri()=''], Iterate over TravelAgency"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ParticipatingOrg/Name",
+    "xml_output_node_tag": "Name",
+    "spec_type": "element",
+    "field_name": "Name",
+    "xslt_snippet": "<cns:Name xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t<xsl:value-of select=\"*[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Name' and namespace-uri()='']\"/>\n\t\t\t\t\t\t\t</cns:Name>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "TravelAgency"
+    ],
+    "outputs": [
+      "Name"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of *[local-name()='TravelAgency' and namespace-uri()='']/*[local-name()='Name' and namespace-uri()='']"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/ParticipatingOrg/OrgID",
+    "xml_output_node_tag": "OrgID",
+    "spec_type": "element",
+    "field_name": "OrgID",
+    "xslt_snippet": "<cns:OrgID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t</cns:OrgID>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "TravelAgency"
+    ],
+    "outputs": [
+      "OrgID"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/SalesBranch",
+    "xml_output_node_tag": "SalesBranch",
+    "spec_type": "element",
+    "field_name": "SalesBranch",
+    "xslt_snippet": "",
+    "inputs": [],
+    "outputs": [],
+    "calls": [],
+    "remarks": "Fallback copy for <SalesBranch>"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/DistributionChain/DistributionChainLink/SalesBranch/SalesBranchID",
+    "xml_output_node_tag": "SalesBranchID",
+    "spec_type": "element",
+    "field_name": "SalesBranchID",
+    "xslt_snippet": "",
+    "inputs": [],
+    "outputs": [],
+    "calls": [],
+    "remarks": "Fallback copy for <SalesBranchID>"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/PayloadAttributes",
+    "xml_output_node_tag": "PayloadAttributes",
+    "spec_type": "element",
+    "field_name": "PayloadAttributes",
+    "xslt_snippet": "<PayloadAttributes xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t<xsl:for-each select=\"*[local-name()='Request' and namespace-uri()='']/*[local-name()='Context' and namespace-uri()='']/*[local-name()='correlationID' and namespace-uri()='']\">\n\t\t\t\t\t<xsl:variable name=\"var13_cur\" select=\".\"/>\n\t\t\t\t\t<cns:CorrelationID>\n\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t</cns:CorrelationID>\n\t\t\t\t</xsl:for-each>\n\t\t\t\t<cns:VersionNumber>\n\t\t\t\t\t<xsl:value-of select=\"number('21.3')\"/>\n\t\t\t\t</cns:VersionNumber>\n\t\t\t</PayloadAttributes>\n\t\t\t\n",
+    "inputs": [
+      "Request"
+    ],
+    "outputs": [
+      "CorrelationID",
+      "PayloadAttributes",
+      "VersionNumber"
+    ],
+    "calls": [],
+    "remarks": "For each Request element, it assigns a constant numeric value by converting the string \"21.3\" into a number."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/PayloadAttributes/VersionNumber",
+    "xml_output_node_tag": "VersionNumber",
+    "spec_type": "element",
+    "field_name": "VersionNumber",
+    "xslt_snippet": "<cns:VersionNumber xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t<xsl:value-of select=\"number('21.3')\"/>\n\t\t\t\t</cns:VersionNumber>\n\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "VersionNumber"
+    ],
+    "calls": [],
+    "remarks": "Call number on '21.3'"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/POS",
+    "xml_output_node_tag": "POS",
+    "spec_type": "element",
+    "field_name": "POS",
+    "xslt_snippet": "<POS xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\"/>\n\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "POS"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/POS/Country",
+    "xml_output_node_tag": "Country",
+    "spec_type": "element",
+    "field_name": "Country",
+    "xslt_snippet": "",
+    "inputs": [],
+    "outputs": [],
+    "calls": [],
+    "remarks": "Fallback copy for <Country>"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/POS/Country/CountryCode",
+    "xml_output_node_tag": "CountryCode",
+    "spec_type": "element",
+    "field_name": "CountryCode",
+    "xslt_snippet": "<cns:CountryCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:CountryCode>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "CountryCode"
+    ],
+    "outputs": [
+      "CountryCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/CreateOrder/AcceptSelectedQuotedOfferList/SelectedPricedOffer/OfferRefID",
+    "xml_output_node_tag": "OfferRefID",
+    "spec_type": "element",
+    "field_name": "OfferRefID",
+    "xslt_snippet": "<cns:OfferRefID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t<xsl:choose>\n\t\t\t\t\t\t\t\t\t\t<xsl:when test=\"(count(*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']) = 1)\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']/*[local-name()='ID' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var20_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t</xsl:when>\n\t\t\t\t\t\t\t\t\t\t<xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var21_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='ID' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var22_filter\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var23_nested\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"$var21_cur/*[local-name()='product' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var24_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(boolean(*[local-name()='EST' and namespace-uri()='']))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:variable>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:if test=\"not(boolean(translate(normalize-space($var23_nested), ' 0', '')))\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t</xsl:otherwise>\n\t\t\t\t\t\t\t\t\t</xsl:choose>\n\t\t\t\t\t\t\t\t</cns:OfferRefID>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      ".",
+      "EST",
+      "ID",
+      "Request"
+    ],
+    "outputs": [
+      "OfferRefID"
+    ],
+    "calls": [],
+    "remarks": "It first checks if there is exactly one \"set\" element within a \"Request\". If so, it goes through each Request, then each ID and product within that Request, and checks whether the EST element is present (interpreting it as a boolean) and that a cleaned-up variable value isn\u2019t true."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/CreateOrder/AcceptSelectedQuotedOfferList/SelectedPricedOffer/OwnerCode",
+    "xml_output_node_tag": "OwnerCode",
+    "spec_type": "element",
+    "field_name": "OwnerCode",
+    "xslt_snippet": "<cns:OwnerCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t<xsl:choose>\n\t\t\t\t\t\t\t\t\t\t<xsl:when test=\"(count(*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']) = 1)\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']/*[local-name()='property' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var33_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"(./*[local-name()='value' and namespace-uri()=''])[($var33_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode')]\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var34_filter\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t</xsl:when>\n\t\t\t\t\t\t\t\t\t\t<xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='Request' and namespace-uri()='']/*[local-name()='set' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var35_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='property' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var36_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='value' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var37_filter\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var38_nested\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"$var35_cur/*[local-name()='product' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var39_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(boolean(*[local-name()='EST' and namespace-uri()='']))\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:variable>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:if test=\"(not(boolean(translate(normalize-space($var38_nested), ' 0', ''))) and ($var36_cur/*[local-name()='key' and namespace-uri()=''] = 'OwnerCode'))\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:if>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t</xsl:otherwise>\n\t\t\t\t\t\t\t\t\t</xsl:choose>\n\t\t\t\t\t\t\t\t</cns:OwnerCode>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      ".",
+      "EST",
+      "Request",
+      "property",
+      "value"
+    ],
+    "outputs": [
+      "OwnerCode"
+    ],
+    "calls": [],
+    "remarks": "Similar to the previous step, it checks for exactly one \"set\" within a \"Request\" and then loops through values, properties, and products. It evaluates if the EST element exists and applies an extra condition that ensures a cleaned-up variable is empty while a specific key equals \"OwnerCode\"."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/CreateOrder/AcceptSelectedQuotedOfferList/SelectedPricedOffer/SelectedOfferItem",
+    "xml_output_node_tag": "SelectedOfferItem",
+    "spec_type": "element",
+    "field_name": "SelectedOfferItem",
+    "xslt_snippet": "<cns:SelectedOfferItem xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='ID' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var41_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<cns:OfferItemRefID>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:OfferItemRefID>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='RefIDs' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var42_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"PaxRefIDSplit\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:call-template name=\"split\"/>\n\t\t\t\t\t\t\t\t\t\t</xsl:variable>\n\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"ext:node-set($PaxRefIDSplit)/*\">\n\t\t\t\t\t\t\t\t\t\t\t<cns:PaxRefID>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:PaxRefID>\n\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='EST' and namespace-uri()='']/*[local-name()='Data' and namespace-uri()='']/*[local-name()='seatNbr' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var43_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<cns:SelectedSeat>\n\t\t\t\t\t\t\t\t\t\t\t<cns:ColumnID>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"substring(., string-length(string(.)), 1)\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:ColumnID>\n\t\t\t\t\t\t\t\t\t\t\t<cns:SeatRowNumber>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(substring(., 1, (string-length(string(.)) - 1)))\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:SeatRowNumber>\n\t\t\t\t\t\t\t\t\t\t</cns:SelectedSeat>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t</cns:SelectedOfferItem>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "EST",
+      "ID",
+      "RefIDs"
+    ],
+    "outputs": [
+      "ColumnID",
+      "OfferItemRefID",
+      "PaxRefID",
+      "SeatRowNumber",
+      "SelectedOfferItem",
+      "SelectedSeat"
+    ],
+    "calls": [
+      "call:split"
+    ],
+    "remarks": "For every ID, it loops through its RefIDs and passes them to a splitting function. Then for each split piece, it processes EST values by removing the last character and converting them to a number."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/CreateOrder/AcceptSelectedQuotedOfferList/SelectedPricedOffer/SelectedOfferItem/OfferItemRefID",
+    "xml_output_node_tag": "OfferItemRefID",
+    "spec_type": "element",
+    "field_name": "OfferItemRefID",
+    "xslt_snippet": "<cns:OfferItemRefID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:OfferItemRefID>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "ID"
+    ],
+    "outputs": [
+      "OfferItemRefID"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/CreateOrder/AcceptSelectedQuotedOfferList/SelectedPricedOffer/SelectedOfferItem/PaxRefID",
+    "xml_output_node_tag": "PaxRefID",
+    "spec_type": "element",
+    "field_name": "PaxRefID",
+    "xslt_snippet": "<cns:PaxRefID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:PaxRefID>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "PaxRefID"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/CreateOrder/AcceptSelectedQuotedOfferList/SelectedPricedOffer/SelectedOfferItem/SelectedSeat",
+    "xml_output_node_tag": "SelectedSeat",
+    "spec_type": "element",
+    "field_name": "SelectedSeat",
+    "xslt_snippet": "<cns:SelectedSeat xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<cns:ColumnID>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"substring(., string-length(string(.)), 1)\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:ColumnID>\n\t\t\t\t\t\t\t\t\t\t\t<cns:SeatRowNumber>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(substring(., 1, (string-length(string(.)) - 1)))\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:SeatRowNumber>\n\t\t\t\t\t\t\t\t\t\t</cns:SelectedSeat>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "ColumnID",
+      "SeatRowNumber",
+      "SelectedSeat"
+    ],
+    "calls": [],
+    "remarks": "This transformation takes a text value, removes its last character, and then converts the result into a number."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/CreateOrder/AcceptSelectedQuotedOfferList/SelectedPricedOffer/SelectedOfferItem/SelectedSeat/ColumnID",
+    "xml_output_node_tag": "ColumnID",
+    "spec_type": "element",
+    "field_name": "ColumnID",
+    "xslt_snippet": "<cns:ColumnID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"substring(., string-length(string(.)), 1)\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:ColumnID>\n\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "ColumnID"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/CreateOrder/AcceptSelectedQuotedOfferList/SelectedPricedOffer/SelectedOfferItem/SelectedSeat/SeatRowNumber",
+    "xml_output_node_tag": "SeatRowNumber",
+    "spec_type": "element",
+    "field_name": "SeatRowNumber",
+    "xslt_snippet": "<cns:SeatRowNumber xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"number(substring(., 1, (string-length(string(.)) - 1)))\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:SeatRowNumber>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "SeatRowNumber"
+    ],
+    "calls": [],
+    "remarks": "This transformation takes a text value, removes its last character, and then converts the result into a number."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/ContactInfoID",
+    "xml_output_node_tag": "ContactInfoID",
+    "spec_type": "element",
+    "field_name": "ContactInfoID",
+    "xslt_snippet": "<cns:ContactInfoID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t<xsl:value-of select=\"'AgencyContact-1'\"/>\n\t\t\t\t\t\t\t</cns:ContactInfoID>\n\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "ContactInfoID"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of 'AgencyContact-1'"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/ContactPurposeText",
+    "xml_output_node_tag": "ContactPurposeText",
+    "spec_type": "element",
+    "field_name": "ContactPurposeText",
+    "xslt_snippet": "<cns:ContactPurposeText xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"'OTH'\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:ContactPurposeText>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "ContactPurposeText"
+    ],
+    "calls": [],
+    "remarks": "Outputs text of 'OTH'"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/EmailAddress",
+    "xml_output_node_tag": "EmailAddress",
+    "spec_type": "element",
+    "field_name": "EmailAddress",
+    "xslt_snippet": "<cns:EmailAddress xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='EmailAddress' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var4_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<cns:EmailAddressText>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:EmailAddressText>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t</cns:EmailAddress>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "EmailAddress"
+    ],
+    "outputs": [
+      "EmailAddress",
+      "EmailAddressText"
+    ],
+    "calls": [],
+    "remarks": "Iterate over EmailAddress"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/EmailAddress/EmailAddressText",
+    "xml_output_node_tag": "EmailAddressText",
+    "spec_type": "element",
+    "field_name": "EmailAddressText",
+    "xslt_snippet": "<cns:EmailAddressText xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:EmailAddressText>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "EmailAddress"
+    ],
+    "outputs": [
+      "EmailAddressText"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/IndividualRefID",
+    "xml_output_node_tag": "IndividualRefID",
+    "spec_type": "element",
+    "field_name": "IndividualRefID",
+    "xslt_snippet": "<cns:IndividualRefID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:IndividualRefID>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "."
+    ],
+    "outputs": [
+      "IndividualRefID"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/Phone",
+    "xml_output_node_tag": "Phone",
+    "spec_type": "element",
+    "field_name": "Phone",
+    "xslt_snippet": "<cns:Phone xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='PhoneNumber' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var6_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t<cns:PhoneNumber>\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:PhoneNumber>\n\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t</cns:Phone>\n\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "PhoneNumber"
+    ],
+    "outputs": [
+      "Phone",
+      "PhoneNumber"
+    ],
+    "calls": [],
+    "remarks": "Iterate over PhoneNumber"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/Phone/CountryDialingCode",
+    "xml_output_node_tag": "CountryDialingCode",
+    "spec_type": "element",
+    "field_name": "CountryDialingCode",
+    "xslt_snippet": "<cns:CountryDialingCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:CountryDialingCode>\n\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "overseasCode"
+    ],
+    "outputs": [
+      "CountryDialingCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/Phone/PhoneNumber",
+    "xml_output_node_tag": "PhoneNumber",
+    "spec_type": "element",
+    "field_name": "PhoneNumber",
+    "xslt_snippet": "<cns:PhoneNumber xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:PhoneNumber>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "PhoneNumber"
+    ],
+    "outputs": [
+      "PhoneNumber"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/Phone/ContactTypeText",
+    "xml_output_node_tag": "ContactTypeText",
+    "spec_type": "element",
+    "field_name": "ContactTypeText",
+    "xslt_snippet": "<cns:ContactTypeText xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:ContactTypeText>\n\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "label"
+    ],
+    "outputs": [
+      "ContactTypeText"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/PostalAddress/CityName",
+    "xml_output_node_tag": "CityName",
+    "spec_type": "element",
+    "field_name": "CityName",
+    "xslt_snippet": "<cns:CityName xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:CityName>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "CityName"
+    ],
+    "outputs": [
+      "CityName"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/PostalAddress/CountryCode",
+    "xml_output_node_tag": "CountryCode",
+    "spec_type": "element",
+    "field_name": "CountryCode",
+    "xslt_snippet": "<cns:CountryCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:CountryCode>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "CountryCode"
+    ],
+    "outputs": [
+      "CountryCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/PostalAddress/CountryName",
+    "xml_output_node_tag": "CountryName",
+    "spec_type": "element",
+    "field_name": "CountryName",
+    "xslt_snippet": "<cns:CountryName xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:CountryName>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "countryName"
+    ],
+    "outputs": [
+      "CountryName"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/PostalAddress/CountrySubDivisionName",
+    "xml_output_node_tag": "CountrySubDivisionName",
+    "spec_type": "element",
+    "field_name": "CountrySubDivisionName",
+    "xslt_snippet": "<cns:CountrySubDivisionName xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:CountrySubDivisionName>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "stateName"
+    ],
+    "outputs": [
+      "CountrySubDivisionName"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/PostalAddress/PostalCode",
+    "xml_output_node_tag": "PostalCode",
+    "spec_type": "element",
+    "field_name": "PostalCode",
+    "xslt_snippet": "<cns:PostalCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:PostalCode>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "Zip"
+    ],
+    "outputs": [
+      "PostalCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/ContactInfoList/ContactInfo/PostalAddress/StreetText",
+    "xml_output_node_tag": "StreetText",
+    "spec_type": "element",
+    "field_name": "StreetText",
+    "xslt_snippet": "<cns:StreetText xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:StreetText>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "line"
+    ],
+    "outputs": [
+      "StreetText"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/IdentityDoc/ExpiryDate",
+    "xml_output_node_tag": "ExpiryDate",
+    "spec_type": "element",
+    "field_name": "ExpiryDate",
+    "xslt_snippet": "<cns:ExpiryDate xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:ExpiryDate>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "expirationDate"
+    ],
+    "outputs": [
+      "ExpiryDate"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/IdentityDoc/GivenName",
+    "xml_output_node_tag": "GivenName",
+    "spec_type": "element",
+    "field_name": "GivenName",
+    "xslt_snippet": "<cns:GivenName xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:when test=\"*[local-name()='GivenName' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='GivenName' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var123_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:when>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='FirstName' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var124_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t</cns:GivenName>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      ".",
+      "GivenName"
+    ],
+    "outputs": [
+      "GivenName"
+    ],
+    "calls": [],
+    "remarks": "This transformation looks for a \"GivenName\" element. If it exists, it processes each \"GivenName\" and its related \"Name\" details."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/IdentityDoc/IdentityDocID",
+    "xml_output_node_tag": "IdentityDocID",
+    "spec_type": "element",
+    "field_name": "IdentityDocID",
+    "xslt_snippet": "<cns:IdentityDocID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:IdentityDocID>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "IdentityDocID"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/IdentityDoc/IdentityDocTypeCode",
+    "xml_output_node_tag": "IdentityDocTypeCode",
+    "spec_type": "element",
+    "field_name": "IdentityDocTypeCode",
+    "xslt_snippet": "<cns:IdentityDocTypeCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var127_nested\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:call-template name=\"vmf:vmf9_inputtoresult\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:with-param name=\"input\" select=\"string(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:call-template>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:variable>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"$var127_nested\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:IdentityDocTypeCode>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "$var127_nested"
+    ],
+    "outputs": [
+      "IdentityDocTypeCode"
+    ],
+    "calls": [
+      "call:vmf:vmf9_inputtoresult"
+    ],
+    "remarks": "Delegates to vmf:vmf9_inputtoresult, Outputs text of $var127_nested"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/IdentityDoc/IssuingCountryCode",
+    "xml_output_node_tag": "IssuingCountryCode",
+    "spec_type": "element",
+    "field_name": "IssuingCountryCode",
+    "xslt_snippet": "<cns:IssuingCountryCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:IssuingCountryCode>\n\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "issuerIATACountryCode"
+    ],
+    "outputs": [
+      "IssuingCountryCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/IdentityDoc/Surname",
+    "xml_output_node_tag": "Surname",
+    "spec_type": "element",
+    "field_name": "Surname",
+    "xslt_snippet": "<cns:Surname xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:when test=\"*[local-name()='Surname' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='Surname' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var134_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:when>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var135_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t</cns:Surname>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      ".",
+      "Surname"
+    ],
+    "outputs": [
+      "Surname"
+    ],
+    "calls": [],
+    "remarks": "It checks for a \"Surname\" element and, if found, iterates over each \"Surname\" along with its contained \"Name\" data."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/Individual/Birthdate",
+    "xml_output_node_tag": "Birthdate",
+    "spec_type": "element",
+    "field_name": "Birthdate",
+    "xslt_snippet": "<cns:Birthdate xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:Birthdate>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "dateOfBirth"
+    ],
+    "outputs": [
+      "Birthdate"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/Individual/GenderCode",
+    "xml_output_node_tag": "GenderCode",
+    "spec_type": "element",
+    "field_name": "GenderCode",
+    "xslt_snippet": "<cns:GenderCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var119_nested\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:call-template name=\"vmf:vmf8_inputtoresult\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:with-param name=\"input\" select=\"string(.)\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:call-template>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:variable>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\"$var119_nested\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:GenderCode>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "$var119_nested"
+    ],
+    "outputs": [
+      "GenderCode"
+    ],
+    "calls": [
+      "call:vmf:vmf8_inputtoresult"
+    ],
+    "remarks": "Delegates to vmf:vmf8_inputtoresult, Outputs text of $var119_nested"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/Individual/GivenName",
+    "xml_output_node_tag": "GivenName",
+    "spec_type": "element",
+    "field_name": "GivenName",
+    "xslt_snippet": "<cns:GivenName xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:when test=\"*[local-name()='GivenName' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='GivenName' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var123_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:when>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='FirstName' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var124_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t</cns:GivenName>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      ".",
+      "GivenName"
+    ],
+    "outputs": [
+      "GivenName"
+    ],
+    "calls": [],
+    "remarks": "This transformation looks for a \"GivenName\" element. If it exists, it processes each \"GivenName\" and its related \"Name\" details."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/Individual/IndividualID",
+    "xml_output_node_tag": "IndividualID",
+    "spec_type": "element",
+    "field_name": "IndividualID",
+    "xslt_snippet": "<cns:IndividualID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t</cns:IndividualID>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "ID"
+    ],
+    "outputs": [
+      "IndividualID"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/Individual/Surname",
+    "xml_output_node_tag": "Surname",
+    "spec_type": "element",
+    "field_name": "Surname",
+    "xslt_snippet": "<cns:Surname xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:when test=\"*[local-name()='Surname' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='Surname' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var134_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:when>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"$var108_cur/*[local-name()='Name' and namespace-uri()='']/*[local-name()='LastName' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var135_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</xsl:otherwise>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:choose>\n\t\t\t\t\t\t\t\t\t\t\t</cns:Surname>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      ".",
+      "Surname"
+    ],
+    "outputs": [
+      "Surname"
+    ],
+    "calls": [],
+    "remarks": "It checks for a \"Surname\" element and, if found, iterates over each \"Surname\" along with its contained \"Name\" data."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/LoyaltyProgramAccount",
+    "xml_output_node_tag": "LoyaltyProgramAccount",
+    "spec_type": "element",
+    "field_name": "LoyaltyProgramAccount",
+    "xslt_snippet": "<cns:LoyaltyProgramAccount xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='identifier' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var185_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t<cns:AccountNumber>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:AccountNumber>\n\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t<cns:LoyaltyProgram>\n\t\t\t\t\t\t\t\t\t\t\t<cns:Carrier>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='companyCode' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var186_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<cns:AirlineDesigCode>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:AirlineDesigCode>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t</cns:Carrier>\n\t\t\t\t\t\t\t\t\t\t</cns:LoyaltyProgram>\n\t\t\t\t\t\t\t\t\t</cns:LoyaltyProgramAccount>\n\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "companyCode",
+      "identifier"
+    ],
+    "outputs": [
+      "AccountNumber",
+      "AirlineDesigCode",
+      "Carrier",
+      "LoyaltyProgram",
+      "LoyaltyProgramAccount"
+    ],
+    "calls": [],
+    "remarks": "It goes through each identifier and, within each one, it processes the associated companyCode information."
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/LoyaltyProgramAccount/AccountNumber",
+    "xml_output_node_tag": "AccountNumber",
+    "spec_type": "element",
+    "field_name": "AccountNumber",
+    "xslt_snippet": "<cns:AccountNumber xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:AccountNumber>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "identifier"
+    ],
+    "outputs": [
+      "AccountNumber"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/LoyaltyProgramAccount/LoyaltyProgram",
+    "xml_output_node_tag": "LoyaltyProgram",
+    "spec_type": "element",
+    "field_name": "LoyaltyProgram",
+    "xslt_snippet": "<cns:LoyaltyProgram xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t<cns:Carrier>\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='companyCode' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var186_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<cns:AirlineDesigCode>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:AirlineDesigCode>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t</cns:Carrier>\n\t\t\t\t\t\t\t\t\t\t</cns:LoyaltyProgram>\n\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "companyCode"
+    ],
+    "outputs": [
+      "AirlineDesigCode",
+      "Carrier",
+      "LoyaltyProgram"
+    ],
+    "calls": [],
+    "remarks": "Iterate over companyCode"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/LoyaltyProgramAccount/LoyaltyProgram/Carrier",
+    "xml_output_node_tag": "Carrier",
+    "spec_type": "element",
+    "field_name": "Carrier",
+    "xslt_snippet": "<cns:Carrier xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:for-each select=\"*[local-name()='companyCode' and namespace-uri()='']\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:variable name=\"var186_cur\" select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t<cns:AirlineDesigCode>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:AirlineDesigCode>\n\t\t\t\t\t\t\t\t\t\t\t\t</xsl:for-each>\n\t\t\t\t\t\t\t\t\t\t\t</cns:Carrier>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "companyCode"
+    ],
+    "outputs": [
+      "AirlineDesigCode",
+      "Carrier"
+    ],
+    "calls": [],
+    "remarks": "Iterate over companyCode"
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/LoyaltyProgramAccount/LoyaltyProgram/Carrier/AirlineDesigCode",
+    "xml_output_node_tag": "AirlineDesigCode",
+    "spec_type": "element",
+    "field_name": "AirlineDesigCode",
+    "xslt_snippet": "<cns:AirlineDesigCode xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t\t\t</cns:AirlineDesigCode>\n\t\t\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "companyCode"
+    ],
+    "outputs": [
+      "AirlineDesigCode"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/PaxID",
+    "xml_output_node_tag": "PaxID",
+    "spec_type": "element",
+    "field_name": "PaxID",
+    "xslt_snippet": "<cns:PaxID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t</cns:PaxID>\n\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "ID"
+    ],
+    "outputs": [
+      "PaxID"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/PTC",
+    "xml_output_node_tag": "PTC",
+    "spec_type": "element",
+    "field_name": "PTC",
+    "xslt_snippet": "<cns:PTC xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t</cns:PTC>\n\t\t\t\t\t\t\t\t\n",
+    "inputs": [
+      "PTC"
+    ],
+    "outputs": [
+      "PTC"
+    ],
+    "calls": [],
+    "remarks": ""
+  },
+  {
+    "xml_output_node_path": "/IATA_OrderCreateRQ/Request/DataLists/PaxList/Pax/PaxRefID",
+    "xml_output_node_tag": "PaxRefID",
+    "spec_type": "element",
+    "field_name": "PaxRefID",
+    "xslt_snippet": "<cns:PaxRefID xmlns:cns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersCommonTypes\" xmlns=\"http://www.iata.org/IATA/2015/EASD/00/IATA_OffersAndOrdersMessage\" xmlns:dsig=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" xmlns:vmf=\"http://www.altova.com/MapForce/UDF/vmf\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ext=\"http://exslt.org/common\">\n\t\t\t\t\t\t\t\t\t\t\t\t<xsl:value-of select=\".\"/>\n\t\t\t\t\t\t\t\t\t\t\t</cns:PaxRefID>\n\t\t\t\t\t\t\t\t\t\t\n",
+    "inputs": [],
+    "outputs": [
+      "PaxRefID"
+    ],
+    "calls": [],
+    "remarks": ""
+  }
+]

@@ -27,6 +27,8 @@ import os
 import sqlite3
 from pathlib import Path
 import json
+import tempfile
+import atexit
 from typing import List, Tuple, Optional, Dict, Any
 
 from lxml import etree
@@ -34,9 +36,21 @@ from lxml import etree
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-_DB_DIR = Path("xslt_generator/database")
-_DB_DIR.mkdir(parents=True, exist_ok=True)
-_DB_PATH = _DB_DIR / "refine_cache.db"
+# Create a temporary database file for this session
+_TEMP_DB_FILE = tempfile.NamedTemporaryFile(suffix='.db', delete=False)
+_DB_PATH = Path(_TEMP_DB_FILE.name)
+_TEMP_DB_FILE.close()
+
+# Register cleanup function to delete temp database on exit
+def _cleanup_temp_db():
+    try:
+        if _DB_PATH.exists():
+            _DB_PATH.unlink()
+            print(f"Cleaned up temporary database: {_DB_PATH}")
+    except Exception as e:
+        print(f"Error cleaning up temporary database: {e}")
+
+atexit.register(_cleanup_temp_db)
 
 _ALLOWED_TAGS = {
     "for-each",
@@ -90,6 +104,7 @@ def cache_actions(fingerprint: str, actions: List[Dict[str, Any]]) -> None:
         )
         conn.commit()
     print(f"Recorded actions for pattern {fingerprint[:8]} in SQLite cache")
+
 
 
 def apply_cached_actions(template_text: str, fingerprint: str) -> str:
