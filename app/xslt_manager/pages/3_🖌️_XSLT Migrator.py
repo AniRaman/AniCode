@@ -356,13 +356,14 @@ with tab2:
             except Exception as e:
                 st.error(f"❌ Error generating specifications: {str(e)}")
                 st.info("💡 Tip: Ensure both XSLT and XML files are valid and properly formatted")
-                return
+                # Don't display results if generation failed
+                specs = None
         else:
             # Specs already generated, show cached results
             st.info("✅ Specifications already generated. Showing cached results.")
 
         # Display results (either fresh or cached)
-        if 'generated_specs' in st.session_state:
+        if 'generated_specs' in st.session_state and st.session_state.generated_specs is not None:
             specs = st.session_state.generated_specs
             st.success(f"✅ {len(specs)} mapping specifications available")
 
