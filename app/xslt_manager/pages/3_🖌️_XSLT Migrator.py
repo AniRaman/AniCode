@@ -447,32 +447,31 @@ with tab2:
 
                                 if not space_key:
                                     st.error("❌ Could not extract space from URL. Please check the URL format.")
-                                    return
+                                else:
+                                    # Convert specs to HTML table format
+                                    html_table = "<table border='1' cellpadding='5' cellspacing='0'>"
+                                    html_table += "<tr><th>Field Name</th><th>Input XPath</th><th>Output XPath</th><th>Node Type</th><th>Remarks</th></tr>"
 
-                            # Convert specs to HTML table format
-                            html_table = "<table border='1' cellpadding='5' cellspacing='0'>"
-                            html_table += "<tr><th>Field Name</th><th>Input XPath</th><th>Output XPath</th><th>Node Type</th><th>Remarks</th></tr>"
+                                    for spec in specs:
+                                        html_table += "<tr>"
+                                        html_table += f"<td>{spec.get('field_name', 'N/A')}</td>"
+                                        html_table += f"<td>{', '.join(spec.get('inputs', [])) if spec.get('inputs') else 'None'}</td>"
+                                        html_table += f"<td>{spec.get('xml_output_node_path', 'N/A')}</td>"
+                                        html_table += f"<td>{spec.get('spec_type', 'N/A')}</td>"
+                                        html_table += f"<td>{spec.get('remarks', 'N/A')}</td>"
+                                        html_table += "</tr>"
 
-                            for spec in specs:
-                                html_table += "<tr>"
-                                html_table += f"<td>{spec.get('field_name', 'N/A')}</td>"
-                                html_table += f"<td>{', '.join(spec.get('inputs', [])) if spec.get('inputs') else 'None'}</td>"
-                                html_table += f"<td>{spec.get('xml_output_node_path', 'N/A')}</td>"
-                                html_table += f"<td>{spec.get('spec_type', 'N/A')}</td>"
-                                html_table += f"<td>{spec.get('remarks', 'N/A')}</td>"
-                                html_table += "</tr>"
+                                    html_table += "</table>"
 
-                            html_table += "</table>"
-
-                            # Publish to Confluence
-                            if space_key and parent_page_id:
-                                # Create page under parent
-                                publish_content_with_parent(space_key, parent_page_id, confluence_page, html_table)
-                                st.success(f"✅ Successfully published specifications to Confluence page: {confluence_page} under parent page")
-                            elif space_key:
-                                # Create page at root of space
-                                publish_content(space_key, confluence_page, html_table)
-                                st.success(f"✅ Successfully published specifications to Confluence page: {confluence_page} in space {space_key}")
+                                    # Publish to Confluence
+                                    if space_key and parent_page_id:
+                                        # Create page under parent
+                                        publish_content_with_parent(space_key, parent_page_id, confluence_page, html_table)
+                                        st.success(f"✅ Successfully published specifications to Confluence page: {confluence_page} under parent page")
+                                    elif space_key:
+                                        # Create page at root of space
+                                        publish_content(space_key, confluence_page, html_table)
+                                        st.success(f"✅ Successfully published specifications to Confluence page: {confluence_page} in space {space_key}")
                             else:
                                 st.error("❌ Please provide a valid Confluence URL or contact admin for space configuration")
 
