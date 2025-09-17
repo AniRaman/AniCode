@@ -74,7 +74,7 @@ def get_function_definitions() -> List[Dict]:
                 "properties": {
                     "specs_source": {
                         "type": "string",
-                        "description": "The URL containing specifications OR the identifier for uploaded file (e.g., 'file:filename.html')"
+                        "description": "MUST be either: (1) HTTP/HTTPS URL for web specs, OR (2) 'file:filename' format for uploaded files. For file uploads, always extract the part after 'file:/' or 'file:' from user message."
                     }
                 },
                 "required": ["specs_source"]
@@ -190,6 +190,10 @@ def process_specs_and_generate_xslt(specs_source: str) -> Tuple[bool, str, Optio
     """
     try:
         # Determine if this is a URL or file
+        print(f"DEBUG: process_specs_and_generate_xslt received specs_source: {repr(specs_source)}")
+        print(f"DEBUG: specs_source type: {type(specs_source)}")                                      
+               
+        print("Specs source : ", specs_source)
         is_file = specs_source.startswith("file:")
         
         if is_file:
@@ -270,24 +274,23 @@ def process_specs_and_generate_xslt(specs_source: str) -> Tuple[bool, str, Optio
                 main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
             
             # Process simple mappings second (preserving original order)
-            for i in range(0, len(s_rows), batch_size):
-                context_batch = s_rows.iloc[i:i + batch_size]
-                print(f"context {i // batch_size + 1}:")
-                context_fields = ",".join(map(str, context_batch["Field"]))
-                print(f"Map all the elements mentioned here :{context_fields}")
-                if not context_fields:
-                    continue
-                message = f"Map all the elements mentioned here :{context_fields}"
-                print(context_batch)
-                main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
+            # for i in range(0, len(s_rows), batch_size):
+            #     context_batch = s_rows.iloc[i:i + batch_size]
+            #     print(f"context {i // batch_size + 1}:")
+            #     context_fields = ",".join(map(str, context_batch["Field"]))
+            #     print(f"Map all the elements mentioned here :{context_fields}")
+            #     if not context_fields:
+            #         continue
+            #     message = f"Map all the elements mentioned here :{context_fields}"
+            #     print(context_batch)
+            #     main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
         
         # Update context with generated XSLT
         context.current_xslt = main_xslt
         context.processing_status = "generated"
-        context.ask_yes_no = True
         context.to_session_state()
         
-        return True, "XSLT for your requested field has been generated. Do you want to refine?", main_xslt
+        return True, "XSLT generated successfully! You can refine it by typing messages like 'Fix TaxAmount to include currency format' or download it from the output tab.", main_xslt
             
     except Exception as e:
         print(f"Error in process_specs_and_generate_xslt: {e}")
@@ -340,13 +343,12 @@ def refine_existing_xslt(field_names: str, refinement_instructions: str) -> Tupl
                 
                 # Update context
                 context.current_xslt = updated_xslt
-                context.ask_yes_no = True
                 context.to_session_state()
                 
                 # Update specifications (preserving original logic)
                 update_specs(final_msg, fields_ref_str)
                 
-                return True, "Both XSLT and Specs have been refined. Any Corrections?", updated_xslt
+                return True, "XSLT and specifications refined successfully! Ask for more changes or download the updated XSLT.", updated_xslt
             else:
                 return False, "Failed to extract refined XSLT from response", None
                 
@@ -522,7 +524,10 @@ def process_user_request_agentic(message: str, chat_history: List[Tuple[str, str
         functions = get_function_definitions()
         
         # Call GPT with function calling using Azure OpenAI client directly
-        print("Calling GPT with function calling capability...")
+        print("=== AGENTIC DEBUG: Calling GPT with function calling capability ===")
+        print(f"AGENT MODEL: {o3_mini_model_name}")
+        print(f"CLIENT: o3client (Azure OpenAI)")
+        print(f"FUNCTIONS AVAILABLE: {[f['name'] for f in functions]}")
         try:
             response = o3client.chat.completions.create(
                 model=o3_mini_model_name,
@@ -543,7 +548,10 @@ def process_user_request_agentic(message: str, chat_history: List[Tuple[str, str
         
         # Check if GPT wants to call a function
         if hasattr(response.choices[0].message, 'function_call') and response.choices[0].message.function_call:
-            print(f"GPT called function: {response.choices[0].message.function_call.name}")
+            function_name = response.choices[0].message.function_call.name
+            print(f"=== AGENTIC DEBUG: GPT Function Call ===")
+            print(f"FUNCTION CALLED: {function_name}")
+            print(f"FUNCTION ARGUMENTS: {response.choices[0].message.function_call.arguments}")
             
             # Execute the function
             success, bot_message, updated_xslt = execute_function_call(
@@ -551,6 +559,7 @@ def process_user_request_agentic(message: str, chat_history: List[Tuple[str, str
                 input_xml, 
                 transformed_xml
             )
+            print(f"FUNCTION RESULT - Success: {success}, Message: {bot_message[:100]}...")
             
             # Update main_xslt if function returned one
             if updated_xslt:

@@ -136,21 +136,29 @@ def check_and_auto_process(source_xml_file, target_xml_file, specs_url, specs_fi
             
             # Auto-generate message for agentic processing
             if specs_url:
-                auto_message = f"Generate XSLT from {specs_url}"
+                auto_message = f"Generate XSLT from URL: {specs_url}"
             else:
-                auto_message = f"Generate XSLT from uploaded specifications file: {specs_file.name}"
+                auto_message = f"Generate XSLT from file:/{specs_file.name}"
             
             with st.spinner("🚀 All inputs detected! Auto-processing XSLT generation..."):
                 write_chat_message("assistant", ":blue[All inputs detected - starting automatic XSLT generation...]")
                 write_chat_message("user", auto_message, None)
                 
+                # For file uploads, create the "file:" format the agentic processor expects
+                if specs_file:
+                    specs_param = f"file:{specs_file.name}"
+                    # Store the file in session state for the agentic processor to access
+                    st.session_state.specs_file_input = specs_file
+                else:
+                    specs_param = specs_url
+                    
                 user_req, bot_message, st.session_state.chat_history, st.session_state.generated_xslt = process_user_response(
                     auto_message, 
                     st.session_state.chat_history, 
                     st.session_state.source_xml, 
                     st.session_state.target_xml, 
                     st.session_state.generated_xslt, 
-                    st.session_state.specs_file
+                    specs_param
                 )
                 
                 write_chat_message("assistant", f":green[{bot_message}]")
@@ -184,69 +192,24 @@ def handle_chat_input(source_xml_file, target_xml_file, transformation_type, spe
     if auto_processed or hasattr(st.session_state, 'auto_processed'):
         st.info("✅ Automatic processing completed! Use the chat below for refinements or ask questions.")
     
-    # Handle refinement pills after auto-processing
-    if st.session_state.ask_yes_no == True:
-        col1, col2 = st.columns([4, 7.8])
-        with col1:
-            st.markdown(
-                """
-                <div style="display: flex; align-items: center; margin-left: 18.9px;">
-                    <span style="font-size: 16.4px; margin-right: 9.8px;">🤖</span>
-                <span style="color: #0073E6; font-size: 16px; font-weight: bold; margin-right: 10px;">
-                    Do you want to refine the generated XSLT?
-                </span>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-        with col2:
-            options = ["Yes", "No"]
-            user_response = st.pills("",options, selection_mode="single",label_visibility="collapsed")
-            # Save the user selection in session state when a selection is made
-            if user_response == "Yes":
-                st.session_state.user_response = user_response
-                st.session_state.ask_yes_no = False
-                st.rerun()
-            elif user_response == "No":
-                st.session_state.ask_yes_no = False
-                st.success("✅ XSLT generation completed! You can download it from the output tab.")
-    
-    # Handle manual chat input
-    elif st.session_state.ask_yes_no == False and not auto_processed:
-        specs_provided = specs_url or specs_file
-        if source_xml_file and target_xml_file and specs_provided:
-            prompt = st.chat_input("💬 Ask for refinements (e.g., 'Fix TaxAmount to include currency') or other questions")
-        else:
-            prompt = st.chat_input("📝 Provide all inputs above, or enter manual commands (e.g., 'Generate XSLT from [URL]')")
-    # elif st.session_state.ask_yes_no == True and st.session_state.url != None:
-    #     st.session_state.url = None
-    #     st.rerun()
-
+    # Display chat history
     for message in st.session_state.messages:
         avatar = "😎" if message["role"] == "user" else "🤖"
         with st.chat_message(message["role"],avatar = avatar):
             st.markdown(message["content"])
 
-    # if prompt == "START" or prompt == "start":
-    #     if source_xml_file and target_xml_file:
-    #         st.session_state.target_xml = target_xml_file.read().decode('utf-8')
-    #         if specifications_file:
-    #             st.session_state.specs_file = specifications_file.read().decode('utf-8')
-
-    #         add_to_messages(prompt)
-    #         write_chat_message("user", prompt, None)
-    #         llm_response = initiate_conversation_with_LLM(
-    #             st.session_state.source_xml, st.session_state.target_xml, st.session_state.specs_file, transformation_type
-    #         )
-    #     else:
-    #         st.warning("Missing input files, please check")
-    # elif prompt is not None:
-    #     add_to_prompts({"role": "user", "content": prompt})
+    # Simplified agentic chat interface - no more pills or complex state management
+    specs_provided = specs_url or specs_file
+    if source_xml_file and target_xml_file and specs_provided:
+        prompt = st.chat_input("💬 Ask for refinements (e.g., 'Fix TaxAmount to include currency') or other questions")
+    else:
+        prompt = st.chat_input("📝 Provide all inputs above, or enter manual commands (e.g., 'Generate XSLT from [URL]')")
     #     llm_response = subsequent_call_to_LLM(
     #         st.session_state.source_xml, st.session_state.target_xml, specifications_file
     #     )
     #     add_to_messages(prompt)
 
+    # Handle user input in the agentic chat
     if prompt:
         if source_xml_file and target_xml_file:
             # Only process XMLs if they haven't been processed in auto-processing
@@ -255,74 +218,26 @@ def handle_chat_input(source_xml_file, target_xml_file, transformation_type, spe
                 st.session_state.target_xml = process_xml(target_xml_file)
                 
             write_chat_message("user", prompt, None)
-            user_req,bot_message,st.session_state.chat_history,st.session_state.generated_xslt = process_user_response(
+            
+            # Process user request with agentic approach
+            if specs_file:
+                specs_param = f"file:{specs_file.name}"
+                st.session_state.specs_file_input = specs_file
+            else:
+                specs_param = specs_url or getattr(st.session_state, 'specs_file', None)
+                
+            user_req, bot_message, st.session_state.chat_history, st.session_state.generated_xslt = process_user_response(
                 prompt, 
                 st.session_state.chat_history, 
                 st.session_state.source_xml, 
                 st.session_state.target_xml, 
                 st.session_state.generated_xslt, 
-                st.session_state.specs_file
+                specs_param
             )           
             write_chat_message("assistant", f":green[{bot_message}]")
-        
-            if user_req:
-                #options = ["Yes", "No"]
-                col1, col2 = st.columns([4, 7.8])
-                with col1:
-                    st.markdown(
-                        """
-                        <div style="display: flex; align-items: center; margin-left: 18.9px;">
-                            <span style="font-size: 16.4px; margin-right: 9.8px;">🤖</span>
-                        <span style="color: #0073E6; font-size: 16px; font-weight: bold; margin-right: 10px;">
-                            Please select an option:
-                        </span>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-                with col2:
-                    options = ["Yes", "No"]
-                    user_response = st.pills("",options, selection_mode="single",label_visibility="collapsed")
-                    # Save the user selection in session state when a selection is made
-                    if user_response != "Select an option":  # Ensure it's not the default placeholder
-                        st.session_state.user_response = user_response
-                    if st.session_state.user_response:
-                        st.write(f"You selected: {st.session_state.user_response}")   
-                     
+            st.rerun()
         else:
-            st.warning("Missing input files, please check")
-
-    elif prompt is None and st.session_state.source_xml:
-        if st.session_state.ask_yes_no == False:
-            prompt = st.session_state.user_response
-            if prompt:
-                write_chat_message("user", prompt, None)            
-            user_req,bot_message,st.session_state.chat_history,st.session_state.generated_xslt = process_user_response(prompt, st.session_state.chat_history, st.session_state.source_xml, st.session_state.target_xml, st.session_state.generated_xslt, st.session_state.specs_file)
-            st.session_state.current_xslt = st.session_state.generated_xslt
-            if bot_message:
-                write_chat_message("assistant", f":green[{bot_message}]")
-        else:
-            col1, col2 = st.columns([4, 7.8])
-            with col1:
-                st.markdown(
-                    """
-                    <div style="display: flex; align-items: center; margin-left: 18.9px;">
-                        <span style="font-size: 16.4px; margin-right: 9.8px;">🤖</span>
-                    <span style="color: #0073E6; font-size: 16px; font-weight: bold; margin-right: 10px;">
-                        Please select an option:
-                    </span>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-            with col2:
-                options = ["Yes", "No"]
-                user_response = st.pills("",options, selection_mode="single",label_visibility="collapsed")
-            # Save the user selection in session state when a selection is made
-                if user_response == "Yes":  # Ensure it's not the default placeholder
-                    st.session_state.user_response = user_response
-                    st.session_state.ask_yes_no = False
-                    st.rerun()
+            st.warning("Please upload input XML and output XML files first.")
 
 def compare_func(existing_func, updated_func, task):
     diff = difflib.HtmlDiff().make_table(

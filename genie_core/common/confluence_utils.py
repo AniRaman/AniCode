@@ -58,6 +58,18 @@ def publish_content(space, title, body):
         confluence.create_page(space, title, body)
         print(f"Page '{title}' created successfully.")
 
+def publish_content_with_parent(space, parent_page_id, title, body):
+    """Create or update a Confluence page under a specific parent page."""
+    page_id = get_page_id_by_title(space, title)
+    if page_id:
+        # Update existing page
+        confluence.update_page(page_id, title=title, body=body)
+        print(f"Page '{title}' updated successfully.")
+    else:
+        # Create new page under parent
+        confluence.create_page(space, title, body, parent_id=parent_page_id)
+        print(f"Page '{title}' created successfully under parent page ID {parent_page_id}.")
+
 # Example usage
 if __name__ == "__main__":
     space = "CATS"

@@ -13,7 +13,7 @@ if os.getenv("PYTHONPATH") is None:
 from genie_core.common.utils import *
 from genie_core.llm.llm_utils import initiate_conversation_with_LLM_xslt
 from genie_core.llm.xslt_spec_generator import XsltSpecGenerator
-from genie_core.common.confluence_utils import publish_content
+from genie_core.common.confluence_utils import publish_content, publish_content_with_parent
 import json
 import tempfile
 import pandas as pd
@@ -316,35 +316,55 @@ with tab2:
     uploaded_xml = st.file_uploader("XML File", type=["xml"], help="Upload the XML file that corresponds to your XSLT transformation", key="xml_uploader")
 
     if uploaded_xslt and uploaded_xml:
-        # Auto-generate specs when both files are uploaded
-        try:
-            with st.spinner("Generating specifications..."):
-                # Use stored original XSLT content (before refinement) for spec generation
-                original_xslt = st.session_state.get('original_xslt_content')
-                if original_xslt is None:
-                    # Fallback: read from uploaded file if not in session state
-                    original_xslt = uploaded_xslt.getvalue()
+        # Check if specs have already been generated for these files
+        xml_file_id = f"{uploaded_xml.name}_{uploaded_xml.size}"
+        xslt_file_id = f"{uploaded_xslt.name}_{uploaded_xslt.size}"
+        combined_file_id = f"{xslt_file_id}_{xml_file_id}"
 
-                # Save uploaded files to temporary files
-                with tempfile.NamedTemporaryFile(mode='wb', suffix='.xslt', delete=False) as xslt_temp:
-                    xslt_temp.write(original_xslt)
-                    xslt_temp_path = xslt_temp.name
+        if 'generated_specs_id' not in st.session_state or st.session_state.generated_specs_id != combined_file_id:
+            # New files or first time generating specs
+            try:
+                with st.spinner("Generating specifications..."):
+                    # Use stored original XSLT content (before refinement) for spec generation
+                    original_xslt = st.session_state.get('original_xslt_content')
+                    if original_xslt is None:
+                        # Fallback: read from uploaded file if not in session state
+                        original_xslt = uploaded_xslt.getvalue()
 
-                with tempfile.NamedTemporaryFile(mode='wb', suffix='.xml', delete=False) as xml_temp:
-                    xml_temp.write(uploaded_xml.getvalue())
-                    xml_temp_path = xml_temp.name
+                    # Save uploaded files to temporary files
+                    with tempfile.NamedTemporaryFile(mode='wb', suffix='.xslt', delete=False) as xslt_temp:
+                        xslt_temp.write(original_xslt)
+                        xslt_temp_path = xslt_temp.name
 
-                # Generate specifications using original XSLT
-                spec_generator = XsltSpecGenerator(xslt_temp_path)
-                spec_generator.load()
-                specs = spec_generator.generate_specs_for_xml(xml_temp_path)
+                    with tempfile.NamedTemporaryFile(mode='wb', suffix='.xml', delete=False) as xml_temp:
+                        xml_temp.write(uploaded_xml.getvalue())
+                        xml_temp_path = xml_temp.name
 
-                # Clean up temporary files
-                os.unlink(xslt_temp_path)
-                os.unlink(xml_temp_path)
+                    # Generate specifications using original XSLT
+                    spec_generator = XsltSpecGenerator(xslt_temp_path)
+                    spec_generator.load()
+                    specs = spec_generator.generate_specs_for_xml(xml_temp_path)
 
-            # Display results
-            st.success(f"✅ Generated {len(specs)} mapping specifications")
+                    # Store specs in session state
+                    st.session_state.generated_specs = specs
+                    st.session_state.generated_specs_id = combined_file_id
+
+                    # Clean up temporary files
+                    os.unlink(xslt_temp_path)
+                    os.unlink(xml_temp_path)
+
+            except Exception as e:
+                st.error(f"❌ Error generating specifications: {str(e)}")
+                st.info("💡 Tip: Ensure both XSLT and XML files are valid and properly formatted")
+                return
+        else:
+            # Specs already generated, show cached results
+            st.info("✅ Specifications already generated. Showing cached results.")
+
+        # Display results (either fresh or cached)
+        if 'generated_specs' in st.session_state:
+            specs = st.session_state.generated_specs
+            st.success(f"✅ {len(specs)} mapping specifications available")
 
             # Metrics
             col1, col2, col3 = st.columns(3)
@@ -400,14 +420,34 @@ with tab2:
 
             col1, col2 = st.columns(2)
             with col1:
-                confluence_space = st.text_input("Confluence Space", placeholder="e.g., MYSPACE", help="Enter the Confluence space key")
+                confluence_page = st.text_input("Page Name", placeholder="e.g., XSLT Mapping Specifications", help="Enter the name for the new page")
             with col2:
-                confluence_page = st.text_input("Page Name", placeholder="e.g., XSLT Mapping Specifications", help="Enter the Confluence page name")
+                confluence_url = st.text_input("Page URL (Optional)", placeholder="e.g., https://company.atlassian.net/wiki/spaces/SPACE/pages/123456", help="Optional: Confluence page URL where you want to create the page")
 
-            if confluence_space and confluence_page:
+            if confluence_page:
                 if st.button("📤 Publish to Confluence", type="primary"):
                     try:
                         with st.spinner("Publishing to Confluence..."):
+                            # Parse URL if provided
+                            space_key = None
+                            parent_page_id = None
+
+                            if confluence_url:
+                                import re
+                                # Extract space from URL: /spaces/SPACE/
+                                space_match = re.search(r'/spaces/([^/]+)/', confluence_url)
+                                if space_match:
+                                    space_key = space_match.group(1)
+
+                                # Extract page ID from URL: pages/123456 or homepageId=123456
+                                page_id_match = re.search(r'(?:pages/|homepageId=)(\d+)', confluence_url)
+                                if page_id_match:
+                                    parent_page_id = page_id_match.group(1)
+
+                                if not space_key:
+                                    st.error("❌ Could not extract space from URL. Please check the URL format.")
+                                    return
+
                             # Convert specs to HTML table format
                             html_table = "<table border='1' cellpadding='5' cellspacing='0'>"
                             html_table += "<tr><th>Field Name</th><th>Input XPath</th><th>Output XPath</th><th>Node Type</th><th>Remarks</th></tr>"
@@ -424,18 +464,22 @@ with tab2:
                             html_table += "</table>"
 
                             # Publish to Confluence
-                            publish_content(confluence_space, confluence_page, html_table)
-                            st.success(f"✅ Successfully published specifications to Confluence page: {confluence_page}")
+                            if space_key and parent_page_id:
+                                # Create page under parent
+                                publish_content_with_parent(space_key, parent_page_id, confluence_page, html_table)
+                                st.success(f"✅ Successfully published specifications to Confluence page: {confluence_page} under parent page")
+                            elif space_key:
+                                # Create page at root of space
+                                publish_content(space_key, confluence_page, html_table)
+                                st.success(f"✅ Successfully published specifications to Confluence page: {confluence_page} in space {space_key}")
+                            else:
+                                st.error("❌ Please provide a valid Confluence URL or contact admin for space configuration")
 
                     except Exception as e:
                         st.error(f"❌ Error publishing to Confluence: {str(e)}")
-                        st.info("💡 Tip: Check your Confluence credentials and permissions")
+                        st.info("💡 Tip: Check your Confluence credentials and URL format")
             else:
-                st.info("💡 Enter Confluence space and page name to enable publishing")
-
-        except Exception as e:
-            st.error(f"❌ Error generating specifications: {str(e)}")
-            st.info("💡 Tip: Ensure both XSLT and XML files are valid and properly formatted")
+                st.info("💡 Enter a page name to enable publishing")
 
     elif uploaded_xslt and not uploaded_xml:
         st.info("📤 Please upload an XML file to generate mapping specifications.")
