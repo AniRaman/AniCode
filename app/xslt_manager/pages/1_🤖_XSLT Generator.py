@@ -14,6 +14,7 @@ from genie_core.xslt.xslt_utils import apply_xslt
 from genie_core.common.confluence_utils import publish_content
 from genie_core.xml_processing.xml_utils import process_xml
 from genie_core.llm.llm_utils import process_user_response
+from genie_core.common.utils import refine_and_display_markdown
 #from genie_core.llm.TokenCostCalculator import *
 prompt = None
 
@@ -67,29 +68,28 @@ def handle_sidebar_file_uploads():
             st.session_state.specs_file_input = specs_file
             st.session_state.specs_url_input = None
     
-    # Show status of inputs
+    # Show status of inputs - more compact
     st.subheader("Input Status")
     col1, col2, col3 = st.columns(3)
-    
+
     with col1:
         if source_xml_file:
-            st.success("✅ Source XML")
+            st.markdown("✅ **Source**")
         else:
-            st.error("❌ Source XML")
-    
+            st.markdown("❌ **Source**")
+
     with col2:
         if target_xml_file:
-            st.success("✅ Target XML") 
+            st.markdown("✅ **Target**")
         else:
-            st.error("❌ Target XML")
-    
+            st.markdown("❌ **Target**")
+
     with col3:
         specs_provided = specs_url or specs_file
         if specs_provided:
-            specs_type = "Specs URL" if specs_url else f"Specs File ({specs_file.name})" if specs_file else "Specs"
-            st.success(f"✅ {specs_type}")
+            st.markdown("✅ **Specs**")
         else:
-            st.error("❌ Specifications")
+            st.markdown("❌ **Specs**")
     
     # Show ready status
     if source_xml_file and target_xml_file and specs_provided:
@@ -262,13 +262,24 @@ def compare_func(existing_func, updated_func, task):
             white-space: pre-wrap;  /* Preserve formatting but allow wrapping */
         }
 
+        /* Line number columns - narrow */
         td:nth-child(2), th:nth-child(2) {
-        width: 5%;
-        min-width: 25px;
+            width: 5%;
+            min-width: 25px;
         }
         td:nth-child(5), th:nth-child(5) {
-        width: 5%;
-        min-width: 25px;
+            width: 5%;
+            min-width: 25px;
+        }
+
+        /* Content columns - equal width */
+        td:nth-child(1), th:nth-child(1) {
+            width: 45%;
+            max-width: 45%;
+        }
+        td:nth-child(3), th:nth-child(3) {
+            width: 45%;
+            max-width: 45%;
         }
 
 
@@ -319,31 +330,96 @@ def display_generated_xslt():
         )
 
 def display_xslt_diff():
-    
-    if st.session_state.current_xslt:
-        try:
-            diff = compare_func(st.session_state.existing_xslt, st.session_state.generated_xslt, "XSLT")
 
-            st.title("Differences between Existing and Updated XSLT")
+    # Check if we have both original and refined XSLT for comparison
+    original_xslt = getattr(st.session_state, 'original_xslt', None)
+    refined_xslt = getattr(st.session_state, 'refined_xslt', None)
+
+    if original_xslt and refined_xslt:
+        try:
+            diff = compare_func(original_xslt, refined_xslt, "XSLT")
+
+            st.title("Differences between Original and Refined XSLT")
             st.markdown(diff, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"Error comparing XSLT files: {str(e)}")
-    else :
-        st.info("Please generate atleast 2 versions of XSLTs.")
+    else:
+        st.info("Please refine your XSLT to see differences. Diff shows only after XSLT refinement.")
 
 def display_spec_diff():
-    
-    if st.session_state.current_xslt and st.session_state.updated_specs:
+
+    # Check if we have both original and refined specs for comparison
+    original_specs = getattr(st.session_state, 'original_specs', None)
+    refined_specs = getattr(st.session_state, 'refined_specs', None)
+
+    if original_specs and refined_specs:
         try:
-            diff = compare_func(st.session_state.existing_specs, st.session_state.updated_specs, "Specs")
             if st.button("Update Confluence Page", type="primary"):
                 publish_content(st.session_state.space, st.session_state.page_name, st.session_state.html)
-            st.title("Differences between Existing and Updated Specs")
+
+            # Custom formatter for original specs with correct column indices
+            def format_original_specs(markdown_content):
+                lines = markdown_content.split('\n')
+                start_index = 0
+                for i, item in enumerate(lines):
+                    if item.strip().startswith('|:---') or item.strip().startswith('|---'):
+                        start_index = i + 1
+                        break
+
+                formatted_content = []
+                for line_num, line in enumerate(lines[start_index:], start_index + 1):
+                    if not line.strip():
+                        continue
+                    columns = line.split('|')
+
+                    # Debug output for first few lines
+                    if line_num <= start_index + 3:
+                        print(f"DEBUG Line {line_num}: {len(columns)} columns")
+                        for i, col in enumerate(columns[:12]):
+                            print(f"  Column {i}: '{col.strip()}'")
+
+                    if len(columns) >= 12:  # Make sure we have enough columns
+                        input_value = columns[4].strip()  # FIXED: Input XPATH column
+                        output_value = columns[6].strip()  # FIXED: Output XPATH column
+                        description = columns[12].strip() if len(columns) > 12 else ""  # FIXED: Description column
+
+                        print(f"DEBUG: input_value='{input_value}', output_value='{output_value}', description='{description}'")
+
+                        formatted_line = ""
+                        if input_value and input_value != "NA" and input_value != "NaN" and input_value != "":
+                            formatted_line += f"Input Xpath: {input_value}"
+                        else:
+                            formatted_line += f"Input Xpath: NA"
+
+                        if output_value and output_value != "NA" and output_value != "NaN" and output_value != "":
+                            formatted_line += f", Output Xpath: {output_value}"
+                        else:
+                            formatted_line += f", Output Xpath: NA"
+
+                        if description and description != "NA" and description != "NaN" and description != "":
+                            formatted_line += f", Description: {description}"
+                        else:
+                            formatted_line += f", Description: NA"
+
+                        formatted_content.append(formatted_line)
+
+                return '\n'.join(formatted_content)
+
+            # Format original specs using custom formatter
+            original_formatted = format_original_specs(original_specs)
+
+            # Refined specs should already be in good format, but if not, format them too
+            refined_formatted = refined_specs if "Input Xpath:" in refined_specs else refine_and_display_markdown(refined_specs)[0]
+
+            # Use the same diff function as XSLT but for formatted specs
+            diff = compare_func(original_formatted, refined_formatted, "Specs")
+            st.title("Differences between Original and Refined Specifications")
             st.markdown(diff, unsafe_allow_html=True)
+
         except Exception as e:
-            st.error(f"Error comparing Spec files: {str(e)}")
-    else :
-        st.info("Please generate atleast 2 versions of XSLTs.")
+            st.error(f"Error displaying Spec comparison: {str(e)}")
+    else:
+        st.info("Please refine your XSLT to see spec comparison. Comparison shows after XSLT refinement.")
 
 # Function to apply XSLT and display transformed XML
 def display_transformed_xml():

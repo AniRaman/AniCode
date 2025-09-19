@@ -35,24 +35,26 @@ class ConversationContext:
         st.session_state.url = self.specs_url
         st.session_state.markdown_spec = self.specs_data
 
-        # Handle XSLT versioning for diff functionality
+        # Simple XSLT versioning: 1st generation vs nth generation
         if self.current_xslt:
-            # Store previous version if current exists
-            if hasattr(st.session_state, 'generated_xslt') and st.session_state.generated_xslt:
-                st.session_state.existing_xslt = st.session_state.generated_xslt
-
-            # Set current XSLT
+            # Always update the current/active XSLT
             st.session_state.generated_xslt = self.current_xslt
-            st.session_state.current_xslt = self.current_xslt  # For diff function compatibility
 
-        # Handle specs versioning for diff functionality
+            # Store as original_xslt only on first generation
+            if not st.session_state.original_xslt:
+                st.session_state.original_xslt = self.current_xslt
+            else:
+                # On refinement, store as refined_xslt for diff
+                st.session_state.refined_xslt = self.current_xslt
+
+        # Simple specs versioning: 1st generation vs nth generation
         if self.current_specs:
-            # Store previous specs version if current exists
-            if hasattr(st.session_state, 'updated_specs') and st.session_state.updated_specs:
-                st.session_state.existing_specs = st.session_state.updated_specs
-
-            # Set current specs
-            st.session_state.updated_specs = self.current_specs
+            # Store as original_specs only on first generation
+            if not st.session_state.original_specs:
+                st.session_state.original_specs = self.current_specs
+            else:
+                # On refinement, store as refined_specs for diff
+                st.session_state.refined_specs = self.current_specs
 
         st.session_state.specs_file = self.specs_file
         st.session_state.space = self.space
@@ -66,13 +68,13 @@ class ConversationContext:
         return cls(
             specs_url=getattr(st.session_state, 'url', None),
             specs_data=getattr(st.session_state, 'markdown_spec', None),
-            current_xslt=getattr(st.session_state, 'existing_xslt', None),
+            current_xslt=getattr(st.session_state, 'generated_xslt', None),  # Use generated_xslt as current
             specs_file=getattr(st.session_state, 'specs_file', None),
             space=getattr(st.session_state, 'space', None),
             page_name=getattr(st.session_state, 'page_name', None),
             html=getattr(st.session_state, 'html', None),
             ask_yes_no=getattr(st.session_state, 'ask_yes_no', False),
-            current_specs=getattr(st.session_state, 'updated_specs', None)
+            current_specs=getattr(st.session_state, 'original_specs', None)  # Use original_specs initially
         )
 
 def get_function_definitions() -> List[Dict]:
@@ -283,17 +285,17 @@ def process_specs_and_generate_xslt(specs_source: str) -> Tuple[bool, str, Optio
         
         with st.spinner('Generating XSLT, Thanks for your patience'):
             # Process complex mappings first (preserving original order)
-            # for i in range(0, len(c_rows), batch_size_c):
-            #     context_batch = c_rows.iloc[i:i + batch_size_c]
-            #     print(f"context {i // batch_size_c + 1}:")
-            #     context_fields = ",".join(map(str, context_batch["Field"]))
-            #     print(f"Map all the elements mentioned here :{context_fields}")
-            #     if not context_fields:
-            #         continue
-            #     message = f"Map all the elements mentioned here :{context_fields}"
-            #     print(context_batch)
+            for i in range(0, 2, batch_size_c):
+                context_batch = c_rows.iloc[i:i + batch_size_c]
+                print(f"context {i // batch_size_c + 1}:")
+                context_fields = ",".join(map(str, context_batch["Field"]))
+                print(f"Map all the elements mentioned here :{context_fields}")
+                if not context_fields:
+                    continue
+                message = f"Map all the elements mentioned here :{context_fields}"
+                print(context_batch)
                 
-            #     main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
+                main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
             
             # Process simple mappings second (preserving original order)
             # for i in range(0, len(s_rows), batch_size):
@@ -334,11 +336,20 @@ def refine_existing_xslt(field_names: str, refinement_instructions: str) -> Tupl
             main_xslt = context.current_xslt
             input_xml = getattr(st.session_state, 'input_xml', None)
             output_xml = getattr(st.session_state, 'output_xml', None)
-            
+
+            print(f"DEBUG REFINEMENT: main_xslt exists: {main_xslt is not None}")
+            print(f"DEBUG REFINEMENT: specs exists: {specs is not None}")
+            print(f"DEBUG REFINEMENT: specs type: {type(specs)}")
+            print(f"DEBUG REFINEMENT: field_names: '{field_names}'")
+            print(f"DEBUG REFINEMENT: refinement_instructions: '{refinement_instructions}'")
+
             if not main_xslt:
                 return False, "No XSLT found to refine. Please generate XSLT first.", None
-            
-            print(specs)
+
+            if not specs:
+                return False, "No specs file found for refinement. Please regenerate XSLT.", None
+
+            print("Specs content:", specs)
             query_engine_llm = query_eng_setup(specs)
             fields_ref = get_answer_llm(query_engine_llm, field_names)
             fields_ref_str = str(fields_ref)
@@ -367,7 +378,14 @@ def refine_existing_xslt(field_names: str, refinement_instructions: str) -> Tupl
                 context.current_xslt = updated_xslt
 
                 # Update specifications (preserving original logic)
-                update_specs(final_msg, fields_ref_str)
+                print(f"DEBUG: Calling update_specs with final_msg='{final_msg}', fields_ref_str='{fields_ref_str}'")
+                try:
+                    update_specs(final_msg, fields_ref_str)
+                    print("DEBUG: update_specs completed successfully")
+                except Exception as e:
+                    print(f"DEBUG: update_specs failed with error: {e}")
+                    # Continue without failing the entire refinement
+                    pass
 
                 # Capture updated specs from session state after update_specs call
                 # update_specs sets st.session_state.updated_specs with the refined version
