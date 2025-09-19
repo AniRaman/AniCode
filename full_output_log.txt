@@ -1,1 +1,22 @@
+Using AGENTIC approach for XSLT processing
+Error in agentic approach, falling back to original: expected an indented block after 'with' statement on line 284 (agentic_xslt_processor.py, line 311)
+-----------
+Generate XSLT from file:/SW_Mapping (1).csv
+[]
+Chat length: 0
+No history block
+Using AGENTIC approach for XSLT processing
+Error in agentic approach, falling back to original: expected an indented block after 'with' statement on line 284 (agentic_xslt_processor.py, line 311)
+-----------
+update product id to 98798-dsfsd9f87
+[('Generate XSLT from file:/SW_Mapping (1).csv', 'Type START to begin...')]
+Chat length: 1
+Using AGENTIC approach for XSLT processing
+Error in agentic approach, falling back to original: expected an indented block after 'with' statement on line 284 (agentic_xslt_processor.py, line 311)
+-----------
+START
+[('Generate XSLT from file:/SW_Mapping (1).csv', 'Type START to begin...'), ('update product id to 98798-dsfsd9f87', 'Type START to begin...')]
+found Start, to do: 
+Chat length: 0
+No history block
   Stopping...

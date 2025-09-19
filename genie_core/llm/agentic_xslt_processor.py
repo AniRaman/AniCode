@@ -28,12 +28,32 @@ class ConversationContext:
     page_name: Optional[str] = None
     html: Optional[str] = None
     ask_yes_no: bool = False
+    current_specs: Optional[str] = None  # For specs diff functionality
 
     def to_session_state(self):
         """Convert to session state for backward compatibility"""
         st.session_state.url = self.specs_url
         st.session_state.markdown_spec = self.specs_data
-        st.session_state.existing_xslt = self.current_xslt
+
+        # Handle XSLT versioning for diff functionality
+        if self.current_xslt:
+            # Store previous version if current exists
+            if hasattr(st.session_state, 'generated_xslt') and st.session_state.generated_xslt:
+                st.session_state.existing_xslt = st.session_state.generated_xslt
+
+            # Set current XSLT
+            st.session_state.generated_xslt = self.current_xslt
+            st.session_state.current_xslt = self.current_xslt  # For diff function compatibility
+
+        # Handle specs versioning for diff functionality
+        if self.current_specs:
+            # Store previous specs version if current exists
+            if hasattr(st.session_state, 'updated_specs') and st.session_state.updated_specs:
+                st.session_state.existing_specs = st.session_state.updated_specs
+
+            # Set current specs
+            st.session_state.updated_specs = self.current_specs
+
         st.session_state.specs_file = self.specs_file
         st.session_state.space = self.space
         st.session_state.page_name = self.page_name
@@ -51,7 +71,8 @@ class ConversationContext:
             space=getattr(st.session_state, 'space', None),
             page_name=getattr(st.session_state, 'page_name', None),
             html=getattr(st.session_state, 'html', None),
-            ask_yes_no=getattr(st.session_state, 'ask_yes_no', False)
+            ask_yes_no=getattr(st.session_state, 'ask_yes_no', False),
+            current_specs=getattr(st.session_state, 'updated_specs', None)
         )
 
 def get_function_definitions() -> List[Dict]:
@@ -244,7 +265,8 @@ def process_specs_and_generate_xslt(specs_source: str) -> Tuple[bool, str, Optio
             specs_file=VectorDocument,
             space=space,
             page_name=page_name,
-            processing_status="processing"
+            processing_status="processing",
+            current_specs=markdown_table  # Set initial specs for diff functionality
         )
         context.to_session_state()  # Backward compatibility
             
@@ -261,17 +283,17 @@ def process_specs_and_generate_xslt(specs_source: str) -> Tuple[bool, str, Optio
         
         with st.spinner('Generating XSLT, Thanks for your patience'):
             # Process complex mappings first (preserving original order)
-            for i in range(0, len(c_rows), batch_size_c):
-                context_batch = c_rows.iloc[i:i + batch_size_c]
-                print(f"context {i // batch_size_c + 1}:")
-                context_fields = ",".join(map(str, context_batch["Field"]))
-                print(f"Map all the elements mentioned here :{context_fields}")
-                if not context_fields:
-                    continue
-                message = f"Map all the elements mentioned here :{context_fields}"
-                print(context_batch)
+            # for i in range(0, len(c_rows), batch_size_c):
+            #     context_batch = c_rows.iloc[i:i + batch_size_c]
+            #     print(f"context {i // batch_size_c + 1}:")
+            #     context_fields = ",".join(map(str, context_batch["Field"]))
+            #     print(f"Map all the elements mentioned here :{context_fields}")
+            #     if not context_fields:
+            #         continue
+            #     message = f"Map all the elements mentioned here :{context_fields}"
+            #     print(context_batch)
                 
-                main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
+            #     main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
             
             # Process simple mappings second (preserving original order)
             # for i in range(0, len(s_rows), batch_size):
@@ -343,10 +365,16 @@ def refine_existing_xslt(field_names: str, refinement_instructions: str) -> Tupl
                 
                 # Update context
                 context.current_xslt = updated_xslt
-                context.to_session_state()
-                
+
                 # Update specifications (preserving original logic)
                 update_specs(final_msg, fields_ref_str)
+
+                # Capture updated specs from session state after update_specs call
+                # update_specs sets st.session_state.updated_specs with the refined version
+                if hasattr(st.session_state, 'updated_specs') and st.session_state.updated_specs:
+                    context.current_specs = st.session_state.updated_specs
+
+                context.to_session_state()
                 
                 return True, "XSLT and specifications refined successfully! Ask for more changes or download the updated XSLT.", updated_xslt
             else:
