@@ -12,6 +12,7 @@ from typing import Dict, Any, List, Optional, Tuple
 from genie_core.xml_processing.xml_utils import verify_prerequisite
 from genie_core.common.utils import extract_space_and_page_name, get_body, convert_html_to_csv, refine_and_display_markdown
 from genie_core.data_processing.cleanup import row_extraction
+from genie_core.data_processing.intelligent_classification import intelligent_row_extraction_with_fallback
 from genie_core.llm.llm_utils import get_chat_completion, llm_process, refine_external, update_specs, o3client, o3_mini_model_name
 from genie_core.database.llamaIndex import query_eng_setup, get_answer_llm
 import chromadb
@@ -272,42 +273,23 @@ def process_specs_and_generate_xslt(specs_source: str) -> Tuple[bool, str, Optio
         )
         context.to_session_state()  # Backward compatibility
             
-        # Generate XSLT using exact same batch processing logic
+        # Generate XSLT using intelligent classification and parallel processing
         print("User Response : ", specs_source)
-        batch_size = 8
-        batch_size_c = 4
-        s_rows, c_rows = row_extraction(dataFrame)
-        
-        # Get XML inputs 
+
+        # Intelligent classification (replaces manual C/S column)
+        s_rows, c_rows = intelligent_row_extraction_with_fallback(dataFrame)
+
+        # Get XML inputs
         input_xml = getattr(st.session_state, 'input_xml', None)
         output_xml = getattr(st.session_state, 'output_xml', None)
         main_xslt = context.current_xslt
-        
-        with st.spinner('Generating XSLT, Thanks for your patience'):
-            # Process complex mappings first (preserving original order)
-            for i in range(0, 2, batch_size_c):
-                context_batch = c_rows.iloc[i:i + batch_size_c]
-                print(f"context {i // batch_size_c + 1}:")
-                context_fields = ",".join(map(str, context_batch["Field"]))
-                print(f"Map all the elements mentioned here :{context_fields}")
-                if not context_fields:
-                    continue
-                message = f"Map all the elements mentioned here :{context_fields}"
-                print(context_batch)
-                
-                main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
-            
-            # Process simple mappings second (preserving original order)
-            # for i in range(0, len(s_rows), batch_size):
-            #     context_batch = s_rows.iloc[i:i + batch_size]
-            #     print(f"context {i // batch_size + 1}:")
-            #     context_fields = ",".join(map(str, context_batch["Field"]))
-            #     print(f"Map all the elements mentioned here :{context_fields}")
-            #     if not context_fields:
-            #         continue
-            #     message = f"Map all the elements mentioned here :{context_fields}"
-            #     print(context_batch)
-            #     main_xslt = llm_process(context_batch, message, input_xml, output_xml, main_xslt)
+
+        with st.spinner('Generating XSLT with parallel processing, Thanks for your patience'):
+            # Use parallel processing for optimal performance
+            from genie_core.llm.parallel_xslt_processor import process_mappings_with_parallel_execution
+            main_xslt = process_mappings_with_parallel_execution(
+                s_rows, c_rows, input_xml, output_xml, main_xslt
+            )
         
         # Update context with generated XSLT
         context.current_xslt = main_xslt

@@ -7,15 +7,12 @@ from lxml import etree
 
 if os.getenv("PYTHONPATH") is None:
     sys.path.append(os.path.abspath(os.getcwd()))
-#sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '../..')))
 from genie_core.common.user_interaction import init_objects_into_session,write_chat_message
-# from genie_core.xml_processing.xml_utils import list_elements
 from genie_core.xslt.xslt_utils import apply_xslt
 from genie_core.common.confluence_utils import publish_content
 from genie_core.xml_processing.xml_utils import process_xml
 from genie_core.llm.llm_utils import process_user_response
 from genie_core.common.utils import refine_and_display_markdown
-#from genie_core.llm.TokenCostCalculator import *
 prompt = None
 
 # Handle missing module error
@@ -40,10 +37,6 @@ def handle_sidebar_file_uploads():
     if transformation_type == "JOLT":
         st.warning("JOLT is not supported in this version yet, stay tuned!!")
 
-    # st.session_state.recursive = st.radio(
-    #     "Recursive generation?",
-    #     ("Regular", "Recursive")
-    # )
 
     st.header("Upload Files")
     source_xml_file = st.file_uploader("Upload Source XML", type=["xml"])
@@ -97,22 +90,6 @@ def handle_sidebar_file_uploads():
     else:
         missing_count = sum([not source_xml_file, not target_xml_file, not specs_provided])
         st.info(f"⏳ Please provide {missing_count} more input{'s' if missing_count != 1 else ''} to start automatic processing.")
-    # if "specs_refiner_output" in st.session_state:
-    #     use_existing_specs = st.checkbox("Use existing specifications from Specs Refiner")
-    #     if use_existing_specs:
-    #         specifications_file = st.session_state.specs_refiner_output
-    #     else:
-    #         specifications_file = st.file_uploader("Upload mapping specifications", type=["txt", "md"])
-    # else:
-    #     specifications_file = st.file_uploader("Upload mapping specifications", type=["txt", "md"])
-
-    # if source_xml_file:
-    #     st.session_state.source_xml = source_xml_file.read().decode('utf-8')
-    #     elements = list_elements(st.session_state.source_xml)
-    #     st.session_state.root_element = st.selectbox("Root element", elements)
-
-    #     my_regex = rf"\t*<{re.escape(st.session_state.root_element)}>.*</{re.escape(st.session_state.root_element)}>"
-    #     st.session_state.input_xml = re.findall(my_regex, st.session_state.source_xml, flags=re.DOTALL)[0]
 
     return source_xml_file, target_xml_file, transformation_type, specs_url, specs_file
 
@@ -204,10 +181,6 @@ def handle_chat_input(source_xml_file, target_xml_file, transformation_type, spe
         prompt = st.chat_input("💬 Ask for refinements (e.g., 'Fix TaxAmount to include currency') or other questions")
     else:
         prompt = st.chat_input("📝 Provide all inputs above, or enter manual commands (e.g., 'Generate XSLT from [URL]')")
-    #     llm_response = subsequent_call_to_LLM(
-    #         st.session_state.source_xml, st.session_state.target_xml, specifications_file
-    #     )
-    #     add_to_messages(prompt)
 
     # Handle user input in the agentic chat
     if prompt:
@@ -501,16 +474,8 @@ def display_xml_comparison():
 def display_testing():
     output_placeholder = st.empty()
     in_xml = st.file_uploader("Upload Input XML", type=["xml"], accept_multiple_files=True)
-    # out_xml = st.file_uploader("Upload Target XML", type=["xml"])
     xslt = st.file_uploader("Upload XSLT", type=["xslt"])
 
-    # if in_xml:
-    #     st.session_state.source_xml = in_xml[0].read().decode('utf-8')
-    #     elements = list_elements(st.session_state.source_xml)
-    #     st.session_state.root_element = st.selectbox("Root element", elements)
-
-    #     my_regex = rf"\t*<{re.escape(st.session_state.root_element)}>.*</{re.escape(st.session_state.root_element)}>"
-    #     st.session_state.input_xml = re.findall(my_regex, st.session_state.source_xml, flags=re.DOTALL)[0]
     
     logs = []
     if in_xml and xslt:
@@ -533,7 +498,6 @@ def display_testing():
 def main():
     prompt = None
     st.header(":blue[Welcome to GENIE]")
-    # st.subheader("XSLT Generator")
     st.markdown(":blue[Transform your input XML into the desired output XML with ease. This feature takes the input XML, output XML, and a specification file to generate the corresponding XSLT. It simplifies the process of conversion, saving your time and effort.]")
 
     
@@ -557,7 +521,14 @@ def main():
         display_xslt_diff()
 
     with tab5:
-        display_spec_diff()
+        # Only show spec diff when there are 2 XSLTs (same logic as XSLT diff)
+        original_xslt = getattr(st.session_state, 'original_xslt', None)
+        refined_xslt = getattr(st.session_state, 'refined_xslt', None)
+
+        if original_xslt and refined_xslt:
+            display_spec_diff()
+        else:
+            st.info("Please refine your XSLT to see spec differences. Spec diff shows only after XSLT refinement.")
 
 
 if __name__ == "__main__":
