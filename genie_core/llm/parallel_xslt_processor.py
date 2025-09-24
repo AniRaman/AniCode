@@ -24,11 +24,17 @@ async def process_batch_async(context_batch: pd.DataFrame, message: str, input_x
     Returns:
         str: Generated/updated XSLT
     """
+    print(f"[BATCH DEBUG] process_batch_async called with {len(context_batch)} rows")
+    print(f"[BATCH DEBUG] About to call llm_process_async...")
+
     try:
         result_xslt = await llm_process_async(context_batch, message, input_xml, output_xml, current_xslt)
+        print(f"[BATCH DEBUG] llm_process_async returned: {len(result_xslt) if result_xslt else 0} characters")
         return result_xslt
     except Exception as e:
-        print(f"Batch processing failed: {e}")
+        print(f"[BATCH DEBUG] Batch processing failed: {e}")
+        import traceback
+        traceback.print_exc()
         return current_xslt or ""
 
 

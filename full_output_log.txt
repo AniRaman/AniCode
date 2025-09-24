@@ -1,195 +1,29 @@
-🧪 Simple Real-Time Merging Test
-==================================================
-🏗️ Testing Base Template Creation Only
-----------------------------------------
-[TEMPLATE DEBUG] ===== CREATING BASE TEMPLATE =====
-[TEMPLATE DEBUG] Output XML length: 125 characters
-[TEMPLATE DEBUG] Successfully parsed output XML. Root element: Invoice
-[TEMPLATE DEBUG] Converting XML structure to XSLT template
-[TEMPLATE DEBUG] Processing element: Invoice
-[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_Invoice}}
-[TEMPLATE DEBUG] Element Invoice has 2 children
-[TEMPLATE DEBUG] Processing element: CustomerID
-[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_CustomerID}}
-[TEMPLATE DEBUG] Element CustomerID is leaf element
-[TEMPLATE DEBUG] Processing element: TaxAmount
-[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_TaxAmount}}
-[TEMPLATE DEBUG] Element TaxAmount is leaf element
-[TEMPLATE DEBUG] Template structure created with 6 parts
-[TEMPLATE DEBUG] Base template created successfully
-[TEMPLATE DEBUG] Template length: 275 characters
-✅ Base template created successfully
-Base template:
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:template match="/">
-    <Invoice>
-      {{PLACEHOLDER_CustomerID}}
-      {{PLACEHOLDER_TaxAmount}}
-    </Invoice>
-  </xsl:template>
-</xsl:stylesheet>
-
-🚀 Testing Simple Real-Time Flow
-----------------------------------------
-Starting real-time merging with mock LLM...
-[REALTIME DEBUG] ===== STARTING REAL-TIME TEMPLATE MERGING =====
-[REALTIME DEBUG] Step 1: Creating base template from output XML
-[TEMPLATE DEBUG] ===== CREATING BASE TEMPLATE =====
-[TEMPLATE DEBUG] Output XML length: 125 characters
-[TEMPLATE DEBUG] Successfully parsed output XML. Root element: Invoice
-[TEMPLATE DEBUG] Converting XML structure to XSLT template
-[TEMPLATE DEBUG] Processing element: Invoice
-[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_Invoice}}
-[TEMPLATE DEBUG] Element Invoice has 2 children
-[TEMPLATE DEBUG] Processing element: CustomerID
-[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_CustomerID}}
-[TEMPLATE DEBUG] Element CustomerID is leaf element
-[TEMPLATE DEBUG] Processing element: TaxAmount
-[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_TaxAmount}}
-[TEMPLATE DEBUG] Element TaxAmount is leaf element
-[TEMPLATE DEBUG] Template structure created with 6 parts
-[TEMPLATE DEBUG] Base template created successfully
-[TEMPLATE DEBUG] Template length: 275 characters
-[REALTIME DEBUG] Base template created, processing 2 elements
-[REALTIME DEBUG] Elements to process: ['CustomerID', 'TaxAmount']
-[REALTIME DEBUG] Initial base template:
-[REALTIME DEBUG] Template length: 275 characters
-[REALTIME DEBUG] Initial placeholders: 2
---------------------------------------------------
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:template match="/">
-    <Invoice>
-      {{PLACEHOLDER_CustomerID}}
-      {{PLACEHOLDER_TaxAmount}}
-    </Invoice>
-  </xsl:template>
-</xsl:stylesheet>
---------------------------------------------------
-[REALTIME DEBUG] ===== TRUE REAL-TIME PROCESSING WITH ASYNCIO QUEUE =====
-[REALTIME DEBUG] Starting parallel processing with asyncio queue
-[REALTIME DEBUG] Simple batches: 1, Complex batches: 1
-[REALTIME DEBUG] === PHASE 1: COMPLEX BATCHES ===
-[GROUP DEBUG] Processing complex group with 1 rows
-[GROUP DEBUG] Created 1 complex batches (4 fields each)
-[GROUP DEBUG] Started 1 complex batch tasks in parallel
-[GROUP DEBUG] Processing complex batch completions in real-time...
-[TIMING DEBUG] [complex] Waiting for next batch completion at 1758706238.34...
-[TIMING DEBUG] complex batch 0 STARTED at 1758706238.34: ['TaxAmount']
+✅ Import successful
+Creating test data...
+About to test process_batch_async...
+Running async test...
+[BATCH DEBUG] process_batch_async called with 1 rows
+[BATCH DEBUG] About to call llm_process_async...
 [ASYNC] Inside LLM Process (Async)
-prompt_tokens=100, completion_tokens=50, total_tokens=150
-[ASYNC] COMPLETE_RESPONSE: MockResponse(content='<xsl:stylesheet version="1.0" xmlns:xsl="http://ww...')
-[ASYNC] RESPONSE: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <TaxAmount>
-        <xsl:value-of select="ns0:Order/TaxAmount"/>
-    </TaxAmount>
-</xsl:stylesheet>
-[ASYNC] Generated XSLT for batch: 183 characters
-[TIMING DEBUG] complex batch 0 COMPLETED at 1758706238.34, took 0.00s
-[REALTIME DEBUG] complex batch 0 queued for real-time processing
-[TIMING DEBUG] [complex] Got batch from queue after 0.00s wait at 1758706238.34
-[GROUP DEBUG] [complex] Batch 1/1 completed: complex-0
-[GROUP DEBUG] [complex] Fields in batch: ['TaxAmount']
-[EXTRACTION DEBUG] ===== EXTRACTING CHUNK FOR TaxAmount =====
-[EXTRACTION DEBUG] XSLT length: 183 characters
-[EXTRACTION DEBUG] Split XSLT into 5 lines
-[EXTRACTION DEBUG] Searching for element: <TaxAmount>
-[EXTRACTION DEBUG] Found element at line 2: '<TaxAmount>'
-[EXTRACTION DEBUG] Found TaxAmount at line 2
-[EXTRACTION DEBUG] Target line content: '<TaxAmount>'
-[EXTRACTION DEBUG] Traversing up from line 2
-[EXTRACTION DEBUG] Checking line 1: '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">'
-[EXTRACTION DEBUG] No closing tag found above target line
-[EXTRACTION DEBUG] No boundary found, starting from target line 2
-[EXTRACTION DEBUG] Finding closing tag for: '<TaxAmount>'
-[EXTRACTION DEBUG] Looking for closing tag: '</TaxAmount>'
-[EXTRACTION DEBUG] Found closing tag at line 4
-[EXTRACTION DEBUG] Extraction boundaries: lines 2 to 4
-[EXTRACTION DEBUG] Extracted 3 lines for TaxAmount
-[EXTRACTION DEBUG] Chunk content:
-    <TaxAmount>
-        <xsl:value-of select="ns0:Order/TaxAmount"/>
-    </TaxAmount>
-[EXTRACTION DEBUG] Extracted chunk length: 85 characters
-[EXTRACTION DEBUG] ===== EXTRACTION COMPLETE =====
-[GROUP DEBUG] [complex] Extracted chunk for TaxAmount, updating template immediately
-[GROUP DEBUG] [complex] Chunk content:     <TaxAmount>
-        <xsl:value-of select="ns0:Order/TaxAmount"/>
-    </TaxAmount>...
-[REPLACEMENT DEBUG] ===== REPLACING PLACEHOLDER FOR TaxAmount =====
-[REPLACEMENT DEBUG] Looking for placeholder: {{PLACEHOLDER_TaxAmount}}
-[REPLACEMENT DEBUG] Chunk length: 85 characters
-[REPLACEMENT DEBUG] Placeholder replaced successfully
-[REPLACEMENT DEBUG] Template length before: 275
-[REPLACEMENT DEBUG] Template length after: 335
-[GROUP DEBUG] [complex] Template updated for TaxAmount in real-time
-[GROUP DEBUG] [complex] Template size: 275 -> 335 characters
-[GROUP DEBUG] [complex] Remaining placeholders: 1
-[GROUP DEBUG] [complex] Processed elements so far: ['TaxAmount']
-[GROUP DEBUG] [complex] Current template state:
---------------------------------------------------
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+[ASYNC] About to call question_from_user_async with message: Map CustomerID field...
+[ASYNC QUESTION] Starting question_from_user_async with message: Map CustomerID field...
+[ASYNC QUESTION] About to call get_chat_completion_async...
+[ASYNC] Model Used: o3-mini
+[ASYNC QUESTION] get_chat_completion_async returned
+prompt_tokens=425, completion_tokens=557, total_tokens=982
+[ASYNC] COMPLETE_RESPONSE: ChatCompletion(id='chatcmpl-CJGRwrA2j5ht3b7IITZ5B5ctAUC7a', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://test.com">\n  <xsl:template match="/">\n    <Invoice>\n      <CustomerID>\n        <xsl:value-of select="ns0:Order/ns0:Customer/ns0:ID"/>\n      </CustomerID>\n    </Invoice>\n  </xsl:template>\n</xsl:stylesheet>', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None), content_filter_results={'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}})], created=1758707500, model='o3-mini-2025-01-31', object='chat.completion', service_tier=None, system_fingerprint='fp_e1882df059', usage=CompletionUsage(completion_tokens=557, prompt_tokens=425, total_tokens=982, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=448, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)), prompt_filter_results=[{'prompt_index': 0, 'content_filter_results': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}}}])
+[ASYNC] RESPONSE: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://test.com">
   <xsl:template match="/">
     <Invoice>
-      {{PLACEHOLDER_CustomerID}}
-          <TaxAmount>
-        <xsl:value-of select="ns0:Order/TaxAmount"/>
-    </TaxAmount>
+      <CustomerID>
+        <xsl:value-of select="ns0:Order/ns0:Customer/ns0:ID"/>
+      </CustomerID>
     </Invoice>
   </xsl:template>
 </xsl:stylesheet>
---------------------------------------------------
-[GROUP DEBUG] [complex] All batch completions processed, waiting for background tasks...
-[GROUP DEBUG] [complex] Group processing complete! Template updated with 1 total elements
-[REALTIME DEBUG] === PHASE 2: SIMPLE BATCHES ===
-[GROUP DEBUG] Processing simple group with 1 rows
-[GROUP DEBUG] Created 1 simple batches (8 fields each)
-[GROUP DEBUG] Started 1 simple batch tasks in parallel
-[GROUP DEBUG] Processing simple batch completions in real-time...
-[TIMING DEBUG] [simple] Waiting for next batch completion at 1758706238.34...
-[TIMING DEBUG] simple batch 0 STARTED at 1758706238.34: ['CustomerID']
-[ASYNC] Inside LLM Process (Async)
-prompt_tokens=100, completion_tokens=50, total_tokens=150
-[ASYNC] COMPLETE_RESPONSE: MockResponse(content='<xsl:stylesheet version="1.0" xmlns:xsl="http://ww...')
-[ASYNC] RESPONSE: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <TaxAmount>
-        <xsl:value-of select="ns0:Order/TaxAmount"/>
-    </TaxAmount>
-</xsl:stylesheet>
-[ASYNC] Generated XSLT for batch: 183 characters
-[TIMING DEBUG] simple batch 0 COMPLETED at 1758706238.34, took 0.00s
-[REALTIME DEBUG] simple batch 0 queued for real-time processing
-[TIMING DEBUG] [simple] Got batch from queue after 0.00s wait at 1758706238.34
-[GROUP DEBUG] [simple] Batch 1/1 completed: simple-0
-[GROUP DEBUG] [simple] Fields in batch: ['CustomerID']
-[EXTRACTION DEBUG] ===== EXTRACTING CHUNK FOR CustomerID =====
-[EXTRACTION DEBUG] XSLT length: 183 characters
-[EXTRACTION DEBUG] Split XSLT into 5 lines
-[EXTRACTION DEBUG] Searching for element: <CustomerID>
-[EXTRACTION DEBUG] Element CustomerID not found in XSLT lines
-[EXTRACTION DEBUG] Element CustomerID not found in XSLT
-[GROUP DEBUG] [simple] No chunk found for CustomerID, ignoring
-[GROUP DEBUG] [simple] All batch completions processed, waiting for background tasks...
-[GROUP DEBUG] [simple] Group processing complete! Template updated with 1 total elements
-[REALTIME DEBUG] Both phases completed with sequential groups strategy
-[REALTIME DEBUG] TRUE real-time processing complete!
-[REALTIME DEBUG] Processed 1 elements via real-time updates
-[REALTIME DEBUG] Final template length: 335 characters
-✅ Real-time merging completed
-Final XSLT length: 335
-Final XSLT:
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:template match="/">
-    <Invoice>
-      {{PLACEHOLDER_CustomerID}}
-          <TaxAmount>
-        <xsl:value-of select="ns0:Order/TaxAmount"/>
-    </TaxAmount>
-    </Invoice>
-  </xsl:template>
-</xsl:stylesheet>
-
-🎉 All tests passed!
+[ASYNC] question_from_user_async returned response length: 301
+[ASYNC] Extracting XSLT code from response...
+[ASYNC] Generated XSLT for batch: 301 characters
+[BATCH DEBUG] llm_process_async returned: 301 characters
+✅ Result: 301 characters
+🎉 Test completed successfully!

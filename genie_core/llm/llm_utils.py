@@ -30,8 +30,9 @@ global model_name_used
 
 import sys
 # Open the file once at the top of your main script
-log_file = open("full_output_log.txt", "w", encoding="utf-8")
-sys.stdout = log_file  # Redirect all print output globally
+# TEMPORARILY DISABLED for debugging
+# log_file = open("full_output_log.txt", "w", encoding="utf-8")
+# sys.stdout = log_file  # Redirect all print output globally
 
 gpt4o_model_name = os.getenv("GPT4O_MODEL_DEPLOYMENT_NAME")
 o1_model_name = os.getenv("o1_MODEL_DEPLOYMENT_NAME")
@@ -1433,6 +1434,8 @@ async def question_from_user_async(context, message, input_xml_1, output_xml_1):
     """
     Async version of question_from_user
     """
+    print(f"[ASYNC QUESTION] Starting question_from_user_async with message: {message[:100]}...")
+
     prompt = [
         {"role": "system", "content": "You are a helpful assistant, who is an expert in XMLs & XSLT. "},
         {"role": "user", "content": message},
@@ -1445,7 +1448,9 @@ async def question_from_user_async(context, message, input_xml_1, output_xml_1):
                                         Provide the XSLT in a single template as much as possible & Do not assume any details that are not explicitly mentioned in the context.'''}
     ]
 
+    print("[ASYNC QUESTION] About to call get_chat_completion_async...")
     gpt_response = await get_chat_completion_async(prompt)
+    print("[ASYNC QUESTION] get_chat_completion_async returned")
     if gpt_response:
         show_stats(gpt_response)
         complete_response = gpt_response.__str__()
@@ -1674,13 +1679,22 @@ async def llm_process_async(context, message, input_xml, transformed_xml, main_x
     Async version of llm_process without combine_xslt and refine_internal (since we use algorithmic merging)
     """
     print("[ASYNC] Inside LLM Process (Async)")
+    print(f"[ASYNC] About to call question_from_user_async with message: {message[:100]}...")
 
     # Generate XSLT for this specific batch
-    hidden_LLM_response, complete_LLM_response, bot_message = await question_from_user_async(
-        context, message, input_xml, transformed_xml
-    )
+    try:
+        hidden_LLM_response, complete_LLM_response, bot_message = await question_from_user_async(
+            context, message, input_xml, transformed_xml
+        )
+        print(f"[ASYNC] question_from_user_async returned response length: {len(hidden_LLM_response) if hidden_LLM_response else 0}")
+    except Exception as e:
+        print(f"[ASYNC] ERROR in question_from_user_async: {e}")
+        import traceback
+        traceback.print_exc()
+        return ""
 
     # Extract XSLT code from response
+    print("[ASYNC] Extracting XSLT code from response...")
     xslt_code = re.search(r"(<xsl:stylesheet[^>]*>.*?</xsl:stylesheet>)", hidden_LLM_response, re.DOTALL)
 
     if xslt_code:
@@ -1689,6 +1703,7 @@ async def llm_process_async(context, message, input_xml, transformed_xml, main_x
         return batch_xslt
     else:
         print("[ASYNC] ERROR: Could not extract XSLT from LLM response")
+        print(f"[ASYNC] Raw response (first 500 chars): {hidden_LLM_response[:500] if hidden_LLM_response else 'None'}")
         return ""
 
 
