@@ -24,6 +24,7 @@ import httpx
 pd.set_option('display.max_colwidth', None)
 pd.set_option('display.max_columns', None)
 httpx_client = httpx.Client(verify=False)
+async_httpx_client = httpx.AsyncClient(verify=False)
 _ = load_dotenv(find_dotenv())
 
 global model_name_used
@@ -56,19 +57,22 @@ o3client = AzureOpenAI(
 async_o3client = AsyncAzureOpenAI(
   azure_endpoint = os.getenv("o3_mini_AZURE_OPENAI_ENDPOINT"),
   api_key=os.getenv("o3_mini_AZURE_OPENAI_KEY"),
-  api_version=os.getenv("o3_mini_AZURE_API_VERSION")
+  api_version=os.getenv("o3_mini_AZURE_API_VERSION"),
+  http_client=async_httpx_client
 )
 
 async_o1client = AsyncAzureOpenAI(
   azure_endpoint = os.getenv("o1_AZURE_OPENAI_ENDPOINT"),
   api_key=os.getenv("o1_AZURE_OPENAI_KEY"),
-  api_version=os.getenv("o1_AZURE_API_VERSION")
+  api_version=os.getenv("o1_AZURE_API_VERSION"),
+  http_client=async_httpx_client
 )
 
 async_gpt4oclient = AsyncAzureOpenAI(
   azure_endpoint = os.getenv("GPT4O_AZURE_OPENAI_ENDPOINT"),
   api_key=os.getenv("GPT4O_AZURE_OPENAI_KEY"),
-  api_version=os.getenv("GPT4O_AZURE_API_VERSION")
+  api_version=os.getenv("GPT4O_AZURE_API_VERSION"),
+  http_client=async_httpx_client
 )
 
 gpt4oclient = AzureOpenAI(
@@ -92,88 +96,7 @@ def generate_embedding(client, text, deployment_name="text-embedding-ada-002"):
     )
     # Return the embedding vector
     return response.data[0].embedding
-
-class Agent:
-    calculator = None
-    def __init__(self, prompts, gpt_client, model_name) -> None:
-        self.prompts = prompts
-        self.gpt_client = gpt_client
-        self.model_name = model_name
-        self.temperature = 0
-        self.responses = []
-     
-    def add_message(self, prompt):
-        self.prompts.append(prompt)
-
-    def add_user_message(self, prompt):
-        self.prompts.append({"role": "user", "content": prompt})
-
-    def get_all_prompts(self):
-        return self.prompts
-
-    def set_temperature(self, temperature):
-        self.temperature = temperature
-
-    def set_prompts(self, prompts):
-        self.prompts = prompts
-
-    def get_all_responses(self):
-        return self.responses
-
-    def get_chat_completion(self):
-        """
-        Generate a chat completion using the specified model.
-        """
-        try:
-            response = self.gpt_client.chat.completions.create(
-                model=self.model_name,
-                messages=self.get_all_prompts()
-                # temperature=self.temperature,
-                # top_p = 0.9,
-                )
-
-            prompt_tokens = response.usage.prompt_tokens
-            completion_tokens = response.usage.completion_tokens
-            calculator = TokenCostCalculator(self.model_name)
-            cost_eur = calculator.calculate_cost(prompt_tokens, completion_tokens)
-            return cost_eur, response
-        except Exception as e:
-            print(f"Error in get_chat_completion: {e.__cause__}")
-            st.error(f"Error in get_chat_completion: {e}")
-            return None
-    
-def setup_agent(model_name):
-    """
-    Sets up an agent with the specified model name by loading environment variables and initializing the GPT client.
-
-    Args:
-        model_name (str): The name of the model to be used for the agent.
-
-    Returns:
-        Agent: An instance of the Agent class initialized with the specified model.
-    """
-
-    _ = load_dotenv(find_dotenv())
-    deployment_model = os.getenv(f"{model_name}_MODEL_DEPLOYMENT_NAME")
-    azure_endpoint = os.getenv(f"{model_name}_AZURE_OPENAI_ENDPOINT")
-    api_key = os.getenv(f"{model_name}_AZURE_OPENAI_KEY")
-    api_version = os.getenv(f"{model_name}_AZURE_API_VERSION")
-
-    print("deployment: ", deployment_model)
-    print("azure_endpoint: ", azure_endpoint)
-    print("api_key: ", api_key)
-    print("api_version:", api_version)
-
-    gpt_client = AzureOpenAI(
-        azure_endpoint=azure_endpoint,
-        api_key=api_key,
-        api_version=api_version,
-        http_client=httpx.Client(verify=False)
-    )
-
-    agent = Agent([], gpt_client, deployment_model)
-    return agent
-
+  
 async def get_chat_completion_async(input_messages, model_name=o3_mini_model_name):
     """
     Async version of get_chat_completion for non-blocking HTTP calls
@@ -276,45 +199,6 @@ def show_stats(result):
     Print token usage statistics for the chat completion.
     """
     print(f"prompt_tokens={result.usage.prompt_tokens}, completion_tokens={result.usage.completion_tokens}, total_tokens={result.usage.total_tokens}")
-
-def initiate_conversation_with_LLM(source_xml_file, target_xml_file, mapping_specifications_file, transformation_type):
-    """
-    Initiates a conversation with the LLM using the provided input files.
-
-    Args:
-        source_xml_file (str): The path to the source XML file.
-        target_xml_file (str): The path to the target XML file.
-        mapping_specifications_file (str): The path to the mapping specifications file.
-
-    """
-
-    # Load prompts and create GPT client
-    system_prompts = load_prompts(source_xml_file, target_xml_file, mapping_specifications_file, transformation_type)
-    xslt_generator_agent = setup_agent("GPT4O")
-    xslt_generator_agent.set_prompts(system_prompts)
-    st.session_state.generator_agent = xslt_generator_agent
-
-    # Invoke LLM
-    with st.spinner('Analysing the inputs, processing!'):
-        llm_response = xslt_generator_agent.get_chat_completion()
-        if not llm_response.choices[0].message.content:
-            st.error("Error in generating XSLT. No response was generated.")
-            return
-
-    with st.spinner('Processing the response!'):
-        has_questions = process_response(llm_response)
-
-    if has_questions:
-        with st.spinner('Hang on, fine tuning the XSLT!'):
-            subsequent_call_to_LLM(source_xml_file, target_xml_file, mapping_specifications_file)
-    # else:
-    #     write_chat_message("assistant", ":green[No questions, XSLT generated successfully.]")
-    if not st.session_state.has_human_feedback:
-        write_chat_message("assistant", ":green[No questions, XSLT generated successfully.]")
-        add_to_messages(":green[No questions, XSLT generated successfully.]")
-
-def initiate_conversation_with_LLM_coe(source_xml_file, target_xml_file, mapping_specifications_file):
-    pass
 
 def initiate_conversation_with_LLM_update(source_xml_file, target_xml_file, xslt, mapping_specifications_file, 
                                           cookbooks, user_requirement_prompt, shared_agent):
@@ -1391,25 +1275,6 @@ def initiate_conversation_with_LLM_xslt(xslt_content):
            
     print("Inside 9")
     return
-
-def subsequent_conversation_with_LLM_xslt(xslt_file):
-    # Load prompts and create GPT client
-    system_prompts = load_prompts_md(xslt_file)
-    xslt_generator_agent = setup_agent("GPT4O")
-    xslt_generator_agent.set_prompts(system_prompts)
-    st.session_state.generator_agent = xslt_generator_agent
-
-    # Invoke LLM
-    with st.spinner('Analysing the inputs, processing!'):
-        cost, llm_response = xslt_generator_agent.get_chat_completion()
-        if not llm_response.choices[0].message.content:
-            st.error("Error in generating MD. No response was generated.")
-            return
-        
-    with st.spinner('Processing the response!'):
-        has_questions = process_response_md(llm_response)
-        if has_questions:
-            st.error('Hang on, fine tuning the MD!')
 
 def subsequent_conversation_with_LLM_html(md_file):
     # Load prompts and create GPT client

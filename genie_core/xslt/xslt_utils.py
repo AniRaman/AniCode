@@ -2,7 +2,6 @@ import re
 import json
 import saxonche
 from difflib import Differ
-from genie_core.llm.llm_utils import setup_agent, show_stats
 from pathlib import Path
 import os
 
@@ -125,43 +124,6 @@ def consolidate_observations(response):
         formatted_observation = "No observations"
         return (False, formatted_observation)
     
-def compare_xslt(generated_xslt, prod_xslt):
-    """
-    Compare generated XSLT with production XSLT using LLM.
-    
-    Args:
-    generated_xslt (str): Generated XSLT content
-    prod_xslt (str): Production XSLT content
-    
-    Returns:
-    str: Formatted response containing observations about the differences
-    """
-    prompt = [
-        {"role": "system", "content": "You are a helpful assistant, who is an expert in XMLs & XSLT. " + 
-         "You respond ONLY in below JSON format, DO NOT ADD ANY OTHER TEXT IN RESPONSE (Do not enclose in tripple ` or add extra words like 'JSON'/'json'). " + 
-         """
-         {
-             "observations": [{"observation": "<observation>"}, {"observation": "<observation>"}]
-         }
-         Please replace the '<observation>' with your observations in the list of "observations"
-         The goal is to answere the "original question".
-         """
-        }
-        ,{"role": "user", "content": "The generated XSLT, enclosed in triple -. ---" + generated_xslt + "---"}
-        ,{"role": "user", "content": "The prod XSLT, enclosed in triple ~. ~~~" + prod_xslt + "~~~"}
-        ,{"role": "user", "content": "Both the XSLTs, generated XSLT and prod XSLT are to transform the same input XML"}
-        ,{"role": "user", "content": "Original question: What are the difference between these XSLTs?"}
-    ]
-
-    compare_agent = setup_agent("GPT4O")
-    compare_agent.set_prompts = prompt
-    gpt_response = compare_agent.get_chat_completion()
-    show_stats(gpt_response)
-    LLM_response = gpt_response.choices[0].message.content
-    print(f"LLM_response = {LLM_response}")
-    has_response, formatted_response = consolidate_observations(LLM_response)
-    return formatted_response
-
 def copy(generated_xslt):
     """
     Copy the generated XSLT.
@@ -254,16 +216,4 @@ def diff_texts(text1, text2):
     return [
         (token[2:], token[0] if token[0] != " " else None)
         for token in d.compare(text1, text2)
-    ]
-    
-if __name__ == "__main__":
-    # Test the functions
-    with open("/Users/nlepakshi/Documents/GitHub/genie/genie_core/config/test_data/ORD_CRE/test/in.xml", "r") as f:
-        xml_text = f.read()
-    with open("/Users/nlepakshi/Documents/GitHub/genie/genie_core/config/test_data/ORD_CRE/test/ordercreate.xslt", "r") as f:
-        xslt_text = f.read()
-        
-    output_xml, logs = apply_xslt(xslt_text, xml_text, [])
-    
-    print(output_xml)
-    
+    ]    
