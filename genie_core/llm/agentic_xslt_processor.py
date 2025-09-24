@@ -284,10 +284,10 @@ def process_specs_and_generate_xslt(specs_source: str) -> Tuple[bool, str, Optio
         output_xml = getattr(st.session_state, 'output_xml', None)
         main_xslt = context.current_xslt
 
-        with st.spinner('Generating XSLT with parallel processing, Thanks for your patience'):
-            # Use parallel processing for optimal performance
-            from genie_core.llm.parallel_xslt_processor import process_mappings_with_parallel_execution
-            main_xslt = process_mappings_with_parallel_execution(
+        with st.spinner('Generating XSLT with real-time template merging, Thanks for your patience'):
+            # Use parallel processing with real-time template merging
+            from genie_core.llm.parallel_xslt_processor import process_mappings_with_realtime_merging
+            main_xslt = process_mappings_with_realtime_merging(
                 s_rows, c_rows, input_xml, output_xml, main_xslt
             )
         
