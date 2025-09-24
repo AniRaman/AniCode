@@ -5,16 +5,14 @@ Implements parallel execution of 4 complex + 8 simple mapping batches
 
 import asyncio
 import streamlit as st
-import threading
-from queue import Queue
 from typing import List, Optional, Tuple, NamedTuple
 import pandas as pd
-from genie_core.llm.llm_utils import llm_process
+from genie_core.llm.llm_utils import llm_process, llm_process_async
 
 
 async def process_batch_async(context_batch: pd.DataFrame, message: str, input_xml: str, output_xml: str, current_xslt: Optional[str] = None) -> str:
     """
-    Async wrapper for llm_process to enable parallel processing
+    True async processing using llm_process_async for non-blocking parallel execution
 
     Args:
         context_batch: DataFrame batch of field mappings
@@ -26,10 +24,8 @@ async def process_batch_async(context_batch: pd.DataFrame, message: str, input_x
     Returns:
         str: Generated/updated XSLT
     """
-    # Note: llm_process is synchronous, but we wrap it for async execution
-    # In a real async environment, you might need to use asyncio.to_thread() or similar
     try:
-        result_xslt = llm_process(context_batch, message, input_xml, output_xml, current_xslt)
+        result_xslt = await llm_process_async(context_batch, message, input_xml, output_xml, current_xslt)
         return result_xslt
     except Exception as e:
         print(f"Batch processing failed: {e}")
@@ -358,6 +354,15 @@ def process_mappings_with_realtime_merging(simple_rows: pd.DataFrame, complex_ro
     print(f"[REALTIME DEBUG] Base template created, processing {len(element_list)} elements")
     print(f"[REALTIME DEBUG] Elements to process: {element_list}")
 
+    # Show initial base template
+    initial_placeholders = base_template.count('{{PLACEHOLDER_')
+    print(f"[REALTIME DEBUG] Initial base template:")
+    print(f"[REALTIME DEBUG] Template length: {len(base_template)} characters")
+    print(f"[REALTIME DEBUG] Initial placeholders: {initial_placeholders}")
+    print("-" * 50)
+    print(base_template[:500] + ("..." if len(base_template) > 500 else ""))
+    print("-" * 50)
+
     # Step 2: Start parallel processing with real-time merging
     try:
         return asyncio.run(process_with_realtime_template_updates(
@@ -382,7 +387,7 @@ async def process_with_realtime_template_updates(simple_rows: pd.DataFrame, comp
                                                base_template: str, element_list: List[str],
                                                main_xslt: Optional[str] = None) -> str:
     """
-    Process batches in parallel with real-time template updates using first-come-first-served queue
+    TRUE real-time approach: Parallel processing + immediate template updates via asyncio queue
 
     Args:
         simple_rows: DataFrame of simple field mappings
@@ -394,14 +399,9 @@ async def process_with_realtime_template_updates(simple_rows: pd.DataFrame, comp
         main_xslt: Starting XSLT
 
     Returns:
-        str: Final XSLT with real-time merged batches
+        str: Final XSLT with true real-time merged batches
     """
-    print("[REALTIME DEBUG] ===== PROCESSING WITH REAL-TIME TEMPLATE UPDATES =====")
-
-    # Initialize shared state for template merging
-    current_template = base_template
-    template_lock = threading.Lock()
-    completed_batches = Queue()
+    print("[REALTIME DEBUG] ===== TRUE REAL-TIME PROCESSING WITH ASYNCIO QUEUE =====")
 
     # Import hybrid merger components
     from genie_core.llm.hybrid_template_merger import ChunkExtractor, TemplateReplacer
@@ -409,144 +409,191 @@ async def process_with_realtime_template_updates(simple_rows: pd.DataFrame, comp
     chunk_extractor = ChunkExtractor()
     template_replacer = TemplateReplacer()
 
-    print(f"[REALTIME DEBUG] Starting parallel processing with {len(simple_rows)} simple and {len(complex_rows)} complex rows")
-
-    # Create batch completion callback
-    def on_batch_complete(batch_type: str, batch_id: int, result_xslt: str, fields: List[str]):
-        """Callback when a batch completes - adds to processing queue"""
-        batch_result = BatchResult(batch_type, batch_id, result_xslt, fields)
-        completed_batches.put(batch_result)
-        print(f"[REALTIME DEBUG] Batch {batch_type}-{batch_id} completed, queued for template update")
-
-    # Start parallel processing with callbacks
-    complex_task = process_complex_batches_with_callback(
-        complex_rows, input_xml, output_xml, main_xslt, on_batch_complete
-    )
-    simple_task = process_simple_batches_with_callback(
-        simple_rows, input_xml, output_xml, main_xslt, on_batch_complete
-    )
-
-    # Start both tasks
-    print("[REALTIME DEBUG] Starting complex and simple batch processing...")
-    complex_results_task = asyncio.create_task(complex_task)
-    simple_results_task = asyncio.create_task(simple_task)
-
-    # Process completed batches in first-come-first-served order
+    # Setup asyncio queue for batch completions
+    completion_queue = asyncio.Queue()
+    current_template = base_template
     processed_elements = set()
 
-    while not (complex_results_task.done() and simple_results_task.done() and completed_batches.empty()):
-        try:
-            # Get next completed batch (blocking with timeout)
-            batch_result = completed_batches.get(timeout=0.1)
+    print(f"[REALTIME DEBUG] Starting parallel processing with asyncio queue")
+    print(f"[REALTIME DEBUG] Simple batches: {len(simple_rows)}, Complex batches: {len(complex_rows)}")
 
-            print(f"[REALTIME DEBUG] Processing completed batch: {batch_result.batch_type}-{batch_result.batch_id}")
-            print(f"[REALTIME DEBUG] Batch fields: {batch_result.fields}")
+    # Strategy 1: Sequential Groups with Real-Time Updates Within Groups
 
-            # Extract chunks and update template for each field in this batch
-            with template_lock:
-                for field_name in batch_result.fields:
-                    if field_name in processed_elements:
-                        print(f"[REALTIME DEBUG] Field {field_name} already processed, skipping")
-                        continue
+    # Phase 1: Complex batches with real-time updates
+    print(f"[REALTIME DEBUG] === PHASE 1: COMPLEX BATCHES ===")
+    if len(complex_rows) > 0:
+        current_template = await process_group_with_realtime_updates(
+            complex_rows, "complex", 4, input_xml, output_xml, main_xslt,
+            completion_queue, current_template, processed_elements,
+            chunk_extractor, template_replacer
+        )
+    else:
+        print(f"[REALTIME DEBUG] No complex batches to process")
 
-                    # Extract chunk from batch result
-                    chunk = chunk_extractor.extract_chunk_for_element(batch_result.result_xslt, field_name)
+    # Phase 2: Simple batches with real-time updates
+    print(f"[REALTIME DEBUG] === PHASE 2: SIMPLE BATCHES ===")
+    if len(simple_rows) > 0:
+        current_template = await process_group_with_realtime_updates(
+            simple_rows, "simple", 8, input_xml, output_xml, main_xslt,
+            completion_queue, current_template, processed_elements,
+            chunk_extractor, template_replacer
+        )
+    else:
+        print(f"[REALTIME DEBUG] No simple batches to process")
 
-                    if chunk:
-                        print(f"[REALTIME DEBUG] Extracted chunk for {field_name}, updating template")
+    print(f"[REALTIME DEBUG] Both phases completed with sequential groups strategy")
 
-                        # Replace placeholder in current template
-                        current_template = template_replacer.replace_placeholder_with_chunk(
-                            current_template, field_name, chunk
-                        )
-
-                        processed_elements.add(field_name)
-                        print(f"[REALTIME DEBUG] Template updated for {field_name}")
-                    else:
-                        print(f"[REALTIME DEBUG] No chunk found for {field_name}")
-
-            completed_batches.task_done()
-
-        except Exception as e:
-            # Timeout or other error - continue checking for completion
-            if "Empty" not in str(e):
-                print(f"[REALTIME DEBUG] Error processing batch: {e}")
-            continue
-
-    # Wait for all batch processing to complete
-    print("[REALTIME DEBUG] Waiting for all batch processing to complete...")
-    await asyncio.gather(complex_results_task, simple_results_task)
-
-    print(f"[REALTIME DEBUG] Real-time template merging complete!")
-    print(f"[REALTIME DEBUG] Processed {len(processed_elements)} elements")
+    print(f"[REALTIME DEBUG] TRUE real-time processing complete!")
+    print(f"[REALTIME DEBUG] Processed {len(processed_elements)} elements via real-time updates")
     print(f"[REALTIME DEBUG] Final template length: {len(current_template)} characters")
 
     return current_template
 
 
-async def process_complex_batches_with_callback(complex_rows: pd.DataFrame, input_xml: str, output_xml: str,
-                                              main_xslt: Optional[str], callback_fn) -> List[str]:
-    """Process complex batches with completion callback"""
-    print(f"[REALTIME DEBUG] Processing complex batches with callback")
+async def process_group_with_realtime_updates(rows: pd.DataFrame, group_type: str, batch_size: int,
+                                            input_xml: str, output_xml: str, main_xslt: str,
+                                            completion_queue: asyncio.Queue, current_template: str,
+                                            processed_elements: set, chunk_extractor, template_replacer) -> str:
+    """
+    Process a group of batches (complex or simple) in parallel with real-time template updates
 
-    if len(complex_rows) == 0:
-        return []
+    Args:
+        rows: DataFrame of field mappings for this group
+        group_type: "complex" or "simple"
+        batch_size: Size of each batch (4 for complex, 8 for simple)
+        input_xml, output_xml, main_xslt: Standard processing inputs
+        completion_queue: Queue for batch completions
+        current_template: Current template state to update
+        processed_elements: Set of already processed elements
+        chunk_extractor, template_replacer: Processing components
 
-    complex_batches = create_batches(complex_rows, batch_size=4)
-    tasks = []
+    Returns:
+        str: Updated template after processing this group
+    """
+    print(f"[GROUP DEBUG] Processing {group_type} group with {len(rows)} rows")
 
-    for i, batch in enumerate(complex_batches):
+    # Create batches for this group
+    batches = create_batches(rows, batch_size=batch_size)
+    group_tasks = []
+
+    print(f"[GROUP DEBUG] Created {len(batches)} {group_type} batches ({batch_size} fields each)")
+
+    # Start all batches in this group in parallel
+    for i, batch in enumerate(batches):
         context_fields = ",".join(map(str, batch["Field"]))
-        message = f"Map all the complex elements mentioned here: {context_fields}"
+        message = f"Map all the {group_type} elements mentioned here: {context_fields}"
         fields_list = batch["Field"].tolist()
 
-        task = process_batch_with_callback_async(
+        task = process_batch_with_queue_async(
             batch, message, input_xml, output_xml, main_xslt,
-            "complex", i, fields_list, callback_fn
+            group_type, i, fields_list, completion_queue
         )
-        tasks.append(task)
+        group_tasks.append(task)
 
-    results = await asyncio.gather(*tasks)
-    return results
+    print(f"[GROUP DEBUG] Started {len(group_tasks)} {group_type} batch tasks in parallel")
+
+    # Start all group tasks in background (group_tasks contains coroutines, not tasks)
+    group_results_task = asyncio.gather(*group_tasks)
+
+    # Process completions in real-time as batches in this group complete
+    total_group_batches = len(batches)
+    completed_group_batches = 0
+
+    print(f"[GROUP DEBUG] Processing {group_type} batch completions in real-time...")
+
+    while completed_group_batches < total_group_batches:
+        try:
+            import time
+            queue_wait_start = time.time()
+            print(f"[TIMING DEBUG] [{group_type}] Waiting for next batch completion at {queue_wait_start:.2f}...")
+
+            # Wait for next batch completion within this group
+            batch_result = await completion_queue.get()
+
+            queue_wait_end = time.time()
+            wait_duration = queue_wait_end - queue_wait_start
+            completed_group_batches += 1
+
+            print(f"[TIMING DEBUG] [{group_type}] Got batch from queue after {wait_duration:.2f}s wait at {queue_wait_end:.2f}")
+            print(f"[GROUP DEBUG] [{group_type}] Batch {completed_group_batches}/{total_group_batches} completed: {batch_result.batch_type}-{batch_result.batch_id}")
+            print(f"[GROUP DEBUG] [{group_type}] Fields in batch: {batch_result.fields}")
+
+            # Process each field in this completed batch
+            for field_name in batch_result.fields:
+                if field_name in processed_elements:
+                    print(f"[GROUP DEBUG] [{group_type}] Field {field_name} already processed, skipping")
+                    continue
+
+                # Extract chunk from this batch's XSLT result
+                chunk = chunk_extractor.extract_chunk_for_element(batch_result.result_xslt, field_name)
+
+                if chunk:
+                    print(f"[GROUP DEBUG] [{group_type}] Extracted chunk for {field_name}, updating template immediately")
+                    print(f"[GROUP DEBUG] [{group_type}] Chunk content: {chunk[:200]}...")
+
+                    # Update template immediately
+                    previous_template_length = len(current_template)
+                    current_template = template_replacer.replace_placeholder_with_chunk(
+                        current_template, field_name, chunk
+                    )
+
+                    processed_elements.add(field_name)
+
+                    # Show template evolution
+                    remaining_placeholders = current_template.count('{{PLACEHOLDER_')
+                    print(f"[GROUP DEBUG] [{group_type}] Template updated for {field_name} in real-time")
+                    print(f"[GROUP DEBUG] [{group_type}] Template size: {previous_template_length} -> {len(current_template)} characters")
+                    print(f"[GROUP DEBUG] [{group_type}] Remaining placeholders: {remaining_placeholders}")
+                    print(f"[GROUP DEBUG] [{group_type}] Processed elements so far: {list(processed_elements)}")
+
+                    # Show current template state (first 500 chars)
+                    print(f"[GROUP DEBUG] [{group_type}] Current template state:")
+                    print("-" * 50)
+                    print(current_template[:500] + ("..." if len(current_template) > 500 else ""))
+                    print("-" * 50)
+
+                else:
+                    print(f"[GROUP DEBUG] [{group_type}] No chunk found for {field_name}, ignoring")
+
+            # Mark this queue item as processed
+            completion_queue.task_done()
+
+        except Exception as e:
+            print(f"[GROUP DEBUG] [{group_type}] Error processing batch completion: {e}")
+            completed_group_batches += 1  # Continue with other batches
+
+    # Wait for all batches in this group to complete
+    print(f"[GROUP DEBUG] [{group_type}] All batch completions processed, waiting for background tasks...")
+    await group_results_task
+
+    print(f"[GROUP DEBUG] [{group_type}] Group processing complete! Template updated with {len(processed_elements)} total elements")
+
+    return current_template
 
 
-async def process_simple_batches_with_callback(simple_rows: pd.DataFrame, input_xml: str, output_xml: str,
-                                             main_xslt: Optional[str], callback_fn) -> List[str]:
-    """Process simple batches with completion callback"""
-    print(f"[REALTIME DEBUG] Processing simple batches with callback")
+async def process_batch_with_queue_async(batch: pd.DataFrame, message: str, input_xml: str, output_xml: str,
+                                       main_xslt: Optional[str], batch_type: str, batch_id: int,
+                                       fields_list: List[str], completion_queue: asyncio.Queue) -> str:
+    """
+    Process single batch and put completion result in asyncio queue for real-time processing
+    """
+    import time
 
-    if len(simple_rows) == 0:
-        return []
-
-    simple_batches = create_batches(simple_rows, batch_size=8)
-    tasks = []
-
-    for i, batch in enumerate(simple_batches):
-        context_fields = ",".join(map(str, batch["Field"]))
-        message = f"Map all the simple elements mentioned here: {context_fields}"
-        fields_list = batch["Field"].tolist()
-
-        task = process_batch_with_callback_async(
-            batch, message, input_xml, output_xml, main_xslt,
-            "simple", i, fields_list, callback_fn
-        )
-        tasks.append(task)
-
-    results = await asyncio.gather(*tasks)
-    return results
-
-
-async def process_batch_with_callback_async(batch: pd.DataFrame, message: str, input_xml: str, output_xml: str,
-                                          main_xslt: Optional[str], batch_type: str, batch_id: int,
-                                          fields_list: List[str], callback_fn) -> str:
-    """Process single batch and call callback on completion"""
-    print(f"[REALTIME DEBUG] Processing {batch_type} batch {batch_id}: {fields_list}")
+    start_time = time.time()
+    print(f"[TIMING DEBUG] {batch_type} batch {batch_id} STARTED at {start_time:.2f}: {fields_list}")
 
     # Use existing batch processing logic
     result = await process_batch_async(batch, message, input_xml, output_xml, main_xslt)
 
-    # Call completion callback
-    callback_fn(batch_type, batch_id, result, fields_list)
+    end_time = time.time()
+    duration = end_time - start_time
+    print(f"[TIMING DEBUG] {batch_type} batch {batch_id} COMPLETED at {end_time:.2f}, took {duration:.2f}s")
+
+    # Put completion result in queue for real-time processing
+    batch_result = BatchResult(batch_type, batch_id, result, fields_list)
+    await completion_queue.put(batch_result)
+
+    print(f"[REALTIME DEBUG] {batch_type} batch {batch_id} queued for real-time processing")
 
     return result
 

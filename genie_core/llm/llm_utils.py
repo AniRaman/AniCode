@@ -7,7 +7,7 @@ import textwrap
 from collections import Counter
 import numpy as np
 import chromadb
-from openai import AzureOpenAI
+from openai import AzureOpenAI, AsyncAzureOpenAI
 from dotenv import load_dotenv, find_dotenv
 from genie_core.llm import TokenCostCalculator
 from genie_core.llm.TokenCostCalculator import TokenCostCalculator
@@ -45,10 +45,29 @@ o1client = AzureOpenAI(
 )
 
 o3client = AzureOpenAI(
-  azure_endpoint = os.getenv("o3_mini_AZURE_OPENAI_ENDPOINT"), 
-  api_key=os.getenv("o3_mini_AZURE_OPENAI_KEY"),  
+  azure_endpoint = os.getenv("o3_mini_AZURE_OPENAI_ENDPOINT"),
+  api_key=os.getenv("o3_mini_AZURE_OPENAI_KEY"),
   api_version=os.getenv("o3_mini_AZURE_API_VERSION"),
   http_client=httpx_client
+)
+
+# Async clients for non-blocking HTTP calls
+async_o3client = AsyncAzureOpenAI(
+  azure_endpoint = os.getenv("o3_mini_AZURE_OPENAI_ENDPOINT"),
+  api_key=os.getenv("o3_mini_AZURE_OPENAI_KEY"),
+  api_version=os.getenv("o3_mini_AZURE_API_VERSION")
+)
+
+async_o1client = AsyncAzureOpenAI(
+  azure_endpoint = os.getenv("o1_AZURE_OPENAI_ENDPOINT"),
+  api_key=os.getenv("o1_AZURE_OPENAI_KEY"),
+  api_version=os.getenv("o1_AZURE_API_VERSION")
+)
+
+async_gpt4oclient = AsyncAzureOpenAI(
+  azure_endpoint = os.getenv("GPT4O_AZURE_OPENAI_ENDPOINT"),
+  api_key=os.getenv("GPT4O_AZURE_OPENAI_KEY"),
+  api_version=os.getenv("GPT4O_AZURE_API_VERSION")
 )
 
 gpt4oclient = AzureOpenAI(
@@ -153,6 +172,40 @@ def setup_agent(model_name):
 
     agent = Agent([], gpt_client, deployment_model)
     return agent
+
+async def get_chat_completion_async(input_messages, model_name=o3_mini_model_name):
+    """
+    Async version of get_chat_completion for non-blocking HTTP calls
+    """
+    try:
+        if model_name == gpt4o_model_name:
+            print(f"[ASYNC] Model Used: {model_name}")
+            response = await async_gpt4oclient.chat.completions.create(
+                model=model_name,
+                messages=input_messages,
+                temperature=0,
+                top_p=0.9,
+            )
+
+        elif model_name == o1_model_name:
+            print(f"[ASYNC] Model Used: {o1_model_name}")
+            response = await async_o1client.chat.completions.create(
+                model=model_name,
+                messages=input_messages
+            )
+
+        else:
+            print(f"[ASYNC] Model Used: {o3_mini_model_name}")
+            response = await async_o3client.chat.completions.create(
+                model=model_name,
+                messages=input_messages
+            )
+
+        return response
+    except Exception as e:
+        print(f"[ASYNC] Error in get_chat_completion_async: {e}")
+        return None
+
 
 def get_chat_completion(input_messages, model_name=o3_mini_model_name):
     try:
@@ -1376,16 +1429,44 @@ def subsequent_conversation_with_LLM_html(md_file):
         if has_questions:
             st.error('Hang on, fine tuning the specs!')
 
-def question_from_user(context, message, input_xml_1, output_xml_1):
-    
+async def question_from_user_async(context, message, input_xml_1, output_xml_1):
+    """
+    Async version of question_from_user
+    """
     prompt = [
-    {"role": "system", "content": "You are a helpful assistant, who is an expert in XMLs & XSLT. "}, #setting the behavior
-    {"role": "user", "content": message},
-    {"role": "assistant",  "content": f'''Generate only XSLT 1.0 code by fetching information from the 'Input XPATH', 'Description', and 'Output XPATH' columns in the provided context: {context}. 
+        {"role": "system", "content": "You are a helpful assistant, who is an expert in XMLs & XSLT. "},
+        {"role": "user", "content": message},
+        {"role": "assistant", "content": f'''Generate only XSLT 1.0 code by fetching information from the 'Input XPATH', 'Description', and 'Output XPATH' columns in the provided context: {context}.
                                         Generate XSLT 1.0 code STRICTLY without usage of any unnecessary libraries and for only the elements mentioned in message. Do not include any additional elements or code for additional elements beyond the one requested.
                                         The XSLT should start with '<xsl:stylesheet version="1.0"'
                                         Use this context as the primary source for generating the XSLT. Refer to the input XML ({input_xml_1}) and output XML ({output_xml_1}) to check XPaths.
-                                        Focus on the formatting provided in the output XML and check for Missing Delimiters.                                        
+                                        Focus on the formatting provided in the output XML and check for Missing Delimiters.
+                                        All elements in the XML use the `ns0` namespace prefix. Always include `ns0:` before each element in the XPath expressions. For example, "ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/preferredCurrencyCode" here preferredCurrencyCode is missing the namespace ns0 which is wrong, correct thing would be "ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:preferredCurrencyCode".
+                                        Provide the XSLT in a single template as much as possible & Do not assume any details that are not explicitly mentioned in the context.'''}
+    ]
+
+    gpt_response = await get_chat_completion_async(prompt)
+    if gpt_response:
+        show_stats(gpt_response)
+        complete_response = gpt_response.__str__()
+        print(f"[ASYNC] COMPLETE_RESPONSE: {complete_response}")
+        response = gpt_response.choices[0].message.content
+        print(f"[ASYNC] RESPONSE: {response}")
+        return (response, complete_response, prompt.__str__())
+    else:
+        return ("", "", "")
+
+
+def question_from_user(context, message, input_xml_1, output_xml_1):
+
+    prompt = [
+    {"role": "system", "content": "You are a helpful assistant, who is an expert in XMLs & XSLT. "}, #setting the behavior
+    {"role": "user", "content": message},
+    {"role": "assistant",  "content": f'''Generate only XSLT 1.0 code by fetching information from the 'Input XPATH', 'Description', and 'Output XPATH' columns in the provided context: {context}.
+                                        Generate XSLT 1.0 code STRICTLY without usage of any unnecessary libraries and for only the elements mentioned in message. Do not include any additional elements or code for additional elements beyond the one requested.
+                                        The XSLT should start with '<xsl:stylesheet version="1.0"'
+                                        Use this context as the primary source for generating the XSLT. Refer to the input XML ({input_xml_1}) and output XML ({output_xml_1}) to check XPaths.
+                                        Focus on the formatting provided in the output XML and check for Missing Delimiters.
                                         All elements in the XML use the `ns0` namespace prefix. Always include `ns0:` before each element in the XPath expressions. For example, "ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/preferredCurrencyCode" here preferredCurrencyCode is missing the namespace ns0 which is wrong, correct thing would be "ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:preferredCurrencyCode".
                                         Provide the XSLT in a single template as much as possible & Do not assume any details that are not explicitly mentioned in the context.'''
                                         }
@@ -1482,6 +1563,7 @@ def combine_xslt_2(curr_xslt,main_xslt):
     return (response,complete_response)
 
 # %%
+
 def refine_internal(main_xslt,output_xml_1):
     startCode = '''<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
            xmlns:ns0="http://www.amadeus.net" exclude-result-prefixes="ns0">
@@ -1587,23 +1669,48 @@ def update_specs(final_msg,fields_ref):
                 st.session_state.space,st.session_state.page_name,st.session_state.html = space,page_name,html
                 #publish_content(space, page_name, html)
 
-def llm_process(context, message, input_xml, transformed_xml, main_xslt):
-    print("Inside LLM Process")
-    hidden_LLM_response,complete_LLM_response,bot_message = question_from_user(context, message, input_xml, transformed_xml)                                      
-    LLM_xslt = hidden_LLM_response
-    # Use a regular expression to capture the XSLT content
+async def llm_process_async(context, message, input_xml, transformed_xml, main_xslt):
+    """
+    Async version of llm_process without combine_xslt and refine_internal (since we use algorithmic merging)
+    """
+    print("[ASYNC] Inside LLM Process (Async)")
+
+    # Generate XSLT for this specific batch
+    hidden_LLM_response, complete_LLM_response, bot_message = await question_from_user_async(
+        context, message, input_xml, transformed_xml
+    )
+
+    # Extract XSLT code from response
     xslt_code = re.search(r"(<xsl:stylesheet[^>]*>.*?</xsl:stylesheet>)", hidden_LLM_response, re.DOTALL)
-    if not main_xslt: #If no XSLT has been generated yet, then use the current XSLT as main_xslt
-        main_xslt = xslt_code.group(1)
-    else: #Combining the current XSLT with already generated XSLTs
-        hidden_LLM_response,complete_LLM_response = combine_xslt_2(xslt_code.group(1),main_xslt)
-        xslt_code_comb = re.search(r"(<xsl:stylesheet[^>]*>.*?</xsl:stylesheet>)", hidden_LLM_response, re.DOTALL)
-        main_xslt = xslt_code_comb.group(1)
-    hidden_LLM_prompt,complete_LLM_response = refine_internal(main_xslt,transformed_xml)
-    ref_xslt_code = re.findall(r"(<xsl:stylesheet[^>]*>.*?</xsl:stylesheet>)", hidden_LLM_prompt, re.DOTALL)
-    if ref_xslt_code:
-        main_xslt = ref_xslt_code[-1]
-    return main_xslt
+
+    if xslt_code:
+        batch_xslt = xslt_code.group(1)
+        print(f"[ASYNC] Generated XSLT for batch: {len(batch_xslt)} characters")
+        return batch_xslt
+    else:
+        print("[ASYNC] ERROR: Could not extract XSLT from LLM response")
+        return ""
+
+
+def llm_process(context, message, input_xml, transformed_xml, main_xslt):
+    """
+    Synchronous version without combine_xslt and refine_internal (since we use algorithmic merging)
+    """
+    print("Inside LLM Process")
+
+    # Generate XSLT for this specific batch
+    hidden_LLM_response, complete_LLM_response, bot_message = question_from_user(context, message, input_xml, transformed_xml)
+
+    # Extract XSLT code from response
+    xslt_code = re.search(r"(<xsl:stylesheet[^>]*>.*?</xsl:stylesheet>)", hidden_LLM_response, re.DOTALL)
+
+    if xslt_code:
+        batch_xslt = xslt_code.group(1)
+        print(f"Generated XSLT for batch: {len(batch_xslt)} characters")
+        return batch_xslt
+    else:
+        print("ERROR: Could not extract XSLT from LLM response")
+        return ""
 
 
 

@@ -1,279 +1,195 @@
-Using AGENTIC approach for XSLT processing
------------
-AGENTIC PROCESSOR
-User message: Generate XSLT from file:/SW_Mapping (1).csv
-Chat history length: 0
-=== AGENTIC DEBUG: Calling GPT with function calling capability ===
-AGENT MODEL: o3-mini
-CLIENT: o3client (Azure OpenAI)
-FUNCTIONS AVAILABLE: ['validate_prerequisites', 'process_specs_and_generate_xslt', 'refine_existing_xslt', 'request_missing_prerequisites']
-=== AGENTIC DEBUG: GPT Function Call ===
-FUNCTION CALLED: process_specs_and_generate_xslt
-FUNCTION ARGUMENTS: {"specs_source": "file:/SW_Mapping (1).csv"}
-DEBUG: process_specs_and_generate_xslt received specs_source: 'file:/SW_Mapping (1).csv'
-DEBUG: specs_source type: <class 'str'>
-Specs source :  file:/SW_Mapping (1).csv
-Markdown file :  |    | Field                              |    | Input XPATH                                                                                                                                                                                                                                                                                                                              |    | Output XPATH                   |    | Complexity   |    | M/C/O   |    | Description                                                                                                                                                                                                                                             |    |
-|    |                                    |    |                                                                                                                                                                                                                                                                                                                                          |    |                                |    |              |    |         |    |                                                                                                                                                                                                                                                         |    |
-|:---|:-----------------------------------|:---|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---|:-------------------------------|:---|:-------------|:---|:--------|:---|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---|
-|    | Product ID                         |    | NaN                                                                                                                                                                                                                                                                                                                                      |    | product_id                     |    | S            |    | M       |    | Hardcode it to 1234-asd-wer                                                                                                                                                                                                                             |    |
-|    | Coverage start date                |    | /InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/departureDate                                                                                                                                                                                                                                |    | coverage_start_date            |    | S            |    | M       |    | The day on which coverage begins, Build it in this format :2021-10-01                                                                                                                                                                                   |    |
-|    | Coverage end date                  |    | /InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/arrivalDate                                                                                                                                                                                                                                  |    | coverage_end_date              |    | S            |    | M       |    | The day on which coverage end, Build it in this format :2021-10-04                                                                                                                                                                                      |    |
-|    | Coverage start hour (24 hr format) |    | /InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/departureTime                                                                                                                                                                                                                                |    | coverage_start_hour_number     |    | S            |    | O       |    | The hour when coverage should begin on each of the covered days - overrides the Product default if provided. Required if the Product has no default. Should be provided in the local time of the location of the guarantee. Build only the hour number  |    |
-|    | Coverage end hour (24 hr format)   |    | /InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/arrivalTime                                                                                                                                                                                                                                  |    | coverage_end_hour_number       |    | S            |    | M       |    | The hour when coverage should end on each of the covered days - overrides the Product default if provided. Required if the Product has no default. Should be provided in the local time of the location of the guarantee. Build only the hour number    |    |
-|    | Currency                           |    | /InsuranceSmartShoppingRequest/insuranceOptionSection/insuranceOptionDetails/pricingInformations/agentOverwritecurrencyelse /InsuranceSmartShoppingRequest/insuranceOptionSection/insuranceOptionDetails/pricingInformations/preferredCurrencyCode                                                                                       |    | currency                       |    | C            |    | M       |    | 3 character ISO code representing the currency of the quote - overrides the Product default if provided. eg: USD                                                                                                                                        |    |
-|    | Exposure name                      |    | subscriberAddressSection with ADE will be taken into consideration and element will be used for this exposure_name                                                                                                                                                                                                                       |    | exposure_name                  |    | S            |    | M       |    | The human-readable/user-facing name of the location or experience being covered. This field has a character limit of 50; any longer content will be truncated. Exposure name is nothing but the hotel name. Example: Diablo Canyon Campsite 14A         |    |
-|    | Exposure latitude                  |    | NaN                                                                                                                                                                                                                                                                                                                                      |    | exposure_latitude              |    | S            |    | O       |    | The latitude in decimal degrees of the exposure location eg: 35.8048664                                                                                                                                                                                 |    |
-|    | Exposure longitude                 |    | NaN                                                                                                                                                                                                                                                                                                                                      |    | exposure_longitude             |    | S            |    | O       |    | The longitude in decimal degrees of the exposure location eg: -106.1389522                                                                                                                                                                              |    |
-|    | Total coverage amount              |    | /InsuranceSmartShoppingRequest/insurancePlanSection/travelValue/monetaryDetails/amount                                                                                                                                                                                                                                                   |    | exposure_total_coverage_amount |    | S            |    | M       |    | The total value of the exposure to be covered. Amount to be divided by 1000 eg: 300.51. Send the trip value including taxes                                                                                                                             |    |
-|    | Language (Local)                   |    | Pick the language from InsuranceSmartShoppingRequest/languageCode/userPreferences/codedLanguage if present, else/originatorSection/originatorDetails/@language                                                                                                                                                                           |    | lang_locale                    |    | C            |    | C       |    | eg: en-US. Currently only 2 languages are supported - EN and FR. More languages will be added in 2024. User preferred language can be sent                                                                                                              |    |
-|    | External ID                        |    | NaN                                                                                                                                                                                                                                                                                                                                      |    | external_id                    |    | S            |    | O       |    | An identifier used to associate a Quote to an order/reservation/booking in another system if available. Alternatively, a shopping cart ID or another type of unique session ID can be used to aggregate Quotes for a browsing experience by a customer. |    |
-|    | Billing Address                    |    | /subscriberAddressSection/nameDetails/qualifier="ARE"/name                                                                                                                                                                                                                                                                               |    | NaN                            |    | NaN          |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |
-|    | Address Line 1                     |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE", then build subscriberAddressSection/addressInfo/addressDetails/line1                                                                                                                                                                                                |    | billing_address.address_line_1 |    | S            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |
-|    | Address Line 2                     |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE", then build subscriberAddressSection/addressInfo/addressDetails/line2                                                                                                                                                                                                |    | billing_address.address_line_2 |    | S            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |
-|    | City                               |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE", then build /addressInfo/city                                                                                                                                                                                                                                        |    | billing_address.city           |    | S            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |
-|    | Region                             |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE" and then check for /addressInfo/regionDetails/qualifier = 84. If found, pick up the state from /addressInfo/regionDetails/name. If not found, check if /addressInfo/locationDetails/qualifier = 84; if yes, pick up the state from /addressInfo/locationDetails/name |    | billing_address.region         |    | C            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |
-|    | country                            |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE" and then check for /addressInfo/locationDetails/qualifier = 162. If found, pick up the country from /addressInfo/locationDetails/name. If not found, check if /addressInfo/regionDetails/qualifier = 162; if yes, pick country from /addressInfo/regionDetails/name  |    | billing_address.country        |    | C            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |
-|    | postal code                        |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE", then build /addressInfo/zipCode                                                                                                                                                                                                                                     |    | billing_address.postal_code    |    | S            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |
-Lines :  ['|    | Field                              |    | Input XPATH                                                                                                                                                                                                                                                                                                                              |    | Output XPATH                   |    | Complexity   |    | M/C/O   |    | Description                                                                                                                                                                                                                                             |    |', '|    |                                    |    |                                                                                                                                                                                                                                                                                                                                          |    |                                |    |              |    |         |    |                                                                                                                                                                                                                                                         |    |', '|:---|:-----------------------------------|:---|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---|:-------------------------------|:---|:-------------|:---|:--------|:---|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---|', '|    | Product ID                         |    | NaN                                                                                                                                                                                                                                                                                                                                      |    | product_id                     |    | S            |    | M       |    | Hardcode it to 1234-asd-wer                                                                                                                                                                                                                             |    |', '|    | Coverage start date                |    | /InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/departureDate                                                                                                                                                                                                                                |    | coverage_start_date            |    | S            |    | M       |    | The day on which coverage begins, Build it in this format :2021-10-01                                                                                                                                                                                   |    |', '|    | Coverage end date                  |    | /InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/arrivalDate                                                                                                                                                                                                                                  |    | coverage_end_date              |    | S            |    | M       |    | The day on which coverage end, Build it in this format :2021-10-04                                                                                                                                                                                      |    |', '|    | Coverage start hour (24 hr format) |    | /InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/departureTime                                                                                                                                                                                                                                |    | coverage_start_hour_number     |    | S            |    | O       |    | The hour when coverage should begin on each of the covered days - overrides the Product default if provided. Required if the Product has no default. Should be provided in the local time of the location of the guarantee. Build only the hour number  |    |', '|    | Coverage end hour (24 hr format)   |    | /InsuranceSmartShoppingRequest/insurancePlanSection/itineraryInfo/segmentDetails/flightDate/arrivalTime                                                                                                                                                                                                                                  |    | coverage_end_hour_number       |    | S            |    | M       |    | The hour when coverage should end on each of the covered days - overrides the Product default if provided. Required if the Product has no default. Should be provided in the local time of the location of the guarantee. Build only the hour number    |    |', '|    | Currency                           |    | /InsuranceSmartShoppingRequest/insuranceOptionSection/insuranceOptionDetails/pricingInformations/agentOverwritecurrencyelse\xa0/InsuranceSmartShoppingRequest/insuranceOptionSection/insuranceOptionDetails/pricingInformations/preferredCurrencyCode                                                                                       |    | currency                       |    | C            |    | M       |    | 3 character ISO code representing the currency of the quote - overrides the Product default if provided. eg: USD                                                                                                                                        |    |', '|    | Exposure name                      |    | subscriberAddressSection with ADE will be taken into consideration and element will be used for this exposure_name                                                                                                                                                                                                                       |    | exposure_name                  |    | S            |    | M       |    | The human-readable/user-facing name of the location or experience being covered. This field has a character limit of 50; any longer content will be truncated. Exposure name is nothing but the hotel name. Example: Diablo Canyon Campsite 14A         |    |', '|    | Exposure latitude                  |    | NaN                                                                                                                                                                                                                                                                                                                                      |    | exposure_latitude              |    | S            |    | O       |    | The latitude in decimal degrees of the exposure location eg: 35.8048664                                                                                                                                                                                 |    |', '|    | Exposure longitude                 |    | NaN                                                                                                                                                                                                                                                                                                                                      |    | exposure_longitude             |    | S            |    | O       |    | The longitude in decimal degrees of the exposure location eg: -106.1389522                                                                                                                                                                              |    |', '|    | Total coverage amount              |    | /InsuranceSmartShoppingRequest/insurancePlanSection/travelValue/monetaryDetails/amount                                                                                                                                                                                                                                                   |    | exposure_total_coverage_amount |    | S            |    | M       |    | The total value of the exposure to be covered. Amount to be divided by 1000 eg: 300.51. Send the trip value including taxes                                                                                                                             |    |', '|    | Language (Local)                   |    | Pick the language from InsuranceSmartShoppingRequest/languageCode/userPreferences/codedLanguage if present, else/originatorSection/originatorDetails/@language                                                                                                                                                                           |    | lang_locale                    |    | C            |    | C       |    | eg: en-US. Currently only 2 languages are supported - EN and FR. More languages will be added in 2024. User preferred language can be sent                                                                                                              |    |', '|    | External ID                        |    | NaN                                                                                                                                                                                                                                                                                                                                      |    | external_id                    |    | S            |    | O       |    | An identifier used to associate a Quote to an order/reservation/booking in another system if available. Alternatively, a shopping cart ID or another type of unique session ID can be used to aggregate Quotes for a browsing experience by a customer. |    |', '|    | Billing Address                    |    | /subscriberAddressSection/nameDetails/qualifier="ARE"/name                                                                                                                                                                                                                                                                               |    | NaN                            |    | NaN          |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |', '|    | Address Line 1                     |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE", then build subscriberAddressSection/addressInfo/addressDetails/line1                                                                                                                                                                                                |    | billing_address.address_line_1 |    | S            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |', '|    | Address Line 2                     |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE", then build subscriberAddressSection/addressInfo/addressDetails/line2                                                                                                                                                                                                |    | billing_address.address_line_2 |    | S            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |', '|    | City                               |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE", then build /addressInfo/city                                                                                                                                                                                                                                        |    | billing_address.city           |    | S            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |', '|    | Region                             |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE" and then check for /addressInfo/regionDetails/qualifier = 84. If found, pick up the state from /addressInfo/regionDetails/name. If not found, check if /addressInfo/locationDetails/qualifier = 84; if yes, pick up the state from /addressInfo/locationDetails/name |    | billing_address.region         |    | C            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |', '|    | country                            |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE" and then check for /addressInfo/locationDetails/qualifier = 162. If found, pick up the country from /addressInfo/locationDetails/name. If not found, check if /addressInfo/regionDetails/qualifier = 162; if yes, pick country from /addressInfo/regionDetails/name  |    | billing_address.country        |    | C            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |', '|    | postal code                        |    | Check whether /subscriberAddressSection/nameDetails/qualifier="ARE", then build /addressInfo/zipCode                                                                                                                                                                                                                                     |    | billing_address.postal_code    |    | S            |    | NaN     |    | NaN                                                                                                                                                                                                                                                     |    |']
-start index :  3
-User Response :  file:/SW_Mapping (1).csv
-[ROUTING DEBUG] ===== STARTING INTELLIGENT CLASSIFICATION =====
-[ROUTING DEBUG] Total rows to classify: 19
-[ROUTING DEBUG] Batch size: 20
-[ROUTING DEBUG] Expected batches: 1
-Queued batch 1: rows 1-19
-Executing 1 classification batches in parallel...
-[ROUTING DEBUG] Starting classification for batch 1
-[ROUTING DEBUG] Batch size: 19 rows
-[ROUTING DEBUG] Row 0: 'Hardcode it to 1234-asd-wer'
-[ROUTING DEBUG] Row 1: 'The day on which coverage begins, Build it in this...'
-[ROUTING DEBUG] Row 2: 'The day on which coverage end, Build it in this fo...'
-[ROUTING DEBUG] Row 3: 'The hour when coverage should begin on each of the...'
-[ROUTING DEBUG] Row 4: 'The hour when coverage should end on each of the c...'
-[ROUTING DEBUG] Row 5: '3 character ISO code representing the currency of ...'
-[ROUTING DEBUG] Row 6: 'The human-readable/user-facing name of the locatio...'
-[ROUTING DEBUG] Row 7: 'The latitude in decimal degrees of the exposure lo...'
-[ROUTING DEBUG] Row 8: 'The longitude in decimal degrees of the exposure l...'
-[ROUTING DEBUG] Row 9: 'The total value of the exposure to be covered. Amo...'
-[ROUTING DEBUG] Row 10: 'eg: en-US. Currently only 2 languages are supporte...'
-[ROUTING DEBUG] Row 11: 'An identifier used to associate a Quote to an orde...'
-[ROUTING DEBUG] Row 12: 'NaN'
-[ROUTING DEBUG] Row 13: 'NaN'
-[ROUTING DEBUG] Row 14: 'NaN'
-[ROUTING DEBUG] Row 15: 'NaN'
-[ROUTING DEBUG] Row 16: 'NaN'
-[ROUTING DEBUG] Row 17: 'NaN'
-[ROUTING DEBUG] Row 18: 'NaN'
-[ROUTING DEBUG] Sending classification request for batch 1
-Model Used: o3-mini
-[ROUTING DEBUG] LLM response for batch 1: {
-  "0": "SIMPLE",
-  "1": "COMPLEX",
-  "2": "COMPLEX",
-  "3": "COMPLEX",
-  "4": "COMPLEX",
-  "5": "S...
-[ROUTING DEBUG] Batch 1 results: 13 SIMPLE, 6 COMPLEX
-[ROUTING DEBUG] Classification results:
-[ROUTING DEBUG]   Simple indices: [0, 5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-[ROUTING DEBUG]   Complex indices: [1, 2, 3, 4, 6, 9]
-[ROUTING DEBUG] Final classification: 13 SIMPLE, 6 COMPLEX
-[ROUTING DEBUG] ===== CLASSIFICATION COMPLETE =====
-Starting parallel processing of all mappings...
-[PARALLEL DEBUG] ===== PROCESSING COMPLEX BATCHES =====
-[PARALLEL DEBUG] Complex rows count: 6
-[PARALLEL DEBUG] Created 2 complex batches (4 rows each)
-[PARALLEL DEBUG] Starting parallel processing of complex batches...
-[PARALLEL DEBUG] Complex batch 1: Coverage start date,Coverage end date,Coverage start hour (24 hr format),Coverage end hour (24 hr format)
-[PARALLEL DEBUG] Complex batch 2: Exposure name,Total coverage amount
-[PARALLEL DEBUG] Executing 2 complex batch tasks in parallel...
-[PARALLEL DEBUG] ===== PROCESSING SIMPLE BATCHES =====
-[PARALLEL DEBUG] Simple rows count: 13
-[PARALLEL DEBUG] Created 2 simple batches (8 rows each)
-[PARALLEL DEBUG] Starting parallel processing of simple batches...
-[PARALLEL DEBUG] Simple batch 1: Product ID,Currency,Exposure latitude,Exposure longitude,Language (Local),External ID,Billing Address,Address Line 1
-[PARALLEL DEBUG] Simple batch 2: Address Line 2,City,Region,country,postal code
-[PARALLEL DEBUG] Executing 2 simple batch tasks in parallel...
-Inside LLM Process
-Model Used: o3-mini
-prompt_tokens=2917, completion_tokens=1529, total_tokens=4446
-COMPLETE_RESPONSE: ChatCompletion(id='chatcmpl-CJCGuhvlxVsgSJVtfTAH1PStyxtHP', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://www.amadeus.net">\n  <xsl:output method="xml" indent="yes"/>\n  \n  <xsl:template match="/ns0:InsuranceSmartShoppingRequest">\n    <root>\n      <coverage_start_date>\n        <xsl:variable name="startDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate"/>\n        <xsl:value-of select="concat(substring($startDate,1,4),\'-\',substring($startDate,5,2),\'-\',substring($startDate,7,2))"/>\n      </coverage_start_date>\n      <coverage_end_date>\n        <xsl:variable name="endDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate"/>\n        <xsl:value-of select="concat(substring($endDate,1,4),\'-\',substring($endDate,5,2),\'-\',substring($endDate,7,2))"/>\n      </coverage_end_date>\n      <coverage_start_hour_number>\n        <xsl:variable name="depTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureTime"/>\n        <xsl:value-of select="substring($depTime,1,2)"/>\n      </coverage_start_hour_number>\n      <coverage_end_hour_number>\n        <xsl:variable name="arrTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalTime"/>\n        <xsl:value-of select="substring($arrTime,1,2)"/>\n      </coverage_end_hour_number>\n    </root>\n  </xsl:template>\n  \n</xsl:stylesheet>', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None), content_filter_results={'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}})], created=1758691440, model='o3-mini-2025-01-31', object='chat.completion', service_tier=None, system_fingerprint='fp_e1882df059', usage=CompletionUsage(completion_tokens=1529, prompt_tokens=2917, total_tokens=4446, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=1088, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)), prompt_filter_results=[{'prompt_index': 0, 'content_filter_results': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}}}])
-RESPONSE: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://www.amadeus.net">
-  <xsl:output method="xml" indent="yes"/>
-  
-  <xsl:template match="/ns0:InsuranceSmartShoppingRequest">
-    <root>
-      <coverage_start_date>
-        <xsl:variable name="startDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate"/>
-        <xsl:value-of select="concat(substring($startDate,1,4),'-',substring($startDate,5,2),'-',substring($startDate,7,2))"/>
-      </coverage_start_date>
-      <coverage_end_date>
-        <xsl:variable name="endDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate"/>
-        <xsl:value-of select="concat(substring($endDate,1,4),'-',substring($endDate,5,2),'-',substring($endDate,7,2))"/>
-      </coverage_end_date>
-      <coverage_start_hour_number>
-        <xsl:variable name="depTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureTime"/>
-        <xsl:value-of select="substring($depTime,1,2)"/>
-      </coverage_start_hour_number>
-      <coverage_end_hour_number>
-        <xsl:variable name="arrTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalTime"/>
-        <xsl:value-of select="substring($arrTime,1,2)"/>
-      </coverage_end_hour_number>
-    </root>
-  </xsl:template>
-  
-</xsl:stylesheet>
-inside refine_internal xslt
-Model Used: o3-mini
-prompt_tokens=1178, completion_tokens=2294, total_tokens=3472
-COMPLETE_RESPONSE: ChatCompletion(id='chatcmpl-CJCH6IJZ0Rci1Uc1figQVjb2lcVBS', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='Below is the refined XSLT. The original XSLT produced four elements (coverage_start_date, coverage_end_date, coverage_start_hour_number, coverage_end_hour_number) whose formatting is exactly as in the provided output XML. However, one discrepancy was the missing attribute exclude-result-prefixes on the stylesheet element. Also, since only the four fields are generated by the XSLT, only those fields are retained and the order is preserved (i.e. the order they appear in the provided output XML). The refined XSLT is as follows:\n\n<xsl:stylesheet version="1.0" \n                xmlns:xsl="http://www.w3.org/1999/XSL/Transform" \n                xmlns:ns0="http://www.amadeus.net" \n                exclude-result-prefixes="ns0">\n  <xsl:output method="xml" indent="yes"/>\n  \n  <xsl:template match="/ns0:InsuranceSmartShoppingRequest">\n    <root>\n      <coverage_start_date>\n        <xsl:variable name="startDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate"/>\n        <xsl:value-of select="concat(substring($startDate,1,4),\'-\',substring($startDate,5,2),\'-\',substring($startDate,7,2))"/>\n      </coverage_start_date>\n      <coverage_end_date>\n        <xsl:variable name="endDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate"/>\n        <xsl:value-of select="concat(substring($endDate,1,4),\'-\',substring($endDate,5,2),\'-\',substring($endDate,7,2))"/>\n      </coverage_end_date>\n      <coverage_start_hour_number>\n        <xsl:variable name="depTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureTime"/>\n        <xsl:value-of select="substring($depTime,1,2)"/>\n      </coverage_start_hour_number>\n      <coverage_end_hour_number>\n        <xsl:variable name="arrTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalTime"/>\n        <xsl:value-of select="substring($arrTime,1,2)"/>\n      </coverage_end_hour_number>\n    </root>\n  </xsl:template>\n  \n</xsl:stylesheet>', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None), content_filter_results={'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}})], created=1758691452, model='o3-mini-2025-01-31', object='chat.completion', service_tier=None, system_fingerprint='fp_e1882df059', usage=CompletionUsage(completion_tokens=2294, prompt_tokens=1178, total_tokens=3472, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=1728, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)), prompt_filter_results=[{'prompt_index': 0, 'content_filter_results': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}}}])
-RESPONSE: Below is the refined XSLT. The original XSLT produced four elements (coverage_start_date, coverage_end_date, coverage_start_hour_number, coverage_end_hour_number) whose formatting is exactly as in the provided output XML. However, one discrepancy was the missing attribute exclude-result-prefixes on the stylesheet element. Also, since only the four fields are generated by the XSLT, only those fields are retained and the order is preserved (i.e. the order they appear in the provided output XML). The refined XSLT is as follows:
-
-<xsl:stylesheet version="1.0" 
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-                xmlns:ns0="http://www.amadeus.net" 
-                exclude-result-prefixes="ns0">
-  <xsl:output method="xml" indent="yes"/>
-  
-  <xsl:template match="/ns0:InsuranceSmartShoppingRequest">
-    <root>
-      <coverage_start_date>
-        <xsl:variable name="startDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureDate"/>
-        <xsl:value-of select="concat(substring($startDate,1,4),'-',substring($startDate,5,2),'-',substring($startDate,7,2))"/>
-      </coverage_start_date>
-      <coverage_end_date>
-        <xsl:variable name="endDate" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalDate"/>
-        <xsl:value-of select="concat(substring($endDate,1,4),'-',substring($endDate,5,2),'-',substring($endDate,7,2))"/>
-      </coverage_end_date>
-      <coverage_start_hour_number>
-        <xsl:variable name="depTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:departureTime"/>
-        <xsl:value-of select="substring($depTime,1,2)"/>
-      </coverage_start_hour_number>
-      <coverage_end_hour_number>
-        <xsl:variable name="arrTime" select="ns0:insurancePlanSection/ns0:itineraryInfo/ns0:segmentDetails/ns0:flightDate/ns0:arrivalTime"/>
-        <xsl:value-of select="substring($arrTime,1,2)"/>
-      </coverage_end_hour_number>
-    </root>
-  </xsl:template>
-  
-</xsl:stylesheet>
-Inside LLM Process
-Model Used: o3-mini
-prompt_tokens=2690, completion_tokens=1585, total_tokens=4275
-COMPLETE_RESPONSE: ChatCompletion(id='chatcmpl-CJCHLtDaU11KxkMdzKh2gh0brxQvT', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://www.amadeus.net">\n  <xsl:output method="xml" indent="yes"/>\n  \n  <xsl:template match="/">\n    <root>\n      <exposure_name>\n        <!-- Select the ns0:subscriberAddressSection with ADE qualifier and use its ns0:name -->\n        <xsl:variable name="hotelName" select="//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier=\'ADE\']/ns0:nameDetails/ns0:nameInformation/ns0:name"/>\n        <!-- Truncate to 50 characters if necessary -->\n        <xsl:value-of select="substring($hotelName, 1, 50)"/>\n      </exposure_name>\n      <exposure_total_coverage_amount>\n        <!-- Select the first ns0:amount from ns0:monetaryDetails and divide by 1000 -->\n        <xsl:variable name="amount" select="//ns0:insurancePlanSection/ns0:travelValue/ns0:monetaryDetails/ns0:amount[1]"/>\n        <xsl:value-of select="number($amount) div 1000"/>\n      </exposure_total_coverage_amount>\n    </root>\n  </xsl:template>\n  \n</xsl:stylesheet>', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None), content_filter_results={'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}})], created=1758691467, model='o3-mini-2025-01-31', object='chat.completion', service_tier=None, system_fingerprint='fp_e1882df059', usage=CompletionUsage(completion_tokens=1585, prompt_tokens=2690, total_tokens=4275, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=1280, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)), prompt_filter_results=[{'prompt_index': 0, 'content_filter_results': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}}}])
-RESPONSE: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://www.amadeus.net">
-  <xsl:output method="xml" indent="yes"/>
-  
+🧪 Simple Real-Time Merging Test
+==================================================
+🏗️ Testing Base Template Creation Only
+----------------------------------------
+[TEMPLATE DEBUG] ===== CREATING BASE TEMPLATE =====
+[TEMPLATE DEBUG] Output XML length: 125 characters
+[TEMPLATE DEBUG] Successfully parsed output XML. Root element: Invoice
+[TEMPLATE DEBUG] Converting XML structure to XSLT template
+[TEMPLATE DEBUG] Processing element: Invoice
+[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_Invoice}}
+[TEMPLATE DEBUG] Element Invoice has 2 children
+[TEMPLATE DEBUG] Processing element: CustomerID
+[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_CustomerID}}
+[TEMPLATE DEBUG] Element CustomerID is leaf element
+[TEMPLATE DEBUG] Processing element: TaxAmount
+[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_TaxAmount}}
+[TEMPLATE DEBUG] Element TaxAmount is leaf element
+[TEMPLATE DEBUG] Template structure created with 6 parts
+[TEMPLATE DEBUG] Base template created successfully
+[TEMPLATE DEBUG] Template length: 275 characters
+✅ Base template created successfully
+Base template:
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="/">
-    <root>
-      <exposure_name>
-        <!-- Select the ns0:subscriberAddressSection with ADE qualifier and use its ns0:name -->
-        <xsl:variable name="hotelName" select="//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ADE']/ns0:nameDetails/ns0:nameInformation/ns0:name"/>
-        <!-- Truncate to 50 characters if necessary -->
-        <xsl:value-of select="substring($hotelName, 1, 50)"/>
-      </exposure_name>
-      <exposure_total_coverage_amount>
-        <!-- Select the first ns0:amount from ns0:monetaryDetails and divide by 1000 -->
-        <xsl:variable name="amount" select="//ns0:insurancePlanSection/ns0:travelValue/ns0:monetaryDetails/ns0:amount[1]"/>
-        <xsl:value-of select="number($amount) div 1000"/>
-      </exposure_total_coverage_amount>
-    </root>
+    <Invoice>
+      {{PLACEHOLDER_CustomerID}}
+      {{PLACEHOLDER_TaxAmount}}
+    </Invoice>
   </xsl:template>
-  
 </xsl:stylesheet>
-inside refine_internal xslt
-Model Used: o3-mini
-prompt_tokens=1042, completion_tokens=1780, total_tokens=2822
-COMPLETE_RESPONSE: ChatCompletion(id='chatcmpl-CJCHXy2W3pTmBIvFaB6neVyyy8Mhq', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='Below is the refined XSLT 1.0. Only the two fields (exposure_name and exposure_total_coverage_amount) produced by the transformation are retained and ordered exactly as in the provided XML (exposure_name first, then exposure_total_coverage_amount). The stylesheet header now includes the required exclude‐result‐prefixes attribute, and no extra delimiters were found in the field values.\n\n-----------------------------------------------------------\n<xsl:stylesheet version="1.0" \n    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" \n    xmlns:ns0="http://www.amadeus.net" \n    exclude-result-prefixes="ns0">\n  <xsl:output method="xml" indent="yes"/>\n  \n  <xsl:template match="/">\n    <root>\n      <exposure_name>\n        <!-- Select the ns0:subscriberAddressSection with ADE qualifier and use its ns0:name -->\n        <xsl:variable name="hotelName" \n            select="//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier=\'ADE\']/\n                     ns0:nameDetails/ns0:nameInformation/ns0:name"/>\n        <!-- Truncate to 50 characters if necessary -->\n        <xsl:value-of select="substring($hotelName, 1, 50)"/>\n      </exposure_name>\n      <exposure_total_coverage_amount>\n        <!-- Select the first ns0:amount from ns0:monetaryDetails and divide by 1000 -->\n        <xsl:variable name="amount" \n            select="//ns0:insurancePlanSection/ns0:travelValue/ns0:monetaryDetails/ns0:amount[1]"/>\n        <xsl:value-of select="number($amount) div 1000"/>\n      </exposure_total_coverage_amount>\n    </root>\n  </xsl:template>\n  \n</xsl:stylesheet>\n-----------------------------------------------------------\n\nThis refined XSLT now produces exactly the two fields in the same order as they appear in the provided output XML.', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None), content_filter_results={'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}})], created=1758691479, model='o3-mini-2025-01-31', object='chat.completion', service_tier=None, system_fingerprint='fp_e1882df059', usage=CompletionUsage(completion_tokens=1780, prompt_tokens=1042, total_tokens=2822, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=1344, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)), prompt_filter_results=[{'prompt_index': 0, 'content_filter_results': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}}}])
-RESPONSE: Below is the refined XSLT 1.0. Only the two fields (exposure_name and exposure_total_coverage_amount) produced by the transformation are retained and ordered exactly as in the provided XML (exposure_name first, then exposure_total_coverage_amount). The stylesheet header now includes the required exclude‐result‐prefixes attribute, and no extra delimiters were found in the field values.
 
------------------------------------------------------------
-<xsl:stylesheet version="1.0" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:ns0="http://www.amadeus.net" 
-    exclude-result-prefixes="ns0">
-  <xsl:output method="xml" indent="yes"/>
-  
+🚀 Testing Simple Real-Time Flow
+----------------------------------------
+Starting real-time merging with mock LLM...
+[REALTIME DEBUG] ===== STARTING REAL-TIME TEMPLATE MERGING =====
+[REALTIME DEBUG] Step 1: Creating base template from output XML
+[TEMPLATE DEBUG] ===== CREATING BASE TEMPLATE =====
+[TEMPLATE DEBUG] Output XML length: 125 characters
+[TEMPLATE DEBUG] Successfully parsed output XML. Root element: Invoice
+[TEMPLATE DEBUG] Converting XML structure to XSLT template
+[TEMPLATE DEBUG] Processing element: Invoice
+[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_Invoice}}
+[TEMPLATE DEBUG] Element Invoice has 2 children
+[TEMPLATE DEBUG] Processing element: CustomerID
+[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_CustomerID}}
+[TEMPLATE DEBUG] Element CustomerID is leaf element
+[TEMPLATE DEBUG] Processing element: TaxAmount
+[TEMPLATE DEBUG] Created placeholder: {{PLACEHOLDER_TaxAmount}}
+[TEMPLATE DEBUG] Element TaxAmount is leaf element
+[TEMPLATE DEBUG] Template structure created with 6 parts
+[TEMPLATE DEBUG] Base template created successfully
+[TEMPLATE DEBUG] Template length: 275 characters
+[REALTIME DEBUG] Base template created, processing 2 elements
+[REALTIME DEBUG] Elements to process: ['CustomerID', 'TaxAmount']
+[REALTIME DEBUG] Initial base template:
+[REALTIME DEBUG] Template length: 275 characters
+[REALTIME DEBUG] Initial placeholders: 2
+--------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="/">
-    <root>
-      <exposure_name>
-        <!-- Select the ns0:subscriberAddressSection with ADE qualifier and use its ns0:name -->
-        <xsl:variable name="hotelName" 
-            select="//ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ADE']/
-                     ns0:nameDetails/ns0:nameInformation/ns0:name"/>
-        <!-- Truncate to 50 characters if necessary -->
-        <xsl:value-of select="substring($hotelName, 1, 50)"/>
-      </exposure_name>
-      <exposure_total_coverage_amount>
-        <!-- Select the first ns0:amount from ns0:monetaryDetails and divide by 1000 -->
-        <xsl:variable name="amount" 
-            select="//ns0:insurancePlanSection/ns0:travelValue/ns0:monetaryDetails/ns0:amount[1]"/>
-        <xsl:value-of select="number($amount) div 1000"/>
-      </exposure_total_coverage_amount>
-    </root>
+    <Invoice>
+      {{PLACEHOLDER_CustomerID}}
+      {{PLACEHOLDER_TaxAmount}}
+    </Invoice>
   </xsl:template>
-  
 </xsl:stylesheet>
------------------------------------------------------------
+--------------------------------------------------
+[REALTIME DEBUG] ===== TRUE REAL-TIME PROCESSING WITH ASYNCIO QUEUE =====
+[REALTIME DEBUG] Starting parallel processing with asyncio queue
+[REALTIME DEBUG] Simple batches: 1, Complex batches: 1
+[REALTIME DEBUG] === PHASE 1: COMPLEX BATCHES ===
+[GROUP DEBUG] Processing complex group with 1 rows
+[GROUP DEBUG] Created 1 complex batches (4 fields each)
+[GROUP DEBUG] Started 1 complex batch tasks in parallel
+[GROUP DEBUG] Processing complex batch completions in real-time...
+[TIMING DEBUG] [complex] Waiting for next batch completion at 1758706238.34...
+[TIMING DEBUG] complex batch 0 STARTED at 1758706238.34: ['TaxAmount']
+[ASYNC] Inside LLM Process (Async)
+prompt_tokens=100, completion_tokens=50, total_tokens=150
+[ASYNC] COMPLETE_RESPONSE: MockResponse(content='<xsl:stylesheet version="1.0" xmlns:xsl="http://ww...')
+[ASYNC] RESPONSE: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <TaxAmount>
+        <xsl:value-of select="ns0:Order/TaxAmount"/>
+    </TaxAmount>
+</xsl:stylesheet>
+[ASYNC] Generated XSLT for batch: 183 characters
+[TIMING DEBUG] complex batch 0 COMPLETED at 1758706238.34, took 0.00s
+[REALTIME DEBUG] complex batch 0 queued for real-time processing
+[TIMING DEBUG] [complex] Got batch from queue after 0.00s wait at 1758706238.34
+[GROUP DEBUG] [complex] Batch 1/1 completed: complex-0
+[GROUP DEBUG] [complex] Fields in batch: ['TaxAmount']
+[EXTRACTION DEBUG] ===== EXTRACTING CHUNK FOR TaxAmount =====
+[EXTRACTION DEBUG] XSLT length: 183 characters
+[EXTRACTION DEBUG] Split XSLT into 5 lines
+[EXTRACTION DEBUG] Searching for element: <TaxAmount>
+[EXTRACTION DEBUG] Found element at line 2: '<TaxAmount>'
+[EXTRACTION DEBUG] Found TaxAmount at line 2
+[EXTRACTION DEBUG] Target line content: '<TaxAmount>'
+[EXTRACTION DEBUG] Traversing up from line 2
+[EXTRACTION DEBUG] Checking line 1: '<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">'
+[EXTRACTION DEBUG] No closing tag found above target line
+[EXTRACTION DEBUG] No boundary found, starting from target line 2
+[EXTRACTION DEBUG] Finding closing tag for: '<TaxAmount>'
+[EXTRACTION DEBUG] Looking for closing tag: '</TaxAmount>'
+[EXTRACTION DEBUG] Found closing tag at line 4
+[EXTRACTION DEBUG] Extraction boundaries: lines 2 to 4
+[EXTRACTION DEBUG] Extracted 3 lines for TaxAmount
+[EXTRACTION DEBUG] Chunk content:
+    <TaxAmount>
+        <xsl:value-of select="ns0:Order/TaxAmount"/>
+    </TaxAmount>
+[EXTRACTION DEBUG] Extracted chunk length: 85 characters
+[EXTRACTION DEBUG] ===== EXTRACTION COMPLETE =====
+[GROUP DEBUG] [complex] Extracted chunk for TaxAmount, updating template immediately
+[GROUP DEBUG] [complex] Chunk content:     <TaxAmount>
+        <xsl:value-of select="ns0:Order/TaxAmount"/>
+    </TaxAmount>...
+[REPLACEMENT DEBUG] ===== REPLACING PLACEHOLDER FOR TaxAmount =====
+[REPLACEMENT DEBUG] Looking for placeholder: {{PLACEHOLDER_TaxAmount}}
+[REPLACEMENT DEBUG] Chunk length: 85 characters
+[REPLACEMENT DEBUG] Placeholder replaced successfully
+[REPLACEMENT DEBUG] Template length before: 275
+[REPLACEMENT DEBUG] Template length after: 335
+[GROUP DEBUG] [complex] Template updated for TaxAmount in real-time
+[GROUP DEBUG] [complex] Template size: 275 -> 335 characters
+[GROUP DEBUG] [complex] Remaining placeholders: 1
+[GROUP DEBUG] [complex] Processed elements so far: ['TaxAmount']
+[GROUP DEBUG] [complex] Current template state:
+--------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/">
+    <Invoice>
+      {{PLACEHOLDER_CustomerID}}
+          <TaxAmount>
+        <xsl:value-of select="ns0:Order/TaxAmount"/>
+    </TaxAmount>
+    </Invoice>
+  </xsl:template>
+</xsl:stylesheet>
+--------------------------------------------------
+[GROUP DEBUG] [complex] All batch completions processed, waiting for background tasks...
+[GROUP DEBUG] [complex] Group processing complete! Template updated with 1 total elements
+[REALTIME DEBUG] === PHASE 2: SIMPLE BATCHES ===
+[GROUP DEBUG] Processing simple group with 1 rows
+[GROUP DEBUG] Created 1 simple batches (8 fields each)
+[GROUP DEBUG] Started 1 simple batch tasks in parallel
+[GROUP DEBUG] Processing simple batch completions in real-time...
+[TIMING DEBUG] [simple] Waiting for next batch completion at 1758706238.34...
+[TIMING DEBUG] simple batch 0 STARTED at 1758706238.34: ['CustomerID']
+[ASYNC] Inside LLM Process (Async)
+prompt_tokens=100, completion_tokens=50, total_tokens=150
+[ASYNC] COMPLETE_RESPONSE: MockResponse(content='<xsl:stylesheet version="1.0" xmlns:xsl="http://ww...')
+[ASYNC] RESPONSE: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <TaxAmount>
+        <xsl:value-of select="ns0:Order/TaxAmount"/>
+    </TaxAmount>
+</xsl:stylesheet>
+[ASYNC] Generated XSLT for batch: 183 characters
+[TIMING DEBUG] simple batch 0 COMPLETED at 1758706238.34, took 0.00s
+[REALTIME DEBUG] simple batch 0 queued for real-time processing
+[TIMING DEBUG] [simple] Got batch from queue after 0.00s wait at 1758706238.34
+[GROUP DEBUG] [simple] Batch 1/1 completed: simple-0
+[GROUP DEBUG] [simple] Fields in batch: ['CustomerID']
+[EXTRACTION DEBUG] ===== EXTRACTING CHUNK FOR CustomerID =====
+[EXTRACTION DEBUG] XSLT length: 183 characters
+[EXTRACTION DEBUG] Split XSLT into 5 lines
+[EXTRACTION DEBUG] Searching for element: <CustomerID>
+[EXTRACTION DEBUG] Element CustomerID not found in XSLT lines
+[EXTRACTION DEBUG] Element CustomerID not found in XSLT
+[GROUP DEBUG] [simple] No chunk found for CustomerID, ignoring
+[GROUP DEBUG] [simple] All batch completions processed, waiting for background tasks...
+[GROUP DEBUG] [simple] Group processing complete! Template updated with 1 total elements
+[REALTIME DEBUG] Both phases completed with sequential groups strategy
+[REALTIME DEBUG] TRUE real-time processing complete!
+[REALTIME DEBUG] Processed 1 elements via real-time updates
+[REALTIME DEBUG] Final template length: 335 characters
+✅ Real-time merging completed
+Final XSLT length: 335
+Final XSLT:
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/">
+    <Invoice>
+      {{PLACEHOLDER_CustomerID}}
+          <TaxAmount>
+        <xsl:value-of select="ns0:Order/TaxAmount"/>
+    </TaxAmount>
+    </Invoice>
+  </xsl:template>
+</xsl:stylesheet>
 
-This refined XSLT now produces exactly the two fields in the same order as they appear in the provided output XML.
-Inside LLM Process
-Model Used: o3-mini
-prompt_tokens=3147, completion_tokens=3732, total_tokens=6879
-COMPLETE_RESPONSE: ChatCompletion(id='chatcmpl-CJCHlSUPMCT6C9jeueigQNeTyDYfT', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://www.amadeus.net">\n  <xsl:output method="xml" indent="yes"/>\n  \n  <xsl:template match="/">\n    <root>\n      <!-- Product ID: Hardcoded as per the mapping description -->\n      <product_id>1234-asd-wer</product_id>\n      \n      <!-- Currency: taken from ns0:preferredCurrencyCode under ns0:insuranceOptionSection -->\n      <currency>\n        <xsl:value-of select="ns0:InsuranceSmartShoppingRequest/ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:preferredCurrencyCode"/>\n      </currency>\n      \n      <!-- Exposure latitude: no input xpath provided so output empty -->\n      <exposure_latitude>\n        <xsl:value-of select="\'\'"/>\n      </exposure_latitude>\n      \n      <!-- Exposure longitude: no input xpath provided so output empty -->\n      <exposure_longitude>\n        <xsl:value-of select="\'\'"/>\n      </exposure_longitude>\n      \n      <!-- Language (Local): Use codedLanguage if present, otherwise fallback to originatorDetails/language; Append \'-US\' as per sample output delimiter -->\n      <lang_locale>\n        <xsl:choose>\n          <xsl:when test="ns0:InsuranceSmartShoppingRequest/ns0:languageCode/ns0:userPreferences/ns0:codedLanguage">\n            <xsl:value-of select="concat(ns0:InsuranceSmartShoppingRequest/ns0:languageCode/ns0:userPreferences/ns0:codedLanguage, \'-US\')"/>\n          </xsl:when>\n          <xsl:otherwise>\n            <xsl:value-of select="concat(ns0:InsuranceSmartShoppingRequest/ns0:originatorSection/ns0:originatorDetails/ns0:language, \'-US\')"/>\n          </xsl:otherwise>\n        </xsl:choose>\n      </lang_locale>\n      \n      <!-- External ID: No input xpath provided so output empty -->\n      <external_id>\n        <xsl:value-of select="\'\'"/>\n      </external_id>\n      \n      <!-- Billing Address: Checking if subscriberAddressSection with qualifier "ARE" exists \n           and mapping the first line1 element from addressInfo/addressDetails -->\n      <billing_address>\n        <address_line_1>\n          <xsl:value-of select="ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier=\'ARE\']/ns0:addressInfo/ns0:addressDetails/ns0:line1[1]"/>\n        </address_line_1>\n      </billing_address>\n      \n    </root>\n  </xsl:template>\n  \n</xsl:stylesheet>', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None), content_filter_results={'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}})], created=1758691493, model='o3-mini-2025-01-31', object='chat.completion', service_tier=None, system_fingerprint='fp_e1882df059', usage=CompletionUsage(completion_tokens=3732, prompt_tokens=3147, total_tokens=6879, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=3136, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)), prompt_filter_results=[{'prompt_index': 0, 'content_filter_results': {'hate': {'filtered': False, 'severity': 'safe'}, 'self_harm': {'filtered': False, 'severity': 'safe'}, 'sexual': {'filtered': False, 'severity': 'safe'}, 'violence': {'filtered': False, 'severity': 'safe'}}}])
-RESPONSE: <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns0="http://www.amadeus.net">
-  <xsl:output method="xml" indent="yes"/>
-  
-  <xsl:template match="/">
-    <root>
-      <!-- Product ID: Hardcoded as per the mapping description -->
-      <product_id>1234-asd-wer</product_id>
-      
-      <!-- Currency: taken from ns0:preferredCurrencyCode under ns0:insuranceOptionSection -->
-      <currency>
-        <xsl:value-of select="ns0:InsuranceSmartShoppingRequest/ns0:insuranceOptionSection/ns0:insuranceOptionDetails/ns0:pricingInformations/ns0:preferredCurrencyCode"/>
-      </currency>
-      
-      <!-- Exposure latitude: no input xpath provided so output empty -->
-      <exposure_latitude>
-        <xsl:value-of select="''"/>
-      </exposure_latitude>
-      
-      <!-- Exposure longitude: no input xpath provided so output empty -->
-      <exposure_longitude>
-        <xsl:value-of select="''"/>
-      </exposure_longitude>
-      
-      <!-- Language (Local): Use codedLanguage if present, otherwise fallback to originatorDetails/language; Append '-US' as per sample output delimiter -->
-      <lang_locale>
-        <xsl:choose>
-          <xsl:when test="ns0:InsuranceSmartShoppingRequest/ns0:languageCode/ns0:userPreferences/ns0:codedLanguage">
-            <xsl:value-of select="concat(ns0:InsuranceSmartShoppingRequest/ns0:languageCode/ns0:userPreferences/ns0:codedLanguage, '-US')"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="concat(ns0:InsuranceSmartShoppingRequest/ns0:originatorSection/ns0:originatorDetails/ns0:language, '-US')"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </lang_locale>
-      
-      <!-- External ID: No input xpath provided so output empty -->
-      <external_id>
-        <xsl:value-of select="''"/>
-      </external_id>
-      
-      <!-- Billing Address: Checking if subscriberAddressSection with qualifier "ARE" exists 
-           and mapping the first line1 element from addressInfo/addressDetails -->
-      <billing_address>
-        <address_line_1>
-          <xsl:value-of select="ns0:InsuranceSmartShoppingRequest/ns0:subscriberAddressSection[ns0:nameDetails/ns0:nameInformation/ns0:qualifier='ARE']/ns0:addressInfo/ns0:addressDetails/ns0:line1[1]"/>
-        </address_line_1>
-      </billing_address>
-      
-    </root>
-  </xsl:template>
-  
-</xsl:stylesheet>
-inside refine_internal xslt
-Model Used: o3-mini
-  Stopping...
+🎉 All tests passed!
